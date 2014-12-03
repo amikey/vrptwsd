@@ -1,0 +1,137 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.rwth.lofip</groupId>
+	<artifactId>vrp-lib</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				<executable>C:\Program Files\Java\jdk1.7.0_51\bin\javac.exe</executable>
+				</configuration>
+			</plugin>
+			<!-- <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>schemagen</id>
+                        <goals>
+                            <goal>schemagen</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                      <transformSchemas>
+                            Each schema element defines:
+
+                            a) A <<namespace uri>> for one of your namespaces.
+                               This namespace uri must be unique within the schemas element.
+
+                            b) A <<toPrefix>> that you want to use for the namespace.
+                               Should not contain whitespace or exotic characters.
+                               This yields a namespace definition on the form
+                               <xs:schema ... xmlns:[toPrefix]="[uri]" ... />
+
+                               (I.e: <xs:schema ... xmlns:some="http://some/namespace"
+                                                    xmlns:xs="http://www.w3.org/2001/XMLSchema"> )
+
+                               ... and transforms relevant xml schema elements to use the provided namespace prefix:
+
+                               <some:elementName ... />
+
+                            c) The desired <<toFile>> name of the generated XML schema definition file,
+                               excluding the ".xsd" suffix (which will be added automatically).
+                       
+                        <transformSchema>
+                            <uri>http://some/namespace</uri>
+                            <toPrefix>some</toPrefix>
+                            <toFile>some_schema</toFile>
+                        </transformSchema>
+                        <transformSchema>
+                            <uri>http://another/namespace</uri>
+                            <toPrefix>another</toPrefix>
+                            <toFile>another_schema</toFile>
+                        </transformSchema>
+                        <transformSchema>
+                            <uri>http://yet/another/namespace</uri>
+                            <toPrefix>yetAnother</toPrefix>
+                            <toFile>yet_another_schema</toFile>
+                        </transformSchema>
+                     </transformSchemas>  
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                </configuration>
+            </plugin>-->
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.0-beta3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.0-beta3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-math3</artifactId>
+			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.8</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>14.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.uncommons.maths</groupId>
+			<artifactId>uncommons-maths</artifactId>
+			<version>1.2.2a</version>
+		</dependency>
+		<dependency>
+	<groupId>com.sun.xml.bind</groupId>
+	<artifactId>jaxb-impl</artifactId>
+	<version>2.2.6</version>
+</dependency>
+		
+	</dependencies>
+</project>

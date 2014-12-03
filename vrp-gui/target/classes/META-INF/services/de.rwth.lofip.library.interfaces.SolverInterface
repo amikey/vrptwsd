@@ -1,0 +1,2 @@
+de.rwth.lofip.library.solver.SweepSolver # Simple Sweep Solver
+de.rwth.lofip.library.solver.StochasticPushForwardInsertionSolver # Initial solver using a modified Push Forward Insertion

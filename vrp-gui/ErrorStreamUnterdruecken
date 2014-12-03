@@ -1,0 +1,10 @@
+It:0 EvNo:0feas? false (0 3 24 12 )(0 6 4 )(0 21 23 )(0 2 22 )(0 15 14 13 )(0 16 )(0 18 8 17 5 )(0 7 1 )(0 19 10 )(0 11 20 )(0 9 )
+It:0 EvNo:0feas? false (0 3 24 12 )(0 6 4 )(0 21 23 )(0 2 22 )(0 15 14 13 )(0 16 )(0 18 8 17 5 )(0 7 1 )(0 19 10 )(0 11 20 )(0 9 )
+
+ Problem
+solution feasible nach reparatur? true
+It:0 EvNo:0feas? true (0 3 24 12 )(0 6 4 )(0 21 23 )(0 2 )(0 15 14 )(0 16 )(0 18 8 17 )(0 7 1 )(0 19 10 )(0 11 20 )(0 9 )(0 5 13 )(0 22 )
+
+ Problem
+		Entfernen eines weiteren Kunden aus der TourWithProblem ist nötig, da totalDemand auf Tour 61 größer ist als die Vehicle Kapazität 50.0
+solution feasible nach reparatur? true
