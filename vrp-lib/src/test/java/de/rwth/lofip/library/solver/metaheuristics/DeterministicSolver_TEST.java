@@ -13,11 +13,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.solver.StochasticPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
+import de.rwth.lofip.library.solver.initialSolver.StochasticPushForwardInsertionSolver;
 import de.rwth.lofip.library.util.VrpUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * This writes all values into one file as in table 1, page 1781, Lei et al.

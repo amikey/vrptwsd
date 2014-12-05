@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
@@ -24,6 +23,7 @@ import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemovalGot
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.IntermediateSolutionGot;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * An implementation of the meta heuristic proposed by Lei et al. (2011).

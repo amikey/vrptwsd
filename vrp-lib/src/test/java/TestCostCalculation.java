@@ -89,7 +89,7 @@ public class TestCostCalculation {
         t.addCustomer(c3);
         t.addCustomer(c2);
         t.addCustomer(c1);
-        assert (t.getDistance() == 40);
+        assert (t.getTotalDistance() == 40);
     }
 
 }

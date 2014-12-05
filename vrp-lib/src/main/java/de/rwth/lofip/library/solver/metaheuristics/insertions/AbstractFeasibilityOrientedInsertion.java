@@ -9,12 +9,12 @@ import java.util.Random;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.util.CustomerNoComparator;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * <p>

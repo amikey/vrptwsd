@@ -1,10 +1,10 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.IntermediateSolutionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * A {@code MetaSolver} is a solver which takes an existing {@link Solution} and

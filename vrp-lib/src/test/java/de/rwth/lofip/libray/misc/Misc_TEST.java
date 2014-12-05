@@ -9,11 +9,11 @@ import org.junit.Test;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.util.CustomerInTour;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * Test class which contains some tests to find out how certain things work

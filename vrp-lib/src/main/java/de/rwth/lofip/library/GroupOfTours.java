@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import de.rwth.lofip.library.solver.util.DistanceComparatorWithSimilarity;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 
@@ -18,13 +17,13 @@ public class GroupOfTours {
 	/****************************************************************************
      * Fields
      ***************************************************************************/
-	
 
 	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 1;
 	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.2;
 	final static int MAXIMAL_NUMBER_OF_TOURS = 2;		
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
+	Double expectedRecourseCost = null;
 
     /****************************************************************************
      * Constructors
@@ -32,8 +31,13 @@ public class GroupOfTours {
   
     private void addTour(Tour t) {
     	tours.add(t);
+    	resetExpectedRecourseCost();
     }
     
+	private void resetExpectedRecourseCost() {
+		expectedRecourseCost = null;
+	}
+
 	public List<Tour> getTours() {	
 		return tours;
 	}
@@ -63,25 +67,21 @@ public class GroupOfTours {
 		Tour t = new Tour(vrpProblem.getDepot(),
 				new Vehicle(new Random().nextInt(Integer.MAX_VALUE), vrpProblem.getVehicles().iterator().next().getCapacity()));
 		addTour(t);
+		resetExpectedRecourseCost();
 	}
 	
 	public void insertCustomerIntoLastTour(Customer customer, int iteration,
 			String simpleName) {
 		Tour t = getLastTour();
 		t.addCustomer(customer, iteration, simpleName);
+		resetExpectedRecourseCost();
 	}
 	
     public Tour getLastTour() {
     	return tours.get(tours.size() - 1);
 	}
 
-	@Override
-    public GroupOfTours clone() {
-    	GroupOfTours got = new GroupOfTours();   		    	                       
-        for (Tour t : tours)             	      
-	        	got.addTour(t.clone());	        	        	        
-        return got;
-    }
+
 	
 	public int getMaximalNumberOfTours() {
 		return MAXIMAL_NUMBER_OF_TOURS;
@@ -115,14 +115,21 @@ public class GroupOfTours {
      ***************************************************************************/        
    
     public double getExpectedRecourseCost() {
-    	return 0;
+    	if (expectedRecourseCost == null)
+    		throw new RuntimeException("Recourse Kosten in GOT noch nicht implementiert");
+		return expectedRecourseCost;
     }
-
-
-
-	
-
     
+    
+	@Override
+    public GroupOfTours clone() {
+    	GroupOfTours got = new GroupOfTours();   		    	                       
+        for (Tour t : tours)             	      
+	        	got.addTour(t.clone());	        	        	        
+        return got;
+    }
+    
+  
 //    @Override
 //    public double getExpectedRecourseCost() {
 //    	
@@ -168,13 +175,7 @@ public class GroupOfTours {
 //    	}
 //    	return avg.getMeanValueOfAdditionalDistanceTotalDistancePerScenario(); 	
 //    }
-    
-    
-    
-    
-    
-    
-    
+      
 //    private List<RepairedSolution> repair(Solution temporarySolution, Event e)
 //    {
 //    	Solution oldSolution = temporarySolution.clone();

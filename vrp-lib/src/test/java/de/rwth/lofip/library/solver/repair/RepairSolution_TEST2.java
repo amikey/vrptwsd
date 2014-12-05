@@ -5,13 +5,14 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.scenario.DemandScenario;
-import de.rwth.lofip.library.scenario.DemandScenarioUtils;
-import de.rwth.lofip.library.scenario.Event;
-import de.rwth.lofip.library.solver.repair.util.RepairedSolution;
 import de.rwth.lofip.library.util.SetUpUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.RepairSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.DemandScenario;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.DemandScenarioUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 
 
 public class RepairSolution_TEST2 {

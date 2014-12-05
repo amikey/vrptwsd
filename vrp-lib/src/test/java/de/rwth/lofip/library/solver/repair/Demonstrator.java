@@ -15,14 +15,15 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.library.DeterministicTour;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.scenario.DemandScenario;
-import de.rwth.lofip.library.scenario.Event;
-import de.rwth.lofip.library.solver.repair.util.RepairedSolution;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.VrpUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.RepairSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.DemandScenario;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 
 public class Demonstrator {
 

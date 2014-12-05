@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import de.rwth.lofip.library.Customer;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.insertions.NeighborhoodInterface;
@@ -16,6 +15,7 @@ import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.tabu
 import de.rwth.lofip.library.solver.util.TabuTourPosition;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 public class Relocate implements NeighborhoodInterface {
 	

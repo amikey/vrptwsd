@@ -15,6 +15,10 @@ import java.util.SortedSet;
 
 import org.junit.Test;
 
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.DemandScenario;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.DemandScenarioUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
+
 public class DemandScenario_TEST {
 
 	@Test

@@ -18,17 +18,17 @@ import org.apache.commons.lang3.StringUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.PoissonTour;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.solver.AbstractPushForwardInsertionSolver;
-import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
+import de.rwth.lofip.library.solver.initialSolver.AbstractPushForwardInsertionSolver;
+import de.rwth.lofip.library.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.VrpUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * CLI application for the VRP Solver.

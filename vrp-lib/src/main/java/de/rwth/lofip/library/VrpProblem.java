@@ -15,83 +15,15 @@ import javax.xml.bind.annotation.XmlType;
 
 import de.rwth.lofip.library.util.CustomerInTour;
 
-/**
- * An instance of this class collects all the information which is relevant for
- * describing an instance of a Vehicle Routing Problem (VRP).
- * 
- * <p>Java class for vrpProblem complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="vrpProblem">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="customers" type="{http://library.lofip.rwth.de}customer" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="depots" type="{http://library.lofip.rwth.de}depot" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="maxTime" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="vehicles" type="{http://library.lofip.rwth.de}vehicle" maxOccurs="unbounded" minOccurs="0"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * 
- */
-
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "vrpProblem", propOrder = {
-    "customers",
-    "depots",
-    "description",
-    "maxTime",
-    "vehicles"
-})
 public class VrpProblem implements Cloneable {
 
-
-   
-	/**
-	 * protected int vehicleCount;
-	 */
+ 	protected int vehicleCount;	
 	private String description;
-
-	/**
-	 * The customers of this problem. It is a set because they are generally not
-	 * in a specific order.
-	 */
-	@XmlElement(name="customer")
-	@XmlElementWrapper(name="customers")
-	private Set<Customer> customers;
-
-	/**
-	 * To be able to model multi depot VRPs, the depots are a set of
-	 * {@link Depot}s
-	 */
-	@XmlElement(name="depot")
-	@XmlElementWrapper(name="depots")
-	private Set<Depot> depots;
-
-	/**
-	 * All the vehicles in this problem. This may later be re-modelled to have
-	 * the vehicles in the depots, not in the general problem.
-	 */
-	@XmlElement(name="vehicle")
-	@XmlElementWrapper(name="vehicles")
+	private Set<Customer> customers; //implemented as a set because customers are not in a specific order
+	private Set<Depot> depots; //implemented as a set to be able to model multi depot VRPs
 	private Set<Vehicle> vehicles;
+	private long maxTime = 0l; //closing time window of depot
 
-	/**
-	 * This time is the latest time until which the whole problem needs to be
-	 * calculated. No time window must be after this time.
-	 */
-	
-	private long maxTime = 0l;
-
-	// Konstruktor
 	public VrpProblem() {
 		customers = new HashSet<Customer>();
 	}
@@ -131,24 +63,38 @@ public class VrpProblem implements Cloneable {
 
 	}
 
+	public int getCustomerCount() {
+		return customers.size();
+	}
+	
+	public void setCustomers(List<CustomerInTour> customers) {
+		this.customers = new HashSet<Customer>();
+		for (CustomerInTour cit : customers) {
+			this.customers.add(cit.getCustomer());
+		}
+	}
+	
+	public long getTotalDemandOfAllCustomersOnTour() {
+		long totalDemand = 0L;
+		if (getCustomers() != null) {
+			for (Customer c : getCustomers()) {
+				totalDemand += c.getDemand();
+			}
+		}
+		return totalDemand;
+	}
+	
 	/**
 	 * Convenience method to get a random depot from the set of all depots.
 	 * Especially useful when dealing with single depot VRPs.
-	 * 
-	 * @return
 	 */
 	public Depot getDepot() {
 		if (depots == null || depots.isEmpty()) {
-			return null;
+			throw new RuntimeException("Fehler in Methode getDepot: Es gibt keine Depots");
 		}
 		return new ArrayList<Depot>(depots).get(0);
 	}
 
-	/**
-	 * Convenience method for adding a new depot to the list of depots.
-	 * 
-	 * @param depot
-	 */
 	public void addDepot(Depot depot) {
 		if (depots == null) {
 			depots = new HashSet<Depot>();
@@ -157,6 +103,9 @@ public class VrpProblem implements Cloneable {
 	}
 
 	public Set<Depot> getDepots() {
+		if (depots == null || depots.isEmpty()) {
+			throw new RuntimeException("Fehler in Methode getDepots: Es gibt keine Depots");
+		}
 		return depots;
 	}
 
@@ -201,33 +150,16 @@ public class VrpProblem implements Cloneable {
 		for (Vehicle v : vehicles)
 			v.setCapacity(capacity);
 	}
+	
+	public int getTargetVehicleNumber() {
+		return getVehicleCount();
+	}
+    
 
 	/**
 	 * Getter and Setter ENDE
 	 */
 
-	/**
-	 * Get the total demand of all customers. This is only possible in the
-	 * non-stochastic case.
-	 * 
-	 * @return
-	 */
-	public long getTotalDemand() {
-		long totalDemand = 0L;
-		if (getCustomers() != null) {
-			for (Customer c : getCustomers()) {
-				totalDemand += c.getDemand();
-			}
-		}
-		return totalDemand;
-	}
-
-	public void setCustomers(List<CustomerInTour> customers) {
-		this.customers = new HashSet<Customer>();
-		for (CustomerInTour cit : customers) {
-			this.customers.add(cit.getCustomer());
-		}
-	}
 
 	/**
 	 * Because a VRP is not immutable, we need to pass an in-depth-copy. This is
@@ -250,11 +182,6 @@ public class VrpProblem implements Cloneable {
 		return vrp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -270,11 +197,6 @@ public class VrpProblem implements Cloneable {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -337,14 +259,5 @@ public class VrpProblem implements Cloneable {
 				number++;
 		return (number / customers.size());
 	}
-
-	public int getCustomerCount() {
-		return customers.size();
-	}
-
-	public int getTargetVehicleNumber() {
-		return getVehicleCount();
-	}
-    
     
 }

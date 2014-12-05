@@ -36,7 +36,7 @@ public class SolutionGot implements Cloneable {
     public double getTotalDistance() {
         double distance = 0;
         for (Tour t : this.getTours()) {
-            distance += t.getDistance();
+            distance += t.getTotalDistance();
         }
         return distance;
     }
@@ -47,6 +47,7 @@ public class SolutionGot implements Cloneable {
      */
     public int getVehicleCount() {
         // only count the number of distinct vehicle IDs
+    	// das ist eigentlich auch überflüssig, da Vehicle nicht mehrfach starten können
         Set<Integer> vehicles = new HashSet<Integer>();
         for (Tour t : getTours()) 
             vehicles.add(t.getVehicle().getVehicleId());        
@@ -110,26 +111,6 @@ public class SolutionGot implements Cloneable {
     		throw new RuntimeException("Es konnte kein Got gefunden werden in getGotWhereCreatingNewTourIsPossibleAndSimilarity...");
     }
 
-	/**
-     * Prints out the solution to stdOut in the same format as the one used at
-     * <http://www.idsia.ch/~luca/macs-vrptw/solutions/welcome.htm>
-     */
-    public void printSolution() {
-        System.out.println(getSolutionAsString());
-    }
-
-    public String getSolutionAsString() {
-        String s = String.format("%.3f %.3f %.3f %d\n", getTotalDistance(),
-                getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost(), getVehicleCount());
-        for (Tour t : getTours()) {
-            s += ("0 ");
-            for (Customer c : t.getCustomers()) {
-                s += (c.getCustomerNo() + " ");
-            }
-            s += "\n";
-        }
-        return s;
-    }
 
     public void removeEmptyTours() {
     	Iterator<GroupOfTours> iter=gots.iterator();
@@ -178,16 +159,7 @@ public class SolutionGot implements Cloneable {
         this.iterationInWhichSolutionWasCreated = iteration;
     }
 
-    public SolutionGot clone() {
-        SolutionGot s = new SolutionGot(vrpProblem);
-        s.setIteration(iterationInWhichSolutionWasCreated);
-        s.setPenaltyCost(penaltyCost);
-        for (GroupOfTours got : gots) {
-            s.addGot(got.clone());
-        }
-        return s;
-    }
-    
+
 	public void addGot(GroupOfTours got) {
 		gots.add(got);
 	}
@@ -243,8 +215,43 @@ public class SolutionGot implements Cloneable {
 			else 
 				throw new RuntimeException("Tour konnte nicht gefunden werden in getGotForTour");
 	}
-			
+				
+	/**
+     * Clone Utilities
+     */
+		
+    public SolutionGot clone() {
+        SolutionGot s = new SolutionGot(vrpProblem);
+        s.setIteration(iterationInWhichSolutionWasCreated);
+        s.setPenaltyCost(penaltyCost);
+        for (GroupOfTours got : gots) {
+            s.addGot(got.clone());
+        }
+        return s;
+    }
+    	
+	/**
+     * Print Utilities
+     * <http://www.idsia.ch/~luca/macs-vrptw/solutions/welcome.htm>
+     */
+	
+	    public void printSolution() {
+        System.out.println(getSolutionAsString());
+    }
 
+    public String getSolutionAsString() {
+        String s = String.format("%.3f %.3f %.3f %d\n", getTotalDistance(),
+                getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost(), getVehicleCount());
+        for (Tour t : getTours()) {
+            s += ("0 ");
+            for (Customer c : t.getCustomers()) {
+                s += (c.getCustomerNo() + " ");
+            }
+            s += "\n";
+        }
+        return s;
+    }
+	
     public String getSolutionAsTupel() {    	    	  	
         String s = "";
         for (GroupOfTours got : gots)
@@ -258,6 +265,7 @@ public class SolutionGot implements Cloneable {
         return s;
     }
 
+    
 
 
 }

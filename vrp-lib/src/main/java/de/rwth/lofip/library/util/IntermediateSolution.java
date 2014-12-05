@@ -1,6 +1,6 @@
 package de.rwth.lofip.library.util;
 
-import de.rwth.lofip.library.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * This class is meant to serve as a "meta class" for solutions, providing more

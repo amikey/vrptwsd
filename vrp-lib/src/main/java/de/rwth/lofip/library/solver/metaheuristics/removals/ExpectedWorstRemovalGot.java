@@ -188,9 +188,9 @@ public class ExpectedWorstRemovalGot implements RemovalInterfaceGot {
 	}
     
 	private double calculateDetChangingCost(Tour tour, int i) {
-		double costWithCustomer = tour.getDistance();
+		double costWithCustomer = tour.getTotalDistance();
 		Customer c = tour.removeCustomerAtPosition(i);
-		double costWithoutCustomer = tour.getDistance();
+		double costWithoutCustomer = tour.getTotalDistance();
 		// restore the previous state of the tour
 		tour.insertCustomerAtPosition(c, i);
 		return costWithCustomer - costWithoutCustomer;

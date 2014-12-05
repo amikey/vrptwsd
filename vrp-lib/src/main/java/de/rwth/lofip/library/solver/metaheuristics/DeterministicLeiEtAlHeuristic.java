@@ -1,6 +1,5 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicDemandAndFailureSortingInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicFeasibilityOrientedInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicGreedyInsertion;
@@ -9,6 +8,7 @@ import de.rwth.lofip.library.solver.metaheuristics.removals.ExpectedWorstRemoval
 import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
 import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemoval;
 import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * An implementation of the meta heuristic proposed by Lei et al. (2011) without

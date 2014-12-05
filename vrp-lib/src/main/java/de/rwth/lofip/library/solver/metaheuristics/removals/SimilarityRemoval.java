@@ -8,11 +8,11 @@ import java.util.Random;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * The Similarity Removal, as described by Lei et al. in section 3.3.1

@@ -1,7 +1,7 @@
 package de.rwth.lofip.library.interfaces;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * This interface needs to be implemented by all classes which represent a

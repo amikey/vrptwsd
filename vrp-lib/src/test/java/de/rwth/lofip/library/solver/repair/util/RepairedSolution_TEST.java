@@ -23,17 +23,19 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.DeterministicTour;
 import de.rwth.lofip.library.SchemaCreatingSchemaOutput;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.scenario.Event;
-import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
+import de.rwth.lofip.library.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
-import de.rwth.lofip.library.solver.repair.RepairSolution;
 import de.rwth.lofip.library.util.VrpProblemUtils;
 import de.rwth.lofip.library.util.VrpUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.RepairSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolutionUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 
 /**
  * Test class which contains tests for the class RepairedSolution

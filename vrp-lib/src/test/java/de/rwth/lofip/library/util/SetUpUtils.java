@@ -18,13 +18,13 @@ import org.apache.commons.io.IOUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.DeterministicTour;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
+import de.rwth.lofip.library.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 public class SetUpUtils {
 	

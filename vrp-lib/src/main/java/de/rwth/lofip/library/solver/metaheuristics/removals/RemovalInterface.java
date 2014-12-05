@@ -2,9 +2,9 @@ package de.rwth.lofip.library.solver.metaheuristics.removals;
 
 import java.util.List;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.solver.metaheuristics.HeuristicInterface;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * An instance of an implementing class of this interface is used in

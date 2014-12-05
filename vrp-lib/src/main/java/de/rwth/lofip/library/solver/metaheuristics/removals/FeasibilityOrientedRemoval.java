@@ -6,10 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * <p>

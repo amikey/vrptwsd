@@ -1,5 +1,10 @@
 package de.rwth.lofip.library;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.rwth.lofip.library.solver.util.CustomerWithCost;
+
 public class Customer extends AbstractPointInSpace implements Cloneable {
 
 	protected long customerNo;
@@ -7,6 +12,7 @@ public class Customer extends AbstractPointInSpace implements Cloneable {
 	protected double serviceTime;
 	protected double timeWindowClose;
 	protected double timeWindowOpen;
+	private List<CustomerWithCost> similarCustomers = new ArrayList<CustomerWithCost>();
 	
 	public Customer() {
 		super();
@@ -68,6 +74,14 @@ public class Customer extends AbstractPointInSpace implements Cloneable {
 
 	public void setServiceTime(double serviceTime) {
 		this.serviceTime = serviceTime;
+	}
+	
+	public List<CustomerWithCost> getSimilarCustomers() {
+		return similarCustomers;
+	}
+
+	public void setSimilarCustomers(List<CustomerWithCost> similarCustomers) {
+		this.similarCustomers = similarCustomers;
 	}
 
 	/**

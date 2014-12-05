@@ -1,6 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import de.rwth.lofip.library.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 //Lei et al Heuristic with objective of minimizing vehicles  
 public class DetLeiEtAlHeuristicMinimization extends DeterministicLeiEtAlHeuristic implements

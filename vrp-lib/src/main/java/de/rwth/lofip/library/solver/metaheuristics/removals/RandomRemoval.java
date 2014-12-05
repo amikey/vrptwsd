@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**
  * Just remove a random selection of customers from the solution.

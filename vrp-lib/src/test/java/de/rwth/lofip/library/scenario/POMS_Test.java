@@ -8,10 +8,13 @@ import org.junit.Test;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
-import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.DemandScenario;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.PenetrationOfTheMarketScenario;
 
 public class POMS_Test {
 
@@ -104,7 +107,7 @@ public class POMS_Test {
 
 		double percentageOfCustomersWithControlStation = 0.4;
 
-		DemandScenario ds = PenetrationOfTheMarkedScenario
+		DemandScenario ds = PenetrationOfTheMarketScenario
 				.createScenarioForPenetrationOfTheMarked(vrpProblem, solution,
 						percentageOfCustomersWithControlStation, 0.1, 0.2);
 

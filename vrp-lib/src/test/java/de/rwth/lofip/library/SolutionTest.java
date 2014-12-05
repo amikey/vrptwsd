@@ -17,8 +17,9 @@ import javax.xml.validation.Schema;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-import de.rwth.lofip.library.scenario.Event;
-import de.rwth.lofip.library.solver.repair.RepairSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.RepairSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 
 public class SolutionTest {
 	Solution solution;

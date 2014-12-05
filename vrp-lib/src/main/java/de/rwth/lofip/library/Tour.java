@@ -1,71 +1,12 @@
 package de.rwth.lofip.library;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.util.CustomerInTour;
 
-/**
- * A {@code Tour} is the route, one {@link Vehicle} travels in a
- * {@link Solution}. It is {@code Cloneable} so it can easily be duplicated,
- * e.g. if calculations with this tour need to be made in a multithreaded
- * environment.
- * <p>Java class for tour complex type.
- * 
- * <p>The following schema fragment specifies the expected content contained within this class.
- * 
- * <pre>
- * &lt;complexType name="tour">
- *   &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *       &lt;sequence>
- *         &lt;element name="customers" type="{http://library.lofip.rwth.de}customerInTour" maxOccurs="unbounded"/>
- *         &lt;element name="costFactor" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="depot" type="{http://www.w3.org/2001/XMLSchema}IDREF"/>
- *         &lt;element name="vehicle" type="{http://www.w3.org/2001/XMLSchema}IDREF"/>
- *       &lt;/sequence>
- *     &lt;/restriction>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * @author Dominik Sandjaja <dominik@dadadom.de>
- * 
- */
-@XmlRootElement(name = "Tour")
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "tour", propOrder = {
-    "customers",
-    "costFactor",
-    "id",
-    "depot",
-    "vehicle"
-    ,"idTour"
-})
 public class Tour implements Cloneable {
 
     /****************************************************************************
@@ -73,49 +14,11 @@ public class Tour implements Cloneable {
      ***************************************************************************/
 	
 	protected static int seed = 1;
-	
-	//TODO: das k�nnte man eventuell zentral abspeichern
-	//this factor is used to calculate the cost in Euro from the time needed to travel the tours in a solution
-	//vehicles are assumed to cost 20 euro per hour => time in minutes *20/60
 	protected double costFactor = 1;
-	
-
 	protected long id;
-	
-	@XmlAttribute(name = "idTour")// required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-//    @XmlSchemaType(name = "ID")
-	@XmlID
     protected String idTour;
-
-    /**
-     * Saved as a property to avoid unnecessary recalculations.
-     */
-	@XmlTransient
-	protected Double expectedRecourseCost = null;
-	@XmlTransient
-    protected LoadingCache<CachingKey, BigDecimal> cachedProbabilities = CacheBuilder.newBuilder()
-    		.maximumSize(4000)
-            .build(
-            	new CacheLoader<CachingKey, BigDecimal>() {
-                @Override
-                public BigDecimal load(CachingKey key) throws Exception {
-                    return calculateCumulatedDemandProbabilityFromBeginningOfTourToPosition(key.getPosition(), key.getDemand());
-                }
-
-            });
-	@XmlElement(required = true, type = Object.class)
-    @XmlIDREF
-    @XmlSchemaType(name = "IDREF")
     protected Depot depot;
-    
-//    @XmlElement(required = true, type = Object.class)
-//    @XmlIDREF
-//    @XmlSchemaType(name = "IDREF")
     protected Vehicle vehicle;
-
-    @XmlElement(name="customerInTour")
-	@XmlElementWrapper(name="customers")
     protected List<CustomerInTour> customers = new LinkedList<CustomerInTour>();
 
     /****************************************************************************
@@ -198,7 +101,7 @@ public class Tour implements Cloneable {
      */
     public CustomerInTour getCustomerAtPosition(int position) {
         if (position < 0 || position >= customers.size()) {
-            return null;
+            return null;           
         }
         return customers.get(position);
     }
@@ -239,7 +142,7 @@ public class Tour implements Cloneable {
         return customers;
     }
     
-	public int getTheIndexOfTheLastRemovablePosition() {
+	public int getIndexOfTheLastRemovablePosition() {
 		return customers.size()-1;
 	}
 
@@ -265,13 +168,7 @@ public class Tour implements Cloneable {
 //        }
 //    }
     
-    /**
-     * Get the total distance of the tour, including the trips from and to the
-     * depot.
-     * 
-     * @return
-     */
-    public double getDistance() {
+    public double getTotalDistance() {  
         double tourDistance = 0;
         for (Edge v : getEdges()) {
             tourDistance += v.getLength();
@@ -292,19 +189,8 @@ public class Tour implements Cloneable {
 		this.costFactor = costFactor;
 	}
 
-	public boolean isTourExecutedTheSameDay() {
-		if (costFactor == 1)
-			return true;
-		else 
-			return false;			
-	}
-	
-    public double getSumOfDistanceMultipliedWithCostFactorAndExpectedRecourseCost() {
-        return getDistance()*getCostFactor() + getExpectedRecourseCost();
-    }
-    
-    public double getCostInEuro() {
-    	return getSumOfDistanceMultipliedWithCostFactorAndExpectedRecourseCost();
+    public double getSumOfDistanceMultipliedWithCostFactor() {
+        return getTotalDistance()*getCostFactor();
     }
     
     public List<Tour> getTours() 
@@ -320,18 +206,7 @@ public class Tour implements Cloneable {
     	else
     		return false;
     }
-     
-    public String getTourAsTupel()
-    {
-    	String s = ("(0 ");
-        for (Customer c : this.getCustomers()) {
-            s += (c.getCustomerNo() + " ");
-        }
-        s += ")";
-//        s += "); Demand: " + getDemandOnTour();
-        return s;
-    }
-    
+         
     public double getDemandOnTour(){
     	double demand = 0;
     	for (Customer c : getCustomers())
@@ -397,10 +272,8 @@ public class Tour implements Cloneable {
         insertCustomerAtPosition(customer, customers.size(), iteration,
                 insertionClassName, false);
     }
-    
-    /**
-     * A helper method if you don't have an insertion class name.
-     */
+       
+    // A helper method if you don't have an insertion class name.     
     public void insertCustomerAtPosition(Customer customer, int position) {
         insertCustomerAtPosition(customer, position, 0, "", false);
     }
@@ -414,15 +287,9 @@ public class Tour implements Cloneable {
      * Inserts the customer at the specified position within this tour. This
      * method does not check if this insertion violates the time window of any
      * customers, it only does the insertion!
-     * 
-     * @param customer
-     * @param position
      */
     public void insertCustomerAtPosition(Customer customer, int position,
             int iteration, String insertionClassName, boolean isFixedCustomer) {
-
-        // reset the cached cost
-        expectedRecourseCost = null;
 
         CustomerInTour newCustomerInTour = new CustomerInTour(this);
         newCustomerInTour.setPosition(position);
@@ -459,9 +326,7 @@ public class Tour implements Cloneable {
             customers.get(i).setPosition(i);
         }
         vehicle.addCapacityUsage(customer.getDemand());
-        recalculateTimes();
-        
-        invalidateKeysAndExpectedRecourseCostHook(position);
+        recalculateTimes();       
     }    
     
     /**
@@ -495,9 +360,7 @@ public class Tour implements Cloneable {
             customers.get(i).setPosition(i);
         }
         vehicle.addCapacityUsage(removedCustomer.getDemand() * -1);
-        recalculateTimes();
-        
-        invalidateKeysAndExpectedRecourseCostHook(position);       
+        recalculateTimes();  
         
         return removedCustomer;
     }            
@@ -542,445 +405,21 @@ public class Tour implements Cloneable {
      * End Utilities for adding and deleting customers
      ***************************************************************************/
 
-    
-    
-    /****************************************************************************
-     * Calculation of Probabilities and Recourse Cost
-     ***************************************************************************/        
-    
-    protected void invalidateKeysAndExpectedRecourseCostHook(int position)
-    {
-        Set<String> keys = new HashSet<String>();
-        for (int i = position; i < customers.size() + 1; i++) {
-            for (int j = 0; j <= getVehicle().getCapacity(); j++) {
-                keys.add(i + ":" + j);
-            }
-        }
-        cachedProbabilities.invalidateAll(keys);
-        // reset the cached cost
-        expectedRecourseCost = null;
-    }
-    
-    
-    /**
-     * This method returns the probability that
-     * the cumuluated demand (up to node {@code position} (included)) is *exactly* the given {@code demand}.
-     * i.e. P(X = x) at {@code position} 
-     * 
-     * This probability is either already cached in {@value cachedProbabilities}
-     * or calculated using the {@method getProbability} 
-     * 
-     * @param position
-     * @param demand
-     * @return
-     * @throws Exception 
-     */
-    public BigDecimal getCumulatedDemandProbabilityAtPosition(int position, int demand) {
-        BigDecimal d = cachedProbabilities.getUnchecked(new CachingKey(
-                position, demand));
-        if (d.compareTo(BigDecimal.ZERO) == -1 || d.compareTo(BigDecimal.ONE) == 1) 
-        {
-            System.err.println("A probability must be between 0 and 1");
-        }
-        return d;
-    }
-    
-    
-    /**
-     * This method calculates the "cumulated demand" (i.e. demand cumulated for all nodes up to node {@code position} 
-     * probability for the demand being *exactly* {@code demand} up to the vertex {@code position} on the tour.
-     * i.e. P(X = x); (see proposition 1 Lei et al.)
-     * 
-     * This method is used in the cache cachedProbabilities to compute the entries of the cache.
-     * 
-     * @param position
-     * @param demand
-     * @return
-     * @throws Exception 
-     */
-    protected BigDecimal calculateCumulatedDemandProbabilityFromBeginningOfTourToPosition(int position, int demand) {
-
-        CustomerInTour customerAtPosition = getCustomerAtPosition(position);
-
-        if (position == 0) {
-            // this is the first customer; the cumulated demand is
-            // this customers demand 
-        	// (boundary condition in proposition 1)
-            BigDecimal probHasDemand = customerAtPosition
-                    .getDemandProbability(demand);
-            return probHasDemand;
-        }
-
-        // this calculation is explained in the paper by Lei et al.
-        // in proposition 1
-        BigDecimal demandProbability = BigDecimal.ZERO;
-        for (int l = 0; l <= demand; l++) {
-            demandProbability = demandProbability.add(getCumulatedDemandProbabilityAtPosition(position - 1,
-                    demand - l).multiply(
-                    customerAtPosition.getDemandProbability(l)));
-        }
-        return demandProbability;
-    }
-    
-    
-    /**
-     * Get the probability, that the customer will be failing in this tour 
-     * Calculation see proposition 2 in Lei et al paper.
-     */
-    public BigDecimal getProbabilityOfFailureAtCustomer(CustomerInTour currentCustomer) {
-        int position = currentCustomer.getPosition();
-        double capacity = getVehicle().getCapacity();
-        BigDecimal probOfFailureBeforeCurrentCustomer = BigDecimal.ZERO;
-        BigDecimal probOfFailureAfterCurrentCustomer = BigDecimal.ZERO;
-       
-        for (int t = 0; t < capacity; t++) {
-            BigDecimal before = getCumulatedDemandProbabilityAtPosition(position - 1, t);
-            probOfFailureBeforeCurrentCustomer = probOfFailureBeforeCurrentCustomer.add(before);
-        }
-
-        for (int t = 0; t < capacity; t++) {
-            BigDecimal after = getCumulatedDemandProbabilityAtPosition(position, t);
-            probOfFailureAfterCurrentCustomer = probOfFailureAfterCurrentCustomer.add(after);
-        }
-
-        return probOfFailureBeforeCurrentCustomer.subtract(probOfFailureAfterCurrentCustomer);
-    }
-    
-    
-    /**
-     * Calculate the expected cost of recourse for the given {@code Tour}. The
-     * algorithm for doing so is described in proposition 6 in the paper by Lei
-     * et al. (2011).
-     */
-    public double getExpectedRecourseCost() {
-    	 System.err.println( "getExpectedRecourseCost in stochastischer Tour wird verwendet." );
-    	
-        if (expectedRecourseCost == null) {
-            double cost = 0;
-            final double beta = 2;
-
-            for (int i = 1; i < getCustomers().size(); i++) {
-
-                CustomerInTour failingCustomerInTour = getCustomerAtPosition(i);
-
-                Set<Customer> typeOneFailingCustomers = new HashSet<Customer>();
-                Set<Customer> typeTwoFailingCustomers = new HashSet<Customer>();
-
-                // first, calculate the vehicle load AFTER loading in the amount at i
-                double vehicleLoadAtI = 0;
-                for (int x = 0; x <= i; x++) {
-                    vehicleLoadAtI += getCustomerAtPosition(x).getCustomer()
-                            .getDemand();
-                }
-
-                // ok, there is a type-1 failure -> recalculate the extra costs
-                // according to proposition 4 but only, if there are customers
-                // after this one
-                if (vehicleLoadAtI > getVehicle().getCapacity()
-                        && failingCustomerInTour.getNextCustomerInTour() != null) {
-                    // type 1 error
-                    CustomerInTour previousCustomerInTour = getCustomerAtPosition(i);
-                    Customer previousCustomer = previousCustomerInTour
-                            .getCustomer();
-                    double previousCustomerArrivalTime = previousCustomerInTour
-                            .getArrivalTime();
-                    // first calculate the arrival time for the vertex coming
-                    // after the failing customer
-                    int j = i + 1;
-                    CustomerInTour customerAtPosJ = getCustomerAtPosition(j);
-                    double customerArrivalTime = 0;
-
-                    if (previousCustomerArrivalTime
-                            + new Edge(previousCustomer, depot).getLength() * 2 <= previousCustomer
-                                .getTimeWindowClose()) {
-                        customerArrivalTime = Math.max(
-                                previousCustomer.getTimeWindowOpen(),
-                                previousCustomerArrivalTime)
-                                + new Edge(previousCustomer, depot).getLength()
-                                * 2
-                                + previousCustomer.getServiceTime()
-                                + new Edge(previousCustomer, customerAtPosJ)
-                                        .getLength();
-                    } else {
-                        customerArrivalTime = previousCustomerArrivalTime
-                                + new Edge(previousCustomer, depot).getLength()
-                                * 2
-                                + new Edge(previousCustomer, customerAtPosJ)
-                                        .getLength();
-                    }
-                    // now check, if the time window is violated. If it is, add
-                    // the customer to the respective set
-                    if (customerArrivalTime > customerAtPosJ.getCustomer()
-                            .getTimeWindowClose()) {
-                        typeTwoFailingCustomers.add(customerAtPosJ
-                                .getCustomer());
-                    }
-
-                    previousCustomerArrivalTime = customerArrivalTime;
-                    previousCustomerInTour = customerAtPosJ;
-                    previousCustomer = customerAtPosJ.getCustomer();
-
-                    // now do the same for all other customers on the tour
-                    for (j = i + 2; j < getCustomers().size(); j++) {
-                        customerAtPosJ = getCustomerAtPosition(j);
-                        if (previousCustomerArrivalTime < previousCustomer
-                                .getTimeWindowClose()) {
-                            customerArrivalTime = Math.max(
-                                    previousCustomer.getTimeWindowOpen(),
-                                    previousCustomerArrivalTime)
-                                    + previousCustomer.getServiceTime()
-                                    + new Edge(previousCustomer, customerAtPosJ)
-                                            .getLength();
-                        } else {
-                            customerArrivalTime = previousCustomerArrivalTime
-                                    + new Edge(previousCustomer, customerAtPosJ)
-                                            .getLength();
-                        }
-                        if (customerArrivalTime > customerAtPosJ.getCustomer()
-                                .getTimeWindowClose()) {
-                            typeTwoFailingCustomers.add(customerAtPosJ
-                                    .getCustomer());
-                        }
-                        previousCustomerArrivalTime = customerArrivalTime;
-                        previousCustomerInTour = customerAtPosJ;
-                        previousCustomer = customerAtPosJ.getCustomer();
-                    }
-                }
-
-                // this is a type 2 failure
-                if (vehicleLoadAtI == getVehicle().getCapacity()
-                        && failingCustomerInTour.getNextCustomerInTour() != null) {
-                    // type 2 error
-                    CustomerInTour previousCustomerInTour = getCustomerAtPosition(i);
-                    Customer previousCustomer = previousCustomerInTour
-                            .getCustomer();
-                    double previousCustomerArrivalTime = previousCustomerInTour
-                            .getArrivalTime();
-                    // first calculate the arrival time for the vertex coming
-                    // after
-                    // the failing customer
-                    int j = i + 1;
-                    CustomerInTour customerAtPosJ = getCustomerAtPosition(j);
-                    double customerArrivalTime = previousCustomerArrivalTime
-                            + previousCustomer.getServiceTime()
-                            + new Edge(previousCustomer, depot).getLength()
-                            + new Edge(depot, customerAtPosJ).getLength();
-                    // now check, if the time window is violated. If it is, add
-                    // the
-                    // customer to the respective set
-                    if (customerArrivalTime > customerAtPosJ.getCustomer()
-                            .getTimeWindowClose()) {
-                        typeTwoFailingCustomers.add(customerAtPosJ
-                                .getCustomer());
-                    }
-
-                    previousCustomerArrivalTime = customerArrivalTime;
-                    previousCustomerInTour = customerAtPosJ;
-                    previousCustomer = customerAtPosJ.getCustomer();
-
-                    for (j = i + 2; j < getCustomers().size(); j++) {
-                        customerAtPosJ = getCustomerAtPosition(j);
-                        if (previousCustomerArrivalTime < previousCustomer
-                                .getTimeWindowClose()) {
-                            customerArrivalTime = Math.max(
-                                    previousCustomer.getTimeWindowOpen(),
-                                    previousCustomerArrivalTime)
-                                    + previousCustomer.getServiceTime()
-                                    + new Edge(previousCustomer, customerAtPosJ)
-                                            .getLength();
-                        } else {
-                            customerArrivalTime = previousCustomerArrivalTime
-                                    + new Edge(previousCustomer, customerAtPosJ)
-                                            .getLength();
-                        }
-                        if (customerArrivalTime > customerAtPosJ.getCustomer()
-                                .getTimeWindowClose()) {
-                            typeTwoFailingCustomers.add(customerAtPosJ
-                                    .getCustomer());
-                        }
-                        previousCustomerArrivalTime = customerArrivalTime;
-                        previousCustomerInTour = customerAtPosJ;
-                        previousCustomer = customerAtPosJ.getCustomer();
-                    }
-                }
-
-                double type1ErrorValue = getType1ErrorValue(
-                        failingCustomerInTour, typeOneFailingCustomers, beta);
-
-                double type2ErrorValue = getType2ErrorValue(
-                        failingCustomerInTour, typeTwoFailingCustomers, beta);
-
-                cost += type1ErrorValue;
-                cost += type2ErrorValue;
-            }
-            expectedRecourseCost = cost;
-        }
-        return expectedRecourseCost;
-    }
-
-    /**
-     * Will calculate the first part of the equation in proposition 6 (type1
-     * error): l_i^k * (s_i^k + \beta * \sum_{v \in W_1(i,k)}(2*c(v, depot)))
-     * 
-     * @param currentCustomer
-     * @param depot
-     * @param failingCustomers
-     *            the customers who will fail (first type) due to the failure at
-     *            the currentCustomer; W_1(i,k)
-     * @return
-     * @throws Exception 
-     */
-    private double getType1ErrorValue(CustomerInTour currentCustomer,
-            Set<Customer> failingCustomers, double beta) {
-
-        BigDecimal type1Cost = BigDecimal.ZERO;
-
-        double extraTrip = 2 * new Edge(currentCustomer, depot).getLength();
-        double extraTripsForFailingCustomers = 0;
-        for (Customer c : failingCustomers) {
-            extraTripsForFailingCustomers += new Edge(c, depot).getLength() * 2;
-        }
-
-        // probabilityType2Failure is named kappa in the paper.
-        BigDecimal probabilityType2Failure = calculateCumulatedDemandProbabilityFromBeginningOfTourToPosition(currentCustomer.getPosition(),(int) getVehicle().getCapacity());        		
-
-        // probabilityType1Failure is named l in the paper.
-        BigDecimal probabilityType1Failure = getProbabilityOfFailureAtCustomer(currentCustomer).subtract(probabilityType2Failure);
-        type1Cost = probabilityType1Failure.multiply(new BigDecimal(
-                (extraTrip + (beta * extraTripsForFailingCustomers))));
-
-        return type1Cost.doubleValue();
-    }   
-
-    /**
-     * Will calculate the second part of the equation in proposition 6 (type2
-     * error): k_i^k * (squer_i^k + \beta * \sum_{v \in W_2(i,k)}(2*c(v,
-     * depot)))
-     * 
-     * @param currentCustomer
-     * @param depot
-     * @param failingCustomers
-     *            the customer who will fail (second type) due to the failure at
-     *            the currentCustomer; W_2(i,k)
-     * @return
-     * @throws Exception 
-     */
-    private double getType2ErrorValue(CustomerInTour currentCustomer,
-            Set<Customer> failingCustomers, double beta) {
-        double type2Cost = 0;
-        // probabilityType2Failure is named kappa in the paper 
-        BigDecimal probabilityType2Failure = calculateCumulatedDemandProbabilityFromBeginningOfTourToPosition(currentCustomer.getPosition(),(int) getVehicle().getCapacity()); 
-        
-        double extraTrip = new Edge(currentCustomer, depot).getLength()
-                + new Edge(depot, currentCustomer.getNextVertex()).getLength()
-                - new Edge(currentCustomer, currentCustomer.getNextVertex())
-                        .getLength();
-        double extraTripsFailingCustomers = 0;
-        for (Customer c : failingCustomers) {
-            extraTripsFailingCustomers += (new Edge(c, depot).getLength() * 2);
-        }
-
-        type2Cost = probabilityType2Failure.doubleValue()
-                * (extraTrip + (beta * extraTripsFailingCustomers));
-
-        if (type2Cost < 0) {
-            System.err
-                    .println("Type 2 error is less than 0 - that can't be! Kappa: "
-                            + probabilityType2Failure
-                            + ", extra trip: "
-                            + extraTrip
-                            + ", extra trips: " + extraTripsFailingCustomers);
-        }
-
-        return type2Cost;
-    }
-
-    
-    
-    /**
-     * Small procedure to calculate Probability of type 1 failure for customer on tour
-	 * only necessary so it can be called with customerInTour instead of demand and position
-     *//*    
-    private BigDecimal getKappa(CustomerInTour c) {
-    	double capacity = getVehicle().getCapacity();
-    	int capacityInt = new Double(capacity).intValue();
-    	int position = c.getPosition();
-        BigDecimal kappa = BigDecimal.ZERO;
-        
-        kappa.add(calculateCumulatedDemandProbabilityFromBeginningOfTourToPosition(position, capacityInt));
-        if (kappa.doubleValue() < 0) {
-            System.err.println("Kappa is less than 0 - cannot be!");
-        }
-        return kappa;
-    }
-    */
-
-    
+      
     /****************************************************************************
      * END Calculation of Probabilities and Recourse Cost
      ***************************************************************************/ 
-
-
-    /****************************************************************************
-     * Caching Utilities
-     ***************************************************************************/            
-
-    /**
-     * Needed to easily maintain the caching - no need to build and split
-     * Strings or stuff.
-     * 
-     * @author Dominik Sandjaja <dominik@dadadom.de>
-     * 
-     */
-    protected class CachingKey {
-        private int position;
-        private int demand;
-
-        public CachingKey(int position, int demand) {
-            this.position = position;
-            this.demand = demand;
+    
+    
+    public String getTourAsTupel()
+    {
+    	String s = ("(0 ");
+        for (Customer c : this.getCustomers()) {
+            s += (c.getCustomerNo() + " ");
         }
-
-        public int getPosition() {
-            return position;
-        }
-
-        public int getDemand() {
-            return demand;
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + getOuterType().hashCode();
-            result = prime * result + demand;
-            result = prime * result + position;
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            CachingKey other = (CachingKey) obj;
-            if (!getOuterType().equals(other.getOuterType()))
-                return false;
-            if (demand != other.demand)
-                return false;
-            if (position != other.position)
-                return false;
-            return true;
-        }
-
-        private Tour getOuterType() {
-            return Tour.this;
-        }
-
+        s += ")";
+//        s += "); Demand: " + getDemandOnTour();
+        return s;
     }
 
 }

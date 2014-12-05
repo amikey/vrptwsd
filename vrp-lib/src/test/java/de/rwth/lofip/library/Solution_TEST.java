@@ -10,9 +10,10 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import de.rwth.lofip.library.scenario.Event;
-import de.rwth.lofip.library.solver.repair.RepairSolution;
 import de.rwth.lofip.library.util.SetUpUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.RepairSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 
 public class Solution_TEST {	
 	Solution solution;
