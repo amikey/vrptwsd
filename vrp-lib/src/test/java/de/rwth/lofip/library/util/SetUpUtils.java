@@ -22,7 +22,6 @@ import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.VrpUtils;
 import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;

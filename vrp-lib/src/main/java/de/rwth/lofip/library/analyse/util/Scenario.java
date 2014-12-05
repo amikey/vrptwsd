@@ -37,7 +37,7 @@ public class Scenario {
 	public double getTotalCostConsideredSolutions() {
 		double totalCostAllSolutions = 0;
 		for (SolutionWithStatistics s : consideredSWS)
-			totalCostAllSolutions += s.getSolution().getTotalDistance();
+			totalCostAllSolutions += s.getSolution().getTotalDistanceOfAllTours();
 		return totalCostAllSolutions;
 	}
 

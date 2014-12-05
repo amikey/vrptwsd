@@ -47,49 +47,18 @@ import de.rwth.lofip.library.util.CustomerInTour;
  * 
  * 
  * @author Dominik Sandjaja <dominik@dadadom.de>
- * @author Olga Bock
- * 
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "solution", propOrder = {
-    "iteration",
-    "iterationRepair",
-    "penaltyCost",
-    "timeNeeded", 
-    "vrpProblem",
-    "tours"
-    
-})
+
 public class Solution implements Cloneable {
 
-    // the problem is used here, just for reference
 	private VrpProblem vrpProblem;
-    private double penaltyCost = 0;
-    
-    // time needed for calculation of solution
-
-	private long timeNeeded;
-
-    /**
-     * Just an informationary field which tells us, in which iteration this
-     * solution was created
-     */
-    private int iteration;
-
+    private double penaltyCost = 0; 
+	private long timeNeededForCalculation;
+    private int iterationInWhichSolutionWasCreated;
     private int iterationRepair;
-
-    // List of all tours
-    @XmlElement(name="tour")
-	@XmlElementWrapper(name="tours")
 	private List<Tour> tours = new ArrayList<Tour>();
 
-    // Constructor
-    
-//    public Solution(){
-//    	this.tours = new ArrayList<Tour>();
-//    }
-    
+    // Constructor 
     public Solution(VrpProblem vrpProblem) {
         this.vrpProblem = vrpProblem;
         this.tours = new ArrayList<Tour>();
@@ -124,13 +93,7 @@ public class Solution implements Cloneable {
     	this.tours = tours;
     }
     
-    /**
-     * Return the travel distance of this solution, that is the distance of all
-     * tours in this solution.
-     * 
-     * @return
-     */
-    public double getTotalDistance() {
+    public double getTotalDistanceOfAllTours() {
         double distance = 0;
         for (Tour t : tours) {
             distance += t.getDistance();
@@ -139,10 +102,9 @@ public class Solution implements Cloneable {
     }
     
     public String getTotalDistanceAsString() {
-    	String s = String.format("%.3f", getTotalDistance());
+    	String s = String.format("%.3f", getTotalDistanceOfAllTours());
     	return s;
-    }    
-      
+    }        
 
     /**
      * The total number of vehicles used for the solution may be less than the
@@ -158,10 +120,7 @@ public class Solution implements Cloneable {
         return vehicles.size();
     }
 
-    /**
-     * @return the edges (aka. lines) which belong to this solution.
-     */
-    public Set<Edge> getEdges() {
+    public Set<Edge> getEdgesThatBelongToSolution() {
         Set<Edge> edges = new HashSet<Edge>();
         for (Tour t : tours) {
             edges.addAll(t.getEdges());
@@ -176,6 +135,174 @@ public class Solution implements Cloneable {
     public void addTour(Tour tour) {
         tours.add(tour);
     }
+ 
+    public void removeEmptyTours() {
+        Set<Tour> emptyTours = new HashSet<Tour>();
+        for (Tour t : tours) {
+            if (t.getCustomers().size() == 0) {
+                emptyTours.add(t);
+            }
+        }
+        tours.removeAll(emptyTours);
+    }
+
+    public List<CustomerInTour> getCustomersInTours() {
+        List<CustomerInTour> returnList = new ArrayList<CustomerInTour>();
+        for (Tour t : tours) {
+            returnList.addAll(t.getCustomersInTour());
+        }
+        return returnList;
+    }
+       
+    public CustomerInTour getCustomerWithId(long customerNo){
+    	List<CustomerInTour> customerList = getCustomersInTours();
+    	
+    	for (CustomerInTour cit : customerList){
+    		if (cit.getCustomer().getCustomerNo() == customerNo)
+    			return cit;
+    		}	
+    	//case: customer not in tour; sollte hier eine Exception geworfen werden?
+    	return null;
+    }
+
+    public double getExpectedRecourseCost() {
+        double recourseCost = 0;
+        for (Tour t : tours) {
+            recourseCost += t.getExpectedRecourseCost();
+        }
+        return recourseCost;
+    }
+
+    public double getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost() {
+        return getTotalDistanceOfAllTours() + getExpectedRecourseCost() + penaltyCost;
+    }
+
+    public int getIteration() {
+        return iterationInWhichSolutionWasCreated;
+    }
+
+    public void setIteration(int iteration) {
+        this.iterationInWhichSolutionWasCreated = iteration;
+    }
+    
+    public boolean isSolutionFeasibleWrtDemand()
+    {
+    	boolean feasible = true;
+    	for (Tour t : this.getTours())
+    		if (!TourUtils.isTourFeasibleWrtDemand(t))
+    		{	
+    			feasible = false;
+    	        System.out.println("M�p, Tour " + t.getTourAsTupel() + " nicht feasible"); 
+    		}
+    	return feasible;
+    }
+    
+    public double totalUtilizedCapacityInProblem(){
+    	double uc = 0;
+    	VrpProblem vrp =this.vrpProblem;
+		uc = vrp.getTotalDemand()/(vrp.getVehicleCount()*vrp.getVehicles().iterator().next().getCapacity());
+    	return uc;
+ 	}
+    
+    public String totalUtilizedCapacityAsString() {
+    	String s = String.format("%.3f", totalUtilizedCapacityInProblem());	           
+        return s;
+    }
+    
+    public double averageUtilizedCapacityPerTour() {
+    	double sum = 0;
+    	for (Tour t : tours){
+    		long tourDemand = 0;
+    		for (Customer c : t.getCustomers()) {
+                tourDemand += c.getDemand();
+            }
+    		sum += tourDemand/t.getVehicle().getCapacity();
+    	}
+		double auc = sum/tours.size();
+    	return auc;
+ 	}
+    
+    public String averageUtilizedCapacityPerTourAsString() {
+    	String s = String.format("%.3f", averageUtilizedCapacityPerTour());	           
+        return s;
+    }
+   
+	public int getNumberOfTours() {
+		return tours.size();
+	}
+	
+	private void setPenaltyCost(double penaltyCost2) {
+		this.penaltyCost = penaltyCost2;
+	}
+
+	public long getTimeNeeded() {
+		return timeNeededForCalculation  / 1000 / 1000;
+	}
+
+	public void setTimeNeeded(long timeNeeded) {
+		this.timeNeededForCalculation = timeNeeded;
+	}
+
+	public Tour getTourWithId(long id) {
+		Tour tour = null;		
+		for (Tour tourInSolution : this.getTours())
+			if (tourInSolution.getId() == id)
+			{
+				tour = tourInSolution;
+				break;
+			};
+		return tour;
+	}
+
+	public String getMinNumberOfCustomersInTourAsString() {
+		int min = 100000000;
+		for (Tour t : tours)
+			if (t.getCustomerSize() < min)
+				min = t.getCustomerSize();
+		return "" + min;
+	}
+	
+	public String getMaxNumberOfCustomersInTourAsString() {
+		int max = 0;
+		for (Tour t : tours)
+			if (t.getCustomerSize() > max)
+				max = t.getCustomerSize();
+		return "" + max;
+	}
+
+	
+	/** Clone-Utilities */
+	
+	/**
+     * Because a Solution is not immutable, we need to pass an in-depth-copy,
+     * e.g. to a metaheuristic. This is why this .clone() method exists.
+     */
+    @Override
+    public Solution clone() {
+        Solution s = new Solution(vrpProblem);
+        s.setIteration(iterationInWhichSolutionWasCreated);
+        for (Tour t : tours) {
+            s.addTour(t.clone());
+        }
+        s.setPenaltyCost(penaltyCost);
+        return s;
+    }
+	
+	public Solution cloneCompletelySeperateCopy() {
+		VrpProblem vrpProblemClone = vrpProblem.clone();
+		Solution s = new Solution(vrpProblemClone);
+		s.setIteration(iterationInWhichSolutionWasCreated);
+		for (Tour t : tours) {
+			Tour tour = t.cloneAndSetPointersToCustomersInVrpProblem(vrpProblemClone);
+			s.addTour(tour);
+		}
+		s.setPenaltyCost(penaltyCost);
+		return s;		
+	}
+
+
+	
+	/** Printout-Utilities */
 
     /**
      * Prints out the solution to stdOut in the same format as the one used at
@@ -186,7 +313,7 @@ public class Solution implements Cloneable {
     }
 
     public String getSolutionAsString() {    	    	  	
-        String s = String.format("%.3f; %.3f; %.3f; %d\n", getTotalDistance(),
+        String s = String.format("%.3f; %.3f; %.3f; %d\n", getTotalDistanceOfAllTours(),
                 getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost(), getVehicleCount());
         for (Tour t : getTours()) {
             s += ("0 ");
@@ -217,280 +344,5 @@ public class Solution implements Cloneable {
         }
         return s;
     }
-
-    public void removeEmptyTours() {
-        Set<Tour> emptyTours = new HashSet<Tour>();
-        for (Tour t : tours) {
-            if (t.getCustomers().size() == 0) {
-                emptyTours.add(t);
-            }
-        }
-        tours.removeAll(emptyTours);
-    }
-
-    public List<CustomerInTour> getCustomersInTours() {
-        List<CustomerInTour> returnList = new ArrayList<CustomerInTour>();
-        for (Tour t : tours) {
-            returnList.addAll(t.getCustomersInTour());
-        }
-        return returnList;
-    }
-    
-    public List<CustomerInTour> getUnfixedCustomersInTours() { //OB - gibt nicht fixierte Kunden aus
-        List<CustomerInTour> returnList = new ArrayList<CustomerInTour>();
-        for (CustomerInTour c : this.getCustomersInTours()) {
-        if (!c.isCustomerInTourFixed())
-            returnList.add(c);
-        }
-        return returnList;
-    }
-    
-    public CustomerInTour getCustomerWithId(long customerNo){
-    	List<CustomerInTour> customerList = getCustomersInTours();
-    	
-    	for (CustomerInTour cit : customerList){
-    		if (cit.getCustomer().getCustomerNo() == customerNo)
-    			return cit;
-    		}	
-    	//case: customer not in tour
-    	return null;
-    }
-
-    public double getExpectedRecourseCost() {
-        double recourseCost = 0;
-        for (Tour t : tours) {
-            recourseCost += t.getExpectedRecourseCost();
-        }
-        return recourseCost;
-    }
-
-    /**
-     * Get the total cost, which is calculated from the distance, a possible
-     * 
-     * @return 
-     */
-    public double getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost() {
-        return getTotalDistance() + getExpectedRecourseCost() + penaltyCost;
-    }
-    
-    public double getCostInEuro() {
-    	double cost = 0;
-    	for (Tour t : tours)
-    		cost += t.getCostInEuro();
-    	return cost;
-    }
-
-    public void setPenaltyCost(double penaltyCost) {
-        this.penaltyCost = penaltyCost;
-    }
-
-    /**
-     * The penalty cost is the cost which this solution has, which is not part
-     * of the objective function. It is described in the paper from Lei et al.
-     * in section 3.1.
-     * 
-     * @return
-     */
-    public double getPenaltyCost() {
-        return penaltyCost;
-    }
-
-    public int getIteration() {
-        return iteration;
-    }
-
-    public void setIteration(int iteration) {
-        this.iteration = iteration;
-    }
-    
-    public boolean isSolutionFeasibleWrtDemand()
-    {
-    	boolean feasible = true;
-    	for (Tour t : this.getTours())
-    		if (!TourUtils.isTourFeasibleWrtDemand(t))
-    		{	
-    			feasible = false;
-    	        System.out.println("M�p, Tour " + t.getTourAsTupel() + " nicht feasible"); 
-    		}
-    	return feasible;
-    }
-    
-    /**
-     * Return the total utilized capacity for the problem. 
-     */
-    public double totalUtilizedCapacityInProblem(){
-    	double uc = 0;
-    	VrpProblem vrp =this.vrpProblem;
-		uc = vrp.getTotalDemand()/(vrp.getVehicleCount()*vrp.getVehicles().iterator().next().getCapacity());
-    	return uc;
- 	}
-    
-    public String totalUtilizedCapacityAsString() {
-    	String s = String.format("%.3f", totalUtilizedCapacityInProblem());	           
-        return s;
-    }
-    
-    public double averageUtilizedCapacityPerTour() {
-    	double sum = 0;
-    	for (Tour t : tours){
-    		long tourDemand = 0;
-    		for (Customer c : t.getCustomers()) {
-                tourDemand += c.getDemand();
-            }
-    		sum += tourDemand/t.getVehicle().getCapacity();
-    	}
-		double auc = sum/tours.size();
-    	return auc;
- 	}
-    
-    public String averageUtilizedCapacityPerTourAsString() {
-    	String s = String.format("%.3f", averageUtilizedCapacityPerTour());	           
-        return s;
-    }
- 
-	public double percentageOfToursExecutedTheSameDay() {
-    	return (double) NumberOfToursExecutedTheSameDay() / (double) getNumberOfTours(); 	    	    		
-    }
-    
-    protected int NumberOfToursExecutedTheSameDay() {    
-		return ToursExecutedTheSameDay().size();
-    }
-    
-	public int getNumberOfTours() {
-		return tours.size();
-	}
-    
-    protected List<Tour> ToursExecutedTheSameDay() {
-    	List<Tour> toursExecutedTheSameDay = new LinkedList<Tour>();
-    	for (Tour t : tours) 
-    		if (t.isTourExecutedTheSameDay())
-    			toursExecutedTheSameDay.add(t);
-		return toursExecutedTheSameDay;
-    }
-        
-    //this is \alpha-service-degree
-	public double percentageOfCustomersServedTheSameDay() {		
-		return (double) NumberOfCustomersServedTheSameDay() / (double) NumberOfCustomers();		
-	}
-    
-    protected int NumberOfCustomersServedTheSameDay() {
-    	int numberOfCustomersServedTheSameDay = 0;
-    	for (Tour t : ToursExecutedTheSameDay())    		
-    			numberOfCustomersServedTheSameDay += t.getCustomerSize();
-		return numberOfCustomersServedTheSameDay;
-	}
-
-	private int NumberOfCustomers() {		
-		return this.getVrpProblem().getCustomerCount();
-	}
-    
-	//this is \beta-service-degree
-	public double percentageOfParcelsCollectedTheSameDay() {
-		return (double) NumberOfParcelsCollectedTheSameDay() / (double) NumberOfParcels();
-	}
-    
-	private int NumberOfParcelsCollectedTheSameDay() {
-		int numberOfParcelsCollectedTheSameDay = 0;
-		for (Tour t : this.ToursExecutedTheSameDay())
-			numberOfParcelsCollectedTheSameDay += t.getDemandOnTour();
-		return numberOfParcelsCollectedTheSameDay;
-	}
-	
-	private int NumberOfParcels() {
-		int numberOfParcels = 0;
-		for (Tour t : tours)
-			numberOfParcels += t.getDemandOnTour();
-		return numberOfParcels;
-	}
-
-	/**
-     * Because a Solution is not immutable, we need to pass an in-depth-copy,
-     * e.g. to a metaheuristic. This is why this .clone() method exists.
-     */
-    @Override
-    public Solution clone() {
-        Solution s = new Solution(vrpProblem);
-        s.setIteration(iteration);
-        for (Tour t : tours) {
-            s.addTour(t.clone());
-        }
-        s.setPenaltyCost(penaltyCost);
-        return s;
-    }
-
-	public long getTimeNeeded() {
-		return timeNeeded  / 1000 / 1000;
-	}
-
-	public void setTimeNeeded(long timeNeeded) {
-		this.timeNeeded = timeNeeded;
-	}
-	
-	public String getCostInEuroAsString() {
-		String s = String.format("%.3f", getCostInEuro());	           
-        return s;
-	}
-	
-	public String getTourTypesAsString() {
-		String s = "(";
-		for (Tour t : tours)
-			s += t.getTourType() + ", ";
-		s += ")";
-		return s;
-	}
-
-	public Tour getTourWithId(long id) {
-		Tour tour = null;		
-		for (Tour tourInSolution : this.getTours())
-			if (tourInSolution.getId() == id)
-			{
-				tour = tourInSolution;
-				break;
-			};
-		return tour;
-	}
-
-	public String getMinNumberOfCustomersInTourAsString() {
-		int min = 100000000;
-		for (Tour t : tours)
-			if (t.getCustomerSize() < min)
-				min = t.getCustomerSize();
-		return "" + min;
-	}
-	
-	public String getMaxNumberOfCustomersInTourAsString() {
-		int max = 0;
-		for (Tour t : tours)
-			if (t.getCustomerSize() > max)
-				max = t.getCustomerSize();
-		return "" + max;
-	}
-
-	public int getIterationRepair() {
-		return iterationRepair;
-	}
-
-	public void setIterationRepair(int iterationRepair) {
-		this.iterationRepair = iterationRepair;
-	}
-
-
-	public Solution cloneCompletelySeperateCopy() {
-		VrpProblem vrpProblemClone = vrpProblem.clone();
-		Solution s = new Solution(vrpProblemClone);
-		s.setIteration(iteration);
-		for (Tour t : tours) {
-			Tour tour = t.cloneAndSetPointersToCustomersInVrpProblem(vrpProblemClone);
-			s.addTour(tour);
-		}
-		s.setPenaltyCost(penaltyCost);
-		return s;		
-	}
-
-
-
-
-
-
     	
 }

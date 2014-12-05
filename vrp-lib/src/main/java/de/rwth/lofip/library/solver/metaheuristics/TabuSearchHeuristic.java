@@ -1,5 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public class TabuSearchHeuristic extends LeiEtAlHeuristic implements
 	}
 
 	@Override
-	public Solution improve(Solution solution, VrpConfiguration configuration) {
+	public Solution improve(Solution solution, VrpConfiguration configuration) throws IOException {
 		this.customerCount = solution.getVrpProblem().getCustomers().size();
 		return super.improve(solution, configuration);
 	}

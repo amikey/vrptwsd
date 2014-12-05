@@ -522,10 +522,10 @@ public class RepairSolution {
 			double minCost = 1000000000;
 			Solution bestSolution = null;
 			for (Solution s : solutionSet)
-				if (s.getTotalDistance() < minCost)
+				if (s.getTotalDistanceOfAllTours() < minCost)
 				{
 					bestSolution = s;
-					minCost = s.getTotalDistance();
+					minCost = s.getTotalDistanceOfAllTours();
 				};		
 				
 			long endTime = System.nanoTime();

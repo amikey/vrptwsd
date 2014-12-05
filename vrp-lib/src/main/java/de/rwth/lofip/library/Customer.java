@@ -1,119 +1,15 @@
 package de.rwth.lofip.library;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
-import org.apache.commons.math3.distribution.PoissonDistribution;
-
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
-
-/**
- * A {@code Customer} is the central representation of a customer within a VRP.
- * It has the basic properties like demand, time windows and service time.
- * 
- * <p>
- * Java class for customer complex type.
- * 
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- * 
- * <pre>
- * &lt;complexType name="customer">
- *   &lt;complexContent>
- *     &lt;extension base="{http://library.lofip.rwth.de}abstractPointInSpace">
- *       &lt;sequence>
- *         &lt;element name="customerNo" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="demand" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="serviceTime" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="similarCustomers" type="{http://library.lofip.rwth.de}customerWithCost" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="timeWindowClose" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="timeWindowOpen" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *       &lt;/sequence>
- *     &lt;/extension>
- *   &lt;/complexContent>
- * &lt;/complexType>
- * </pre>
- * 
- * * TODO: this needs to be split up into a separate "main" customer, containing
- * all properties which are common to ALL customers and subclasses, having the
- * special features (like probabilistic demand).
- * 
- */
-
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "customer", propOrder = { 
-		"customerNo", 
-		"demand",
-		"serviceTime", 
-		"similarCustomers", 
-		"timeWindowClose", 
-		"timeWindowOpen"
-
-})
 public class Customer extends AbstractPointInSpace implements Cloneable {
 
 	protected long customerNo;
 	protected long demand;
 	protected double serviceTime;
-
-	@XmlElement(nillable = true, required = false)
-	private List<CustomerWithCost> similarCustomers = new ArrayList<CustomerWithCost>();
 	protected double timeWindowClose;
 	protected double timeWindowOpen;
 	
-//	@XmlAttribute(name = "idC")
-//	@XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-//	@XmlID
-//	protected String idC;
-
-	@XmlTransient
-	private LoadingCache<Integer, BigDecimal> probabilityCache = CacheBuilder
-			.newBuilder().build(new CacheLoader<Integer, BigDecimal>() {
-				public BigDecimal load(Integer key) throws Exception {
-
-					return getProbability(key);
-				}
-			});
-
-	private void setProbabilityCache(LoadingCache<Integer, BigDecimal> cache) {
-		probabilityCache = cache;
-	}
-
-	/**
-	 * Returns the probability that customer has {@code demand}
-	 */
-	private BigDecimal getProbability(int demand) {
-		return new BigDecimal(
-				new PoissonDistribution(this.demand).probability(demand));
-	}
-
 	public Customer() {
 		super();
-	}
-
-	/**
-	 * Get the probability that the demand is exactly the parameter
-	 * {@code demand}. This is interesting when it comes to stochastic demands.
-	 * 
-	 * @param demand
-	 * @return
-	 */
-	public BigDecimal getDemandProbability(int demand) {
-		return probabilityCache.getUnchecked(demand);
 	}
 
 	public Customer(double x, double y) {
@@ -139,7 +35,6 @@ public class Customer extends AbstractPointInSpace implements Cloneable {
 
 	public void setCustomerNo(long customerNo) {
 		this.customerNo = customerNo;
-//		this.idC = (String)("C"+customerNo);
 		this.setId();
 	}
 
@@ -175,19 +70,10 @@ public class Customer extends AbstractPointInSpace implements Cloneable {
 		this.serviceTime = serviceTime;
 	}
 
-	public List<CustomerWithCost> getSimilarCustomers() {
-		return similarCustomers;
-	}
-
-	public void setSimilarCustomers(List<CustomerWithCost> similarCustomers) {
-		this.similarCustomers = similarCustomers;
-	}
-
 	/**
 	 * END Getters and Setters
 	 */
 
-	// what does this method do?
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -204,7 +90,6 @@ public class Customer extends AbstractPointInSpace implements Cloneable {
 		return result;
 	}
 
-	// compares this object with some other object.
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -238,11 +123,10 @@ public class Customer extends AbstractPointInSpace implements Cloneable {
 		c.setServiceTime(serviceTime);
 		c.setTimeWindowOpen(timeWindowOpen);
 		c.setTimeWindowClose(timeWindowClose);
-		c.setSimilarCustomers(similarCustomers);
-		c.setProbabilityCache(probabilityCache);
 		return c;
 	}
 
+	
 	public String getAsString() {
 		return "Customer: " + customerNo + " " + demand + " " + serviceTime;
 	}

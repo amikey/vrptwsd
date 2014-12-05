@@ -12,12 +12,9 @@ import de.rwth.lofip.library.util.CustomerInTour;
  * @author Dominik Sandjaja <dominik@dadadom.de>
  * 
  */
-// @XmlRootElement(name = "Edge")
 public class Edge {
-	// @XmlElement(required = true)
 	private AbstractPointInSpace pointOne;
 	private AbstractPointInSpace pointTwo;
-	// @XmlElement(required = true)
 	private double length;
 
 	/**

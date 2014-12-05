@@ -15,9 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.VrpUtils;
 import de.rwth.lofip.library.solver.StochasticPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
+import de.rwth.lofip.library.util.VrpUtils;
 
 /**
  * This writes all values into one file as in table 1, page 1781, Lei et al.
@@ -131,7 +131,7 @@ public class DeterministicSolver_TEST {
 						+ problem.getVehicles().iterator().next().getCapacity()
 						+ ";"
 						+ String.format("%.3f",
-								improvedSolution.getTotalDistance())
+								improvedSolution.getTotalDistanceOfAllTours())
 						+ ";"
 						+ String.format("%.3f",
 								improvedSolution.getExpectedRecourseCost())

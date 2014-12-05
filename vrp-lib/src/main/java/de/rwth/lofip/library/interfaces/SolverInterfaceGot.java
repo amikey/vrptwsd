@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.solver.interfaces;
+package de.rwth.lofip.library.interfaces;
 
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;

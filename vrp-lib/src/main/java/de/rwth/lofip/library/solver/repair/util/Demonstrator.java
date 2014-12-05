@@ -17,10 +17,10 @@ import de.rwth.lofip.library.DeterministicTour;
 import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.VrpUtils;
 import de.rwth.lofip.library.scenario.DemandScenario;
 import de.rwth.lofip.library.scenario.Event;
 import de.rwth.lofip.library.solver.repair.RepairSolution;
+import de.rwth.lofip.library.util.VrpUtils;
 
 public class Demonstrator {
 

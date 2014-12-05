@@ -81,7 +81,7 @@ public class AverageValuesForMultipleSolutionsOnOneSolomonInstance {
 	public double getMeanValueOfDetObjective() {
 		double sum = 0;
 		for (Solution solution : solutions) {
-			sum += solution.getTotalDistance();
+			sum += solution.getTotalDistanceOfAllTours();
 		}
 		double meanValueOfObjective = sum / solutions.size();
 
@@ -91,8 +91,8 @@ public class AverageValuesForMultipleSolutionsOnOneSolomonInstance {
 	public double getMinimalValueOfDetObjective() {
 		double minimalValue = Double.MAX_VALUE;
 		for (Solution solution : solutions) {
-			if (solution.getTotalDistance() < minimalValue)
-				minimalValue = solution.getTotalDistance();
+			if (solution.getTotalDistanceOfAllTours() < minimalValue)
+				minimalValue = solution.getTotalDistanceOfAllTours();
 		}
 		return minimalValue;
 	}
@@ -100,8 +100,8 @@ public class AverageValuesForMultipleSolutionsOnOneSolomonInstance {
 	public double getMaximalValueOfDetObjective() {
 		double maximalValue = 0;
 		for (Solution solution : solutions) {
-			if (solution.getTotalDistance() > maximalValue)
-				maximalValue = solution.getTotalDistance();
+			if (solution.getTotalDistanceOfAllTours() > maximalValue)
+				maximalValue = solution.getTotalDistanceOfAllTours();
 		}
 		return maximalValue;
 	}
@@ -109,7 +109,7 @@ public class AverageValuesForMultipleSolutionsOnOneSolomonInstance {
 	public double getStandardDeviationOfDetObjective() {
 		double denominator = 0;
 		for (Solution solution : solutions) {
-			denominator += Math.pow(solution.getTotalDistance()
+			denominator += Math.pow(solution.getTotalDistanceOfAllTours()
 					- getMeanValueOfDetObjective(), 2);
 		}
 		double variance = denominator / solutions.size();

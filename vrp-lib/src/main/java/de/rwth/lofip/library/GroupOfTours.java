@@ -60,7 +60,7 @@ public class GroupOfTours {
 	}
 	
 	public void createNewTour(VrpProblem vrpProblem) {
-		Tour t = new DeterministicTour(vrpProblem.getDepot(),
+		Tour t = new Tour(vrpProblem.getDepot(),
 				new Vehicle(new Random().nextInt(Integer.MAX_VALUE), vrpProblem.getVehicles().iterator().next().getCapacity()));
 		addTour(t);
 	}

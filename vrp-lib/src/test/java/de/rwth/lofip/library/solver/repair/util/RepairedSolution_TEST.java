@@ -27,13 +27,13 @@ import de.rwth.lofip.library.Solution;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.VrpUtils;
 import de.rwth.lofip.library.scenario.Event;
 import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 import de.rwth.lofip.library.solver.repair.RepairSolution;
 import de.rwth.lofip.library.util.VrpProblemUtils;
+import de.rwth.lofip.library.util.VrpUtils;
 
 /**
  * Test class which contains tests for the class RepairedSolution
@@ -117,7 +117,7 @@ public class RepairedSolution_TEST {
 					event);
 
 			System.out.println("Strecke alte L�sung: "
-					+ solution.getTotalDistance());
+					+ solution.getTotalDistanceOfAllTours());
 			System.out.println("Kosten alte L�sung: "
 					+ solution.getCostInEuro());
 			System.out.println("Diferenz rep und ist : "
@@ -127,7 +127,7 @@ public class RepairedSolution_TEST {
 							.getSolutionAsStringWithCustomer()));
 
 			System.out.println("Strecke neue L�sung: "
-					+ (rep.get(0).getNewSolution().getTotalDistance()));
+					+ (rep.get(0).getNewSolution().getTotalDistanceOfAllTours()));
 			System.out.println("Kosten neue L�sung : "
 					+ (rep.get(0).getNewSolution().getCostInEuro()));
 
@@ -143,7 +143,7 @@ public class RepairedSolution_TEST {
 					.get(0).getNewSolution(), event2);
 
 			System.out.println("Strecke alte L�sung: "
-					+ rep2.get(0).getOldSolution().getTotalDistance());
+					+ rep2.get(0).getOldSolution().getTotalDistanceOfAllTours());
 			System.out.println("Kosten alte L�sung: "
 					+ rep2.get(0).getOldSolution().getCostInEuro());
 			System.out.println("Diferenz rep und ist : "
@@ -153,7 +153,7 @@ public class RepairedSolution_TEST {
 							.getSolutionAsStringWithCustomer()));
 
 			System.out.println("Strecke neue L�sung: "
-					+ (rep2.get(0).getNewSolution().getTotalDistance()));
+					+ (rep2.get(0).getNewSolution().getTotalDistanceOfAllTours()));
 			System.out.println("Kosten neue L�sung : "
 					+ (rep2.get(0).getNewSolution().getCostInEuro()));
 

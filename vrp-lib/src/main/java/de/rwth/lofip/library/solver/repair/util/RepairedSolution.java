@@ -250,7 +250,7 @@ public class RepairedSolution {
 	
 	private void calculateAdditionalDistance()
 	{
-		additionalDistance = newSolution.getTotalDistance() - oldSolution.getTotalDistance();
+		additionalDistance = newSolution.getTotalDistanceOfAllTours() - oldSolution.getTotalDistanceOfAllTours();
 	}
 
 	private void calculateAdditionalCost()
