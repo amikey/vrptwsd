@@ -113,16 +113,7 @@ public class Tour implements Cloneable {
     	//case: customer not in tour
     	return null;
     }
-    
-    public List<CustomerInTour> getUnfixedCustomersInTour() { //OB - gibt nicht fixierte Kunden aus
-        List<CustomerInTour> returnList = new ArrayList<CustomerInTour>();
-        for (CustomerInTour c : this.getCustomersInTour()) {
-        if (!c.isCustomerInTourFixed())
-            returnList.add(c);
-        }
-        return returnList;
-    }
-   
+     
     public CustomerInTour getMostSimilarCustomerInTour(Customer customer) throws Exception
     {   //AB - gibt den CustomerInTour zur�ck, der den h�chsten Similarity Value mit customer hat
     	try 
@@ -224,7 +215,7 @@ public class Tour implements Cloneable {
         Tour t = new Tour(depot, vehicle.clone());        
         for (CustomerInTour cit : customers) {
             t.addCustomer(cit.getCustomer(), cit.getInsertedInIteration(),
-                    cit.getInsertionHeuristic(), cit.isCustomerInTourFixed());
+                    cit.getInsertionHeuristic());
         }
         t.setId(this.id);
         return t;
@@ -240,7 +231,7 @@ public class Tour implements Cloneable {
         		if (c.getCustomerNo() == cit.getCustomer().getCustomerNo())
         			cust = c;        	
             t.addCustomer(cust, cit.getInsertedInIteration(),
-                    cit.getInsertionHeuristic(), cit.isCustomerInTourFixed());
+                    cit.getInsertionHeuristic());
         }
         t.setId(this.id);
         return t;
@@ -296,16 +287,11 @@ public class Tour implements Cloneable {
         newCustomerInTour.setCustomer(customer);
         newCustomerInTour.setInsertedInIteration(iteration);
         newCustomerInTour.setInsertionHeuristic(insertionClassName);
-        newCustomerInTour.setFixCustomerInTour(isFixedCustomer);
         if (position == 0) {
             newCustomerInTour.setPreviousVertex(getDepot());
         } else {
             newCustomerInTour.setPreviousVertex(customers.get(position - 1)
                     .getCustomer());
-            newCustomerInTour.setPreviousCustomerInTour(customers
-                    .get(position - 1));
-            customers.get(position - 1)
-                    .setNextCustomerInTour(newCustomerInTour);
             customers.get(position - 1).setNextVertex(customer);
         }
         if (position >= customers.size()) {
@@ -313,9 +299,6 @@ public class Tour implements Cloneable {
         } else {
             newCustomerInTour.setNextVertex(customers.get(position)
                     .getCustomer());
-            newCustomerInTour.setNextCustomerInTour(customers.get(position));
-            customers.get(position)
-                    .setPreviousCustomerInTour(newCustomerInTour);
             customers.get(position).setPreviousVertex(customer);
         }
 
@@ -370,8 +353,6 @@ public class Tour implements Cloneable {
 	}
 	
 	private void maintainOutgoingPointerInDoublyLinkedList(int position) {
-		customers.get(position - 1).setNextCustomerInTour(
-                customers.get(position).getNextCustomerInTour());
         customers.get(position - 1).setNextVertex(
                 customers.get(position).getNextVertex());
 	}
@@ -381,8 +362,6 @@ public class Tour implements Cloneable {
 	}
     
 	private void maintainIncomingPointerInDoublyLinkedList(int position) {
-        customers.get(position + 1).setPreviousCustomerInTour(
-                customers.get(position).getPreviousCustomerInTour());
         customers.get(position + 1).setPreviousVertex(
                 customers.get(position).getPreviousVertex());
 	}

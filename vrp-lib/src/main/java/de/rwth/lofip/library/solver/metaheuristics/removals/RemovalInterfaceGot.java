@@ -3,7 +3,7 @@ package de.rwth.lofip.library.solver.metaheuristics.removals;
 import java.util.List;
 
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.solver.metaheuristics.HeuristicInterface;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.util.RemovedCustomer;
 
 /**

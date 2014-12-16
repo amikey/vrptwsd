@@ -1,5 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 //Lei et al Heuristic with objective of minimizing vehicles  

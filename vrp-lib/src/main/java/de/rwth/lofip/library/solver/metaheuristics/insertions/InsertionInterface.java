@@ -5,7 +5,7 @@ import java.util.Collection;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.HeuristicInterface;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 

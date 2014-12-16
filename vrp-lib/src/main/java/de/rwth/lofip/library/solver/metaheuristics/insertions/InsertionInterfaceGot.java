@@ -6,7 +6,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.HeuristicInterface;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.util.RemovedCustomer;
 
 /**

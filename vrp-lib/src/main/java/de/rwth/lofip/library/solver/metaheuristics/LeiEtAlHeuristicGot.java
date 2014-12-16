@@ -14,6 +14,8 @@ import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.DemandAndFa
 import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.FeasibilityOrientedInsertionGot;
 import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.GreedyInsertionGot;
 import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.TimeAndFailureSortingInsertionGot;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.removals.ExpectedWorstRemovalGot;
 import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemovalGot;
 import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemovalGot;

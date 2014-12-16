@@ -17,7 +17,6 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.GreedyInsertationD;
 import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemoval;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RemovedCustomer;

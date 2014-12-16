@@ -81,8 +81,6 @@ public class GroupOfTours {
     	return tours.get(tours.size() - 1);
 	}
 
-
-	
 	public int getMaximalNumberOfTours() {
 		return MAXIMAL_NUMBER_OF_TOURS;
 	}

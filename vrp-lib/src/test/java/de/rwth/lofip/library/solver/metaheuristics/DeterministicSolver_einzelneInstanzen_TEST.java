@@ -23,12 +23,12 @@ import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.initialSolver.AbstractPushForwardInsertionSolver;
-import de.rwth.lofip.library.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.VrpUtils;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 
 /**
  * CLI application for the VRP Solver.

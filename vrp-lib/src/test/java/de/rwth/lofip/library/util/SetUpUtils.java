@@ -22,9 +22,9 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver.DeterministicPushForwardInsertionSolver;
 
 public class SetUpUtils {
 	

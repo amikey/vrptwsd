@@ -1,0 +1,2 @@
+2014-53-15 16:53:58.405 [main] FATAL log4j.Log4jTest2 - This is a fatal message
+2014-53-15 16:53:58.405 [main] ERROR log4j.Log4jTest2 - This is a error message

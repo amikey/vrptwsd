@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.appender.FileAppender;
 
 import de.rwth.lofip.library.AbstractPointInSpace;
 import de.rwth.lofip.library.Customer;
@@ -41,14 +42,23 @@ import de.rwth.lofip.library.solver.util.TourUtils;
  */
 public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
 
+	static Logger logger = LogManager.getLogger(GroupPushForwardInsertionSolver.class);
+	   
+    // setting up a FileAppender dynamically...
+    SimpleLayout layout = new SimpleLayout();    
+    FileAppender appender = new FileAppender(layout,"your filename",false);    
+    logger.addAppender(appender);
+
+    logger.setLevel((Level) Level.DEBUG);   
+	
     Set<Customer> unassignedCustomers = new HashSet<Customer>();
 	Set<Customer> assignedCustomersInGot = new HashSet<Customer>();
 	Set<Customer> assignedCustomersInNextTour = new HashSet<Customer>();
     int iteration = 1;
     SolutionGot solution;
     CustomerWithCost cheapestCustomer;
-    private static Logger logger = LogManager
-            .getLogger(GroupPushForwardInsertionSolver.class);
+//    private static Logger logger = LogManager
+  //          .getLogger(GroupPushForwardInsertionSolver.class);
 
     @Override
     public String getDescriptiveName() {
