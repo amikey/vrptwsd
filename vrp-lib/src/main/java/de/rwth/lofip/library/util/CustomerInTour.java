@@ -17,6 +17,7 @@ import de.rwth.lofip.library.AbstractPointInSpace;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.interfaces.SolutionElement;
 
 /**
  * Wrapper class which keeps the associated information about a customer in the
@@ -29,7 +30,7 @@ import de.rwth.lofip.library.Tour;
  * @author Dominik Sandjaja <dominik@dadadom.de>
 */
 
-public class CustomerInTour implements Cloneable {
+public class CustomerInTour implements Cloneable, SolutionElement {
 
 	private Customer customer;
 	private Tour tour;

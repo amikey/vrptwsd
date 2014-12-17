@@ -29,6 +29,8 @@ import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.VrpUtils;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver.DeterministicPushForwardInsertionSolver;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
 
 /**
  * CLI application for the VRP Solver.

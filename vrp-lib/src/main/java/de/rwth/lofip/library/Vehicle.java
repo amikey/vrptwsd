@@ -6,15 +6,10 @@ public class Vehicle implements Cloneable {
 	private double capacity;
 	private double usedCapacity = 0;
 
-	// Konstruktor
 	public Vehicle(int vehicleId, double initialCapacity) {
 		this.vehicleId = vehicleId;
 		capacity = initialCapacity;
 	}
-
-	/**
-	 * Getter und Setter
-	 */
 
 	public int getVehicleId() {
 		return vehicleId;

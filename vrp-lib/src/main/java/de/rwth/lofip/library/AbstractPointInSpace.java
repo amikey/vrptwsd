@@ -1,14 +1,13 @@
 package de.rwth.lofip.library;
 
-public abstract class AbstractPointInSpace {
+import de.rwth.lofip.library.interfaces.SolutionElement;
+
+public abstract class AbstractPointInSpace implements SolutionElement {
 
 	private double xCoordinate;
 	private double yCoordinate;	
     protected String id;
 
-	/**
-	 * Constructors
-	 */
 	public AbstractPointInSpace() {
 		super();
 	}
@@ -19,13 +18,6 @@ public abstract class AbstractPointInSpace {
 		this.setId();
 	}
 
-	/**
-	 * END Constructors
-	 */
-
-	/**
-	 * Getter and Setter
-	 */
 	public double getxCoordinate() {
 		return xCoordinate;
 	}
@@ -58,9 +50,6 @@ public abstract class AbstractPointInSpace {
     	this.id = "PS"+this.toString();
     }
     
-	/**
-	 * Getter and Setter
-	 */
 	@Override
 	public String toString() {
 		return "x: " + xCoordinate + " y: " + yCoordinate;

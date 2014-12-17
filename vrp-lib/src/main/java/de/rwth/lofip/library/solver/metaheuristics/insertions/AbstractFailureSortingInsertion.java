@@ -11,10 +11,10 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.LeiEtAlHeuristic;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
 
 /**
  * This is the base class for the two insertions mentioned in the paper by Lei

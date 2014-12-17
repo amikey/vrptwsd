@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 
 /**
  * @author Andreas Braun
  */
-public class GroupOfTours {
+public class GroupOfTours implements SolutionElement {
 
 	/****************************************************************************
      * Fields

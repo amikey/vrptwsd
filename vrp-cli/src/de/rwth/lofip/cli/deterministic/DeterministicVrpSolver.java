@@ -8,9 +8,9 @@ import org.apache.commons.io.IOUtils;
 import de.rwth.lofip.cli.generic.AbstractVrpSolver;
 import de.rwth.lofip.library.interfaces.SolverInterface;
 import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
-import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
-import de.rwth.lofip.library.solver.metaheuristics.LeiEtAlHeuristic;
 import de.rwth.lofip.library.util.IntermediateSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
 
 /**
  * CLI application for the VRP Solver.

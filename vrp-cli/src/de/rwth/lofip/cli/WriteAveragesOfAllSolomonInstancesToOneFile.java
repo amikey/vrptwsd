@@ -21,8 +21,8 @@ import de.rwth.lofip.library.analyse.AverageValuesForMultipleSolutionsOnOneSolom
 import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.StochasticPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
-import de.rwth.lofip.library.solver.metaheuristics.LeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
 
 /**
  * This writes average value of {@value numberOfGeneratedSolutionsPerSolomonInstance}

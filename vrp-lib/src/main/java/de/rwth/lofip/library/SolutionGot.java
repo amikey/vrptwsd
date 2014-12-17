@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 
@@ -18,7 +19,7 @@ import de.rwth.lofip.library.util.CustomerInTour;
  * @author Dominik Sandjaja <dominik@dadadom.de>
  * 
  */
-public class SolutionGot implements Cloneable {
+public class SolutionGot implements Cloneable, SolutionElement {
 
     private VrpProblem vrpProblem;
     private double penaltyCost = 0;

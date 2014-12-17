@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.util.CustomerInTour;
 
-public class Tour implements Cloneable {
+public class Tour implements Cloneable, SolutionElement {
 
     /****************************************************************************
      * Fields
@@ -145,19 +146,9 @@ public class Tour implements Cloneable {
         return customerList;
     }
     
-//    /**
-//     * Get the last customer of the tour, that is, the one before the vehicle
-//     * returns to the depot.
-//     * 
-//     * @return
-//     */
-//    public Customer getLastCustomer() {
-//        if (customers.size() > 0) {
-//            return customers.get(customers.size() - 1).getCustomer();
-//        } else {
-//            return null;
-//        }
-//    }
+	public int length() {
+		return customers.size();
+	}
     
     public double getTotalDistance() {  
         double tourDistance = 0;
@@ -183,14 +174,7 @@ public class Tour implements Cloneable {
     public double getSumOfDistanceMultipliedWithCostFactor() {
         return getTotalDistance()*getCostFactor();
     }
-    
-    public List<Tour> getTours() 
-    {
-    	List<Tour> tours = new LinkedList<Tour>();
-    	tours.add(this);
-    	return tours;    	
-    }
-    
+        
     public boolean isTourEmpty() {
     	if (customers.size() == 0)
     		return true;

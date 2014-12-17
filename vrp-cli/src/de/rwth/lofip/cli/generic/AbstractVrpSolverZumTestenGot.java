@@ -26,13 +26,13 @@ import de.rwth.lofip.library.solver.DeterministicPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.StochasticPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.interfaces.SolverInterfaceGot;
-import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
-import de.rwth.lofip.library.solver.metaheuristics.LeiEtAlHeuristic;
-import de.rwth.lofip.library.solver.metaheuristics.LeiEtAlHeuristicGot;
 import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
 import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemoval;
 import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemovalGot;
 import de.rwth.lofip.library.util.IntermediateSolutionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristicGot;
 
 /**
  * Diese Klasse bietet die Grundlage um die -Got Variante der Heuristik zu testen.

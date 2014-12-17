@@ -27,7 +27,6 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 import de.rwth.lofip.library.util.VrpProblemUtils;
 import de.rwth.lofip.library.util.VrpUtils;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
@@ -36,6 +35,7 @@ import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolut
 import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolutionUtils;
 import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver.DeterministicPushForwardInsertionSolver;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 
 /**
  * Test class which contains tests for the class RepairedSolution
