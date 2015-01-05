@@ -16,42 +16,46 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	
 	Tour tour;
 
-	private int position = 0;
-	private int position2 = 0;
+	private static int positionLevel1 = 0;
+	private static int positionLevel2 = 0;
 	
-	private CustomerInTour startOfSegmentToBeRemoved;
-	private CustomerInTour endOfSegmentToBeRemoved;
+	private static CustomerInTour startOfSegmentToBeRemoved;
+	private static CustomerInTour endOfSegmentToBeRemoved;
 	
 	public TabuSearch(Tour tour) {
 		this.tour = tour;		
-		startOfSegmentToBeRemoved = tour.getCustomerAtPosition(position);
-		endOfSegmentToBeRemoved = tour.getCustomerAtPosition(position2);
+		positionLevel1 = 0;
+		positionLevel2 = 0;
+		startOfSegmentToBeRemoved = tour.getCustomerAtPosition(positionLevel1);
+		endOfSegmentToBeRemoved = tour.getCustomerAtPosition(positionLevel2);
 	}
 
 	protected void generateNextNeigborhoodStep() {	
 		if (customer2CanBeIncreased())
 			IncreaseCustomer2();
 		else if (customer1CanBeIncreased())
-			IncreaseCustomer1();		
+			IncreaseCustomer1();
+		else throw new RuntimeException("generateNextNeigborhoodStep() was called although no remaining NeigborhoodStep exists");
 	}
 
 	private boolean customer2CanBeIncreased() {
-		return position2 < tour.length();
+		return positionLevel2 < tour.length()-1;
 	}
 	
 	private void IncreaseCustomer2() {
-		position2++;
-		endOfSegmentToBeRemoved = tour.getCustomerAtPosition(position2);
+		positionLevel2++;
+		endOfSegmentToBeRemoved = tour.getCustomerAtPosition(positionLevel2);
 	}
 
 	private boolean customer1CanBeIncreased() {
-		return position < tour.length();	
+		return positionLevel1 < tour.length()-1;	
 	}
 	
 	private void IncreaseCustomer1() {
-		position++;
-		startOfSegmentToBeRemoved = tour.getCustomerAtPosition(position);
-		endOfSegmentToBeRemoved = tour.getCustomerAtPosition(position);
+		positionLevel1++;
+		positionLevel2=positionLevel1;
+		startOfSegmentToBeRemoved = tour.getCustomerAtPosition(positionLevel1);
+		endOfSegmentToBeRemoved = tour.getCustomerAtPosition(positionLevel1);
 	}
 
 	public Collection<SolutionElement> getNeigborhood() {
@@ -59,6 +63,18 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 		list.add((SolutionElement) startOfSegmentToBeRemoved);
 		list.add((SolutionElement) endOfSegmentToBeRemoved);
 		return list;
+	}
+
+	public boolean HasNextNeighborhoodStep() {
+		if (customer1CanBeIncreased() && customer2CanBeIncreased())
+			return true;
+		else 
+			return false;
+	}
+
+	public static void printNeighborhoodStep() {
+		System.out.println("Positionen: " + positionLevel1 + ", " + positionLevel2);
+		System.out.println("Kunden: " + startOfSegmentToBeRemoved + ", " +endOfSegmentToBeRemoved);	
 	}
 	
 

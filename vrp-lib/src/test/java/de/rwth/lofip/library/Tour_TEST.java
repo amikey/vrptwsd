@@ -19,7 +19,7 @@ public class Tour_TEST {
 	}
 
 	private void givenTourThatIsExecutedTheSameDay() {
-		tour = SetUpUtils.SetUpFeasibleTour();		
+		tour = SetUpUtils.setUpFeasibleTourWithFourCustomers();		
 	}
 	
 	private void ThenTourShouldBeExecutedTheSameDay() {

@@ -70,7 +70,8 @@ public class SetUpUtils {
 		return solutions;
 	}
 	
-	public static Tour SetUpFeasibleTour() {
+	public static Tour setUpFeasibleTourWithFourCustomers() {
+		//returns a tour with 4 customers 
 
         Customer c1 = new Customer();
         c1.setCustomerNo(1);
