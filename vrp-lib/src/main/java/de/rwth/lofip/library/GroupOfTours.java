@@ -81,6 +81,10 @@ public class GroupOfTours implements SolutionElement {
     public Tour getLastTour() {
     	return tours.get(tours.size() - 1);
 	}
+    
+    public Tour getFirstTour() {
+    	return tours.get(0);
+	}
 
 	public int getMaximalNumberOfTours() {
 		return MAXIMAL_NUMBER_OF_TOURS;
@@ -127,6 +131,8 @@ public class GroupOfTours implements SolutionElement {
 	        	got.addTour(t.clone());	        	        	        
         return got;
     }
+
+	
     
   
 //    @Override
