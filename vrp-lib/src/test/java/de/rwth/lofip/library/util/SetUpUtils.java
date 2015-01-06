@@ -17,6 +17,8 @@ import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
+import de.rwth.lofip.library.GroupOfTours;
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
@@ -71,7 +73,6 @@ public class SetUpUtils {
 	}
 	
 	public static Tour setUpFeasibleTourWithFourCustomers() {
-		//returns a tour with 4 customers 
 
         Customer c1 = new Customer();
         c1.setCustomerNo(1);
@@ -127,7 +128,6 @@ public class SetUpUtils {
 	}
 	
 	public static Tour setUpFeasibleTourWithThreeCustomers() {
-		//returns a tour with 4 customers 
 
         Customer c1 = new Customer();
         c1.setCustomerNo(1);
@@ -169,6 +169,89 @@ public class SetUpUtils {
         tour.addCustomer(c3);
         
         return tour;
+	}
+	
+	public static SolutionGot SetUpSolutionWithThreeToursAndTwoCustomersEach() {
+        Customer c1 = new Customer();
+        c1.setCustomerNo(1);
+        c1.setxCoordinate(11);
+        c1.setyCoordinate(80);        
+        c1.setDemand(20);
+        c1.setTimeWindowOpen(278);
+        c1.setTimeWindowClose(345);
+        c1.setServiceTime(90);
+        
+        Customer c2 = new Customer();
+        c2.setCustomerNo(2);
+        c2.setxCoordinate(20);
+        c2.setyCoordinate(85);
+        c2.setDemand(20);
+        c2.setTimeWindowOpen(475);
+        c2.setTimeWindowClose(528);
+        c2.setServiceTime(90);
+
+        Customer c3 = new Customer();
+        c3.setCustomerNo(3);
+        c3.setxCoordinate(25);
+        c3.setyCoordinate(85);
+        c3.setDemand(20);
+        c3.setTimeWindowOpen(625);
+        c3.setTimeWindowClose(721);
+        c3.setServiceTime(90);
+        
+        Customer c4 = new Customer();
+        c4.setCustomerNo(4);
+        c4.setxCoordinate(35);
+        c4.setyCoordinate(70);
+        c4.setDemand(20);
+        c4.setTimeWindowOpen(873);
+        c4.setTimeWindowClose(921);
+        c4.setServiceTime(90);
+           
+        Depot depot = new Depot();
+        depot.setxCoordinate(40);
+        depot.setyCoordinate(50);
+        
+        Vehicle vehicle = new Vehicle(1, 85);
+        Set<Vehicle> vehicles = new HashSet<Vehicle>();
+        vehicles.add(vehicle);
+        
+        Tour tour1 = new Tour(depot, vehicle);
+        tour1.addCustomer(c1);
+        tour1.addCustomer(c2);
+        GroupOfTours got1 = new GroupOfTours();
+        got1.addTour(tour1);
+        
+        Tour tour2 = new Tour(depot, vehicle);
+        tour2.addCustomer(c3);
+        tour2.addCustomer(c4);
+        GroupOfTours got2 = new GroupOfTours();
+        got2.addTour(tour2);
+        
+        Tour tour3 = new Tour(depot, vehicle);
+        tour3.addCustomer(c1);
+        tour3.addCustomer(c2);
+        GroupOfTours got3 = new GroupOfTours();
+        got3.addTour(tour3);
+        
+        //create vprProblem
+	    VrpProblem vrpProblem = new VrpProblem();
+	    vrpProblem.addCustomer(c1);
+	    vrpProblem.addCustomer(c2);
+	    vrpProblem.addCustomer(c3);
+	    vrpProblem.addCustomer(c4);
+	    vrpProblem.addDepot(depot);
+	    vrpProblem.setVehicles(vehicles);
+	    vrpProblem.setMaxTime(10000);
+	            
+	    //create solution
+	    SolutionGot solution = new SolutionGot(vrpProblem);
+	    solution.addGot(got1);
+	    solution.addGot(got2);
+	    solution.addGot(got3);
+	    
+	    return solution;
+        
 	}
 	
 	

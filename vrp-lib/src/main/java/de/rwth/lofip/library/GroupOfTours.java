@@ -26,11 +26,7 @@ public class GroupOfTours implements SolutionElement {
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	Double expectedRecourseCost = null;
 
-    /****************************************************************************
-     * Constructors
-     ***************************************************************************/
-  
-    private void addTour(Tour t) {
+    public void addTour(Tour t) {
     	tours.add(t);
     	resetExpectedRecourseCost();
     }

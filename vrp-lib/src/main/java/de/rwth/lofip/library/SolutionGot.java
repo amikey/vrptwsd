@@ -24,7 +24,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
     private VrpProblem vrpProblem;
     private double penaltyCost = 0;
     private int iterationInWhichSolutionWasCreated;  
-    private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();   
+    private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();       
     
     public SolutionGot(VrpProblem vrpProblem) {
         this.vrpProblem = vrpProblem;
@@ -202,6 +202,10 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		return got.getLastTour();
 	}
 	
+	public Tour getTour(int i) {
+		return getTours().get(i);
+	}
+	
 	public GroupOfTours findGotForTour(Tour tour) {
 		GroupOfTours gotForTour = null;
 		for (GroupOfTours got : getGots())
@@ -265,6 +269,12 @@ public class SolutionGot implements Cloneable, SolutionElement {
         }
         return s;
     }
+
+	public int getNumberOfTours() {
+		return getTours().size();
+	}
+
+
 
     
 
