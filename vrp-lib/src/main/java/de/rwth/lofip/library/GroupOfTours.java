@@ -24,13 +24,14 @@ public class GroupOfTours implements SolutionElement {
 	final static int MAXIMAL_NUMBER_OF_TOURS = 2;		
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
+	private int tourPointer = 0;
 	Double expectedRecourseCost = null;
 
     /****************************************************************************
      * Constructors
      ***************************************************************************/
   
-    private void addTour(Tour t) {
+    public void addTour(Tour t) {
     	tours.add(t);
     	resetExpectedRecourseCost();
     }
@@ -131,6 +132,31 @@ public class GroupOfTours implements SolutionElement {
 	        	got.addTour(t.clone());	        	        	        
         return got;
     }
+
+	public boolean hasNextTour() {
+		return tourPointer < tours.size()-1;
+	}
+
+	public Tour getNextTour() {
+		tourPointer++;
+		return tours.get(tourPointer);
+	}
+
+	public void setTourPointer(int i) {
+		tourPointer = i;
+	}
+
+	public int getTourPointer() {
+		return tourPointer;
+	}
+
+	public boolean hasNextTourButOne() {
+		tourPointer++;
+		boolean result = hasNextTour();
+		tourPointer--;
+		return result;
+	}
+
 
 	
     
