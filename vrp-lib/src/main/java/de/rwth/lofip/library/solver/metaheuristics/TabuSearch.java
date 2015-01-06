@@ -4,11 +4,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import log4j2.Log4jTest;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
@@ -20,9 +15,6 @@ import de.rwth.lofip.library.util.IntermediateSolutionGot;
 
 public class TabuSearch implements MetaSolverInterfaceGot {
 	
-	static Logger logger = LogManager.getLogger(TabuSearch.class);
-	
-	private int NumberOfNeighborhoodSteps = 0;
 	private static Tour tour1;
 	private static Tour tour2;
 	private GroupOfTours got1;
@@ -40,27 +32,9 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	
 	public TabuSearch(GroupOfTours got1, GroupOfTours got2) {
 		this.got1 = got1;
-		this.got2 = got2;	
-		generateFirstNeighborhoodStep();
-	}
-	
-//	protected void generateNextNeighborhoodStep() {
-//		if (NumberOfNeighborhoodSteps == 0) {
-//			generateFirstNeighborhoodStep();
-//			NumberOfNeighborhoodSteps++; 
-//		} else {
-//			generateSubsequentNeigborhoodStep();
-//			NumberOfNeighborhoodSteps++;
-//		}
-//	}
-	
-	private void generateFirstNeighborhoodStep() {
+		this.got2 = got2;
 		tour1 = got1.getFirstTour();
 		tour2 = got2.getFirstTour();
-		if (tour2equalsTour1())
-			if (got2.hasNextTour())
-				tour2 = got2.getNextTour();
-			else throw new RuntimeException("Es kann kein erster Nachbarschaftsschritt generiert werden, da die Touren in den beiden Gots gleich sind und es keine weiteren Touren gibt. Hier muss später ein statt dieser RuntimeException ein anderes Got gewählt werden.");
 		positionTour1Level1 = 0;
 		positionTour1Level2 = 0;
 		positionTour2Level1 = 0;
@@ -71,7 +45,7 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 		endOfSegmentToBeRemovedInTour2 = tour2.getCustomerAtPosition(positionTour2Level2);
 	}
 
-	protected void generateNextNeighborhoodStep() {		
+	protected void generateNextNeigborhoodStep() {		
 		if (segmentInTour2CanBeIncreased()) 
 			increaseSegmentInTour2();	
 		else if (segmentInTour1CanBeIncreased()) {
@@ -107,7 +81,7 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 		got2.setTourPointer(0);
 	}
 
-	public boolean HasNextNeighborhoodStep() {		
+	public boolean HasNextNeighborhoodStep() {
 		if (segmentInTour1CanBeIncreased())
 			return true;
 		if (segmentInTour2CanBeIncreased())
