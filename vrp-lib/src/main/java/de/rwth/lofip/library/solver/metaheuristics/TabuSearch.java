@@ -15,10 +15,9 @@ import de.rwth.lofip.library.util.IntermediateSolutionGot;
 
 public class TabuSearch implements MetaSolverInterfaceGot {
 	
-	private static Tour tour1;
-	private static Tour tour2;
-	private GroupOfTours got1;
-	private GroupOfTours got2;
+	private Tour tour1;
+	private Tour tour2;
+
 
 	private static int positionTour1Level1 = 0;
 	private static int positionTour1Level2 = 0;
@@ -30,11 +29,9 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	private static CustomerInTour startOfSegmentToBeRemovedInTour2;
 	private static CustomerInTour endOfSegmentToBeRemovedInTour2;
 	
-	public TabuSearch(GroupOfTours got1, GroupOfTours got2) {
-		this.got1 = got1;
-		this.got2 = got2;
-		tour1 = got1.getFirstTour();
-		tour2 = got2.getFirstTour();
+	public TabuSearch(Tour tour1, Tour tour2) {
+		this.tour1 = tour1;
+		this.tour2 = tour2;
 		positionTour1Level1 = 0;
 		positionTour1Level2 = 0;
 		positionTour2Level1 = 0;
@@ -51,70 +48,9 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 		else if (segmentInTour1CanBeIncreased()) {
 				resetSegmentInTour2();
 				increaseSegmentInTour1();
-		}
-		else if (got2.hasNextTour()) {
-			tour2 = got2.getNextTour();
-			if (tour2equalsTour1())
-				if (got2.hasNextTour())
-					tour2 = got2.getNextTour();
-					//falls das der Fall ist, muss man von hier aus irgendwie in die untere if-Abfrage kommen.
-			resetSegmentInTour1();
-			resetSegmentInTour2();					
-		} else if (got1.hasNextTour()) {
-			tour1 = got1.getNextTour();
-			resetTour2();			
-			if (tour2equalsTour1())
-				if (got2.hasNextTour())
-					tour2 = got2.getNextTour();
-				else throw new RuntimeException("generateNextNeigborhoodStep was called although no next step exists");
-			resetSegmentInTour1();
-			resetSegmentInTour2();
-		}
-		else throw new RuntimeException("generateNextNeigborhoodStep was called although no next step exists");
+		} else throw new RuntimeException("generateNextNeigborhoodStep was called although no next step exists");
 	}
 	
-	// jetzt ist man bei den schleifen bei einschließlich Zeile 4 (von unten)
-	// jetzt ist noch zu testen, ob das auch wirklich funktioniert, wenn die Touren gleich sind => Test, in dem zweimal mit dem gleichen Got initialisiert wird. 	
-	
-	private void resetTour2() {
-		tour2 = got2.getFirstTour();
-		got2.setTourPointer(0);
-	}
-
-	public boolean HasNextNeighborhoodStep() {
-		if (segmentInTour1CanBeIncreased())
-			return true;
-		if (segmentInTour2CanBeIncreased())
-			return true;
-		if (got2.hasNextTour())
-			if (!tour2equalsTour1())
-				return true;
-			else if (got2.hasNextTourButOne())			
-					return true;				 	
-		if (got1.hasNextTour())
-			if (!tour2equalsTour1())
-				return true;
-			else if (got2.hasNextTourButOne())
-				return true;
-		return false;
-	}
-	
-	
-	
-
-
-	private boolean tour2equalsTour1() {
-		return tour2 == tour1;
-	}
-
-
-	private void resetSegmentInTour1() {
-		positionTour1Level1 = 0;
-		positionTour1Level2 = 0;		
-		startOfSegmentToBeRemovedInTour1 = tour1.getCustomerAtPosition(positionTour1Level1);
-		endOfSegmentToBeRemovedInTour1 = tour1.getCustomerAtPosition(positionTour1Level2);	
-	}
-
 	private boolean segmentInTour2CanBeIncreased() {
 		if (startOfSegementToBeRemovedCanBeIncreasedInTour2() || endOfSegmentToBeRemovedCanBeIncreasedInTour2())
 			return true;
@@ -204,14 +140,21 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 		return list;
 	}
 
+	public boolean HasNextNeighborhoodStep() {
+		if (startOfSegementToBeRemovedCanBeIncreasedInTour2() || endOfSegmentToBeRemovedCanBeIncreasedInTour2()
+				|| startOfSegementToBeRemovedCanBeIncreasedInTour1() || endOfSegmentToBeRemovedCanBeIncreasedInTour1())
+			return true;
+		else 
+			return false;
+	}
+
 	public static void printNeighborhoodStep() {
-		System.out.println("Tour1: " + tour1.getId());
+		System.out.println("Tour1:");
 		System.out.println("Positionen: " + positionTour1Level1 + ", " + positionTour1Level2);
-		System.out.println("Kunden: " + startOfSegmentToBeRemovedInTour1.getCustomer().getId() + ", " +endOfSegmentToBeRemovedInTour1.getCustomer().getId());
-		System.out.println("Tour2: " + tour2.getId());
+		System.out.println("Kunden: " + startOfSegmentToBeRemovedInTour1 + ", " +endOfSegmentToBeRemovedInTour1);
+		System.out.println("Tour2:");
 		System.out.println("Positionen: " + positionTour2Level1 + ", " + positionTour2Level2);
-		System.out.println("Kunden: " + startOfSegmentToBeRemovedInTour2.getCustomer().getId() + ", " +endOfSegmentToBeRemovedInTour2.getCustomer().getId());	
-		System.out.println("");
+		System.out.println("Kunden: " + startOfSegmentToBeRemovedInTour2 + ", " +endOfSegmentToBeRemovedInTour2);	
 	}
 	
 
