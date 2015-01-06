@@ -261,6 +261,53 @@ public class SetUpUtils {
         return got;
 	}
 	
+	public static GroupOfTours setUpFeasibleGroupOfToursWithThreeToursEachWithTwoCustomers() {
+        Customer c1 = new Customer();
+        c1.setCustomerNo(1);
+        c1.setxCoordinate(11);
+        c1.setyCoordinate(80);        
+        c1.setDemand(20);
+        c1.setTimeWindowOpen(278);
+        c1.setTimeWindowClose(345);
+        c1.setServiceTime(90);
+        
+        Customer c2 = new Customer();
+        c2.setCustomerNo(2);
+        c2.setxCoordinate(20);
+        c2.setyCoordinate(85);
+        c2.setDemand(20);
+        c2.setTimeWindowOpen(475);
+        c2.setTimeWindowClose(528);
+        c2.setServiceTime(90);
+      
+        Depot depot = new Depot();
+        depot.setxCoordinate(40);
+        depot.setyCoordinate(50);
+        
+        Vehicle vehicle = new Vehicle(1, 85);
+        Set<Vehicle> vehicles = new HashSet<Vehicle>();
+        vehicles.add(vehicle);
+        
+        Tour tour = new Tour(depot, vehicle);
+        tour.addCustomer(c1);
+        tour.addCustomer(c2);
+        
+        Tour tour2 = new Tour(depot, vehicle);
+        tour2.addCustomer(c1);
+        tour2.addCustomer(c2);       
+        
+        Tour tour3 = new Tour(depot,vehicle);
+        tour3.addCustomer(c1);
+        tour3.addCustomer(c2);
+        
+        GroupOfTours got = new GroupOfTours();
+        got.addTour(tour);
+        got.addTour(tour2);
+        got.addTour(tour3);
+        
+        return got;
+	}
+	
 	
 	public static Tour SetUpTourThatIsExecutedTheNextDay() {
         Customer c11 = new Customer();
@@ -541,6 +588,9 @@ public class SetUpUtils {
         }
 		return vrpProblems;
 	}
+
+
+
 
 
 

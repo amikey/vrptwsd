@@ -1,0 +1,2 @@
+2015-25-06 11:25:10.037 [main] FATAL log4j2.Log4jTest - This is a fatal message
+2015-25-06 11:25:10.037 [main] ERROR log4j2.Log4jTest - This is a error message
