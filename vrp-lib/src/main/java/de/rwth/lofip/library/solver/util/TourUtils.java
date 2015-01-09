@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.solver.util;
 
+import java.sql.Time;
+
 import org.apache.commons.math3.distribution.PoissonDistribution;
 
 import de.rwth.lofip.library.AbstractPointInSpace;
@@ -17,6 +19,8 @@ import de.rwth.lofip.library.util.CustomerInTour;
  * @author Olga Bock
  */
 public class TourUtils {
+	
+	static double currentTime;	
 
 	/**
 	 * This method calculates the cheapest insertion cost for the customer into
@@ -150,7 +154,7 @@ public class TourUtils {
 
 		// It is now needed to check if the insertion at the given position will
 		// violate any time windows of the following customers.
-		double currentTime = 0;
+		currentTime = 0;
 		if (position > 0 && position <= tour.getCustomers().size()) {
 			currentTime = tour.getCustomerAtPosition(position - 1)
 					.getEarliestLeavingTime();
@@ -207,112 +211,81 @@ public class TourUtils {
 	 * deterministic demand of all customers in the tour - including the new one
 	 * - is less than the vehicle capacity.
 	 * 
-	 * @param customer
+	 * @param customerToBeInserted
 	 * @param tour
 	 * @param position
 	 * @return boolean
 	 */
 	public static boolean isInsertionPossibleWrtDeterministicDemandAndTW(
-			Customer customer, Tour tour, int position) {
-
-		// System.out.println("Enter isInsertionPossible mit Tour " +
-		// tour.getId());
-
-		// check whether the demand of all customers of the tour
-		// - including the new one - is less than the vehicle capacity
-		// @author Olga Bock
-		long totalDemand = customer.getDemand();
-		for (Customer c : tour.getCustomers()) {
-			totalDemand += c.getDemand();
-		}
-
-		double tourCapacity = new Double(tour.getVehicle().getCapacity());
-		// System.out.println("tourCapacity: " + tourCapacity +
-		// "; total Demand: " + totalDemand);
-		if (tourCapacity < totalDemand) {
-			// System.out.println("Kapazität überschritten :(");
-			// System.out.println("Kunde " + customer.getCustomerNo() +
-			// " kann nicht in Tour " + tour.getTourAsTupel() + " an Position "
-			// + position +
-			// " eingefügt werden, da Kapazität überschritten wird.");
+			Customer customerToBeInserted, Tour tour, int position) {
+		if (position > tour.getCustomers().size())
+			throw new RuntimeException("isInsertionPossible wurde mit einem Index aufgerufen, der nicht in der Tour liegt.");
+		
+		if (demandIsGreaterThanCapacity(customerToBeInserted, tour))
 			return false;
-		}
 
-		// System.out.println("Capacity auf Tour: Check!");
-
-		// now we can be sure that the customer won't lead to a too large
-		// demand.
-
-		// It is now needed to check if the insertion at the given position will
-		// violate any time windows of the following customers.
-		double currentTime = 0;
-		if (position > 0 && position <= tour.getCustomers().size()) {
-			currentTime = tour.getCustomerAtPosition(position - 1)
-					.getEarliestLeavingTime();
-		}
-		// now the distance from the previous customer to the to-be-inserted
-		// customer
-		if (position == 0) {
-			currentTime += new Edge(tour.getDepot(), customer).getLength();
-		}
-
-		if (position > 0 && position <= tour.getCustomers().size()) {
-			currentTime = currentTime
-					+ new Edge(tour.getCustomerAtPosition(position - 1)
-							.getCustomer(), customer).getLength();
-		}
-		// If the vehicle arrives AFTER the time window has closed, there is no
-		// need to check any further.
-		if (currentTime > customer.getTimeWindowClose()) {
-			// System.out.println("Zeitfenster werden bei verschobenem Kunden "
-			// + customer.getCustomerNo() + " nicht eingehalten :(");
-			// System.out.println("Kunde " + customer.getCustomerNo() +
-			// " kann nicht in Tour " + tour.getTourAsTupel() + " an Position "
-			// + position +
-			// " eingefügt werden, da Zeitfenster verletzt werden.");
+		if (areTimeWindowsViolatedAtCustomerToBeInserted(customerToBeInserted, tour, position))
 			return false;
-		}
-
-		// System.out.println("Zeitfenster werden bei verschobenem Kunden " +
-		// customer.getCustomerNo() + " eingehalten :)");
-
-		currentTime += Math.max(currentTime, customer.getTimeWindowOpen())
-				+ customer.getServiceTime();
-
-		// The currentTime now holds the earliest time the vehicle can leave
-		// from the newly inserted customer.
-		// Now check for the customers which come after the one to be inserted
-		// if their time windows are still obeyed.
-
-		if (position < tour.getCustomers().size()) {
-			for (int i = position; i < tour.getCustomers().size(); i++) {
-				Customer previousCustomer = customer;
-				Customer currentCustomer = tour.getCustomers().get(i);
-				currentTime = currentTime
-						+ new Edge(previousCustomer, currentCustomer)
-								.getLength();
-				if (currentTime > currentCustomer.getTimeWindowClose()) {
-					// System.out.println("Zeitfenster werden bei nachfolgendem Kunden "
-					// + customer.getCustomerNo() + " nicht eingehalten :(");
-					// System.out.println("Kunde " + customer.getCustomerNo() +
-					// " kann nicht in Tour " + tour.getTourAsTupel() +
-					// " an Position " + position +
-					// " eingefügt werden, da Zeitfenster verletzt.");
-					return false;
-				}
-				currentTime = tour.getCustomerAtPosition(i)
-						.getEarliestLeavingTimeIfArrivalIsAt(currentTime);
-				previousCustomer = currentCustomer;
-			}
-
-		}
-		// System.out.println("Zeitfenster auf Tour: Check!");
-		// System.out.println("Kunde " + customer.getCustomerNo() +
-		// " kann in Tour " + tour.getTourAsTupel() + " an Position " + position
-		// +
-		// " eingefügt werden!");
+		
+		if (areTimeWindowsViolatedAfterCustomerToBeInserted(customerToBeInserted, tour, position))
+			return false;
+		
 		return true;
 	}
+	
+		private static boolean demandIsGreaterThanCapacity(Customer customer, Tour tour) {
+			long totalDemand = customer.getDemand();
+			for (Customer c : tour.getCustomers()) {
+				totalDemand += c.getDemand();
+			}
+			double tourCapacity = new Double(tour.getVehicle().getCapacity());
+			if (tourCapacity < totalDemand) 
+				return true;
+			else 
+				return false;
+		}
+		
+		private static boolean areTimeWindowsViolatedAtCustomerToBeInserted(Customer customerToBeInserted, Tour tour, int position) {
+			AbstractPointInSpace previousPoint;
+			if (position == 0) {
+				currentTime = 0;
+				previousPoint = tour.getDepot();			
+			} else {
+				currentTime = tour.getCustomerAtPosition(position - 1).getEarliestLeavingTime();
+				previousPoint = tour.getCustomerAtPosition(position - 1).getCustomer();
+			}					
+			if (areTimeWindowsViolated(previousPoint, customerToBeInserted))
+				return true;		
+			// Set the currentTime so that it holds the earliest time the vehicle can leave from the newly inserted customer.		
+			currentTime = Math.max(currentTime, customerToBeInserted.getTimeWindowOpen()) + customerToBeInserted.getServiceTime();
+			return false;
+		}
+
+		private static boolean areTimeWindowsViolatedAfterCustomerToBeInserted(Customer customerToBeInserted, Tour tour, int position) {
+			// Now check for the customers which come after the one to be inserted
+			// if their time windows are still obeyed.
+			Customer previousCustomer = customerToBeInserted;
+			Customer currentCustomer;
+			if (position < tour.getCustomers().size()) {
+				for (int i = position; i < tour.getCustomers().size(); i++) {				
+					currentCustomer = tour.getCustomers().get(i);
+					if (areTimeWindowsViolated(previousCustomer, currentCustomer))
+						return true;
+					currentTime = tour.getCustomerAtPosition(i).getEarliestLeavingTimeIfArrivalIsAt(currentTime);
+					previousCustomer = currentCustomer;
+				}
+
+			}
+			return false;
+		}
+
+		private static boolean areTimeWindowsViolated(AbstractPointInSpace previousPoint, Customer currentCustomer) {
+			currentTime += new Edge(previousPoint, currentCustomer).getLength();
+			if (currentTime > currentCustomer.getTimeWindowClose()) 
+				return true;
+			else 
+				return false;
+		}
 
 	/**
 	 * Check, if the deterministic demand of all customers in the tour -

@@ -1,8 +1,11 @@
 package de.rwth.lofip.library;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.google.common.collect.Iterables;
 
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
@@ -51,11 +54,18 @@ public class Tour implements Cloneable, SolutionElement {
         System.out.println("Kostenfaktor der Tour " + this.getId() + "wird auf " + costFactor + "gesetzt");
     }
     
+    public Tour(Tour tour1) {
+    	this();
+		this.depot = tour1.getDepot();
+		this.vehicle = tour1.getVehicle().clone();
+		customers = new LinkedList<CustomerInTour>(tour1.getCustomersInTour());		
+	}
+    
     /****************************************************************************
      * End Constructors
      ***************************************************************************/
 
-    /****************************************************************************
+	/****************************************************************************
      * Getter and Setter
      ***************************************************************************/
     
@@ -68,8 +78,7 @@ public class Tour implements Cloneable, SolutionElement {
         return id;
     }
     
-    public void setId(long id)
-    {
+    public void setId(long id) {
     	this.id=id;
     }
 
@@ -205,6 +214,29 @@ public class Tour implements Cloneable, SolutionElement {
         return t;
     }
     
+    @Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tour other = (Tour) obj;		
+//		return Iterables.elementsEqual(customers, other.getCustomersInTour());
+		Iterator<CustomerInTour> customersIterator = customers.iterator();
+		Iterator<CustomerInTour> otherCustomerIterator = other.getCustomersInTour().iterator();
+		while (customersIterator.hasNext()) {
+			if (!otherCustomerIterator.hasNext())
+				return false;			
+			if (customersIterator.next().getCustomer().getCustomerNo() != otherCustomerIterator.next().getCustomer().getCustomerNo())
+				return false;
+		}
+		if (otherCustomerIterator.hasNext())
+			return false;
+		return true;
+	}
+
 	public Tour cloneAndSetPointersToCustomersInVrpProblem(VrpProblem vrpProblemClone) {
 		Tour t = new Tour(depot, vehicle.clone());
         for (CustomerInTour cit : customers) 
@@ -247,7 +279,16 @@ public class Tour implements Cloneable, SolutionElement {
         insertCustomerAtPosition(customer, customers.size(), iteration,
                 insertionClassName, false);
     }
-       
+    
+	public void insertCustomersAtPosition(List<Customer> customers2, int position) {			
+		Iterator<Customer> customerIterator = customers2.iterator(); 
+		while (customerIterator.hasNext()) {
+			Customer customer = customerIterator.next();			
+			insertCustomerAtPosition(customer, position);
+			position++;
+		}			
+	}
+	       
     // A helper method if you don't have an insertion class name.     
     public void insertCustomerAtPosition(Customer customer, int position) {
         insertCustomerAtPosition(customer, position, 0, "", false);
@@ -307,10 +348,12 @@ public class Tour implements Cloneable, SolutionElement {
      */
     public Customer removeCustomerAtPosition(int position) { 			    	
         if (position < 0) 
-        	throw new RuntimeException("Es wurde versucht auf einer Tour einen Kunden an einer Position zu entfernen, die kleiner 0 ist. Versuchte Position ist " + position + ". \n " +
+        	throw new RuntimeException("Es wurde versucht auf einer Tour einen Kunden an einer Position zu entfernen, die kleiner 0 ist. \n " +
+        			"Versuchte Position ist " + position + ". Letzte mögliche Position ist " + (this.getCustomerSize()-1) + " \n " +
         			"Das ist die Tour: " + this.getTourAsTupel());
         if (position >= customers.size())	
-        	throw new RuntimeException("Es wurde versucht auf einer Tour einen Kunden an einer Position zu entfernen, die grï¿½ï¿½er ist als die letzte Position auf der Tour. Versuchte Position ist " + position + ". \n " +
+        	throw new RuntimeException("Es wurde versucht auf einer Tour einen Kunden an einer Position zu entfernen, die groesser ist als die letzte Position auf der Tour. \n" + 
+        			"Versuchte Position ist " + position + ". Letzte mögliche Position ist " + (this.getCustomerSize()-1) + " \n " +
         			"Das ist die Tour: " + this.getTourAsTupel() +"\n" + 
         			"customers.size(): " + customers.size() + "\n" + 
         			"Kunden fangen bei Position 0 an und gehen bis n-1 bei n Kunden. Wenn daher z.B.  versucht wird, an Position 8 zu entfernen, muss es 9 Kunden in der Tour geben.");	 
@@ -350,6 +393,15 @@ public class Tour implements Cloneable, SolutionElement {
                 customers.get(position).getPreviousVertex());
 	}
 
+	public List<Customer> removeCustomersBetween(
+			int positionStartOfSegmentTour1, int positionEndOfSegmentTour1) {		
+		List<Customer> customers = new LinkedList<Customer>();	
+		for (int i = positionStartOfSegmentTour1; i <= positionEndOfSegmentTour1; i++) {			
+			Customer customer = removeCustomerAtPosition(positionStartOfSegmentTour1);
+			customers.add(customer);
+		}
+		return customers;
+	}
 
 	/**
      * helper method to recalculate all edges and the arrival/leaving times for all
@@ -367,6 +419,8 @@ public class Tour implements Cloneable, SolutionElement {
     /****************************************************************************
      * End Utilities for adding and deleting customers
      ***************************************************************************/
+    
+    
 
       
     /****************************************************************************
@@ -384,5 +438,7 @@ public class Tour implements Cloneable, SolutionElement {
 //        s += "); Demand: " + getDemandOnTour();
         return s;
     }
+
+	
 
 }

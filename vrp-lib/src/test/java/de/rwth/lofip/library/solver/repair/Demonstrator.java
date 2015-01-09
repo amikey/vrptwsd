@@ -14,7 +14,7 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import de.rwth.lofip.library.DeterministicTour;
+import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.util.TourUtils;
@@ -106,7 +106,7 @@ public class Demonstrator {
 		System.out.println("Juhu, Success :)");
 
 		Set<Vehicle> vs = problem.getVehicles();
-		DeterministicTour t1 = new DeterministicTour(problem.getDepot(), vs
+		Tour t1 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t1.addCustomer(problem.getCustomerWithCustomerNo(3));
 		if (TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(
@@ -123,54 +123,54 @@ public class Demonstrator {
 			System.out.println("M�p, Einf�gen in Tour " + t1.getTourAsTupel()
 					+ " nicht m�glich");
 
-		DeterministicTour t2 = new DeterministicTour(problem.getDepot(), vs
+		Tour t2 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t2.addCustomer(problem.getCustomerWithCustomerNo(6));
 		t2.addCustomer(problem.getCustomerWithCustomerNo(4));
 
-		DeterministicTour t3 = new DeterministicTour(problem.getDepot(), vs
+		Tour t3 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t3.addCustomer(problem.getCustomerWithCustomerNo(21));
 		t3.addCustomer(problem.getCustomerWithCustomerNo(23));
 
-		DeterministicTour t4 = new DeterministicTour(problem.getDepot(), vs
+		Tour t4 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t4.addCustomer(problem.getCustomerWithCustomerNo(2));
 		t4.addCustomer(problem.getCustomerWithCustomerNo(22));
 
-		DeterministicTour t5 = new DeterministicTour(problem.getDepot(), vs
+		Tour t5 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t5.addCustomer(problem.getCustomerWithCustomerNo(15));
 		t5.addCustomer(problem.getCustomerWithCustomerNo(14));
 		t5.addCustomer(problem.getCustomerWithCustomerNo(13));
 
-		DeterministicTour t6 = new DeterministicTour(problem.getDepot(), vs
+		Tour t6 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t6.addCustomer(problem.getCustomerWithCustomerNo(16));
 
-		DeterministicTour t7 = new DeterministicTour(problem.getDepot(), vs
+		Tour t7 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t7.addCustomer(problem.getCustomerWithCustomerNo(18));
 		t7.addCustomer(problem.getCustomerWithCustomerNo(8));
 		t7.addCustomer(problem.getCustomerWithCustomerNo(17));
 		t7.addCustomer(problem.getCustomerWithCustomerNo(5));
 
-		DeterministicTour t8 = new DeterministicTour(problem.getDepot(), vs
+		Tour t8 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t8.addCustomer(problem.getCustomerWithCustomerNo(7));
 		t8.addCustomer(problem.getCustomerWithCustomerNo(1));
 
-		DeterministicTour t9 = new DeterministicTour(problem.getDepot(), vs
+		Tour t9 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t9.addCustomer(problem.getCustomerWithCustomerNo(19));
 		t9.addCustomer(problem.getCustomerWithCustomerNo(10));
 
-		DeterministicTour t10 = new DeterministicTour(problem.getDepot(), vs
+		Tour t10 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t10.addCustomer(problem.getCustomerWithCustomerNo(11));
 		t10.addCustomer(problem.getCustomerWithCustomerNo(20));
 
-		DeterministicTour t11 = new DeterministicTour(problem.getDepot(), vs
+		Tour t11 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t11.addCustomer(problem.getCustomerWithCustomerNo(9));
 

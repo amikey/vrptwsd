@@ -107,8 +107,34 @@ public class GroupOfTours implements SolutionElement {
 		if (tours.isEmpty()) throw new RuntimeException("keine Tour in Got. Kann keine Similarity berechnen");
 		return maxSimVal;
 	}
-    
-   
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GroupOfTours other = (GroupOfTours) obj;
+		if (tours == null) {
+			if (other.tours != null)
+				return false;			
+		} else {
+			for (Tour tour : tours)
+				if (!other.isExists(tour))
+					return false;						
+		};
+		return true;
+	}
+
+	private boolean isExists(Tour other) {
+		for (Tour tour : tours)
+			if (other.equals(tour))
+				return true;
+		return false;
+	}
+
 	/****************************************************************************
      * Calculation of Probabilities and Recourse Cost
      ***************************************************************************/        

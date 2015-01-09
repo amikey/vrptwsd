@@ -274,9 +274,34 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		return getTours().size();
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SolutionGot other = (SolutionGot) obj;
+		if (gots == null) {
+			if (other.gots != null)
+				return false;
+		} else { 
+			for (GroupOfTours got : gots)
+				if (!other.isExistsEqualGot(got))
+					return false;			
+			return true;
+		}
+		return true;
+	}
 
-
-    
-
+		private boolean isExistsEqualGot(GroupOfTours gotOther) {
+			for (GroupOfTours got : gots)
+				if (got.equals(gotOther))
+					return true;
+			return false;
+		}   
 
 }
+
+
