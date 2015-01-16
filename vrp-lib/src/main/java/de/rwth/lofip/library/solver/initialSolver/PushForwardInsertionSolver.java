@@ -13,14 +13,13 @@ import de.rwth.lofip.library.solver.util.TourUtils;
  * 
  * @author Andreas Braun <dominik@dadadom.de>
  */
-public class StochasticPushForwardInsertionSolver extends
+public class PushForwardInsertionSolver extends
 		AbstractPushForwardInsertionSolver {
 
 	@Override
 	protected CustomerWithCost calculateCustomerHook(Customer customer,
 			Tour tour, double approximateEquality) {
-		return TourUtils.calculateCostStochasticSolver(customer, tour,
-				approximateEquality);
+		return TourUtils.calculateCostDeterministicSolver(customer, tour);
 	}
 
 	@Override
