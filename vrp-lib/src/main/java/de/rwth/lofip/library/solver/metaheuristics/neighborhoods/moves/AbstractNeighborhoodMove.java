@@ -52,4 +52,11 @@ public class AbstractNeighborhoodMove implements NeighborhoodInterface {
 	public int getEndPositionTour2() {
 		return positionEndOfSegmentTour2;
 	}
+
+	public void print() {
+		System.out.println("Tour1: " + tour1.getId());
+		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
+		System.out.println("Tour2: " + tour2.getId());
+		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);		
+	}
 }

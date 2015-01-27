@@ -11,18 +11,18 @@ import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.cli.deterministic.DeterministicVrpSolver;
 import de.rwth.lofip.library.Solution;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicDemandAndFailureSortingInsertion;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicFeasibilityOrientedInsertion;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicGreedyInsertion;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.deterministic.DeterministicTimeAndFailureSortingInsertion;
-import de.rwth.lofip.library.solver.metaheuristics.removals.DestroyToursRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.ExpectedWorstRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemoval;
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.deterministic.DeterministicDemandAndFailureSortingInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.deterministic.DeterministicFeasibilityOrientedInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.deterministic.DeterministicGreedyInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.deterministic.DeterministicTimeAndFailureSortingInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.DestroyToursRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.ExpectedWorstRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
 
 /**
  * CLI application for the VRP Solver.

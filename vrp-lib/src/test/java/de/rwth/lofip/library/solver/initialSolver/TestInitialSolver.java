@@ -16,8 +16,7 @@ public class TestInitialSolver {
 	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();	
 	
-	@Test
-	public void testInitialSolver() throws IOException {		
+	public void main() throws IOException {		
 		problems = TestUtils.readSolomonProblems();
 		solveProblemsWithInitialSolver();
 		TestUtils.printResultsToFile("initialSolver",solutions);

@@ -17,13 +17,13 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemoval;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RemovedCustomer;
 //import static org.junit.Assert.assertSame;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolution;
 import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
 
 
 /**
@@ -267,7 +267,7 @@ public class RepairSolution {
 	 * 
 	 * @param solution
 	 * @param event (customerNo, demand, pointInTime) 
-	 * @param tour (used to return the tour with problem)
+	 * @param tourWithCustomer3And2 (used to return the tour with problem)
 	 * @return boolean (true if there exists a problem; false otherwise)
 	 * 
 	 * @author Andreas Braun

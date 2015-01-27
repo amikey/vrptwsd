@@ -42,14 +42,7 @@ import de.rwth.lofip.library.solver.util.TourUtils;
  */
 public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
 
-	static Logger logger = LogManager.getLogger(GroupPushForwardInsertionSolver.class);
-	   
-    // setting up a FileAppender dynamically...
-    SimpleLayout layout = new SimpleLayout();    
-    FileAppender appender = new FileAppender(layout,"your filename",false);    
-    logger.addAppender(appender);
-
-    logger.setLevel((Level) Level.DEBUG);   
+	static Logger logger = LogManager.getLogger(GroupPushForwardInsertionSolver.class); 
 	
     Set<Customer> unassignedCustomers = new HashSet<Customer>();
 	Set<Customer> assignedCustomersInGot = new HashSet<Customer>();
@@ -57,8 +50,6 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
     int iteration = 1;
     SolutionGot solution;
     CustomerWithCost cheapestCustomer;
-//    private static Logger logger = LogManager
-  //          .getLogger(GroupPushForwardInsertionSolver.class);
 
     @Override
     public String getDescriptiveName() {

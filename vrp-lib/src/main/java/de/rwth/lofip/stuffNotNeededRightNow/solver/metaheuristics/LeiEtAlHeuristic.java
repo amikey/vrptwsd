@@ -8,21 +8,21 @@ import java.util.Random;
 
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.InsertionInterface;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterface;
-import de.rwth.lofip.library.solver.metaheuristics.removals.ExpectedWorstRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RemovalInterface;
-import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemoval;
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.StochasticDemandAndFailureSortingInsertion;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.StochasticFeasibilityOrientedInsertion;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.StochasticGreedyInsertion;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.StochasticTimeAndFailureSortingInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.ExpectedWorstRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterface;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
 
 /**
  * An implementation of the meta heuristic proposed by Lei et al. (2011).

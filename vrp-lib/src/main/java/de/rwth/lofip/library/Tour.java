@@ -24,6 +24,9 @@ public class Tour implements Cloneable, SolutionElement {
     protected Depot depot;
     protected Vehicle vehicle;
     protected List<CustomerInTour> customers = new LinkedList<CustomerInTour>();
+	private List<Edge> edges = new LinkedList<Edge>();
+	private double demand = 0;
+	private double tourDistance = 0;
 
     /****************************************************************************
      * Constructors
@@ -54,6 +57,7 @@ public class Tour implements Cloneable, SolutionElement {
         System.out.println("Kostenfaktor der Tour " + this.getId() + "wird auf " + costFactor + "gesetzt");
     }
     
+    //copy constructor
     public Tour(Tour tour1) {
     	this();
 		this.depot = tour1.getDepot();
@@ -68,12 +72,7 @@ public class Tour implements Cloneable, SolutionElement {
 	/****************************************************************************
      * Getter and Setter
      ***************************************************************************/
-    
-    public String getTourType()
-    {
-    	return "stochastic";
-    }
-    
+       
     public long getId() {
         return id;
     }
@@ -91,15 +90,7 @@ public class Tour implements Cloneable, SolutionElement {
     }
 
     public List<Edge> getEdges() {
-        List<Edge> edgesList = new ArrayList<Edge>();
-        if (customers.size() == 0) {
-            return edgesList;
-        }
-        for (CustomerInTour cit : customers) {
-            edgesList.add(cit.getIncomingEdge());
-        }
-        edgesList.add(customers.get(customers.size() - 1).getOutgoingEdge());
-        return edgesList;
+        return edges;
     }
 
     /**
@@ -124,29 +115,10 @@ public class Tour implements Cloneable, SolutionElement {
     	return null;
     }
      
-    public CustomerInTour getMostSimilarCustomerInTour(Customer customer) throws Exception
-    {   //AB - gibt den CustomerInTour zur�ck, der den h�chsten Similarity Value mit customer hat
-    	try 
-    	{
-    		for (CustomerWithCost cwc : customer.getSimilarCustomers())
-	    		for (CustomerInTour cit : this.getCustomersInTour())
-	    			if (cwc.getCustomer().getCustomerNo() == cit.getCustomer().getCustomerNo())
-	    				return cit;
-    	} catch (Exception e) {
-    		System.err.println("An error occured when calculating the most similar customer in tour.");
-            e.printStackTrace();
-        }
-    	return null;
-    }
-
     public List<CustomerInTour> getCustomersInTour() {
         return customers;
     }
     
-	public int getIndexOfTheLastRemovablePosition() {
-		return customers.size()-1;
-	}
-
     public List<Customer> getCustomers() {
         List<Customer> customerList = new ArrayList<Customer>();
         for (CustomerInTour cit : customers) {
@@ -160,10 +132,6 @@ public class Tour implements Cloneable, SolutionElement {
 	}
     
     public double getTotalDistance() {  
-        double tourDistance = 0;
-        for (Edge v : getEdges()) {
-            tourDistance += v.getLength();
-        }
         return tourDistance;
     }
     
@@ -192,9 +160,6 @@ public class Tour implements Cloneable, SolutionElement {
     }
          
     public double getDemandOnTour(){
-    	double demand = 0;
-    	for (Customer c : getCustomers())
-    		demand += c.getDemand();
     	return demand;
     }
     
@@ -334,10 +299,13 @@ public class Tour implements Cloneable, SolutionElement {
             customers.get(i).setPosition(i);
         }
         vehicle.addCapacityUsage(customer.getDemand());
-        recalculateTimes();       
+        recalculateTimes();    
+        recalculateEdges();
+        recalculateTotalDistance();
+        recalculateDemand(customer.getDemand());
     }    
-    
-    /**
+
+	/**
      * Remove the customer at {@code position} if the tour has at least that
      * many customers. Returns the removed customer or null, if no such position
      * exists.
@@ -371,7 +339,9 @@ public class Tour implements Cloneable, SolutionElement {
         }
         vehicle.addCapacityUsage(removedCustomer.getDemand() * -1);
         recalculateTimes();  
-        
+        recalculateEdges();
+        recalculateTotalDistance();
+        recalculateDemand(removedCustomer.getDemand() * -1);
         return removedCustomer;
     }            
     
@@ -396,7 +366,7 @@ public class Tour implements Cloneable, SolutionElement {
 	public List<Customer> removeCustomersBetween(
 			int positionStartOfSegmentTour1, int positionEndOfSegmentTour1) {		
 		List<Customer> customers = new LinkedList<Customer>();	
-		for (int i = positionStartOfSegmentTour1; i <= positionEndOfSegmentTour1; i++) {			
+		for (int i = positionStartOfSegmentTour1; i < positionEndOfSegmentTour1; i++) {			
 			Customer customer = removeCustomerAtPosition(positionStartOfSegmentTour1);
 			customers.add(customer);
 		}
@@ -404,17 +374,49 @@ public class Tour implements Cloneable, SolutionElement {
 	}
 
 	/**
-     * helper method to recalculate all edges and the arrival/leaving times for all
+     * helper method to recalculate the arrival/leaving times for all
      * {@code CustomerInTour} objects of this tour.
      */
     public final void recalculateTimes() {
-        // the edges won't need recalculation, they are lazily calculated
         double currentTime = 0;
-        for (CustomerInTour cit : customers) {
-            cit.setArrivalTime(currentTime + cit.getIncomingEdge().getLength());
-            currentTime = cit.getEarliestLeavingTime();
-        }
+        if (customers.size() > 0) {
+        	//first customer
+        	CustomerInTour cit = customers.get(0);
+        	cit.setArrivalTime(currentTime + new Edge(depot,cit).getLength());
+        	currentTime = cit.getEarliestLeavingTime();
+        	//following customers
+        	for (int i = 0; i < customers.size()-1; i++) {
+        		cit = customers.get(i+1);
+        		cit.setArrivalTime(currentTime + new Edge(customers.get(i), cit).getLength());
+        		currentTime = cit.getEarliestLeavingTime();
+        	}        	
+        }	      
+    }    
+    
+    public final void recalculateEdges() {
+    	edges.clear();
+        if (customers.size() != 0) {                
+	        //first customer
+	        edges.add(new Edge(depot, customers.get(0)));
+	        //customers inbetween
+	        for (int i = 0; i < customers.size()-1; i++)
+	        	edges.add(new Edge(customers.get(i), customers.get(i+1)));
+	        //last customer
+	        edges.add(new Edge(customers.get(customers.size()-1),depot));
+        }       
     }
+        
+    private void recalculateDemand(long demand2) {
+    	demand += demand2;
+	}
+    
+	private void recalculateTotalDistance() {
+        tourDistance = 0;
+        for (Edge v : getEdges()) {
+            tourDistance += v.getLength();
+        }
+	}    
+    
 
     /****************************************************************************
      * End Utilities for adding and deleting customers

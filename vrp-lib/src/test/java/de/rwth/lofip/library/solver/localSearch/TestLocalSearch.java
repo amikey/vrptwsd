@@ -1,51 +1,49 @@
 package de.rwth.lofip.library.solver.localSearch;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
-import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodMove;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestLocalSearch {
 	
 	private SolutionGot solution;
-	private CrossNeighborhoodMove bestMove;
-	private CrossNeighborhood crossNeighborhood;
-
-	@Before
-	public void initialize() {
-		solution = SetUpUtils.SetUpSolutionWithTwoToursAndTwoCustomersEach();
-		crossNeighborhood = new CrossNeighborhood(solution);
-	}
 	
 	@Test
 	public void testLocalSearch() {		
-		localSearch();
-		assertEquals(true, solution.equals(SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively()));
-	}
-	
-	private void localSearch() {
-		do {
-			findBestMove();
-			if (isImprovement());
-				applyBestMove();
-		} while (isImprovement());		
+		givenSolutionWithTwoToursAndTwoCustomersEach();
+		whenSolutionIsImprovedWithLocalSearch();
+		thenSolutionShouldHaveOneTourWithFourCustomers();
 	}
 
-	private void findBestMove() {
-		bestMove = crossNeighborhood.returnBestCrossMove();				
+	private void givenSolutionWithTwoToursAndTwoCustomersEach() {
+		solution = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();
 	}
 	
-	private boolean isImprovement() {
-		return (bestMove.getCost() < solution.getTotalDistance());
-	}	
-
-	private void applyBestMove() {
-		solution = crossNeighborhood.acctuallyApplyMove(bestMove);
-		crossNeighborhood.resetNeighborhood();
+	private void whenSolutionIsImprovedWithLocalSearch() {
+		LocalSearch localSearch = new LocalSearch();
+		solution = localSearch.improve(solution);
 	}
+
+	private void thenSolutionShouldHaveOneTourWithFourCustomers() {
+		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().getSolutionAsTupel());
+		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().getTotalDistance());
+		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4().getSolutionAsTupel());
+		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4().getTotalDistance());
+		assertEquals(true, solution.equals(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4()));
+	}
+	
+	@Test
+	public void testLocalSearch2() {		
+		givenSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer();
+		whenSolutionIsImprovedWithLocalSearch();
+		thenSolutionShouldHaveOneTourWithFourCustomers();
+	}
+
+	private void givenSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer() {
+		solution = SetUpUtils.getSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer();
+	}
+
 }

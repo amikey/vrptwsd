@@ -6,21 +6,21 @@ import java.util.List;
 import java.util.Set;
 
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.InsertionInterface;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.NeighborhoodInterface;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.TabuInsertionInterface;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterface;
-import de.rwth.lofip.library.solver.metaheuristics.removals.ExpectedWorstRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemoval;
 import de.rwth.lofip.library.solver.util.TabuTourPosition;
 import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterface;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.NeighborhoodInterface;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.TabuInsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.tabu.StochasticDemandAndFailureSortingInsertionTabuSearch;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.tabu.StochasticFeasibilityOrientedInsertionTabuSearch;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.tabu.StochasticGreedyInsertionTabuSearch;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.tabu.StochasticTimeAndFailureSortingInsertionTabuSearch;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.ExpectedWorstRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
 
 /**
  * This is the heuristic from Lei et al., enhanced with the aspects of

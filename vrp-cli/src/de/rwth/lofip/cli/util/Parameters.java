@@ -15,11 +15,11 @@ import de.rwth.lofip.cli.got.VrpSolverGot;
 import de.rwth.lofip.cli.minimization.MinimizationVrpSolver;
 import de.rwth.lofip.cli.normal.VrpSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemovalGot;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemoval;
-import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemovalGot;
 import de.rwth.lofip.library.solver.util.DistanceComparatorWithSimilarity;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristicGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemovalGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemovalGot;
 
 public class Parameters {
 	

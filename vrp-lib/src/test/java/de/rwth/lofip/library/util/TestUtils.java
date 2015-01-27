@@ -23,7 +23,8 @@ public class TestUtils {
 	
 	public static List<VrpProblem> readSolomonProblems() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+//		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");

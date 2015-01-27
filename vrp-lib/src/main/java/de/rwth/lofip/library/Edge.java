@@ -70,21 +70,18 @@ public class Edge {
 	 */
 	private void recalculateLength() {
 		if (pointOne != null && pointTwo != null) {
-			length = Math.sqrt(Math.pow(
-					Double.valueOf(pointTwo.getxCoordinate()
-							- pointOne.getxCoordinate()), 2)
-					+ Math.pow(
-							Double.valueOf(pointTwo.getyCoordinate()
-									- pointOne.getyCoordinate()), 2));
+			double xCoordinatePoint1 = pointOne.getxCoordinate();
+			double xCoordinatePoint2 = pointTwo.getxCoordinate();
+			double xDifference = Double.valueOf(xCoordinatePoint2 - xCoordinatePoint1);
+			
+			double yDifference = Double.valueOf(pointTwo.getyCoordinate()- pointOne.getyCoordinate());
+		
+			length = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
 		} else {
 			length = Double.MAX_VALUE;
 		}
 	}
 
-	/**
-	 * @param length
-	 *            the length to set
-	 */
 	public void setLength(double length) {
 		this.length = length;
 	}

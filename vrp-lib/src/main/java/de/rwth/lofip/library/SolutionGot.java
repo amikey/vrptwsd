@@ -114,16 +114,15 @@ public class SolutionGot implements Cloneable, SolutionElement {
 
 
     public void removeEmptyTours() {
-    	Iterator<GroupOfTours> iter=gots.iterator();
-    	while(iter.hasNext()){
-    	    GroupOfTours got = iter.next();
-    	    if(!got.isHasTours())
-    	        iter.remove();
-    	    else
-    	    	got.removeEmptyTours();
-    	}  		    	
+    	Set<GroupOfTours> emptyGots = new HashSet<GroupOfTours>();
+    	for (GroupOfTours got : gots)     		
+    	    got.removeEmptyTours();    	  		    
+    	for (GroupOfTours got : gots) 
+    		if(!got.isHasTours())
+    	        emptyGots.add(got);    	        	  		   
+    	gots.removeAll(emptyGots);
     }
-
+    
     public List<CustomerInTour> getCustomersInTours() {
         List<CustomerInTour> returnList = new ArrayList<CustomerInTour>();
         for (Tour t : getTours()) {
@@ -241,7 +240,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
      */
 	
 	    public void printSolution() {
-        System.out.println(getSolutionAsString());
+        System.out.println(getSolutionAsTupel());
     }
 
     public String getSolutionAsString() {

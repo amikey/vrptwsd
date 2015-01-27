@@ -235,9 +235,7 @@ public class TourUtils {
 	
 		private static boolean demandIsGreaterThanCapacity(Customer customer, Tour tour) {
 			long totalDemand = customer.getDemand();
-			for (Customer c : tour.getCustomers()) {
-				totalDemand += c.getDemand();
-			}
+			totalDemand += tour.getDemandOnTour();			
 			double tourCapacity = new Double(tour.getVehicle().getCapacity());
 			if (tourCapacity < totalDemand) 
 				return true;
@@ -337,7 +335,6 @@ public class TourUtils {
 	}
 
 	public static boolean isTourFeasibleWrtTW(Tour tour) {
-
 		// check whether time window constraints are satisfied
 		tour.recalculateTimes();
 		boolean feasible = true;

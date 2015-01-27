@@ -21,7 +21,7 @@ public class GroupOfTours implements SolutionElement {
 
 	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 1;
 	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.2;
-	final static int MAXIMAL_NUMBER_OF_TOURS = 2;		
+	final static int MAXIMAL_NUMBER_OF_TOURS = 1;		
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	Double expectedRecourseCost = null;

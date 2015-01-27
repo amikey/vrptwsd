@@ -26,6 +26,7 @@ public class TestSolutionGot {
 		assertEquals(true, solution.equals(solutionOther));		
 	}
 	
+	
 	@Test 
 	public void testEqualsMethodWithNegativeOutcome() {
 		givenTwoDifferentSolutionsInTermsOfTours();
@@ -34,7 +35,7 @@ public class TestSolutionGot {
 
 	private void givenTwoDifferentSolutionsInTermsOfTours() {
 		solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
-		solutionOther = SetUpUtils.SetUpSolutionWithTwoToursAndTwoCustomersEach();		
+		solutionOther = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();		
 	}
 
 	private void thenSolutionsShouldBeDifferent() {

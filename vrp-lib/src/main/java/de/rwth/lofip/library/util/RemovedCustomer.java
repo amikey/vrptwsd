@@ -1,7 +1,7 @@
 package de.rwth.lofip.library.util;
 
 import de.rwth.lofip.library.Customer;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RemovalInterface;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterface;
 
 /**
  * A {@code RemovedCustomer} holds additional information about a customer who

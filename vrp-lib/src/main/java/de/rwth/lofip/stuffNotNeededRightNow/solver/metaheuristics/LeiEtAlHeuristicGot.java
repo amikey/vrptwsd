@@ -8,24 +8,24 @@ import java.util.Random;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.InsertionInterface;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.InsertionInterfaceGot;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.DemandAndFailureSortingInsertionGot;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.FeasibilityOrientedInsertionGot;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.GreedyInsertionGot;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.groups.TimeAndFailureSortingInsertionGot;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
-import de.rwth.lofip.library.solver.metaheuristics.removals.ExpectedWorstRemovalGot;
-import de.rwth.lofip.library.solver.metaheuristics.removals.FeasibilityOrientedRemovalGot;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RandomRemovalGot;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RemovalInterface;
-import de.rwth.lofip.library.solver.metaheuristics.removals.RemovalInterfaceGot;
-import de.rwth.lofip.library.solver.metaheuristics.removals.SimilarityRemovalGot;
 import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.library.util.IntermediateSolutionGot;
 import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterface;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterfaceGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.groups.DemandAndFailureSortingInsertionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.groups.FeasibilityOrientedInsertionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.groups.GreedyInsertionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.groups.TimeAndFailureSortingInsertionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.ExpectedWorstRemovalGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemovalGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemovalGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterface;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterfaceGot;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemovalGot;
 
 /**
  * An implementation of the meta heuristic proposed by Lei et al. (2011).

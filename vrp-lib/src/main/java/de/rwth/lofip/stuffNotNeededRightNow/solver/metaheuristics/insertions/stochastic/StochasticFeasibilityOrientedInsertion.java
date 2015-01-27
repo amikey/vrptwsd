@@ -3,7 +3,7 @@ package de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.st
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.AbstractFeasibilityOrientedInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.AbstractFeasibilityOrientedInsertion;
 
 public class StochasticFeasibilityOrientedInsertion extends
 		AbstractFeasibilityOrientedInsertion {

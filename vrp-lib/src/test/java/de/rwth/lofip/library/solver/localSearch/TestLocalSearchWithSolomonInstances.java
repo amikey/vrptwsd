@@ -15,19 +15,18 @@ import de.rwth.lofip.library.util.TestUtils;
 
 public class TestLocalSearchWithSolomonInstances {
 	
-	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
-	private List<SolutionGot> initialSolutions = new LinkedList<SolutionGot>();
-	private List<SolutionGot> improvedSolutions = new LinkedList<SolutionGot>();
+	private static List<VrpProblem> problems = new LinkedList<VrpProblem>();
+	private static List<SolutionGot> initialSolutions = new LinkedList<SolutionGot>();
+	private static List<SolutionGot> improvedSolutions = new LinkedList<SolutionGot>();
 	
-	@Test
-	public void testLocalSearch() throws IOException {		
+	public static void main(String [ ] args) throws IOException {		
 		problems = TestUtils.readSolomonProblems();
 		solveProblemsWithInitialSolver();
 		improveSolutionsWithLocalSearch();
 		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
 	}
 	
-	private void solveProblemsWithInitialSolver() {
+	private static void solveProblemsWithInitialSolver() {
 		SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
 		for (VrpProblem problem : problems) {
 			SolutionGot solution = initialSolver.solve(problem);
@@ -35,7 +34,7 @@ public class TestLocalSearchWithSolomonInstances {
 		}
 	}	
 	
-	private void improveSolutionsWithLocalSearch() {
+	private static void improveSolutionsWithLocalSearch() {
 		LocalSearch localSearch = new LocalSearch();
 		for (SolutionGot solution : initialSolutions) {
 			SolutionGot improvedSolution = localSearch.improve(solution.clone());

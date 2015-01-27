@@ -5,8 +5,8 @@ import java.util.Set;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.solver.metaheuristics.insertions.TabuInsertionInterface;
 import de.rwth.lofip.library.solver.util.TabuTourPosition;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.TabuInsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.StochasticGreedyInsertion;
 
 /**
