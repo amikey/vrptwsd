@@ -53,7 +53,8 @@ public class TestUtils {
 		setUpBestKnownSolutionVehicleNumbers();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
-		File outputFile = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/"
+		File outputFile = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/output/"
+//		File outputFile = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/"
 				+ string + " " 
                 + sdf.format(Calendar.getInstance().getTime())
                 + ".csv");
@@ -82,7 +83,7 @@ public class TestUtils {
 		for (int i = 1; i<=3; i++)
 			bestKnownSolutionValues.add(new Double(828.94));
 		bestKnownSolutionValues.add(new Double(824.78));
-		for (int i = 1; i<=6; i++)
+		for (int i = 1; i<=5; i++)
 			bestKnownSolutionValues.add(new Double(828.94));
 		//c2xx
 		bestKnownSolutionValues.add(new Double(591.56));

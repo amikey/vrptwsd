@@ -6,10 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.rwth.lofip.library.Customer;
+import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
+import de.rwth.lofip.library.solver.util.RessourceExctensionFunction;
 import de.rwth.lofip.library.solver.util.TourUtils;
 
 public class CrossNeighborhood implements NeighborhoodInterface {
@@ -27,12 +29,20 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private double costOfCompleteSolutionThatResultsFromMove;
 	private boolean firstNeighborhoodStep;
 
+	//mit den Positionen sind jeweils die Einfügepositionen gemeint. 
+	//D.h. bei einer Tour mit vier Kunden gibt es die Positionen 0,1,2,3,4
 	private static int positionStartOfSegmentTour1 = 0;
 	private static int positionEndOfSegmentTour1 = 0;
 	private static int positionStartOfSegmentTour2 = 0;
 	private static int positionEndOfSegmentTour2 = 0;
 	
+	private RessourceExctensionFunction RefSegment1 = new RessourceExctensionFunction();
+	private RessourceExctensionFunction RefSegment2 = new RessourceExctensionFunction();
+	
 	List<AbstractNeighborhoodMove> moves = new LinkedList<AbstractNeighborhoodMove>();
+	private RessourceExctensionFunction currentRef;
+	private Tour currentTour;
+	private int currentPositionEndOfSegment;
 	
 	public CrossNeighborhood(SolutionGot solution) {
 		this.solution = solution;
@@ -53,6 +63,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		positionEndOfSegmentTour1 = 0;
 		positionStartOfSegmentTour2 = 0;
 		positionEndOfSegmentTour2 = 0;
+		RefSegment1 = new RessourceExctensionFunction();
+		RefSegment2 = new RessourceExctensionFunction();
 	}
 	
 	@Override
@@ -64,13 +76,15 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	}
 	
 		private void generateMoves() {
-			while (hasNextNeighborhoodMove()) {
-				generateNextNeigborhoodMove();
-				if (isMovePossible()) {
-					calculateCost();		
-					AbstractNeighborhoodMove move = getNeigborhoodMove();
-					if (isMoveNotTaboo(move))
-						moves.add(move);	
+			while (isExistsNextCombinationOfSegments()) {
+				generateNextCombinationOfSegements();
+				if (!segmentsToBeSwapedAreNotInNeighborhood()) {
+					if (isMoveFeasible()) {
+						calculateCost();		
+						AbstractNeighborhoodMove move = getNeigborhoodMove();
+						if (isMoveNotTaboo(move))
+							moves.add(move);
+					}
 				}
 			}
 		}
@@ -98,13 +112,13 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			return moves.get(0);			
 		}
 
-	protected void generateNextNeigborhoodMove() {	
-		if (firstNeighborhoodStep)
+	protected void generateNextCombinationOfSegements() {	
+		if (firstNeighborhoodStep) {
 			//do nothing; first step was already created in initialization
 			firstNeighborhoodStep = false;
-		else if (segmentInTour2CanBeIncreased()) 
+		} else if (segmentInTour2CanBeIncreased()) { 
 				increaseSegmentInTour2();	
-		else if (segmentInTour1CanBeIncreased()) {
+		} else if (segmentInTour1CanBeIncreased()) {
 				resetSegmentInTour2();
 				increaseSegmentInTour1();
 		} else if (tour2CanBeIncreased()) {
@@ -119,7 +133,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		} else throw new RuntimeException("generateNextNeigborhoodStep was called although no next step exists");
 	}
 		
-	public boolean hasNextNeighborhoodMove() {
+	public boolean isExistsNextCombinationOfSegments() {
 		if (segmentInTour2CanBeIncreased())
 			return true;
 		if (segmentInTour1CanBeIncreased())
@@ -168,7 +182,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				tour2IncreaseEndOfSegmentToBeRemoved();
 			else if (startOfSegementToBeRemovedCanBeIncreasedInTour2())
 				tour2IncreaseStartOfSegmentToBeRemoved();
-			else throw new RuntimeException("generateNextNeigborhoodStep() was called although no remaining NeigborhoodStep exists");
+			else throw new RuntimeException("increaseSegmentInTour2 was called although cannot be executed");
 		}
 	
 		private boolean endOfSegmentToBeRemovedCanBeIncreasedInTour2() {
@@ -177,8 +191,32 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		
 		private void tour2IncreaseEndOfSegmentToBeRemoved() {
 			positionEndOfSegmentTour2++;
+			updateRefSegment2();
 		}
-	
+				
+		private void updateRefSegment2() {
+			currentRef = RefSegment2;
+			currentTour = tour2;
+			currentPositionEndOfSegment = positionEndOfSegmentTour2;
+			updateRefSegmentX();
+		}
+
+		private void updateRefSegmentX() {
+			//update RefSegemnt 2 with new Customer
+			Customer newCustomerInSegment = currentTour.getCustomerAtPosition(currentPositionEndOfSegment - 1).getCustomer();
+			
+			//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
+			if (customerIsFirstCustomerInTour())
+				currentRef.updateWithCustomer(currentTour.getDepot(), newCustomerInSegment);				
+			else
+				currentRef.updateWithCustomer(currentTour.getCustomerAtPosition(currentPositionEndOfSegment - 2).getCustomer(), newCustomerInSegment);				
+		}
+
+		private boolean customerIsFirstCustomerInTour() {
+			//Fallunterscheidung für Depot und Kunden
+			return (currentPositionEndOfSegment - 1 == 0);
+		}
+
 		private boolean startOfSegementToBeRemovedCanBeIncreasedInTour2() {
 			return positionStartOfSegmentTour2 < tour2.length();	
 		}
@@ -211,6 +249,14 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		
 		private void increaseEndOfSegmentToBeRemovedInTour1() {
 			positionEndOfSegmentTour1++;
+			updateRefSegment1();
+		}
+		
+		private void updateRefSegment1() {
+			currentRef = RefSegment1;
+			currentTour = tour1;
+			currentPositionEndOfSegment = positionEndOfSegmentTour1;
+			updateRefSegmentX();
 		}
 		
 		private boolean startOfSegementToBeRemovedCanBeIncreasedInTour1() {
@@ -220,12 +266,16 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		private void increaseStartOfSegmentToBeRemovedInTour1() {
 			positionStartOfSegmentTour1++;
 			positionEndOfSegmentTour1=positionStartOfSegmentTour1;
+			resetRefSegment1();
 		}
-	
-	
-	public boolean isMovePossible() {
-		if (segmentsToBeSwapedAreNotInNeighborhood())
-			return false;
+
+	private void resetRefSegment1() {
+			RefSegment1.reset();
+		}
+
+	public boolean isMoveFeasible() {			
+		
+		printNeighborhoodStep();
 		
 		if (tourCounter1 == tourCounter2) {
 			//inner-tour move
@@ -263,7 +313,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		return isWasInsertionPossible;
 	}
 	
-	private boolean segmentsToBeSwapedAreNotInNeighborhood() {
+	protected boolean segmentsToBeSwapedAreNotInNeighborhood() {
 		if (positionStartOfSegmentTour1 == positionEndOfSegmentTour1 && 
 				positionStartOfSegmentTour2 == positionEndOfSegmentTour2)
 			return true;
@@ -303,11 +353,27 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	}
 
 	public static void printNeighborhoodStep() {
-		System.out.println("Tour1: " + tour1.getId());
-		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
-		System.out.println("Tour2: " + tour2.getId());
-		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);
+		System.out.print("Move " + tour1.getId() + "(");		
+		for (int i = positionStartOfSegmentTour1; i < positionEndOfSegmentTour1; i++) {
+			System.out.print(tour1.getCustomerAtPosition(i).getCustomer().getCustomerNo());
+		}
+		System.out.print(") " + tour2.getId() + "(");
+		for (int i = positionStartOfSegmentTour2; i < positionEndOfSegmentTour2; i++)
+			System.out.print(tour2.getCustomerAtPosition(i).getCustomer().getCustomerNo());
+		System.out.print(")");
+//		System.out.println("Tour1: " + tour1.getId());
+//		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
+//		System.out.println("Tour2: " + tour2.getId());
+//		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);
 		System.out.println();
+	}
+	
+	public void printSegment1() {
+		System.out.print(tour1.getId() + "(");		
+		for (int i = positionStartOfSegmentTour1; i < positionEndOfSegmentTour1; i++) {
+			System.out.print(tour1.getCustomerAtPosition(i).getCustomer().getCustomerNo());
+		}
+		System.out.print(")");
 	}
 
 	public SolutionGot acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {		
@@ -332,5 +398,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		resetNeighborhood();
 		return solution;
 	}
+
+	protected RessourceExctensionFunction getRefSegment1() {
+		return RefSegment1;		
+	}
+
+
 
 }

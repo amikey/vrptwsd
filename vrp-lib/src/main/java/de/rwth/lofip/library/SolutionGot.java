@@ -239,7 +239,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
      * <http://www.idsia.ch/~luca/macs-vrptw/solutions/welcome.htm>
      */
 	
-	    public void printSolution() {
+	public void printSolution() {
         System.out.println(getSolutionAsTupel());
     }
 
@@ -268,6 +268,10 @@ public class SolutionGot implements Cloneable, SolutionElement {
         }
         return s;
     }
+    
+	public void printSolutionAsTupel() {
+		System.out.println(getSolutionAsTupel());
+	}   
 
 	public int getNumberOfTours() {
 		return getTours().size();
@@ -299,7 +303,8 @@ public class SolutionGot implements Cloneable, SolutionElement {
 				if (got.equals(gotOther))
 					return true;
 			return false;
-		}   
+		}
+
 
 }
 
