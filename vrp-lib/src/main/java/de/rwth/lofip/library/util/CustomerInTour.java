@@ -158,4 +158,8 @@ public class CustomerInTour implements Cloneable, SolutionElement {
 		return cloned;
 	}
 
+	public void print() {
+		System.out.println(customer.getCustomerNo());
+	}
+
 }

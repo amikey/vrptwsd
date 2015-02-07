@@ -200,15 +200,33 @@ public class CrossNeighborhoodTest {
 	}
 	
 	@Test 
-	public void testCalulationOfRefs() {		
-		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);		
-		double cost;			
-		//jump over inner-cross-Moves in Tour 1
-		for (int i = 1; i <= 36; i++) {
+	public void testCalulationOfRefsInNeighborhood() {		
+		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);					
+		//inner-cross-Moves in Tour 1
+		for (int i = 1; i <= 6; i++) 
 			crossNeighborhood.generateNextCombinationOfSegements();
-			crossNeighborhood.printSegment1();
-			crossNeighborhood.getRefSegment1().print();
-		}		
+		assertEquals(0, crossNeighborhood.getRefSegment1().getDuration(), 0.001);
+		assertEquals(Double.MAX_VALUE, crossNeighborhood.getRefSegment1().getLatestArrivalTime(), 0.001);
+		assertEquals(0, crossNeighborhood.getRefSegment1().getEarliestLeavingTime(), 0.001);
+		for (int i = 1; i <= 6; i++) 
+			crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(90, crossNeighborhood.getRefSegment1().getDuration(), 0.001);
+		assertEquals(345, crossNeighborhood.getRefSegment1().getLatestArrivalTime(), 0.001);
+		assertEquals(278, crossNeighborhood.getRefSegment1().getEarliestLeavingTime(), 0.001);
+		for (int i = 1; i <= 6; i++) 
+			crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(191.180, crossNeighborhood.getRefSegment1().getDuration(), 0.001);
+		assertEquals(345, crossNeighborhood.getRefSegment1().getLatestArrivalTime(), 0.001);
+		assertEquals(475, crossNeighborhood.getRefSegment1().getEarliestLeavingTime(), 0.001);
+		for (int i = 1; i <= 6; i++) 
+			crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(0, crossNeighborhood.getRefSegment1().getDuration(), 0.001);
+		assertEquals(Double.MAX_VALUE, crossNeighborhood.getRefSegment1().getLatestArrivalTime(), 0.001);
+		assertEquals(0, crossNeighborhood.getRefSegment1().getEarliestLeavingTime(), 0.001);
+		for (int i = 1; i <= 6; i++) 
+			crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(90, crossNeighborhood.getRefSegment1().getDuration(), 0.001);
+		assertEquals(528, crossNeighborhood.getRefSegment1().getLatestArrivalTime(), 0.001);
+		assertEquals(475, crossNeighborhood.getRefSegment1().getEarliestLeavingTime(), 0.001);
 	}
-
 }

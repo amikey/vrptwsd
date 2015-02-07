@@ -154,4 +154,8 @@ public class Customer extends AbstractPointInSpace implements Cloneable{
 		return "" + customerNo + " " + getxCoordinate() + " " + getyCoordinate() + " " + demand + " " + timeWindowOpen + " " + timeWindowClose + " " + serviceTime;
 	}
 
+	public void print() {
+		System.out.print(customerNo);
+	}
+
 }

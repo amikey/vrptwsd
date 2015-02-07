@@ -11,7 +11,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
-import de.rwth.lofip.library.solver.util.RessourceExctensionFunction;
+import de.rwth.lofip.library.solver.util.RessourceExtensionFunction;
 import de.rwth.lofip.library.solver.util.TourUtils;
 
 public class CrossNeighborhood implements NeighborhoodInterface {
@@ -36,11 +36,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private static int positionStartOfSegmentTour2 = 0;
 	private static int positionEndOfSegmentTour2 = 0;
 	
-	private RessourceExctensionFunction RefSegment1 = new RessourceExctensionFunction();
-	private RessourceExctensionFunction RefSegment2 = new RessourceExctensionFunction();
+	private RessourceExtensionFunction RefSegment1 = new RessourceExtensionFunction();
+	private RessourceExtensionFunction RefSegment2 = new RessourceExtensionFunction();
 	
 	List<AbstractNeighborhoodMove> moves = new LinkedList<AbstractNeighborhoodMove>();
-	private RessourceExctensionFunction currentRef;
+	private RessourceExtensionFunction currentRef;
 	private Tour currentTour;
 	private int currentPositionEndOfSegment;
 	
@@ -63,8 +63,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		positionEndOfSegmentTour1 = 0;
 		positionStartOfSegmentTour2 = 0;
 		positionEndOfSegmentTour2 = 0;
-		RefSegment1 = new RessourceExctensionFunction();
-		RefSegment2 = new RessourceExctensionFunction();
+		RefSegment1 = new RessourceExtensionFunction();
+		RefSegment2 = new RessourceExtensionFunction();
 	}
 	
 	@Override
@@ -202,19 +202,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		}
 
 		private void updateRefSegmentX() {
-			//update RefSegemnt 2 with new Customer
 			Customer newCustomerInSegment = currentTour.getCustomerAtPosition(currentPositionEndOfSegment - 1).getCustomer();
-			
-			//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
-			if (customerIsFirstCustomerInTour())
-				currentRef.updateWithCustomer(currentTour.getDepot(), newCustomerInSegment);				
-			else
-				currentRef.updateWithCustomer(currentTour.getCustomerAtPosition(currentPositionEndOfSegment - 2).getCustomer(), newCustomerInSegment);				
-		}
-
-		private boolean customerIsFirstCustomerInTour() {
-			//Fallunterscheidung für Depot und Kunden
-			return (currentPositionEndOfSegment - 1 == 0);
+			currentRef.updateWithCustomer(newCustomerInSegment);				
 		}
 
 		private boolean startOfSegementToBeRemovedCanBeIncreasedInTour2() {
@@ -399,7 +388,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		return solution;
 	}
 
-	protected RessourceExctensionFunction getRefSegment1() {
+	protected RessourceExtensionFunction getRefSegment1() {
 		return RefSegment1;		
 	}
 
