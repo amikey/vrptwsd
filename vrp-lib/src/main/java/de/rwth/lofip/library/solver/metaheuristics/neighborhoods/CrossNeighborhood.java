@@ -350,11 +350,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		for (int i = positionStartOfSegmentTour2; i < positionEndOfSegmentTour2; i++)
 			System.out.print(tour2.getCustomerAtPosition(i).getCustomer().getCustomerNo());
 		System.out.print(")");
-//		System.out.println("Tour1: " + tour1.getId());
-//		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
-//		System.out.println("Tour2: " + tour2.getId());
-//		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);
 		System.out.println();
+		System.out.println("Tour1: "); tour1.print(); System.out.println("Tour2: "); tour2.print(); 
 	}
 	
 	public void printSegment1() {
@@ -390,6 +387,10 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 
 	protected RessourceExtensionFunction getRefSegment1() {
 		return RefSegment1;		
+	}
+
+	public Tour getTour1() {
+		return tour1;	
 	}
 
 

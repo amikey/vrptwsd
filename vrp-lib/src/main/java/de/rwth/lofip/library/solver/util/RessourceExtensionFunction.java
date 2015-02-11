@@ -112,7 +112,8 @@ public class RessourceExtensionFunction {
 		ref.setEarliestLeavingTime(earliestLeavingTime);
 		ref.setLatestArrivalTime(latestArrivalTime);
 		//TODO: wie sieht das runtime technisch aus? Ist der Befehl unten ein Problem, weil er über jeden einzelnen Eintrag in der List iteriert?
-		//falls ja, sollte ich eine andere Methode wählen, als die Customer in der Ref zu speichern.
+		//falls ja, sollte ich eine andere Methode wählen, als die Customer in der Ref zu speichern, nämlich
+		//letzten Customer speichern und evtl. ersten Customer speichern
 		List<Customer> newCustomers = new LinkedList<Customer>(customers);
 		ref.setCustomers(newCustomers);
 		return ref;
@@ -159,6 +160,13 @@ public class RessourceExtensionFunction {
 
 	public List<Customer> getCustomers() {
 		return customers;
+	}
+
+	public void reset() {
+		duration = 0;
+		latestArrivalTime = Double.MAX_VALUE;
+		earliestLeavingTime = 0;
+		customers.clear();
 	}
 	
 }

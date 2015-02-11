@@ -198,4 +198,10 @@ public class TestTour {
 		assertEquals(true, tour1.getRefsFromBeginning().get(1).equals(new RessourceExtensionFunction(195.81138830084188, 345.0, 425.0)));	
 	}
 	
+	@Test
+	public void testThatWhenCreatingTourRefsAreOk() {
+		SolutionGot solutionWithOneTourWithCustomers2And3 = SetUpUtils.SetUpSolutionWithOneTourWithCustomer2And3();
+		assertEquals(false,solutionWithOneTourWithCustomers2And3.getGots().get(0).getFirstTour().getRefsFromBeginning().isEmpty());
+	}
+	
 }

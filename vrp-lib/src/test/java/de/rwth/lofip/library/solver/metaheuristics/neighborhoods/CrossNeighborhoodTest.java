@@ -50,11 +50,14 @@ public class CrossNeighborhoodTest {
 	@Test
 	public void testIsMovePossibleInnerTourMoves() {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithOneTourWithCustomers2And3);
+		assertEquals(false,solutionWithOneTourWithCustomers2And3.getGots().get(0).getFirstTour().getRefsFromBeginning().isEmpty());
 		for (int i = 1; i <= 9; i++) {
 			crossNeighborhood.generateNextCombinationOfSegements();
 			assertEquals(false,isMovePossible(crossNeighborhood));
 		}	
+		assertEquals(false,crossNeighborhood.getTour1().getRefsFromBeginning().isEmpty());
 		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(false,crossNeighborhood.getTour1().getRefsFromBeginning().isEmpty());
 		assertEquals(true,isMovePossible(crossNeighborhood));		
 		for (int i = 1; i <= 14; i++) {
 			crossNeighborhood.generateNextCombinationOfSegements();

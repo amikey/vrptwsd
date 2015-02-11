@@ -29,6 +29,7 @@ public class Tour implements Cloneable, SolutionElement {
 	private double demand = 0;
 	private double tourDistance = 0;
 	
+	//TODO: Gehen REFs von Einfügeposition zu Einfügeposition oder von Customerposition zu Customerposition?
 	private List<RessourceExtensionFunction> refsFromStartUpToPosition = new LinkedList<RessourceExtensionFunction>(); 
 	private List<RessourceExtensionFunction> refsFromPositionToEnd = new LinkedList<RessourceExtensionFunction>();
 	
@@ -66,7 +67,9 @@ public class Tour implements Cloneable, SolutionElement {
     	this();
 		this.depot = tour1.getDepot();
 		this.vehicle = tour1.getVehicle().clone();
-		customers = new LinkedList<CustomerInTour>(tour1.getCustomersInTour());		
+		customers = new LinkedList<CustomerInTour>(tour1.getCustomersInTour());
+		refsFromStartUpToPosition = new LinkedList<RessourceExtensionFunction>(tour1.getRefsFromBeginning());
+		refsFromPositionToEnd = new LinkedList<RessourceExtensionFunction>(tour1.getRefsToEnd());
 	}
     
     /****************************************************************************
@@ -170,10 +173,19 @@ public class Tour implements Cloneable, SolutionElement {
 	public List<RessourceExtensionFunction> getRefsFromBeginning() {
 		return refsFromStartUpToPosition;		
 	}
+	
+    private void setRefsFromBeginning(List<RessourceExtensionFunction> refsFromBeginning1) {
+    	refsFromStartUpToPosition = refsFromBeginning1;
+	}
 
 	public List<RessourceExtensionFunction> getRefsToEnd() {
 		return refsFromPositionToEnd;		
 	}
+	
+	private void setRefsToEnd(List<RessourceExtensionFunction> refsToEnd1) {
+    	refsFromPositionToEnd = refsToEnd1;		
+	}
+
     
     /****************************************************************************
      * End Getter and Setter
@@ -188,10 +200,12 @@ public class Tour implements Cloneable, SolutionElement {
                     cit.getInsertionHeuristic());
         }
         t.setId(this.id);
+        t.setRefsFromBeginning(getRefsFromBeginning());
+        t.setRefsToEnd(getRefsToEnd());
         return t;
     }
     
-    @Override
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -319,18 +333,17 @@ public class Tour implements Cloneable, SolutionElement {
     }    
 
 	private void recalculateRefsWhenCustomerIsInserted(int position) {
-		//recalculate refFromStartUpToPosition		
-		if (customerIsInsertedAtFirstPosition(position)) {	
-			RessourceExtensionFunction ref = new RessourceExtensionFunction();
-			ref.updateWithCustomer(customers.get(0));
-			if (refsFromStartUpToPosition.isEmpty())
-				refsFromStartUpToPosition.add(ref);
-			else
-				refsFromStartUpToPosition.set(0, ref);
-			updateRefsFromPositionWhenCustomerIsInserted(1);
-		} else {			
-			updateRefsFromPositionWhenCustomerIsInserted(position);		
-		}
+		//recalculate refFromStartUpToPosition	
+		for (int i = position; i < customers.size(); i++) {
+			RessourceExtensionFunction refTemp = createRefAtPosition(i);			
+			if (isLastPosition(i)) {
+				refsFromStartUpToPosition.add(refTemp);
+			} else {
+				System.out.print("i: " + i + "Tour: "); this.print();
+				printRefsFromStart();
+				refsFromStartUpToPosition.set(i, refTemp);
+			}
+		}			
 		
 		//recalculate refsFromPositionToEnd
 		for (int i = 0; i <= position; i++) {
@@ -338,26 +351,33 @@ public class Tour implements Cloneable, SolutionElement {
 		}
 
 	}
-
-	private boolean customerIsInsertedAtFirstPosition(int position) {
-		return position == 0;
+	
+	private void printRefsFromStart() {
+		System.out.println("Länge refsFromStart...: " + refsFromStartUpToPosition.size());
+		for (int i = 0; i < refsFromStartUpToPosition.size(); i++)
+			refsFromStartUpToPosition.get(i).print();
 	}
 	
-	private void updateRefsFromPositionWhenCustomerIsInserted(int position) {
-		for (int i = position; i < customers.size()-1; i++) {
-			RessourceExtensionFunction refTemp = refsFromStartUpToPosition.get(i-1).clone();
+	private boolean isLastPosition(int i) {
+		return (i == customers.size()-1 || this.isTourEmpty());
+	}
+
+	private boolean isFirstPosition(int i) {
+		return i == 0;
+	}
+	
+	private RessourceExtensionFunction createRefAtPosition(int i) {
+		RessourceExtensionFunction refTemp;
+		if (isFirstPosition(i)) {
+			refTemp = new RessourceExtensionFunction();
+			refTemp.updateWithCustomer(customers.get(0));
+		} else {
+			refTemp = refsFromStartUpToPosition.get(i-1).clone();
 			refTemp.updateWithCustomer(customers.get(i));
-			refsFromStartUpToPosition.set(i, refTemp);		 
-		}	
-		//last position has to be added not set, because list of refs is to short
-		if (customers.size() >= 2) {			
-			RessourceExtensionFunction ref1 = refsFromStartUpToPosition.get(customers.size()-2).clone();
-			ref1.updateWithCustomer(customers.get(customers.size()-1));
-			refsFromStartUpToPosition.add(ref1);
 		}
+		return refTemp;
 	}
 	
-
 	/**
      * Remove the customer at {@code position} if the tour has at least that
      * many customers. Returns the removed customer or null, if no such position
@@ -387,6 +407,7 @@ public class Tour implements Cloneable, SolutionElement {
         }
         
         Customer removedCustomer = customers.remove(position).getCustomer();
+        //TODO: ist das hier nicht auch völlig unnötig und compulationally teuer?
         for (int i = 0; i < customers.size(); i++) {
             customers.get(i).setPosition(i);
         }
@@ -400,38 +421,24 @@ public class Tour implements Cloneable, SolutionElement {
     }            
     
 	private void recalculateRefsWhenCustomerIsDeleted(int position) {
-		//recalculate refFromStartUpToPosition
-		if (customerIsDeletedAtFirstPosition(position)) {
-			RessourceExtensionFunction ref = new RessourceExtensionFunction();
-			ref.updateWithCustomer(customers.get(0));
-			if (refsFromStartUpToPosition.isEmpty())
-				refsFromStartUpToPosition.add(ref);
-			else
-				refsFromStartUpToPosition.set(0, ref);
-			updateRefsFromPositionWhenCustomerIsDeleted(1);				
-		} else {			
-			updateRefsFromPositionWhenCustomerIsDeleted(position);		
+		//recalculate refFromStartUpToPosition		
+		if (this.isTourEmpty())
+			refsFromStartUpToPosition.clear();
+		else {
+			for (int i = position; i < customers.size(); i++) {
+				RessourceExtensionFunction refTemp = createRefAtPosition(i);
+				refsFromStartUpToPosition.set(i, refTemp);	
+			}
+			//last position has to be deleted, because one customer was deleted from tour
+			refsFromStartUpToPosition.remove(customers.size());		
 		}
-			
+							
 		//recalculate refsFromPositionToEnd
 		for (int i = 0; i <= position; i++) {
 			//TODO: implement
 		}
 	}
-	
-	private boolean customerIsDeletedAtFirstPosition(int position) {
-		return position == 0;
-	}
 
-	private void updateRefsFromPositionWhenCustomerIsDeleted(int position) {
-		for (int i = position; i < customers.size(); i++) {			
-			RessourceExtensionFunction ref1 = refsFromStartUpToPosition.get(i-1).clone();			
-			ref1.updateWithCustomer(customers.get(i));			
-			refsFromStartUpToPosition.set(i, ref1);		 
-		}	
-		//last position has to be deleted, because one customer was deleted from tour
-		refsFromStartUpToPosition.remove(customers.size());		
-	}
 
 	private boolean customerToBeRemovedIsNotAtFirstPositionInTour(int position) {
     	return position >= 1;
