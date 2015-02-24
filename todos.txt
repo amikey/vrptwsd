@@ -1,0 +1,5 @@
+- returnBestMove so ändern, dass moves bevorzugt werden, die die Veringerung der Fahrzeuganzahl bevorzugen
+- isImprovement so ändern, dass es auch akzeptiert, wenn Fahrzeuganzahl reduziert wird, auch wenn Strecke nicht geringer wird oder steigt.
+- pruning in cross neighborhood einbauen
+- find best move nicht durch sortieren sondern durch if abfrage, jedes mal, wenn neuer feasible move erstellt wird
+- in RessourceExtensionFunction Liste der Customer durch ersten und letzten Customer ersetzen (weil clonen O(n) braucht)

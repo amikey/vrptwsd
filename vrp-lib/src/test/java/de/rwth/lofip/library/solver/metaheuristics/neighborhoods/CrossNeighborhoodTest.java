@@ -14,6 +14,7 @@ import org.junit.Test;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
+import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class CrossNeighborhoodTest {
@@ -113,7 +114,8 @@ public class CrossNeighborhoodTest {
 		double cost;			
 		//jump over inner-cross-Moves in Tour 1
 		for (int i = 1; i <= 36; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();			
+			crossNeighborhood.generateNextCombinationOfSegements();
+			crossNeighborhood.getRefSegment2().print();
 		}
 		//moves between tour 1 and 2
 		crossNeighborhood.generateNextCombinationOfSegements();
@@ -126,7 +128,12 @@ public class CrossNeighborhoodTest {
 		crossNeighborhood.generateNextCombinationOfSegements();
 		
 		assertEquals(true, crossNeighborhood.isMoveFeasible());
-		cost = crossNeighborhood.calculateCost();	
+		assertEquals(true, crossNeighborhood.getRefSegment1().equals(new ResourceExtensionFunction(SetUpUtils.getC1())));
+		crossNeighborhood.getRefSegment2().print();
+		assertEquals(true, crossNeighborhood.getRefSegment2().equals(new ResourceExtensionFunction(SetUpUtils.getC3())));	
+		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
+		cost = crossNeighborhood.calculateCostUsingRefs();
+//		cost = crossNeighborhood.calculateCost();	
 		assertEquals(SetUpUtils.getTourWithCustomer1And4().getTotalDistance() + SetUpUtils.getTourWithCustomer3And2().getTotalDistance(),cost,0.1);
 		
 		crossNeighborhood.generateNextCombinationOfSegements();

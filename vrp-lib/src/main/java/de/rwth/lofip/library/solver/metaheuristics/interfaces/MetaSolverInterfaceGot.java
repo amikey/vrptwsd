@@ -1,7 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics.interfaces;
 
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.util.IntermediateSolutionGot;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**

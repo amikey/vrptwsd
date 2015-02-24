@@ -146,31 +146,6 @@ public class SetUpUtils {
 		return vrpProblem;
 	}
 	
-	
-	public static Solution SetUpR201Solution() throws Exception {
-				
-		VrpProblem vrpProblem = SetUpR201Problem();
-		
-		//--------------Solution--------------------------------------
-		long startTime = System.nanoTime();
-		Solution solution = createSolution(vrpProblem);
-		long endTime = System.nanoTime();
-		long timeTaken = (endTime - startTime);
-		solution.setTimeNeeded(timeTaken);	
-
-		return solution;
-	}
-	
-	public static List<Solution> SetUpAllSolutions() throws Exception {
-		List<Solution> solutions = new LinkedList<Solution>();
-		List<VrpProblem> vrps = createVrpProblems();
-		for (VrpProblem vrpp : vrps) {
-			Solution solution = createSolution(vrpp);
-			solutions.add(solution);	
-		}			
-		return solutions;
-	}
-	
 	public static Tour getTourWithFourCustomers() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
@@ -206,7 +181,8 @@ public class SetUpUtils {
         return tour;
 	}
 	
-	private static Tour getFeasibleTourWithCustomer4() {
+	static Tour getTourWithCustomer4() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         Tour tour = new Tour(depot, vehicle);
         tour.addCustomer(c4);        
         return tour;
@@ -269,7 +245,7 @@ public class SetUpUtils {
         GroupOfTours got1 = new GroupOfTours();
         got1.addTour(tour1);
         
-        Tour tour2 = getFeasibleTourWithCustomer4();
+        Tour tour2 = getTourWithCustomer4();
         GroupOfTours got2 = new GroupOfTours();
         got2.addTour(tour2);             
                     
@@ -283,7 +259,7 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
 		List<Tour> tours = new LinkedList<Tour>();
-		tours.add(getFeasibleTourWithCustomer4());
+		tours.add(getTourWithCustomer4());
 		tours.add(getTourWithCustomers1And2And3());
 		
 		return createSolutionWithEachTourInOneGot(tours);     
@@ -369,7 +345,7 @@ public class SetUpUtils {
         return tour;	
 	}
 	
-	private static Tour getTourWithCustomer2() {
+	static Tour getTourWithCustomer2() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
         tour.addCustomer(c2);        
@@ -664,43 +640,68 @@ public class SetUpUtils {
         return solution;
 	}
 	
-
-	//----------Utilities-----------
-	
-	private static Solution createSolution(VrpProblem problem) throws Exception
-	{
-		DeterministicPushForwardInsertionSolver initialSolver = new DeterministicPushForwardInsertionSolver();
-		Solution solution = initialSolver.solve(problem);
-		Solution improvedSolution = new	DeterministicLeiEtAlHeuristic().improve(solution,
-				new VrpConfiguration());			
-		return improvedSolution;               
-	}
 	
 	
-	private static List<VrpProblem> createVrpProblems() {					
-		List<VrpProblem> vrpProblems = new LinkedList<VrpProblem>();
-    	Iterator<File> problemFiles = FileUtils.iterateFiles(new File("solomon-problems"),
-                new String[] { "txt" }, false);
-    	while (problemFiles.hasNext()) 
-        {
-            File file = problemFiles.next();
-            if ( !file.getName().contains("scenario") && !file.getName().contains("n"))
-            {	           
-	            FileInputStream openInputStream = null;
-	            try {
-	            	openInputStream = FileUtils.openInputStream(file);
-	                List<String> lines = IOUtils.readLines(openInputStream);
-	                VrpProblem vrpProblem = VrpUtils
-	                        .createProblemFromStringList(lines);
-	                vrpProblems.add(vrpProblem);
-	            }
-	            catch (Exception e) {
-	                e.printStackTrace();
-	            }
-	         }
-        }
-		return vrpProblems;
-	}
+	
+//	public static Solution SetUpR201Solution() throws Exception {
+//		
+//		VrpProblem vrpProblem = SetUpR201Problem();
+//		
+//		//--------------Solution--------------------------------------
+//		long startTime = System.nanoTime();
+//		Solution solution = createSolution(vrpProblem);
+//		long endTime = System.nanoTime();
+//		long timeTaken = (endTime - startTime);
+//		solution.setTimeNeeded(timeTaken);	
+//
+//		return solution;
+//	}
+//	
+//	public static List<Solution> SetUpAllSolutions() throws Exception {
+//		List<Solution> solutions = new LinkedList<Solution>();
+//		List<VrpProblem> vrps = createVrpProblems();
+//		for (VrpProblem vrpp : vrps) {
+//			Solution solution = createSolution(vrpp);
+//			solutions.add(solution);	
+//		}			
+//		return solutions;
+//	}
+//	
+//	
+//	private static Solution createSolution(VrpProblem problem) throws Exception
+//	{
+//		DeterministicPushForwardInsertionSolver initialSolver = new DeterministicPushForwardInsertionSolver();
+//		Solution solution = initialSolver.solve(problem);
+//		Solution improvedSolution = new	DeterministicLeiEtAlHeuristic().improve(solution,
+//				new VrpConfiguration());			
+//		return improvedSolution;               
+//	}
+//	
+//	
+//	private static List<VrpProblem> createVrpProblems() {					
+//		List<VrpProblem> vrpProblems = new LinkedList<VrpProblem>();
+//    	Iterator<File> problemFiles = FileUtils.iterateFiles(new File("solomon-problems"),
+//                new String[] { "txt" }, false);
+//    	while (problemFiles.hasNext()) 
+//        {
+//            File file = problemFiles.next();
+//            if ( !file.getName().contains("scenario") && !file.getName().contains("n"))
+//            {	           
+//	            FileInputStream openInputStream = null;
+//	            try {
+//	            	openInputStream = FileUtils.openInputStream(file);
+//	                List<String> lines = IOUtils.readLines(openInputStream);
+//	                VrpProblem vrpProblem = VrpUtils
+//	                        .createProblemFromStringList(lines);
+//	                vrpProblems.add(vrpProblem);
+//	            }
+//	            catch (Exception e) {
+//	                e.printStackTrace();
+//	            }
+//	         }
+//        }
+//		return vrpProblems;
+//	}
 
 
 

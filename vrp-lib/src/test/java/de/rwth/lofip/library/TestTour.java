@@ -4,11 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Test;
 
-import de.rwth.lofip.library.solver.util.RessourceExtensionFunction;
+import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestTour {
@@ -143,27 +142,26 @@ public class TestTour {
 	@Test 
 	public void testCalculationOfRefsFromBeginning() {
 		whenGivenOneEmptyTour();
-		thenListsOfRefsInTourShouldBeEmpty();
+		thenListsOfRefsFromBeginningInTourShouldBeEmpty();
 		whenAddingCustomer2();
-		thenListsOfRefsShouldContainCorrectRefs();
+		thenListsOfRefsFromBeginningShouldContainCorrectRefs();
 		whenInsertingCustomer1AtPosition0();
-		thenListOfRefsShouldEqualThatOfTourWithCustomersC1C2();
+		thenListOfRefsFromBeginningShouldEqualThatOfTourWithCustomersC1C2();
 		whenAddingCustomer3();
-		thenListOfRefsShouldEqualThatOfTourWithCustomersC1C2C3();
+		thenListOfRefsFromBeginningShouldEqualThatOfTourWithCustomersC1C2C3();
 		whenCustomer2IsDeleted();
-		thenListOfRefsShouldEqualThatOfTourWithCustomersC1C3();		
+		thenListOfRefsFromBeginningShouldEqualThatOfTourWithCustomersC1C3();		
 	}
 
-	private void thenListsOfRefsInTourShouldBeEmpty() {
-		assertEquals(0,tour1.getRefsFromBeginning().size());
-		assertEquals(0,tour1.getRefsToEnd().size());
+	private void thenListsOfRefsFromBeginningInTourShouldBeEmpty() {
+		assertEquals(0,tour1.getRefsFromBeginning().size());		
 	}
 	
 	private void whenAddingCustomer2() {
 		tour1.addCustomer(SetUpUtils.getC2());
 	}
 	
-	private void thenListsOfRefsShouldContainCorrectRefs() {		
+	private void thenListsOfRefsFromBeginningShouldContainCorrectRefs() {		
 		assertEquals(90, tour1.getRefsFromBeginning().get(0).getDuration(), 0.001);
 		assertEquals(528, tour1.getRefsFromBeginning().get(0).getLatestArrivalTime(), 0.001);
 		assertEquals(475, tour1.getRefsFromBeginning().get(0).getEarliestLeavingTime(), 0.001);		
@@ -173,7 +171,7 @@ public class TestTour {
 		tour1.insertCustomerAtPosition(SetUpUtils.getC1(), 0);
 	}
 	
-	private void thenListOfRefsShouldEqualThatOfTourWithCustomersC1C2() {		
+	private void thenListOfRefsFromBeginningShouldEqualThatOfTourWithCustomersC1C2() {		
 		assertEquals(true, SetUpUtils.getTourWithCustomer1And2().getRefsFromBeginning().get(0).equals(tour1.getRefsFromBeginning().get(0)));		
 		assertEquals(true, SetUpUtils.getTourWithCustomer1And2().getRefsFromBeginning().get(1).equals(tour1.getRefsFromBeginning().get(1)));
 	}
@@ -182,10 +180,9 @@ public class TestTour {
 		tour1.addCustomer(SetUpUtils.getC3());
 	}
 	
-	private void thenListOfRefsShouldEqualThatOfTourWithCustomersC1C2C3() {
+	private void thenListOfRefsFromBeginningShouldEqualThatOfTourWithCustomersC1C2C3() {
 		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsFromBeginning().get(0).equals(tour1.getRefsFromBeginning().get(0)));		
-		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsFromBeginning().get(1).equals(tour1.getRefsFromBeginning().get(1)));		
-		assertEquals(true, tour1.getRefsFromBeginning().get(2).equals(new RessourceExtensionFunction(286.1803398874989, 345.0, 570.0)));
+		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsFromBeginning().get(1).equals(tour1.getRefsFromBeginning().get(1)));				
 		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsFromBeginning().get(2).equals(tour1.getRefsFromBeginning().get(2)));
 	}
 		
@@ -193,15 +190,77 @@ public class TestTour {
 		tour1.removeCustomerAtPosition(1);	
 	}
 	
-	private void thenListOfRefsShouldEqualThatOfTourWithCustomersC1C3() {
+	private void thenListOfRefsFromBeginningShouldEqualThatOfTourWithCustomersC1C3() {
 		assertEquals(true, SetUpUtils.getTourWithCustomers1And3().getRefsFromBeginning().get(0).equals(tour1.getRefsFromBeginning().get(0)));
-		assertEquals(true, tour1.getRefsFromBeginning().get(1).equals(new RessourceExtensionFunction(195.81138830084188, 345.0, 425.0)));	
+		assertEquals(true, tour1.getRefsFromBeginning().get(1).equals(SetUpUtils.getTourWithCustomers1And3().getRefsFromBeginning().get(1)));
 	}
 	
 	@Test
 	public void testThatWhenCreatingTourRefsAreOk() {
 		SolutionGot solutionWithOneTourWithCustomers2And3 = SetUpUtils.SetUpSolutionWithOneTourWithCustomer2And3();
 		assertEquals(false,solutionWithOneTourWithCustomers2And3.getGots().get(0).getFirstTour().getRefsFromBeginning().isEmpty());
+	}
+	
+	@Test 
+	public void testCalculationOfRefsFromPosToEnd() {
+		whenGivenOneEmptyTour();
+		thenListsOfRefsToEndInTourShouldBeEmpty();
+		whenAddingCustomer2();
+		thenListsOfRefsToEndShouldContainCorrectRefs();
+		whenInsertingCustomer1AtPosition0();
+		thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2();
+		whenAddingCustomer3();
+		thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2C3();
+		whenCustomer2IsDeleted();
+		thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C3();		
+	}
+
+	private void thenListsOfRefsToEndInTourShouldBeEmpty() {
+		assertEquals(0,tour1.getRefsToEnd().size());
+	}
+	
+	private void thenListsOfRefsToEndShouldContainCorrectRefs() {
+		assertEquals(90, tour1.getRefsToEnd().get(0).getDuration(), 0.001);
+		assertEquals(528, tour1.getRefsToEnd().get(0).getLatestArrivalTime(), 0.001);
+		assertEquals(475, tour1.getRefsToEnd().get(0).getEarliestLeavingTime(), 0.001);		
+	}
+	
+	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2() {
+		assertEquals(true, SetUpUtils.getTourWithCustomer1And2().getRefsToEnd().get(0).equals(tour1.getRefsToEnd().get(0)));		
+		assertEquals(true, SetUpUtils.getTourWithCustomer1And2().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));
+	}
+	
+	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2C3() {
+		assertEquals(true, tour1.getRefsToEnd().get(0).equals(new ResourceExtensionFunction(286.1803398874989, 345.0, 570.0,60)));
+		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsToEnd().get(0).equals(tour1.getRefsToEnd().get(0)));		
+		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));				
+		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsToEnd().get(2).equals(tour1.getRefsToEnd().get(2)));
+	}
+	
+	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C3() {
+		System.out.println("");
+		tour1.getRefsToEnd().get(1).print();
+		System.out.println("");
+		assertEquals(true, SetUpUtils.getTourWithCustomers1And3().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));
+		System.out.println("");
+		tour1.getRefsToEnd().get(0).print();
+		System.out.println("");
+		assertEquals(true, tour1.getRefsToEnd().get(0).equals(new ResourceExtensionFunction(195.81138830084188, 345.0, 425.0,40)));
+	}
+	
+	@Test
+	public void testCalculationOfRefsFromPosToEndWhenDeletingAtLastPosition() {
+		whenGivenTourWithCustomersC1C2C2();
+		whenDeletingLastCustomer();
+		thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2();
+	}
+
+	private void whenGivenTourWithCustomersC1C2C2() {
+		tour1 = SetUpUtils.getTourWithCustomers1And2And3();
+	}
+	
+	private void whenDeletingLastCustomer() {
+		tour1.removeCustomerAtPosition(2);
 	}
 	
 }

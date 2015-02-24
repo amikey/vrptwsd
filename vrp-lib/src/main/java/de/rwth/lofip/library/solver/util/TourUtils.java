@@ -1,7 +1,5 @@
 package de.rwth.lofip.library.solver.util;
 
-import java.sql.Time;
-
 import org.apache.commons.math3.distribution.PoissonDistribution;
 
 import de.rwth.lofip.library.AbstractPointInSpace;
@@ -203,7 +201,7 @@ public class TourUtils {
 
 		return true;
 	}
-
+	
 	/**
 	 * Check, if an insertion at the given position into the given tour does
 	 * violate the time window of the customer to be inserted or the time
@@ -338,11 +336,58 @@ public class TourUtils {
 		// check whether time window constraints are satisfied
 		tour.recalculateTimes();
 		boolean feasible = true;
-		for (CustomerInTour c : tour.getCustomersInTour()) {
-			if (!(c.getArrivalTime() >= c.getCustomer().getTimeWindowOpen() && c
-					.getArrivalTime() <= c.getCustomer().getTimeWindowClose()))
+		for (CustomerInTour c : tour.getCustomersInTour()) {			
+			if (c.getArrivalTime() > c.getCustomer().getTimeWindowClose())
 				feasible = false;
 		}
 		return feasible;
+	}
+
+	public static boolean isConcatenationOfRefsTWFeasible(ResourceExtensionFunction ref1, ResourceExtensionFunction ref2) {		
+		double duration = new Edge(ref1.getLastCustomer(), ref2.getFirstCustomer()).getLength();
+		return ref1.getEarliestLeavingTime() + duration <= ref2.getLatestArrivalTime(); 
+	}
+
+	protected static boolean isConcatenationOfRefsFeasible(
+			ResourceExtensionFunction ref1, ResourceExtensionFunction ref2,
+			ResourceExtensionFunction ref3, double capacity) {
+		boolean twFeasible = isConcatenationOfRefsTWFeasible(ref1, ref2) && isConcatenationOfRefsTWFeasible(ref2, ref3);
+		boolean demandFeasible = ref1.getDemand() + ref2.getDemand() + ref3.getDemand() <= capacity;
+		return twFeasible && demandFeasible;
+	}
+
+	public static boolean isInsertionOfRefPossible(Tour tour,ResourceExtensionFunction ref, int position) {
+		return isInsertionOfRefPossible(tour, ref, position, position);
+		
+	}
+
+	public static boolean isInsertionOfRefPossible(Tour tour, ResourceExtensionFunction ref, int positionStartOfSegment, int positionEndOfSegment) {
+		ResourceExtensionFunction ref1;
+		if (positionStartOfSegment == 0)
+			ref1 = new ResourceExtensionFunction();
+		else 
+			ref1 = tour.getRefFromBeginningAtPosition(positionStartOfSegment-1);
+		ResourceExtensionFunction ref2 = ref;
+		ResourceExtensionFunction ref3;
+		if (positionEndOfSegment == tour.getCustomerSize())
+			ref3 = new ResourceExtensionFunction();
+		else
+			ref3 = tour.getRefToEndAtPosition(positionEndOfSegment);
+		
+		double capacity = tour.getVehicle().getCapacity();
+		return isConcatenationOfRefsFeasible(ref1, ref2, ref3, capacity);		
+	}
+
+	public static boolean isInsertionPossibleWrtTW(Customer customerToBeInserted, Tour tour,int position) {
+		if (position > tour.getCustomers().size())
+			throw new RuntimeException("isInsertionPossible wurde mit einem Index aufgerufen, der nicht in der Tour liegt.");				
+
+		if (areTimeWindowsViolatedAtCustomerToBeInserted(customerToBeInserted, tour, position))
+			return false;
+		
+		if (areTimeWindowsViolatedAfterCustomerToBeInserted(customerToBeInserted, tour, position))
+			return false;
+		
+		return true;
 	}
 }

@@ -78,7 +78,8 @@ public class Edge {
 		
 			length = Math.sqrt(Math.pow(xDifference, 2) + Math.pow(yDifference, 2));
 		} else {
-			length = Double.MAX_VALUE;
+//			length = Double.MAX_VALUE;
+			length = 0;
 		}
 	}
 

@@ -13,7 +13,9 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 
 public class TestUtils {
@@ -23,13 +25,13 @@ public class TestUtils {
 	
 	public static List<VrpProblem> readSolomonProblems() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-//		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
-		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+//		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
 		while (files.hasNext()) {
-		File file = files.next();
+			File file = files.next();			
 			FileInputStream openInputStream = null;
 			try {
 				openInputStream = FileUtils.openInputStream(file);
@@ -38,9 +40,57 @@ public class TestUtils {
 				problems.add(problem);
 			} finally {
 				IOUtils.closeQuietly(openInputStream);
-			}
+			}			
 		}
 		return problems;
+	}
+	
+	public static List<VrpProblem> readSolomonProblemC101() throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+//		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();
+			if (file.getName().contains("c101") && !file.getName().contains("rc101")) {
+				FileInputStream openInputStream = null;
+				try {
+					openInputStream = FileUtils.openInputStream(file);
+					List<String> lines = IOUtils.readLines(openInputStream);
+					VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+					problems.add(problem);
+				} finally {
+					IOUtils.closeQuietly(openInputStream);
+				}
+			}
+		}
+		return problems;	
+	}
+	
+	public static List<VrpProblem> readSolomonProblemRC101() throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+//		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();
+			if (file.getName().contains("rc101")) {
+				FileInputStream openInputStream = null;
+				try {
+					openInputStream = FileUtils.openInputStream(file);
+					List<String> lines = IOUtils.readLines(openInputStream);
+					VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+					problems.add(problem);
+				} finally {
+					IOUtils.closeQuietly(openInputStream);
+				}
+			}
+		}
+		return problems;	
 	}
 
 	public static void printResultsToFile(String string,List<SolutionGot> solutions) throws IOException {
@@ -48,7 +98,7 @@ public class TestUtils {
 		printResultsToFile(string, solutions, dummySolutions); 
 	}
 	
-	public static void printResultsToFile(String string, List<SolutionGot> solutions,List<SolutionGot> solutions2) throws IOException {
+	public static void printResultsToFile(String string, List<SolutionGot> solutionsInitialSolver,List<SolutionGot> solutionsLocalSearch) throws IOException {
 		setUpBestKnownSolutionValues();
 		setUpBestKnownSolutionVehicleNumbers();
 		
@@ -61,16 +111,21 @@ public class TestUtils {
 		FileOutputStream outputStream = FileUtils.openOutputStream(outputFile, true);
 		int i = 0;
 		IOUtils.write("Problem; InitialSolverValues; InitialSolverVehicleNumber; ", outputStream);
-		if (!solutions2.isEmpty()) 
+		if (!solutionsLocalSearch.isEmpty()) 
 			IOUtils.write("LocalSearchValues; LocalSearchVehicleNumber; ", outputStream);
 		IOUtils.write("BestKnownValue; BestKnownVehicleNumber \n", outputStream);
-		for (SolutionGot solution : solutions) {
+		for (SolutionGot solution : solutionsInitialSolver) {
 			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
 			IOUtils.write(String.format("%.3f",solution.getTotalDistance()) + ";", outputStream);
 			IOUtils.write(solution.getVehicleCount() + ";", outputStream);
-			if (!solutions2.isEmpty()) {
-				IOUtils.write(String.format("%.3f",solutions2.get(i).getTotalDistance()) + ";", outputStream);
-				IOUtils.write(solutions2.get(i).getVehicleCount() + ";", outputStream);
+			if (!solutionsLocalSearch.isEmpty()) {
+				IOUtils.write(String.format("%.3f",solutionsLocalSearch.get(i).getTotalDistance()) + ";", outputStream);
+				IOUtils.write(solutionsLocalSearch.get(i).getVehicleCount() + ";", outputStream);
+				IOUtils.write(solutionsLocalSearch.get(i).getSolutionAsTupel() + ";", outputStream);
+				IOUtils.write("Demands: ", outputStream);
+				for (Tour tour : solutionsLocalSearch.get(i).getTours())
+					IOUtils.write(tour.getDemandOnTour() + ", ", outputStream);
+				IOUtils.write("; ", outputStream);
 			}
 			IOUtils.write(bestKnownSolutionValues.get(i) + ";",outputStream);
 			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i) + "\n",outputStream);
@@ -190,6 +245,8 @@ public class TestUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
+
+
 
 
 

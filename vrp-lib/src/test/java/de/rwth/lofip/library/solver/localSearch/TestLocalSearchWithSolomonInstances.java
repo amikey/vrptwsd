@@ -5,12 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
+import static org.junit.Assert.assertEquals;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.initialSolver.GroupPushForwardInsertionSolver;
+import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
+import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.TestUtils;
 
 public class TestLocalSearchWithSolomonInstances {
@@ -37,9 +39,24 @@ public class TestLocalSearchWithSolomonInstances {
 	private static void improveSolutionsWithLocalSearch() {
 		LocalSearch localSearch = new LocalSearch();
 		for (SolutionGot solution : initialSolutions) {
+			System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
 			SolutionGot improvedSolution = localSearch.improve(solution.clone());
 			improvedSolutions.add(improvedSolution);
 		}	
+	}
+	
+	@Test
+	public void TestLocalSearchOnC101() throws IOException {		
+		problems = TestUtils.readSolomonProblemC101();
+		solveProblemsWithInitialSolver();
+		improveSolutionsWithLocalSearch();		
+	}
+	
+	@Test
+	public void TestLocalSearchOnRC101() throws IOException {		
+		problems = TestUtils.readSolomonProblemRC101();
+		solveProblemsWithInitialSolver();
+		improveSolutionsWithLocalSearch();		
 	}
 
 }

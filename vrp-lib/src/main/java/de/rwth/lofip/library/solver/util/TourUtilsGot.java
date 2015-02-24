@@ -1,13 +1,10 @@
 package de.rwth.lofip.library.solver.util;
 
-import org.apache.commons.math3.distribution.PoissonDistribution;
-
 import de.rwth.lofip.library.AbstractPointInSpace;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.util.CustomerInTour;
 
 /**
  * Static helper methods which calculate stuff related to tours. These are
