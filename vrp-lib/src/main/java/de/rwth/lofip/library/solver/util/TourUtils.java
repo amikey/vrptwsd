@@ -374,8 +374,8 @@ public class TourUtils {
 		ResourceExtensionFunction ref1;
 		if (positionStartOfSegment == 0)
 			//first position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision
-			ref1 = new ResourceExtensionFunction();
-//			ref1 = new ResourceExtensionFunction(tour.getDepot());
+//			ref1 = new ResourceExtensionFunction();
+			ref1 = new ResourceExtensionFunction(tour.getDepot());
 		else 
 			ref1 = tour.getRefFromBeginningAtPosition(positionStartOfSegment-1);
 		ResourceExtensionFunction ref2 = ref;
@@ -383,8 +383,8 @@ public class TourUtils {
 		if (positionEndOfSegment == tour.getCustomerSize())
 			//last position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision
 			//TODO: create new Ref with depot
-			ref3 = new ResourceExtensionFunction();
-			//ref3 = new ResourceExtensionFunction(tour.getDepot());
+//			ref3 = new ResourceExtensionFunction();
+			ref3 = new ResourceExtensionFunction(tour.getDepot());
 		else
 			ref3 = tour.getRefToEndAtPosition(positionEndOfSegment);
 		

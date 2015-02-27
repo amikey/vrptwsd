@@ -21,9 +21,11 @@ public class ResourceExtensionFunction {
 	private double latestArrivalTime = Double.MAX_VALUE;
 	private double earliestDepartureTime = 0;
 	private int demand = 0;
+	//TODO: have depot in list elementsInThisRef
 	private List<Customer> elementsInThisRef = new LinkedList<Customer>();	
 	private int id;
 	private boolean containsDepot = false;
+	private Depot depot;
 	
 	public ResourceExtensionFunction() {
 		id = seedId;
@@ -41,15 +43,6 @@ public class ResourceExtensionFunction {
 		seedId++;
 	}
 	
-//	public ResourceExtensionFunction(Depot depot) {
-//		super();
-//		duration = depot.getServiceTime();
-//		latestArrivalTime = depot.getTimeWindowClose();
-//		earliestDepartureTime = depot.getTimeWindowOpen();
-//		demand = (int) depot.getDemand();
-//		containsDepot = true;
-//	}
-	
 	public ResourceExtensionFunction(Customer customer) {
 		super();
 		duration = customer.getServiceTime();
@@ -59,6 +52,7 @@ public class ResourceExtensionFunction {
 		elementsInThisRef.add(customer);
 	}
 
+	//Copy Constructor
 	public ResourceExtensionFunction(ResourceExtensionFunction ref) {
 		super();
 		duration = ref.getDuration();
@@ -66,15 +60,19 @@ public class ResourceExtensionFunction {
 		earliestDepartureTime = ref.getEarliestDepartureTime();
 		demand = ref.getDemand();
 		elementsInThisRef = new LinkedList<Customer>(ref.getCustomers());
+		containsDepot = ref.isContainsDepot();
+		depot = ref.getDepot();
 	}
 
 	public ResourceExtensionFunction(Depot depot) {
+		//TODO: get values from Depot
 		super();
 		duration = 0;
 		latestArrivalTime = 1236;
 		earliestDepartureTime = 0;
 		demand = 0;
 		containsDepot = true;
+		this.depot = depot;
 	}
 
 	public double getDuration() {
@@ -106,6 +104,14 @@ public class ResourceExtensionFunction {
 
 	public void setDemand(int demand) {
 		this.demand = demand;
+	}
+	
+	private Depot getDepot() {
+		return depot;
+	}
+
+	private boolean isContainsDepot() {
+		return containsDepot;
 	}
 	
 	public void updateWithSubsequentCustomer(CustomerInTour customerInTour) {
@@ -271,17 +277,23 @@ public class ResourceExtensionFunction {
 		elementsInThisRef.clear();
 	}
 
-	public Customer getFirstCustomer() {
+	public AbstractPointInSpace getFirstCustomer() {
 		if (elementsInThisRef.isEmpty())
-			//TODO: bad practice
-			return null;
+			if (containsDepot)
+				return depot;
+			else
+				//TODO: bad practice
+				return null;
 		else return elementsInThisRef.get(0);
 	}
 
-	public Customer getLastCustomer() {
+	public AbstractPointInSpace getLastCustomer() {
 		if (elementsInThisRef.isEmpty())
-			//TODO: bad practice
-			return null;
+			if (containsDepot)
+				return depot;
+			else
+				//TODO: bad practice
+				return null;
 		else return elementsInThisRef.get(elementsInThisRef.size()-1);
 	}
 	

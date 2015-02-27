@@ -31,16 +31,16 @@ public class TestLocalSearchWithSolomonInstances {
 		}
 	}
 	
-//	@Test
-//	public void TestLocalSearchOnAllSolomonInstances() throws IOException {	
+	@Test
+	public void TestLocalSearchOnAllSolomonInstances() throws IOException {	
 //		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/output.txt"));
 //		System.setOut(out);
 //		
-//		problems = TestUtils.readSolomonProblems();
-//		solveProblemsWithInitialSolver();
-//		improveSolutionsWithLocalSearch();
-//		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
-//	}
+		problems = TestUtils.readSolomonProblems();
+		solveProblemsWithInitialSolver();
+		improveSolutionsWithLocalSearch();
+		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
+	}
 	
 	private void solveProblemsWithInitialSolver() {
 		SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();

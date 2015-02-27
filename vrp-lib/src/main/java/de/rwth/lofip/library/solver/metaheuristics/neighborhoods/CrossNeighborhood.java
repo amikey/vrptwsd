@@ -108,10 +108,10 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				generateNextCombinationOfSegements();
 				if (!segmentsToBeSwapedAreNotInNeighborhood()) {
 //					FOR DEBUGGING:
-					if (tour1.getId() == 9 && tour2.getId() == 25 &&
-							positionStartOfSegmentTour1 == 0 && positionEndOfSegmentTour1 == 0 &&
-							positionStartOfSegmentTour2 == 0 && positionEndOfSegmentTour2 == 1 &&
-							iteration == 17)
+					if (tour1.getId() == 17 && tour2.getId() == 32 &&
+							positionStartOfSegmentTour1 == 0 && positionEndOfSegmentTour1 == 5 &&
+							positionStartOfSegmentTour2 == 0 && positionEndOfSegmentTour2 == 0 &&
+							iteration == 54)
 						System.out.println("MOVE!");
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();		
@@ -321,7 +321,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			//move between two tours
 			if (!TourUtils.isInsertionOfRefPossible(tour1,RefSegment2,positionStartOfSegmentTour1,positionEndOfSegmentTour1))
 				isWasInsertionPossible = false;
-			if (!TourUtils.isInsertionOfRefPossible(tour2,RefSegment1,positionStartOfSegmentTour2,positionEndOfSegmentTour2))
+			else if (!TourUtils.isInsertionOfRefPossible(tour2,RefSegment1,positionStartOfSegmentTour2,positionEndOfSegmentTour2))
 				isWasInsertionPossible = false;
 		}
 		return isWasInsertionPossible;

@@ -17,7 +17,7 @@ public class Tour implements Cloneable, SolutionElement {
      * Fields
      ***************************************************************************/
 	
-	protected static int SEED = 1;
+	protected static int seedForId = 1;
 	protected double costFactor = 1;
 	protected long id;
     protected String idTour;
@@ -30,9 +30,7 @@ public class Tour implements Cloneable, SolutionElement {
 	
 	private List<ResourceExtensionFunction> refsFromStartUpToPosition = new LinkedList<ResourceExtensionFunction>(); 
 	private List<ResourceExtensionFunction> refsFromPositionToEnd = new LinkedList<ResourceExtensionFunction>();
-	//this is an upper triangle matrix 
-	//row: starting position
-	//column: ending position
+	//this is an upper triangle matrix; row: starting position; column: ending position
 	private List<ArrayList<ResourceExtensionFunction>> refForSegment = new ArrayList<ArrayList<ResourceExtensionFunction>>();
 	
     /****************************************************************************
@@ -45,8 +43,8 @@ public class Tour implements Cloneable, SolutionElement {
      * should be good enough to identify a tour for a while.
      */
     public Tour() {    	    
-        id = SEED;
-        SEED++;
+        id = seedForId;
+        seedForId++;
         this.idTour=(String)("T"+this.getId());
     }
 
@@ -436,7 +434,7 @@ public class Tour implements Cloneable, SolutionElement {
 	private ResourceExtensionFunction createRefUpToEndAtPosition(int i) {
 		ResourceExtensionFunction refTemp;
 		if (isLastPosition(i)) {
-			refTemp = new ResourceExtensionFunction();
+			refTemp = new ResourceExtensionFunction(depot);
 			refTemp.updateWithPreceedingCustomer(customers.get(customers.size()-1));
 		} else {
 			refTemp = refsFromPositionToEnd.get(i+1).clone();
@@ -448,7 +446,7 @@ public class Tour implements Cloneable, SolutionElement {
 	private ResourceExtensionFunction createRefFromStartAtPosition(int i) {
 		ResourceExtensionFunction refTemp;
 		if (isFirstPosition(i)) {
-			refTemp = new ResourceExtensionFunction();
+			refTemp = new ResourceExtensionFunction(depot);
 			refTemp.updateWithSubsequentCustomer(customers.get(0));
 		} else {
 			refTemp = refsFromStartUpToPosition.get(i-1).clone();
