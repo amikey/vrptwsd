@@ -164,7 +164,7 @@ public class TestTour {
 	private void thenListsOfRefsFromBeginningShouldContainCorrectRefs() {		
 		assertEquals(90, tour1.getRefsFromBeginning().get(0).getDuration(), 0.001);
 		assertEquals(528, tour1.getRefsFromBeginning().get(0).getLatestArrivalTime(), 0.001);
-		assertEquals(475, tour1.getRefsFromBeginning().get(0).getEarliestLeavingTime(), 0.001);		
+		assertEquals(565, tour1.getRefsFromBeginning().get(0).getEarliestDepartureTime(), 0.001);		
 	}
 	
 	private void whenInsertingCustomer1AtPosition0() {
@@ -222,7 +222,7 @@ public class TestTour {
 	private void thenListsOfRefsToEndShouldContainCorrectRefs() {
 		assertEquals(90, tour1.getRefsToEnd().get(0).getDuration(), 0.001);
 		assertEquals(528, tour1.getRefsToEnd().get(0).getLatestArrivalTime(), 0.001);
-		assertEquals(475, tour1.getRefsToEnd().get(0).getEarliestLeavingTime(), 0.001);		
+		assertEquals(565, tour1.getRefsToEnd().get(0).getEarliestDepartureTime(), 0.001);		
 	}
 	
 	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2() {
@@ -230,22 +230,14 @@ public class TestTour {
 		assertEquals(true, SetUpUtils.getTourWithCustomer1And2().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));
 	}
 	
-	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2C3() {
-		assertEquals(true, tour1.getRefsToEnd().get(0).equals(new ResourceExtensionFunction(286.1803398874989, 345.0, 570.0,60)));
+	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2C3() {		
 		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsToEnd().get(0).equals(tour1.getRefsToEnd().get(0)));		
 		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));				
 		assertEquals(true, SetUpUtils.getTourWithCustomers1And2And3().getRefsToEnd().get(2).equals(tour1.getRefsToEnd().get(2)));
 	}
 	
-	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C3() {
-		System.out.println("");
-		tour1.getRefsToEnd().get(1).print();
-		System.out.println("");
-		assertEquals(true, SetUpUtils.getTourWithCustomers1And3().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));
-		System.out.println("");
-		tour1.getRefsToEnd().get(0).print();
-		System.out.println("");
-		assertEquals(true, tour1.getRefsToEnd().get(0).equals(new ResourceExtensionFunction(195.81138830084188, 345.0, 425.0,40)));
+	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C3() {		
+		assertEquals(true, SetUpUtils.getTourWithCustomers1And3().getRefsToEnd().get(1).equals(tour1.getRefsToEnd().get(1)));			
 	}
 	
 	@Test

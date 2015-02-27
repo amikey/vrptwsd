@@ -4,6 +4,6 @@ import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractN
 
 public interface NeighborhoodInterface {
 
-	AbstractNeighborhoodMove returnBestMove();
+	AbstractNeighborhoodMove returnBestMove() throws Exception;
 
 }

@@ -14,7 +14,7 @@ public class TabuListTest {
 	private SolutionGot solution;
 	
 	@Test 
-	public void testTabuList() {
+	public void testTabuList() throws Exception {
 		givenSolutionWithOneTourWithCustomersC1C3C2C4();
 		whenNextNeighborhoodMoveIsTried();
 		thenSolutionShouldConsistOfTourWithCustomersC1C2C3C4();
@@ -26,7 +26,7 @@ public class TabuListTest {
 		solution = SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();		
 	}
 
-	private void whenNextNeighborhoodMoveIsTried() {
+	private void whenNextNeighborhoodMoveIsTried() throws Exception {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solution);
 		AbstractNeighborhoodMove bestMove = crossNeighborhood.returnBestMove();	
 		solution = crossNeighborhood.acctuallyApplyMove(bestMove);

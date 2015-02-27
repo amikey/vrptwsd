@@ -3,7 +3,9 @@ package de.rwth.lofip.library.solver.util;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.rwth.lofip.library.AbstractPointInSpace;
 import de.rwth.lofip.library.Customer;
+import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.util.CustomerInTour;
 
@@ -17,30 +19,62 @@ public class ResourceExtensionFunction {
 	private static int seedId = 1;
 	private double duration = 0;
 	private double latestArrivalTime = Double.MAX_VALUE;
-	private double earliestLeavingTime = 0;
+	private double earliestDepartureTime = 0;
 	private int demand = 0;
-	private List<Customer> customers = new LinkedList<Customer>();	
+	private List<Customer> elementsInThisRef = new LinkedList<Customer>();	
 	private int id;
+	private boolean containsDepot = false;
 	
 	public ResourceExtensionFunction() {
 		id = seedId;
 		seedId++;
-		customers.clear();
+		elementsInThisRef.clear();
 	}
 	
 	public ResourceExtensionFunction(double d, double e, double f, int i) {
 		duration = d;
 		latestArrivalTime = e;
-		earliestLeavingTime = f;
+		earliestDepartureTime = f;
 		demand = i;
-		customers.clear();
+		elementsInThisRef.clear();
 		id = seedId;
 		seedId++;
 	}
-
+	
+//	public ResourceExtensionFunction(Depot depot) {
+//		super();
+//		duration = depot.getServiceTime();
+//		latestArrivalTime = depot.getTimeWindowClose();
+//		earliestDepartureTime = depot.getTimeWindowOpen();
+//		demand = (int) depot.getDemand();
+//		containsDepot = true;
+//	}
+	
 	public ResourceExtensionFunction(Customer customer) {
 		super();
-		updateWithSubsequentCustomer(customer);
+		duration = customer.getServiceTime();
+		latestArrivalTime = customer.getTimeWindowClose();
+		earliestDepartureTime = customer.getTimeWindowOpen() + duration;
+		demand += customer.getDemand();
+		elementsInThisRef.add(customer);
+	}
+
+	public ResourceExtensionFunction(ResourceExtensionFunction ref) {
+		super();
+		duration = ref.getDuration();
+		latestArrivalTime = ref.getLatestArrivalTime();
+		earliestDepartureTime = ref.getEarliestDepartureTime();
+		demand = ref.getDemand();
+		elementsInThisRef = new LinkedList<Customer>(ref.getCustomers());
+	}
+
+	public ResourceExtensionFunction(Depot depot) {
+		super();
+		duration = 0;
+		latestArrivalTime = 1236;
+		earliestDepartureTime = 0;
+		demand = 0;
+		containsDepot = true;
 	}
 
 	public double getDuration() {
@@ -58,12 +92,12 @@ public class ResourceExtensionFunction {
 		this.latestArrivalTime = latestArrivalTime;
 	}
 	
-	public double getEarliestLeavingTime() {
-		return earliestLeavingTime;
+	public double getEarliestDepartureTime() {
+		return earliestDepartureTime;
 	}
 	
 	public void setEarliestLeavingTime(double earliestLeavingTime) {
-		this.earliestLeavingTime = earliestLeavingTime;
+		this.earliestDepartureTime = earliestLeavingTime;
 	}
 	
 	public int getDemand() {
@@ -78,95 +112,88 @@ public class ResourceExtensionFunction {
 		updateWithSubsequentCustomer(customerInTour.getCustomer());
 	}
 	
-	public void updateWithSubsequentCustomer(Customer newCustomer) {			
-		//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)		
-		if (isFirstCustomerToBeAddedToThisRef()) {
-			duration = newCustomer.getServiceTime();
-			latestArrivalTime = newCustomer.getTimeWindowClose();
-			earliestLeavingTime = newCustomer.getTimeWindowOpen() + duration;
-		} else { 
-			//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
-			double timeBetweenOldSegmentAndNewCustomerInSegment = new Edge(customers.get(customers.size()-1), newCustomer).getLength();	
+	public void updateWithSubsequentCustomer(Customer newCustomer) {	
+		ResourceExtensionFunction newRef = new ResourceExtensionFunction(newCustomer);
+		updateWithSubsequentRef(newRef);
+	}
+	
+	public void updateWithSubsequentRef(ResourceExtensionFunction newRef) {
+		//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
+		double timeBetweenOldSegmentAndNewSegment = new Edge(getLastCustomer(), newRef.getFirstCustomer()).getLength();
 		
-			//update duration
-			double durationOldSegment = duration;
-			double newDuration = durationOldSegment + timeBetweenOldSegmentAndNewCustomerInSegment + newCustomer.getServiceTime();  
-			duration = newDuration;
+		//update duration
+		double durationOldSegment = duration;
+		double newDuration = durationOldSegment + timeBetweenOldSegmentAndNewSegment + newRef.getDuration();  
+		duration = newDuration;
+		
+		//update latest arrival time
+			double latOldSegment = latestArrivalTime;			
+	
+			//calculate LAT_{\roh_2} - d_{\roh_1\roh_2} - D_\roh_1
+			double latNewCustomer = newRef.getLatestArrivalTime() - timeBetweenOldSegmentAndNewSegment - durationOldSegment;
+	
+			double newLat = Math.min(latOldSegment, latNewCustomer);
+			latestArrivalTime = newLat;	
 			
-			//update latest arrival time
-				double latOldSegment2 = latestArrivalTime;			
+		//update earliest departure time				
 			
-				//calculate LAT_{\roh_2} - d_{\roh_1\roh_2} - D_\roh_1
-				double latNewCustomer = newCustomer.getTimeWindowClose() - timeBetweenOldSegmentAndNewCustomerInSegment - durationOldSegment;
-			
-				double newLat = Math.min(latOldSegment2, latNewCustomer);
-				latestArrivalTime = newLat;					
-			
-			//update earliest departure time
-				double edtOldSegment2 = earliestLeavingTime;
-			
-				//calculate EDT_{roh_1} + d_{\roh_1,\roh2} + D_\roh_2 
-				double edtNewCustomer = edtOldSegment2 + timeBetweenOldSegmentAndNewCustomerInSegment + newCustomer.getServiceTime();
-				
-				double newEdt = Math.max(edtNewCustomer, newCustomer.getTimeWindowOpen());
-				earliestLeavingTime = newEdt;
-		}		
+			//calculate EDT_{roh_1} + d_{\roh_1,\roh2} + D_\roh_2 
+			double edtFromOldSegement = earliestDepartureTime + timeBetweenOldSegmentAndNewSegment + newRef.getDuration();
+					
+			double newEdt = Math.max(edtFromOldSegement, newRef.getEarliestDepartureTime());
+			earliestDepartureTime = newEdt;
+		
 		//update demand
-			demand += newCustomer.getDemand();
+			demand += newRef.getDemand();
 			
-		customers.add(newCustomer);
+		elementsInThisRef.addAll(newRef.getCustomers());			
 	}
 	
 	public void updateWithPreceedingCustomer(CustomerInTour customerInTour) {
 		updateWithPreceedingCustomer(customerInTour.getCustomer());		
 	}
 	
-	private void updateWithPreceedingCustomer(Customer newCustomer) {	
-		if (isFirstCustomerToBeAddedToThisRef()) {
-			duration = newCustomer.getServiceTime();
-			latestArrivalTime = newCustomer.getTimeWindowClose();
-			earliestLeavingTime = newCustomer.getTimeWindowOpen() + duration;		
-		} else { 
-			//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
-			double timeBetweenOldSegmentAndNewCustomerInSegment = new Edge(newCustomer, customers.get(0)).getLength();		
-		
-			//update duration
-			double durationOldSegment = duration;
-			double newDuration = durationOldSegment + timeBetweenOldSegmentAndNewCustomerInSegment + newCustomer.getServiceTime();  
-			duration = newDuration;
-			
-			//update latest arrival time
-				double latOldSegment2 = latestArrivalTime;			
-			
-				//calculate LAT_{\roh_2} - d_{\roh_1\roh_2} - D_\roh_1
-				double latNewCustomer = latOldSegment2 - timeBetweenOldSegmentAndNewCustomerInSegment - newCustomer.getServiceTime();					
-			
-				double newLat = Math.min(newCustomer.getTimeWindowClose(), latNewCustomer);
-				latestArrivalTime = newLat;					
-			
-			//update earliest departure time
-				double edtOldSegment2 = earliestLeavingTime;
-			
-				//calculate EDT_{roh_1} + d_{\roh_1,\roh2} + D_\roh_2 
-				double edtNewCustomer = newCustomer.getTimeWindowOpen() + timeBetweenOldSegmentAndNewCustomerInSegment + durationOldSegment;
-				
-				double newEdt = Math.max(edtNewCustomer, edtOldSegment2);
-				earliestLeavingTime = newEdt;
-		}
-		//update demand
-			demand += newCustomer.getDemand();
-			
-		((LinkedList<Customer>) customers).addFirst(newCustomer);
+	private void updateWithPreceedingCustomer(Customer newCustomer) {
+		ResourceExtensionFunction newRef = new ResourceExtensionFunction(newCustomer);
+		updateWithPreceedingRef(newRef);
 	}
-
-	private boolean isFirstCustomerToBeAddedToThisRef() {
-		return customers.isEmpty();
+	
+	public void updateWithPreceedingRef(ResourceExtensionFunction newRef) {
+		//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
+		double timeBetweenOldSegmentAndNewSegment = new Edge(newRef.getLastCustomer(), getFirstCustomer()).getLength();
+		
+		//update duration
+		double durationOldSegment = duration;
+		double newDuration = durationOldSegment + timeBetweenOldSegmentAndNewSegment + newRef.getDuration();  
+		duration = newDuration;
+		
+		//update latest arrival time
+		//calculate LAT_{\roh_2} - d_{\roh_1\roh_2} - D_\roh_1
+			double latOldSegment = latestArrivalTime - timeBetweenOldSegmentAndNewSegment - newRef.getDuration();			
+		
+			double newLat = Math.min(newRef.getLatestArrivalTime(), latOldSegment);
+			latestArrivalTime = newLat;	
+			
+		//update earliest departure time				
+			
+			//calculate EDT_{roh_1} + d_{\roh_1,\roh2} + D_\roh_2 
+			double edtFromNewSegment = newRef.getEarliestDepartureTime() + timeBetweenOldSegmentAndNewSegment + durationOldSegment;
+					
+			double newEdt = Math.max(edtFromNewSegment, earliestDepartureTime);
+			earliestDepartureTime = newEdt;
+		
+		//update demand
+			demand += newRef.getDemand();
+		
+		LinkedList<Customer> tempElements = new LinkedList<Customer>(newRef.getCustomers());
+		tempElements.addAll(elementsInThisRef);
+		elementsInThisRef = tempElements;			
 	}
 
 	public void print() {
-		System.out.print("Ref: (" + duration + "," + latestArrivalTime + "," + earliestLeavingTime + ")");
+		System.out.print("Ref: (" + duration + "," + latestArrivalTime + "," + earliestDepartureTime + ")");
 		System.out.print("; Customers: ");
-		for (Customer c : customers)
+		for (Customer c : elementsInThisRef)
 			c.print();
 		System.out.println("; ID: " + id);
 	}
@@ -175,19 +202,24 @@ public class ResourceExtensionFunction {
 	public ResourceExtensionFunction clone() {
 		ResourceExtensionFunction ref = new ResourceExtensionFunction();
 		ref.setDuration(duration);
-		ref.setEarliestLeavingTime(earliestLeavingTime);
+		ref.setEarliestLeavingTime(earliestDepartureTime);
 		ref.setLatestArrivalTime(latestArrivalTime);
 		ref.setDemand(demand);
 		//TODO: wie sieht das runtime technisch aus? Ist der Befehl unten ein Problem, weil er über jeden einzelnen Eintrag in der List iteriert?
 		//falls ja, sollte ich eine andere Methode wählen, als die Customer in der Ref zu speichern, nämlich
 		//letzten Customer speichern und evtl. ersten Customer speichern
-		List<Customer> newCustomers = new LinkedList<Customer>(customers);
+		List<Customer> newCustomers = new LinkedList<Customer>(elementsInThisRef);
 		ref.setCustomers(newCustomers);
+		ref.setContainsDepot(containsDepot);
 		return ref;
 	}
 	
+	private void setContainsDepot(boolean containsDepot2) {
+		this.containsDepot = containsDepot2;
+	}
+
 	private void setCustomers(List<Customer> customers2) {
-		customers = customers2;
+		elementsInThisRef = customers2;
 	}
 	
 	@Override
@@ -197,7 +229,7 @@ public class ResourceExtensionFunction {
 		long temp;
 		temp = Double.doubleToLongBits(duration);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(earliestLeavingTime);
+		temp = Double.doubleToLongBits(earliestDepartureTime);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(latestArrivalTime);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -216,8 +248,8 @@ public class ResourceExtensionFunction {
 		if (Double.doubleToLongBits(duration) != Double
 				.doubleToLongBits(other.duration))
 			return false;
-		if (Double.doubleToLongBits(earliestLeavingTime) != Double
-				.doubleToLongBits(other.earliestLeavingTime))
+		if (Double.doubleToLongBits(earliestDepartureTime) != Double
+				.doubleToLongBits(other.earliestDepartureTime))
 			return false;
 		if (Double.doubleToLongBits(latestArrivalTime) != Double
 				.doubleToLongBits(other.latestArrivalTime))
@@ -228,31 +260,30 @@ public class ResourceExtensionFunction {
 	}
 
 	public List<Customer> getCustomers() {
-		return customers;
+		return elementsInThisRef;
 	}
 
 	public void reset() {
 		duration = 0;
 		latestArrivalTime = Double.MAX_VALUE;
-		earliestLeavingTime = 0;
+		earliestDepartureTime = 0;
 		demand = 0;
-		customers.clear();
+		elementsInThisRef.clear();
 	}
 
 	public Customer getFirstCustomer() {
-		if (customers.isEmpty())
+		if (elementsInThisRef.isEmpty())
 			//TODO: bad practice
 			return null;
-		else return customers.get(0);
+		else return elementsInThisRef.get(0);
 	}
 
 	public Customer getLastCustomer() {
-		if (customers.isEmpty())
+		if (elementsInThisRef.isEmpty())
 			//TODO: bad practice
 			return null;
-		else return customers.get(customers.size()-1);
+		else return elementsInThisRef.get(elementsInThisRef.size()-1);
 	}
-
 	
 
 

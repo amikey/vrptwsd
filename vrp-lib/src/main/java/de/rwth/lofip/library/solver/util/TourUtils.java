@@ -345,15 +345,24 @@ public class TourUtils {
 
 	public static boolean isConcatenationOfRefsTWFeasible(ResourceExtensionFunction ref1, ResourceExtensionFunction ref2) {		
 		double duration = new Edge(ref1.getLastCustomer(), ref2.getFirstCustomer()).getLength();
-		return ref1.getEarliestLeavingTime() + duration <= ref2.getLatestArrivalTime(); 
+		return ref1.getEarliestDepartureTime() + duration <= ref2.getLatestArrivalTime(); 
 	}
 
 	protected static boolean isConcatenationOfRefsFeasible(
 			ResourceExtensionFunction ref1, ResourceExtensionFunction ref2,
 			ResourceExtensionFunction ref3, double capacity) {
-		boolean twFeasible = isConcatenationOfRefsTWFeasible(ref1, ref2) && isConcatenationOfRefsTWFeasible(ref2, ref3);
-		boolean demandFeasible = ref1.getDemand() + ref2.getDemand() + ref3.getDemand() <= capacity;
-		return twFeasible && demandFeasible;
+		if (isConcatenationOfRefsTWFeasible(ref1, ref2) && isConcatenationOfRefsDemandFeasible(ref1,ref2,capacity)) {
+			ResourceExtensionFunction ref12 = new ResourceExtensionFunction(ref1);
+			ref12.updateWithSubsequentRef(ref2);
+			return isConcatenationOfRefsTWFeasible(ref12,ref3) && isConcatenationOfRefsDemandFeasible(ref12,ref3,capacity); 
+		} else 
+			return false;			
+	}
+
+	private static boolean isConcatenationOfRefsDemandFeasible(
+			ResourceExtensionFunction ref1, ResourceExtensionFunction ref2,
+			double capacity) {
+		return ref1.getDemand() + ref2.getDemand() <= capacity;
 	}
 
 	public static boolean isInsertionOfRefPossible(Tour tour,ResourceExtensionFunction ref, int position) {
@@ -364,13 +373,18 @@ public class TourUtils {
 	public static boolean isInsertionOfRefPossible(Tour tour, ResourceExtensionFunction ref, int positionStartOfSegment, int positionEndOfSegment) {
 		ResourceExtensionFunction ref1;
 		if (positionStartOfSegment == 0)
+			//first position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision
 			ref1 = new ResourceExtensionFunction();
+//			ref1 = new ResourceExtensionFunction(tour.getDepot());
 		else 
 			ref1 = tour.getRefFromBeginningAtPosition(positionStartOfSegment-1);
 		ResourceExtensionFunction ref2 = ref;
 		ResourceExtensionFunction ref3;
 		if (positionEndOfSegment == tour.getCustomerSize())
+			//last position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision
+			//TODO: create new Ref with depot
 			ref3 = new ResourceExtensionFunction();
+			//ref3 = new ResourceExtensionFunction(tour.getDepot());
 		else
 			ref3 = tour.getRefToEndAtPosition(positionEndOfSegment);
 		

@@ -1,6 +1,7 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 import java.util.Collections;
@@ -71,14 +72,14 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	}
 	
 	@Override
-	public AbstractNeighborhoodMove returnBestMove() {	
+	public AbstractNeighborhoodMove returnBestMove() throws Exception {	
 		moves.clear();
 		generateMoves();
 		AbstractNeighborhoodMove bestMove = findBestMove();
 		return bestMove;
 	}
 	
-	public AbstractNeighborhoodMove returnBestMoveUsingRefs(int iteration) {
+	public AbstractNeighborhoodMove returnBestMoveUsingRefs(int iteration) throws Exception {
 		initialise();
 		moves.clear();
 		generateMovesUsingRefs(iteration);
@@ -126,7 +127,9 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			return true;
 		}
 
-		private AbstractNeighborhoodMove findBestMove() {
+		private AbstractNeighborhoodMove findBestMove() throws Exception {
+			if (moves.isEmpty())
+				throw new Exception("no move found");
 			Collections.sort(moves,
 					new Comparator<AbstractNeighborhoodMove>() {
 	                    @Override

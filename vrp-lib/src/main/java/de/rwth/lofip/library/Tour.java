@@ -17,7 +17,7 @@ public class Tour implements Cloneable, SolutionElement {
      * Fields
      ***************************************************************************/
 	
-	protected static int seed = 1;
+	protected static int SEED = 1;
 	protected double costFactor = 1;
 	protected long id;
     protected String idTour;
@@ -45,8 +45,8 @@ public class Tour implements Cloneable, SolutionElement {
      * should be good enough to identify a tour for a while.
      */
     public Tour() {    	    
-        id = seed;
-        seed++;
+        id = SEED;
+        SEED++;
         this.idTour=(String)("T"+this.getId());
     }
 
@@ -404,19 +404,7 @@ public class Tour implements Cloneable, SolutionElement {
 				refsFromPositionToEnd.set(i,refsFromPositionToEnd.get(i-1));
 		}
 	}
-	
-	private ResourceExtensionFunction createRefUpToEndAtPosition(int i) {
-		ResourceExtensionFunction refTemp;
-		if (isLastPosition(i)) {
-			refTemp = new ResourceExtensionFunction();
-			refTemp.updateWithPreceedingCustomer(customers.get(customers.size()-1));
-		} else {
-			refTemp = refsFromPositionToEnd.get(i+1).clone();
-			refTemp.updateWithPreceedingCustomer(customers.get(i));			
-		}
-		return refTemp;			
-	}
-	
+		
 	private void setRefUpToEndAtPosition(ResourceExtensionFunction refTemp,int i) {
 		if (isLastPosition(i)) {
 			refsFromPositionToEnd.add(refTemp);
@@ -443,6 +431,18 @@ public class Tour implements Cloneable, SolutionElement {
 
 	private boolean isFirstPosition(int i) {
 		return i == 0;
+	}
+	
+	private ResourceExtensionFunction createRefUpToEndAtPosition(int i) {
+		ResourceExtensionFunction refTemp;
+		if (isLastPosition(i)) {
+			refTemp = new ResourceExtensionFunction();
+			refTemp.updateWithPreceedingCustomer(customers.get(customers.size()-1));
+		} else {
+			refTemp = refsFromPositionToEnd.get(i+1).clone();
+			refTemp.updateWithPreceedingCustomer(customers.get(i));			
+		}
+		return refTemp;			
 	}
 	
 	private ResourceExtensionFunction createRefFromStartAtPosition(int i) {

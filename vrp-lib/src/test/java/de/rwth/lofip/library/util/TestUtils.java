@@ -45,7 +45,7 @@ public class TestUtils {
 		return problems;
 	}
 	
-	public static List<VrpProblem> readSolomonProblemC101() throws IOException {
+	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
 		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
 //		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
@@ -54,7 +54,7 @@ public class TestUtils {
 			throw new RuntimeException("Directory enthält keine Files");
 		while (files.hasNext()) {
 			File file = files.next();
-			if (file.getName().contains("c101") && !file.getName().contains("rc101")) {
+			if (file.getName().contains(contain) && !file.getName().contains(notContain)) {
 				FileInputStream openInputStream = null;
 				try {
 					openInputStream = FileUtils.openInputStream(file);
@@ -69,28 +69,20 @@ public class TestUtils {
 		return problems;	
 	}
 	
+	public static List<VrpProblem> readSolomonProblemC101() throws IOException {
+		return readSolomonProblemX("c101","rc101");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemC102() throws IOException {
+		return readSolomonProblemX("c102","rc102");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemC103() throws IOException {
+		return readSolomonProblemX("c103","rc103");
+	}
+	
 	public static List<VrpProblem> readSolomonProblemRC101() throws IOException {
-		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
-//		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
-		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
-		if (dir.listFiles() == null)
-			throw new RuntimeException("Directory enthält keine Files");
-		while (files.hasNext()) {
-			File file = files.next();
-			if (file.getName().contains("rc101")) {
-				FileInputStream openInputStream = null;
-				try {
-					openInputStream = FileUtils.openInputStream(file);
-					List<String> lines = IOUtils.readLines(openInputStream);
-					VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
-					problems.add(problem);
-				} finally {
-					IOUtils.closeQuietly(openInputStream);
-				}
-			}
-		}
-		return problems;	
+		return readSolomonProblemX("rc101","X");
 	}
 
 	public static void printResultsToFile(String string,List<SolutionGot> solutions) throws IOException {
@@ -245,6 +237,7 @@ public class TestUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
+
 
 
 
