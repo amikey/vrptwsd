@@ -51,6 +51,15 @@ public class ResourceExtensionFunction {
 		demand += customer.getDemand();
 		elementsInThisRef.add(customer);
 	}
+	
+	public ResourceExtensionFunction(CustomerInTour customerInTour) {
+		super();
+		duration = customerInTour.getCustomer().getServiceTime();
+		latestArrivalTime = customerInTour.getCustomer().getTimeWindowClose();
+		earliestDepartureTime = customerInTour.getCustomer().getTimeWindowOpen() + duration;
+		demand += customerInTour.getCustomer().getDemand();
+		elementsInThisRef.add(customerInTour.getCustomer());
+	}
 
 	//Copy Constructor
 	public ResourceExtensionFunction(ResourceExtensionFunction ref) {
@@ -73,6 +82,12 @@ public class ResourceExtensionFunction {
 		demand = 0;
 		containsDepot = true;
 		this.depot = depot;
+	}
+
+	public ResourceExtensionFunction(List<Customer> customers) {
+		super();
+		for (Customer c : customers)
+			updateWithSubsequentCustomer(c);
 	}
 
 	public double getDuration() {
@@ -217,7 +232,12 @@ public class ResourceExtensionFunction {
 		List<Customer> newCustomers = new LinkedList<Customer>(elementsInThisRef);
 		ref.setCustomers(newCustomers);
 		ref.setContainsDepot(containsDepot);
+		ref.setDepot(depot);
 		return ref;
+	}
+	
+	private void setDepot(Depot depot2) {
+		this.depot = depot2;		
 	}
 	
 	private void setContainsDepot(boolean containsDepot2) {

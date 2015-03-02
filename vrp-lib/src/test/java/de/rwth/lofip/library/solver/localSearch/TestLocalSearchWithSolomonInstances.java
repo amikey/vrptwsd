@@ -18,29 +18,29 @@ public class TestLocalSearchWithSolomonInstances {
 	private List<SolutionGot> initialSolutions = new LinkedList<SolutionGot>();
 	private List<SolutionGot> improvedSolutions = new LinkedList<SolutionGot>();
 	
-	@Test
-	public void TestLocalSearchOnAllSolomonInstancesSolveSequentially() throws IOException {
-		problems = TestUtils.readSolomonProblems();		
-		for (VrpProblem problem : problems) {
-			System.out.println("SOLVING INSTANCE " + problem.getDescription());
-			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
-			SolutionGot solution = initialSolver.solve(problem);
-			LocalSearch localSearch = new LocalSearch();
-			SolutionGot improvedSolution = localSearch.improve(solution.clone());
-			improvedSolutions.add(improvedSolution);
-		}
-	}
-	
-	@Test
-	public void TestLocalSearchOnAllSolomonInstances() throws IOException {	
-//		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/output.txt"));
-//		System.setOut(out);
-//		
-		problems = TestUtils.readSolomonProblems();
-		solveProblemsWithInitialSolver();
-		improveSolutionsWithLocalSearch();
-		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
-	}
+//	@Test
+//	public void TestLocalSearchOnAllSolomonInstancesSolveSequentially() throws IOException {
+//		problems = TestUtils.readSolomonProblems();		
+//		for (VrpProblem problem : problems) {
+//			System.out.println("SOLVING INSTANCE " + problem.getDescription());
+//			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
+//			SolutionGot solution = initialSolver.solve(problem);
+//			LocalSearch localSearch = new LocalSearch();
+//			SolutionGot improvedSolution = localSearch.improve(solution.clone());
+//			improvedSolutions.add(improvedSolution);
+//		}
+//	}
+//	
+//	@Test
+//	public void TestLocalSearchOnAllSolomonInstances() throws IOException {	
+////		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/output.txt"));
+////		System.setOut(out);
+////		
+//		problems = TestUtils.readSolomonProblems();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithLocalSearch();
+//		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
+//	}
 	
 	private void solveProblemsWithInitialSolver() {
 		SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();

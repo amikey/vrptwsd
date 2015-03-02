@@ -30,7 +30,7 @@ public class Tour implements Cloneable, SolutionElement {
 	
 	private List<ResourceExtensionFunction> refsFromStartUpToPosition = new LinkedList<ResourceExtensionFunction>(); 
 	private List<ResourceExtensionFunction> refsFromPositionToEnd = new LinkedList<ResourceExtensionFunction>();
-	//this is an upper triangle matrix; row: starting position; column: ending position
+	//this is an upper triangle matrix; first index -> row: starting position; second index -> column: ending position
 	private List<ArrayList<ResourceExtensionFunction>> refForSegment = new ArrayList<ArrayList<ResourceExtensionFunction>>();
 	
     /****************************************************************************
@@ -68,9 +68,17 @@ public class Tour implements Cloneable, SolutionElement {
 		this.depot = tour1.getDepot();
 		this.vehicle = tour1.getVehicle().clone();
 		customers = new LinkedList<CustomerInTour>(tour1.getCustomersInTour());
+		edges = tour1.getEdges();
+		demand = tour1.getDemandOnTour();
+		tourDistance = tour1.getTotalDistance();
 		refsFromStartUpToPosition = new LinkedList<ResourceExtensionFunction>(tour1.getRefsFromBeginning());
 		refsFromPositionToEnd = new LinkedList<ResourceExtensionFunction>(tour1.getRefsToEnd());
+		
+		for (int i = 0; i < tour1.getRefMatrix().size(); i++)
+			for (int j = 0; j <= i; j++) 
+				setEntryInRefMatrix(i,j, tour1.getRefMatrix().get(i).get(j).clone());									
 	}
+   
     
     /****************************************************************************
      * End Constructors
@@ -349,7 +357,7 @@ public class Tour implements Cloneable, SolutionElement {
         recalculateTotalDistance();
         recalculateDemand(customer.getDemand());
         recalculateRefsWhenCustomerIsInserted(position);
-//      recalculateRefMatrixWhenCustomerIsInserted(position);
+        recalculateRefMatrixWhenCustomerIsInserted(position);
         
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();
     }    
@@ -381,8 +389,6 @@ public class Tour implements Cloneable, SolutionElement {
 			ResourceExtensionFunction refTemp = createRefUpToEndAtPosition(i);
 			setRefUpToEndAtPosition(refTemp,i);
 		}
-//		System.out.print("Tour: "); this.print();
-//		printRefsToEnd();
 	}
 	
 	private void deleteLastRef() {
@@ -409,6 +415,40 @@ public class Tour implements Cloneable, SolutionElement {
 		} else {			
 			refsFromPositionToEnd.set(i, refTemp);
 		}
+	}
+	
+	private void recalculateRefMatrixWhenCustomerIsInserted(int position) {
+		calculateNecessaryMatrixEntries(position);		
+	}
+
+	private void calculateNecessaryMatrixEntries(int position) {
+		//customers.size() already contains the new number of customers, after inserting or deleting!
+		for (int i = position; i < customers.size(); i++)
+			//index i is for rows
+			for (int j = 0; j <= i; j++) {
+				//index j is for columns
+				ResourceExtensionFunction newEntry = calculateNewMatrixEntry(i,j);
+				setEntryInRefMatrix(i,j, newEntry);
+			}
+	}
+
+	private ResourceExtensionFunction calculateNewMatrixEntry(int i, int j) {
+		if (j == i)
+			return new ResourceExtensionFunction(customers.get(i));
+		else {
+			ResourceExtensionFunction newRef = refForSegment.get(i-1).get(j).clone();
+			newRef.updateWithSubsequentCustomer(customers.get(i));
+			return newRef;
+		}
+	}
+	
+	private void setEntryInRefMatrix(int i, int j,ResourceExtensionFunction newEntry) {
+		if (i == refForSegment.size())
+			refForSegment.add(new ArrayList<ResourceExtensionFunction>());
+		if (j == refForSegment.get(i).size())
+			refForSegment.get(i).add(newEntry);
+		else 
+			refForSegment.get(i).set(j, newEntry);
 	}
 
 	private void printRefsFromStart() {
@@ -481,7 +521,7 @@ public class Tour implements Cloneable, SolutionElement {
         			"customers.size(): " + customers.size() + "\n" + 
         			"Kunden fangen bei Position 0 an und gehen bis n-1 bei n Kunden. Wenn daher z.B.  versucht wird, an Position 8 zu entfernen, muss es 9 Kunden in der Tour geben.");	 
                 
-        assertThatRefsFromPositionToEndContainSameCustomersAsTour();
+        assertThatRefsFromPositionToEndContainSameCustomersAsTour();        
         
         //TODO: Sind die linked Lists wirklich nötig?
         //Ist das nicht auch total teuer?
@@ -505,11 +545,21 @@ public class Tour implements Cloneable, SolutionElement {
         //TODO: ist recalculate Demand noch nötig?
         recalculateDemand(removedCustomer.getDemand() * -1);
         recalculateRefsWhenCustomerIsDeleted(position);
+        recalculateRefMatrixWhenCustomerIsDeleted(position);
         
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();
         return removedCustomer;
     }            
     
+    private void recalculateRefMatrixWhenCustomerIsDeleted(int position) {
+		calculateNecessaryMatrixEntries(position);    	
+		deleteLastMatrixRow();    	
+	}
+    
+	private void deleteLastMatrixRow() {
+		refForSegment.remove(customers.size());
+	}
+
 	private void recalculateRefsWhenCustomerIsDeleted(int position) {
 		//recalculate refFromStartUpToPosition		
 		if (this.isTourEmpty())
@@ -637,7 +687,19 @@ public class Tour implements Cloneable, SolutionElement {
 		System.out.println(getTourAsTupel());		
 	}
 
+	public List<ArrayList<ResourceExtensionFunction>> getRefMatrix() {
+		return refForSegment;
+	}
 
-	
+	public void printRefMatrix() {
+		for (int i = 0; i < refForSegment.size(); i++) {
+		    for (int j = 0; j <= i; j++) {
+		    	System.out.print("X" + " ");
+//		        System.out.print(refForSegment.get(i).get(j) + " ");
+		    }
+		    System.out.print("\n");
+		}
+		System.out.print("\n");
+	}
 
 }

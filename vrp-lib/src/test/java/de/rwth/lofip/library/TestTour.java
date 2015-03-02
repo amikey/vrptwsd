@@ -162,8 +162,8 @@ public class TestTour {
 	}
 	
 	private void thenListsOfRefsFromBeginningShouldContainCorrectRefs() {		
-		assertEquals(90, tour1.getRefsFromBeginning().get(0).getDuration(), 0.001);
-		assertEquals(528, tour1.getRefsFromBeginning().get(0).getLatestArrivalTime(), 0.001);
+		assertEquals(130.311, tour1.getRefsFromBeginning().get(0).getDuration(), 0.001);
+		assertEquals(487.688, tour1.getRefsFromBeginning().get(0).getLatestArrivalTime(), 0.001);
 		assertEquals(565, tour1.getRefsFromBeginning().get(0).getEarliestDepartureTime(), 0.001);		
 	}
 	
@@ -220,9 +220,9 @@ public class TestTour {
 	}
 	
 	private void thenListsOfRefsToEndShouldContainCorrectRefs() {
-		assertEquals(90, tour1.getRefsToEnd().get(0).getDuration(), 0.001);
+		assertEquals(130.311, tour1.getRefsToEnd().get(0).getDuration(), 0.001);
 		assertEquals(528, tour1.getRefsToEnd().get(0).getLatestArrivalTime(), 0.001);
-		assertEquals(565, tour1.getRefsToEnd().get(0).getEarliestDepartureTime(), 0.001);		
+		assertEquals(605.311, tour1.getRefsToEnd().get(0).getEarliestDepartureTime(), 0.001);		
 	}
 	
 	private void thenListOfRefsToEndShouldEqualThatOfTourWithCustomersC1C2() {
