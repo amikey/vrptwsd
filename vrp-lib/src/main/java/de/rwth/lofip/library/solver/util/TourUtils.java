@@ -367,7 +367,45 @@ public class TourUtils {
 
 	public static boolean isInsertionOfRefPossible(Tour tour,ResourceExtensionFunction ref, int position) {
 		return isInsertionOfRefPossible(tour, ref, position, position);
-		
+	}
+	
+	public static boolean isInsertionOfRefPossibleInnerTourMove(Tour tour,
+			int positionStartOfSegment, int positionEndOfSegment,
+			int insertingPos) {		
+		if (insertingPos < positionStartOfSegment) {
+			ResourceExtensionFunction refUpToInsertingPosIncludingDepot = tour.getRefFromBeginningAtPosition(insertingPos-1);
+			ResourceExtensionFunction refForSegmentThatIsSwapped = tour.getRefMatrix().get(positionEndOfSegment-1).get(positionStartOfSegment);
+			ResourceExtensionFunction refFromInsertingPosToStartPosSegmentToBeSwapped = tour.getRefMatrix().get(positionStartOfSegment-1).get(insertingPos);
+			ResourceExtensionFunction refFromEndOfSegToBeSwappedToEndOfTourIncludingDepot = tour.getRefToEndAtPosition(positionEndOfSegment);
+			
+			boolean possible1 = isConcatenationOfRefsTWFeasible(refUpToInsertingPosIncludingDepot, refForSegmentThatIsSwapped);
+			ResourceExtensionFunction refTemp = new ResourceExtensionFunction(refUpToInsertingPosIncludingDepot);
+			refTemp.updateWithSubsequentRef(refForSegmentThatIsSwapped);
+			
+			boolean possible2 = isConcatenationOfRefsTWFeasible(refTemp, refFromInsertingPosToStartPosSegmentToBeSwapped);
+			refTemp.updateWithSubsequentRef(refFromInsertingPosToStartPosSegmentToBeSwapped);
+			
+			boolean possible3 = isConcatenationOfRefsTWFeasible(refTemp, refFromEndOfSegToBeSwappedToEndOfTourIncludingDepot);
+				
+			return possible1 && possible2 && possible3;
+		} else {
+			ResourceExtensionFunction refUpToStartOfSegmentToBeSwappedIncludingDepot = tour.getRefFromBeginningAtPosition(positionStartOfSegment-1);
+			ResourceExtensionFunction refFromEndOfSegmentToBeSwappedToInsertingPos = tour.getRefMatrix().get(insertingPos-1).get(positionEndOfSegment);
+			ResourceExtensionFunction refForSegmentThatIsSwapped = tour.getRefMatrix().get(positionEndOfSegment-1).get(positionStartOfSegment);
+			ResourceExtensionFunction refFromInsertionPosToEndOfTourIncludingDepot = tour.getRefToEndAtPosition(insertingPos);
+			
+			boolean possible1 = isConcatenationOfRefsTWFeasible(refUpToStartOfSegmentToBeSwappedIncludingDepot, refFromEndOfSegmentToBeSwappedToInsertingPos);
+			ResourceExtensionFunction refTemp = new ResourceExtensionFunction(refUpToStartOfSegmentToBeSwappedIncludingDepot);
+			refTemp.updateWithSubsequentRef(refFromEndOfSegmentToBeSwappedToInsertingPos);
+			
+			boolean possible2 = isConcatenationOfRefsTWFeasible(refTemp, refForSegmentThatIsSwapped);
+			refTemp.updateWithSubsequentRef(refForSegmentThatIsSwapped);
+			
+			boolean possible3 = isConcatenationOfRefsTWFeasible(refTemp, refFromInsertionPosToEndOfTourIncludingDepot);
+				
+			boolean overallPossible = possible1 && possible2 && possible3; 
+			return overallPossible;
+		}		
 	}
 
 	public static boolean isInsertionOfRefPossible(Tour tour, ResourceExtensionFunction ref, int positionStartOfSegment, int positionEndOfSegment) {
@@ -404,4 +442,6 @@ public class TourUtils {
 		
 		return true;
 	}
+
+	
 }

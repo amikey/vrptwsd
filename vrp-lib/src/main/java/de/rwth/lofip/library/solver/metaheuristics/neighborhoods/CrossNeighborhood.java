@@ -71,42 +71,23 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		RefSegment2 = new ResourceExtensionFunction();
 	}
 	
-	@Override
-	public AbstractNeighborhoodMove returnBestMove() throws Exception {	
-		moves.clear();
-		generateMoves();
-		AbstractNeighborhoodMove bestMove = findBestMove();
-		return bestMove;
+	public AbstractNeighborhoodMove returnBestMove() throws Exception {
+		int iteration = Integer.MAX_VALUE;
+		return returnBestMove(iteration);
 	}
 	
-	public AbstractNeighborhoodMove returnBestMoveUsingRefs(int iteration) throws Exception {
+	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
 		initialise();
 		moves.clear();
 		generateMovesUsingRefs(iteration);
 		AbstractNeighborhoodMove bestMove = findBestMove();
 		return bestMove;
 	}
-	
-		private void generateMoves() {
-			while (isExistsNextCombinationOfSegments()) {
-				generateNextCombinationOfSegements();
-				if (!segmentsToBeSwapedAreNotInNeighborhood()) {
-//					printNeighborhoodStep();
-//					assertEquals(isMoveFeasible(),isMoveFeasibleCheckWithRef());
-					if (isMoveFeasible()) {
-						calculateCost();		
-						AbstractNeighborhoodMove move = getNeigborhoodMove();
-						if (isMoveNotTaboo(move))
-							moves.add(move);
-					}
-				}
-			}
-		}
 		
 		private void generateMovesUsingRefs(int iteration) {
 			while (isExistsNextCombinationOfSegments()) {
 				generateNextCombinationOfSegements();
-				if (!segmentsToBeSwapedAreNotInNeighborhood()) {
+				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
 //					FOR DEBUGGING:
 					if (tour1.getId() == 17 && tour2.getId() == 32 &&
 							positionStartOfSegmentTour1 == 0 && positionEndOfSegmentTour1 == 5 &&
@@ -305,18 +286,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 
 	public boolean isMoveFeasibleCheckWithRef() {		
 		boolean isWasInsertionPossible = true;
-		if (isInnerTourMove()) {
-			//TODO: Ändern -> Im Moment sind inner tour moves nicht erlaubt
-			return false;
-//			return isMoveFeasible();
-			
-//			if (positionEndOfSegmentTour1 < positionEndOfSegmentTour2) {
-//				ResourceExtensionFunction newRef = calculateNewRefForFirstPartOfTour();
-//				return TourUtils.isInsertionOfRefPossible(newRef, RefSegment1, positionStartOfSegmentTour2);
-//			} else {
-//				ResourceExtensionFunction newRef = calculateNewRefForLastPartOfTour();
-//				return TourUtils.isInsertionOfRefPossible(newRef, RefSegment1, positionStartOfSegmentTour2);
-//			}
+		if (isInnerTourMove()) { 			
+			return TourUtils.isInsertionOfRefPossibleInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2);					
 		} else {		
 			//move between two tours
 			if (!TourUtils.isInsertionOfRefPossible(tour1,RefSegment2,positionStartOfSegmentTour1,positionEndOfSegmentTour1))
@@ -330,48 +301,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private boolean isInnerTourMove() { 
 		return tourCounter1 == tourCounter2;
 	}
-	
-	public boolean isMoveFeasible() {			
 		
-//		printNeighborhoodStep();
-		
-		if (tourCounter1 == tourCounter2) {			
-			//inner-tour move
-			tour1clone = new Tour(tour1);
-			tour2clone = tour1clone;
-		} else {
-			//move between two tours
-			tour1clone = new Tour(tour1);
-			tour2clone = new Tour(tour2);
-		}
-		
-		List<Customer> customers1 = tour1clone.removeCustomersBetween(positionStartOfSegmentTour1,positionEndOfSegmentTour1);		
-		List<Customer> customers2 = tour2clone.removeCustomersBetween(positionStartOfSegmentTour2, positionEndOfSegmentTour2);
-		
-		//check demand and tw feasibility
-		boolean isWasInsertionPossible = true;	
-		for (int i = 0 ; i < positionEndOfSegmentTour2 - positionStartOfSegmentTour2; i++) {
-			Customer customer = customers2.get(i);
-			if (TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour1clone, i+positionStartOfSegmentTour1)) {
-				tour1clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour1);
-			} else {
-				isWasInsertionPossible = false;
-				break;
-			}
-		}		
-		for (int i = 0; i < positionEndOfSegmentTour1 - positionStartOfSegmentTour1; i++) {
-			Customer customer = customers1.get(i);			
-			if (TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour2clone, i + positionStartOfSegmentTour2)) {
-				tour2clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour2);				
-			} else {
-				isWasInsertionPossible = false;
-				break;
-			}			
-		}
-		return isWasInsertionPossible;
-	}
-	
-	protected boolean segmentsToBeSwapedAreNotInNeighborhood() {
+	public boolean segmentsToBeSwapedAreNotInNeighborhoodRefPositions() {
 		if (positionStartOfSegmentTour1 == positionEndOfSegmentTour1 && 
 				positionStartOfSegmentTour2 == positionEndOfSegmentTour2)
 			return true;
@@ -379,28 +310,15 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				positionStartOfSegmentTour2 == 0 && positionEndOfSegmentTour2 == tour2.getCustomerSize())
 			return true;
 		if (tourCounter1 == tourCounter2) {
-			if (positionStartOfSegmentTour2 != positionEndOfSegmentTour2)
-				return true;			
-			if (positionStartOfSegmentTour2 > tour2.getCustomerSize() - (positionEndOfSegmentTour1 - positionStartOfSegmentTour1))
+			if (positionStartOfSegmentTour1 == positionEndOfSegmentTour1)
 				return true;
-			if (positionStartOfSegmentTour2 == positionStartOfSegmentTour1)
+			if (positionStartOfSegmentTour2 != positionEndOfSegmentTour2)
+				return true;
+			if (!((positionStartOfSegmentTour1 < positionStartOfSegmentTour2 && positionEndOfSegmentTour1 < positionStartOfSegmentTour2) ||
+					(positionStartOfSegmentTour1 > positionStartOfSegmentTour2 && positionEndOfSegmentTour1 > positionStartOfSegmentTour2)))
 				return true;
 		}
 		return false;
-	}
-
-	public double calculateCost() {
-		//TODO: tourClones entfernen, da nicht mehr benutzt werden, wenn isMoveFeasibleCheckWithRef() aufgerufen wird und isMoveFeasible() nicht mehr		
-		double costSolution = solution.getTotalDistance();
-		double costTour1 = tour1.getTotalDistance();
-		double costTour2 = tour2.getTotalDistance();
-		double costTour1Clone = tour1clone.getTotalDistance();
-		double costTour2Clone = tour2clone.getTotalDistance();
-		if (tourCounter1 == tourCounter2)
-			costOfCompleteSolutionThatResultsFromMove = costSolution - costTour1 + costTour1Clone;
-		else
-			costOfCompleteSolutionThatResultsFromMove = costSolution - costTour1 - costTour2 + costTour1Clone + costTour2Clone;
-		return costOfCompleteSolutionThatResultsFromMove;
 	}
 	
 	public double calculateCostUsingRefs() {
@@ -476,7 +394,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				costOfCompleteSolutionThatResultsFromMove);	
 	}
 
-	public static void printNeighborhoodStep() {
+	public void printNeighborhoodStep() {
 		System.out.print("Move " + tour1.getId() + "(");		
 		for (int i = positionStartOfSegmentTour1; i < positionEndOfSegmentTour1; i++) {
 			System.out.print(tour1.getCustomerAtPosition(i).getCustomer().getCustomerNo());
@@ -498,27 +416,38 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		System.out.print(")");
 	}
 
-	public SolutionGot acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {		
-		Tour tour1 = bestMove.getTour1();
-		Tour tour2 = bestMove.getTour2();		
-		List<Customer> customers1 = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
-		List<Customer> customers2 = tour2.removeCustomersBetween(bestMove.getStartPositionTour2(),bestMove.getEndPositionTour2());		
-		tour1.insertCustomersAtPosition(customers2, bestMove.getStartPositionTour1());
-		tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());		
-		solution.removeEmptyTours();				
+	public SolutionGot acctuallyApplyMove() {
+		AbstractNeighborhoodMove move = this.getNeigborhoodMove();
+		return acctuallyApplyMove(move);		
+	}
+	
+	public SolutionGot acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {
+		if (bestMove.isInnerTourMove()) {
+			Tour tour1 = bestMove.getTour1();
+			if (isInsertedBeforePositionWhereSegmentIsRemoved(bestMove)) {
+				List<Customer> customers = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
+				tour1.insertCustomersAtPosition(customers, bestMove.getStartPositionTour2());
+			} else {
+				List<Customer> customers = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
+				tour1.insertCustomersAtPosition(customers, bestMove.getStartPositionTour2()-customers.size());
+			}
+		} else {
+			//move between tours
+			Tour tour1 = bestMove.getTour1();
+			Tour tour2 = bestMove.getTour2();		
+			List<Customer> customers1 = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
+			List<Customer> customers2 = tour2.removeCustomersBetween(bestMove.getStartPositionTour2(),bestMove.getEndPositionTour2());		
+			tour1.insertCustomersAtPosition(customers2, bestMove.getStartPositionTour1());
+			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());
+			solution.removeEmptyTours();
+		}					
 		resetNeighborhood();
 		//TODO: Update Tabu list;
-		return solution;
+		return solution;		
 	}
-
-	public SolutionGot acctuallyApplyMove() {
-		List<Customer> customers1 = tour1.removeCustomersBetween(positionStartOfSegmentTour1,positionEndOfSegmentTour1);
-		List<Customer> customers2 = tour2.removeCustomersBetween(positionStartOfSegmentTour2,positionEndOfSegmentTour2);		
-		tour1.insertCustomersAtPosition(customers2, positionStartOfSegmentTour2);
-		tour2.insertCustomersAtPosition(customers1, positionStartOfSegmentTour1);		
-		solution.removeEmptyTours();				
-		resetNeighborhood();
-		return solution;
+	
+	private boolean isInsertedBeforePositionWhereSegmentIsRemoved(AbstractNeighborhoodMove bestMove) {		
+		return bestMove.getStartPositionTour2() < bestMove.getStartPositionTour1();
 	}
 
 	protected ResourceExtensionFunction getRefSegment1() {

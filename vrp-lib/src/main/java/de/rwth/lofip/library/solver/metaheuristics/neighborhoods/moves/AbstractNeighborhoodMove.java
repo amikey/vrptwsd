@@ -91,4 +91,8 @@ public class AbstractNeighborhoodMove {
 			return false;
 		return true;
 	}
+
+	public boolean isInnerTourMove() {
+		return tour1.equals(tour2);
+	}
 }

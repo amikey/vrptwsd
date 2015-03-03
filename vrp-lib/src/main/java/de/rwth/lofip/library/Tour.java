@@ -30,7 +30,8 @@ public class Tour implements Cloneable, SolutionElement {
 	
 	private List<ResourceExtensionFunction> refsFromStartUpToPosition = new LinkedList<ResourceExtensionFunction>(); 
 	private List<ResourceExtensionFunction> refsFromPositionToEnd = new LinkedList<ResourceExtensionFunction>();
-	//this is an upper triangle matrix; first index -> row: starting position; second index -> column: ending position
+	//this is an upper triangle matrix; first index -> row: ending position; second index -> column: starting position
+	//ziemlich verwirrend, aber so ist die matrix leichter aufzubauen
 	private List<ArrayList<ResourceExtensionFunction>> refForSegment = new ArrayList<ArrayList<ResourceExtensionFunction>>();
 	
     /****************************************************************************
@@ -203,11 +204,17 @@ public class Tour implements Cloneable, SolutionElement {
 	}
 	
 	public ResourceExtensionFunction getRefFromBeginningAtPosition(int i) {
-		return refsFromStartUpToPosition.get(i);
+		if (i == -1)
+			return new ResourceExtensionFunction(depot);
+		else 
+			return refsFromStartUpToPosition.get(i);
 	}
 
 	public ResourceExtensionFunction getRefToEndAtPosition(int i) {
-		return refsFromPositionToEnd.get(i);
+		if (i == refsFromPositionToEnd.size())
+			return new ResourceExtensionFunction(depot);
+		else
+			return refsFromPositionToEnd.get(i);
 	}
 
     

@@ -25,6 +25,7 @@ public class CrossNeighborhoodTest {
 	private SolutionGot solutionWithOneTourWithFourCustomersC3BeforeC2;
 	private SolutionGot solutionWithOneTourWithFourCustomers;
 	private SolutionGot solutionWithTwoToursWithThreeAndOneCustomersResp;
+	private SolutionGot solutionWithOneTourWithCustomers1And2And3;
 	
 	@Before
 	public void initialise() {
@@ -32,7 +33,8 @@ public class CrossNeighborhoodTest {
 		solutionWithTwoToursAndTwoCustomersEach = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();
 		solutionWithOneTourWithCustomers2And3 = SetUpUtils.SetUpSolutionWithOneTourWithCustomer2And3();
 		solutionWithOneTourWithFourCustomersC3BeforeC2 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
-		solutionWithOneTourWithFourCustomers = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4();		
+		solutionWithOneTourWithFourCustomers = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4();
+		solutionWithOneTourWithCustomers1And2And3 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3();
 	}
 	
 	@Test
@@ -53,33 +55,75 @@ public class CrossNeighborhoodTest {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithOneTourWithCustomers2And3);
 		assertEquals(false,solutionWithOneTourWithCustomers2And3.getGots().get(0).getFirstTour().getRefsFromBeginning().isEmpty());
 		for (int i = 1; i <= 9; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();
-			assertEquals(false,isMovePossible(crossNeighborhood));
+			crossNeighborhood.generateNextCombinationOfSegements();			
 		}	
 		assertEquals(false,crossNeighborhood.getTour1().getRefsFromBeginning().isEmpty());
 		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,crossNeighborhood.getTour1().getRefsFromBeginning().isEmpty());
-		assertEquals(true,isMovePossible(crossNeighborhood));		
+		assertEquals(false,crossNeighborhood.getTour1().getRefsFromBeginning().isEmpty());		
 		for (int i = 1; i <= 14; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();
-			assertEquals(false,isMovePossible(crossNeighborhood));
+			crossNeighborhood.generateNextCombinationOfSegements();			
 		}	
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true,isMovePossible(crossNeighborhood));
+		crossNeighborhood.generateNextCombinationOfSegements();		
 		for (int i = 1; i <= 11; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();
-			assertEquals(false,isMovePossible(crossNeighborhood));
+			crossNeighborhood.generateNextCombinationOfSegements();			
 		}
 		assertEquals(false,crossNeighborhood.isExistsNextCombinationOfSegments());		
-	}
+	}	
 	
-	private Object isMovePossible(CrossNeighborhood crossNeighborhood) {
-		if(crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhood())
+	private boolean isMovePossible(CrossNeighborhood crossNeighborhood) {
+		if(crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions())
 			return false;
-		else if (crossNeighborhood.isMoveFeasible())
+		else if (crossNeighborhood.isMoveFeasibleCheckWithRef())
 			return true;
 		else return false;
 	}
+	
+	@Test
+	public void testIsMovePossibleInnerTourMovesTestWithRef() {
+		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithOneTourWithCustomers1And2And3);
+		for (int i = 1; i <= 17; i++) {
+			crossNeighborhood.generateNextCombinationOfSegements();
+			assertEquals(true,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		}
+		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		assertEquals(false,crossNeighborhood.isMoveFeasibleCheckWithRef());
+		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(true,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		assertEquals(false,crossNeighborhood.isMoveFeasibleCheckWithRef());
+		for (int i = 1; i <= 9; i++) {
+			crossNeighborhood.generateNextCombinationOfSegements();
+			assertEquals(true,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		}		
+		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		assertEquals(false,crossNeighborhood.isMoveFeasibleCheckWithRef());
+		for (int i = 1; i <= 20; i++) {
+			crossNeighborhood.generateNextCombinationOfSegements();
+			assertEquals(true,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		}		
+		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		assertEquals(false,crossNeighborhood.isMoveFeasibleCheckWithRef());
+		for (int i = 1; i <= 8; i++) {
+			crossNeighborhood.generateNextCombinationOfSegements();
+			assertEquals(true,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		}		
+		crossNeighborhood.generateNextCombinationOfSegements();
+		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		assertEquals(true,crossNeighborhood.isMoveFeasibleCheckWithRef());
+		for (int i = 1; i <= 25; i++) {
+			crossNeighborhood.generateNextCombinationOfSegements();		
+		}
+		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
+		assertEquals(true,crossNeighborhood.isMoveFeasibleCheckWithRef());
+		crossNeighborhood.printNeighborhoodStep();
+		crossNeighborhood.acctuallyApplyMove();
+		solutionWithOneTourWithCustomers1And2And3.printSolutionAsTupel();
+		assertEquals(true, solutionWithOneTourWithCustomers1And2And3.equals(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2()));
+	}	
 
 	@Test 
 	public void testIsMovePossibleWithMovesBetweenTours() {
@@ -127,7 +171,7 @@ public class CrossNeighborhoodTest {
 		crossNeighborhood.generateNextCombinationOfSegements();
 		crossNeighborhood.generateNextCombinationOfSegements();
 		
-		assertEquals(true, crossNeighborhood.isMoveFeasible());
+		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
 		assertEquals(true, crossNeighborhood.getRefSegment1().equals(new ResourceExtensionFunction(SetUpUtils.getC1())));
 		crossNeighborhood.getRefSegment2().print();
 		assertEquals(true, crossNeighborhood.getRefSegment2().equals(new ResourceExtensionFunction(SetUpUtils.getC3())));	
@@ -141,8 +185,8 @@ public class CrossNeighborhoodTest {
 		crossNeighborhood.generateNextCombinationOfSegements();
 		crossNeighborhood.generateNextCombinationOfSegements();
 		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isMoveFeasible());
-		cost = crossNeighborhood.calculateCost();	
+		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
+		cost = crossNeighborhood.calculateCostUsingRefs();	
 		
 		SolutionGot solution = crossNeighborhood.acctuallyApplyMove(crossNeighborhood.getNeigborhoodMove());
 		System.out.print(solution.getSolutionAsTupel());
@@ -158,9 +202,9 @@ public class CrossNeighborhoodTest {
 		List<AbstractNeighborhoodMove> moves = new LinkedList<AbstractNeighborhoodMove>();
 		while (crossNeighborhood.isExistsNextCombinationOfSegments()) {
 			crossNeighborhood.generateNextCombinationOfSegements();
-			if (!crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhood())
-				if (crossNeighborhood.isMoveFeasible()) {
-					crossNeighborhood.calculateCost();				
+			if (!crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions())
+				if (crossNeighborhood.isMoveFeasibleCheckWithRef()) {
+					crossNeighborhood.calculateCostUsingRefs();				
 					AbstractNeighborhoodMove move = crossNeighborhood.getNeigborhoodMove();
 					moves.add(move);
 				}

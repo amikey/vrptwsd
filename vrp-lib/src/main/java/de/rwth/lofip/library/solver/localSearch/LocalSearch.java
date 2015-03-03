@@ -47,7 +47,7 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 	}
 	
 	private void findBestMove() throws Exception {
-		bestMove = crossNeighborhood.returnBestMoveUsingRefs(iteration);				
+		bestMove = crossNeighborhood.returnBestMove(iteration);				
 	}
 	
 	private void printBestMove() {

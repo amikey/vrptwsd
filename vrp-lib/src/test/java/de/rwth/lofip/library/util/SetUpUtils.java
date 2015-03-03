@@ -285,6 +285,24 @@ public class SetUpUtils {
 		return createSolutionWithEachTourInOneGot(tours); 
 	}
 	
+	public static SolutionGot getSolutionWithOneTourWithCustomersC1C2C3() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
+        
+		List<Tour> tours = new LinkedList<Tour>();
+		tours.add(getTourWithCustomers1And2And3());
+		
+		return createSolutionWithEachTourInOneGot(tours);
+	}
+	
+	public static Object getSolutionWithOneTourWithCustomersC1C3C2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
+        
+		List<Tour> tours = new LinkedList<Tour>();
+		tours.add(getTourWithCustomersC1C3C2());
+		
+		return createSolutionWithEachTourInOneGot(tours);
+	}
+
 	public static SolutionGot getSolutionWithOneTourWithCustomersC1C3C2C4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
@@ -394,6 +412,15 @@ public class SetUpUtils {
 		Tour tour = new Tour(depot, vehicle);       
         tour.addCustomer(c1);
         tour.addCustomer(c3);
+        return tour;
+	}
+	
+	private static Tour getTourWithCustomersC1C3C2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);       
+        tour.addCustomer(c1);
+        tour.addCustomer(c3);
+        tour.addCustomer(c2);
         return tour;
 	}
 
@@ -639,6 +666,9 @@ public class SetUpUtils {
         
         return solution;
 	}
+
+
+
 	
 	
 	
