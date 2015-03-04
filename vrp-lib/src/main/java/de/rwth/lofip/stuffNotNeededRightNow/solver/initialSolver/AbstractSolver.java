@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.solver.initialSolver;
+package de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver;
 
 import de.rwth.lofip.library.interfaces.SolverInterface;
 

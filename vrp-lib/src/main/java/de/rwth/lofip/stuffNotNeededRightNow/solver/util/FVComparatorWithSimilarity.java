@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.solver.util;
+package de.rwth.lofip.stuffNotNeededRightNow.solver.util;
 
 import java.util.Comparator;
 import java.util.Set;

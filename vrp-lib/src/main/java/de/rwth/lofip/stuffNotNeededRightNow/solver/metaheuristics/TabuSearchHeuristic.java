@@ -8,7 +8,6 @@ import java.util.Set;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterface;
 import de.rwth.lofip.library.solver.util.TabuTourPosition;
-import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.NeighborhoodInterface;
@@ -21,6 +20,7 @@ import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.Expec
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * This is the heuristic from Lei et al., enhanced with the aspects of

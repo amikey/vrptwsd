@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util;
+package de.rwth.lofip.stuffNotNeededRightNow.util;
 
 import java.util.HashSet;
 import java.util.Set;

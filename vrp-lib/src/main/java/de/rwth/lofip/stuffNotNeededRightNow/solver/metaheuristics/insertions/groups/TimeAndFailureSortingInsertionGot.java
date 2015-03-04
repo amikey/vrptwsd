@@ -6,11 +6,11 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
-import de.rwth.lofip.library.solver.util.TourUtilsGot;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.AbstractTimeAndFailureSortingInsertionGot;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.util.DeterministicTourComparatorWrtDemand;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.TourUtilsGot;
 
 /**
  * The {@code Time and failure sorting insertion} as described by Lei et al.

@@ -28,11 +28,11 @@ import de.rwth.lofip.library.solver.AbstractSolver;
 import de.rwth.lofip.library.solver.StochasticPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.PoissonLeiEtAlHeuristic;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
-import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.TabuSearchHeuristic;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
+import de.rwth.lofip.stuffNotNeededRightNow.util.IntermediateSolution;
 
 /**
  * CLI application for the VRP Solver.

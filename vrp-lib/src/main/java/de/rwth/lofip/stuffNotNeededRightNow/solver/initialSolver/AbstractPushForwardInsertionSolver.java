@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.solver.initialSolver;
+package de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,8 +15,8 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 
 /**
  * A start heuristic, based on the Push Forward Insertion by Solomon (1987).

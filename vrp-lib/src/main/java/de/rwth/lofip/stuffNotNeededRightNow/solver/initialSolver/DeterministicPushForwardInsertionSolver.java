@@ -5,9 +5,8 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.DeterministicTour;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
-import de.rwth.lofip.library.solver.initialSolver.AbstractPushForwardInsertionSolver;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 
 /**
  * A start heuristic, based on the Push Forward Insertion by Solomon (1987).
@@ -25,7 +24,7 @@ public class DeterministicPushForwardInsertionSolver extends
 	@Override
 	protected CustomerWithCost calculateCustomerHook(Customer customer,
 			Tour tour, double approximateEquality) {
-		return TourUtils.calculateCostDeterministicSolver(customer, tour);
+		return TourUtils.calculateCost(customer, tour);
 	}
 
 	@Override

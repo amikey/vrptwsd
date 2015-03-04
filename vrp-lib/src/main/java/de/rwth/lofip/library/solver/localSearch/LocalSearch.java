@@ -5,7 +5,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
-import de.rwth.lofip.library.solver.util.SolutionUtils;
+import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 
 public class LocalSearch implements MetaSolverInterfaceGot {
 	
@@ -30,8 +30,8 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 					applyBestMove();					
 					System.out.println("Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
 					//TODO: Remove because takes time (O(n))
-					assertEquals(true, SolutionUtils.isSolutionDemandFeasible(solution));
-					assertEquals(true, SolutionUtils.isSolutionTWFeasible(solution));
+					assertEquals(true, SolutionGotUtils.isSolutionDemandFeasible(solution));
+					assertEquals(true, SolutionGotUtils.isSolutionTWFeasible(solution));
 					iteration++;
 				}
 			} catch (Exception e) {				

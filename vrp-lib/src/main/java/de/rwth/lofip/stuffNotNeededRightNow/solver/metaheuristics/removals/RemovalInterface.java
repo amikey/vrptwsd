@@ -3,8 +3,8 @@ package de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals;
 import java.util.List;
 
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
-import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * An instance of an implementing class of this interface is used in

@@ -10,7 +10,6 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.solver.initialSolver.AbstractSolver;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 /**

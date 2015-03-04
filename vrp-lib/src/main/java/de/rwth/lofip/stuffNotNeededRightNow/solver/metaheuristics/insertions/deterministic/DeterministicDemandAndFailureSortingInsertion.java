@@ -7,10 +7,10 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.DeterministicTour;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.AbstractDemandAndFailureSortingInsertion;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.util.DeterministicTourComparatorWrtDemand;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 
 /**
  * The {@code Demand and failure sorting insertion} as described by Lei et al.
@@ -25,7 +25,7 @@ public class DeterministicDemandAndFailureSortingInsertion extends
     @Override
     public boolean isInsertionPossibleHook(Customer customer, Tour tour, int i, double approximateEquality)
     {    	
-    	return TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, i);
+    	return TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, i);
     }
     
     @Override
@@ -38,7 +38,7 @@ public class DeterministicDemandAndFailureSortingInsertion extends
     @Override
     protected CustomerWithCost calculateCostHook(Customer customer, Tour tour, double approximateEquality) 
     {
-    	return TourUtils.calculateCostDeterministicSolver(customer, tour);
+    	return TourUtils.calculateCost(customer, tour);
     }
 
 	@Override

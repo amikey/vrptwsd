@@ -2,7 +2,7 @@ package de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions;
 
 import java.util.Comparator;
 
-import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * The {@code Demand and failure sorting insertion} as described by Lei et al.

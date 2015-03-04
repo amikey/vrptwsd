@@ -67,10 +67,9 @@ public class GroupOfTours implements SolutionElement {
 		resetExpectedRecourseCost();
 	}
 	
-	public void insertCustomerIntoLastTour(Customer customer, int iteration,
-			String simpleName) {
+	public void insertCustomerIntoLastTour(Customer customer) {
 		Tour t = getLastTour();
-		t.addCustomer(customer, iteration, simpleName);
+		t.addCustomer(customer);
 		resetExpectedRecourseCost();
 	}
 	

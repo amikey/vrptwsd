@@ -26,70 +26,40 @@ public class TestTourUtilsIsInsertionPossible {
 	private VrpProblem problem;
 	private Tour tour;
 	
-	
-    @Test
-    public void testInsertionPossible() {
-
-        Customer c6 = new Customer(25, 30);
-        c6.setDemand(3);
-        c6.setTimeWindowOpen(89);
-        c6.setTimeWindowClose(119);
-        c6.setServiceTime(10);
-
-        Customer c2 = new Customer(35, 17);
-        c2.setDemand(7);
-        c2.setTimeWindowOpen(40);
-        c2.setTimeWindowClose(70);
-        c2.setServiceTime(10);
-
-        Depot depot = new Depot();
-        depot.setxCoordinate(35);
-        depot.setyCoordinate(35);
-
-        Tour tour = new Tour(depot, new Vehicle(1, 50));
-        tour.addCustomer(c2);
-
-        boolean insertionPossible;
-        tour = new Tour(depot, new Vehicle(1, 50));
-        tour.addCustomer(c6);
-        insertionPossible = TourUtils.isInsertionPossibleWrtStochasticDemandAndTW(c2, tour, 1, 0.99999);
-        // should fail because the time window of c2 is no longer valid
-        assert (insertionPossible == false);
-    }
-    
+	   
 	@Test
 	public void TryToInsertC1AtPos0(){
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c1, tourWithCustomer3And2, 0));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c1, tourWithCustomer3And2, 0));
 	}
 	
 	@Test
 	public void TryToInsertC$AtPos2(){
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c4, tourWithCustomer3And2, 2));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c4, tourWithCustomer3And2, 2));
 	}
 
 	@Test
 	public void TryToInsertC4AtPos0(){
-		assertEquals(false, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c4, tourWithCustomer3And2, 0));
+		assertEquals(false, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c4, tourWithCustomer3And2, 0));
 	}
 	
 	@Test
 	public void TryToInsertC1AtPos2(){
-		assertEquals(false, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c1, tourWithCustomer3And2, 2));
+		assertEquals(false, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c1, tourWithCustomer3And2, 2));
 	}
     
 	@Test
 	public void TryToInsertC4AtPos1(){
-		assertEquals(false, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c4, tourWithCustomer3And2, 1));
+		assertEquals(false, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c4, tourWithCustomer3And2, 1));
 	}
 	
 	@Test
 	public void TryToInsertC1AtPos1(){
-		assertEquals(false, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c1, tourWithCustomer3And2, 1));
+		assertEquals(false, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c1, tourWithCustomer3And2, 1));
 	}
 	
 	@Test
 	public void TryToInsertC1InTourWithCustomerC3AtPos0() {
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(c3, tourWithCustomer3, 0));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(c3, tourWithCustomer3, 0));
 	}
 	
 	
@@ -106,31 +76,31 @@ public class TestTourUtilsIsInsertionPossible {
 	private void ThenFeasiblityChecksShouldWorkWhenCreatingTourWithCustomers57_55_54_53_56_58_60_59_68_69() {
 		tour = new Tour(problem.getDepot(),problem.getVehicles().iterator().next());
 		Customer customer = problem.getCustomerWithCustomerNo(57);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(55);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(54);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(53);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(56);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(58);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(60);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(59);
-		assertEquals(true, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);
 		customer = problem.getCustomerWithCustomerNo(68);
-		assertEquals(false, TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(customer, tour, tour.length()));
+		assertEquals(false, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		assertEquals(false, TourUtils.isInsertionPossibleWrtDemand(customer, tour));
 		assertEquals(false, TourUtils.isInsertionPossibleWrtTW(customer,tour, tour.length()));
 		assertEquals(true, TourUtils.isTourFeasibleWrtDemand(tour));

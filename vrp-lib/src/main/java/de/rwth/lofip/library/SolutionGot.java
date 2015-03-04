@@ -73,13 +73,13 @@ public class SolutionGot implements Cloneable, SolutionElement {
         //tours.add(tour);
     }
   
-	public void createNewTourWithCustomer(Customer c, int iteration, String className) {
+	public void createNewTourWithCustomer(Customer c) {
 		if (this.isExistsGotWhereNewTourCanBeCreated())
-			createNewTourInPossibleGotWhereSimilarityToNewCustomerIsGreatest(c, iteration, className);
+			createNewTourInPossibleGotWhereSimilarityToNewCustomerIsGreatest(c);
 		else {
 			GroupOfTours got = createNewGotInSolution();
 			got.createNewTour(this.getVrpProblem());
-			got.insertCustomerIntoLastTour(c, iteration, className);
+			got.insertCustomerIntoLastTour(c);
 		}
 	}
 
@@ -89,11 +89,10 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		return got;
 	}
 
-	private void createNewTourInPossibleGotWhereSimilarityToNewCustomerIsGreatest(Customer customer, int iteration,
-			String simpleName) {
+	private void createNewTourInPossibleGotWhereSimilarityToNewCustomerIsGreatest(Customer customer) {
 		GroupOfTours got = getGotWhereCreatingNewTourIsPossibleAndSimilarityToNewCustomerIsGreatest(customer);
 		got.createNewTour(this.getVrpProblem());
-		got.insertCustomerIntoLastTour(customer, iteration, simpleName);		
+		got.insertCustomerIntoLastTour(customer);		
 	}
 
     private GroupOfTours getGotWhereCreatingNewTourIsPossibleAndSimilarityToNewCustomerIsGreatest(Customer customer) {

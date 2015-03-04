@@ -1,8 +1,8 @@
-package de.rwth.lofip.library.solver.util;
+package de.rwth.lofip.stuffNotNeededRightNow.solver.util;
 
 import java.util.Comparator;
 
-import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 public class CustomerNoComparator implements Comparator<RemovedCustomer> {
 

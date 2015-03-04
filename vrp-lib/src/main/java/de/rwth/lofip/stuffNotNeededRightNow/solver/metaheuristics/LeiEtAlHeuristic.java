@@ -10,8 +10,6 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterface;
-import de.rwth.lofip.library.util.IntermediateSolution;
-import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.stochastic.StochasticDemandAndFailureSortingInsertion;
@@ -23,6 +21,8 @@ import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.Feasi
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.util.IntermediateSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * An implementation of the meta heuristic proposed by Lei et al. (2011).

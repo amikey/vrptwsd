@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util;
+package de.rwth.lofip.stuffNotNeededRightNow.util;
 
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 

@@ -109,14 +109,14 @@ public class Demonstrator {
 		Tour t1 = new Tour(problem.getDepot(), vs
 				.iterator().next());
 		t1.addCustomer(problem.getCustomerWithCustomerNo(3));
-		if (TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(
+		if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(
 				problem.getCustomerWithCustomerNo(24), t1, 1))
 			t1.addCustomer(problem.getCustomerWithCustomerNo(24));
 		else
 			System.out.println("M�p, Einf�gen in Tour " + t1.getTourAsTupel()
 					+ " nicht m�glich");
 		System.out.println(t1.getDemandOnTour());
-		if (TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(
+		if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(
 				problem.getCustomerWithCustomerNo(12), t1, 2))
 			t1.addCustomer(problem.getCustomerWithCustomerNo(12));
 		else

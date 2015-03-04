@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util;
+package de.rwth.lofip.stuffNotNeededRightNow.util;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterface;

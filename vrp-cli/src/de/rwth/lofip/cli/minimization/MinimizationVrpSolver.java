@@ -11,7 +11,6 @@ import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.cli.deterministic.DeterministicVrpSolver;
 import de.rwth.lofip.library.Solution;
-import de.rwth.lofip.library.util.IntermediateSolution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristic;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.deterministic.DeterministicDemandAndFailureSortingInsertion;
@@ -23,6 +22,7 @@ import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.Expec
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.FeasibilityOrientedRemoval;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RandomRemoval;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.util.IntermediateSolution;
 
 /**
  * CLI application for the VRP Solver.

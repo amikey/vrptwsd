@@ -3,3 +3,4 @@
 - pruning in cross neighborhood einbauen
 - find best move nicht durch sortieren sondern durch if abfrage, jedes mal, wenn neuer feasible move erstellt wird
 - in RessourceExtensionFunction Liste der Customer durch ersten und letzten Customer ersetzen (weil clonen O(n) braucht)
+- in innerTourMoves auch erlauben, dass zwei Segmente herausgelöst und getauscht werden

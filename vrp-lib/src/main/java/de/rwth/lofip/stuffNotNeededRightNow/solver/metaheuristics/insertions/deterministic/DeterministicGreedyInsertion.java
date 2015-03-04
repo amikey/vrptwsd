@@ -25,7 +25,7 @@ public class DeterministicGreedyInsertion extends AbstractGreedyInsertion {
 	public boolean isInsertionPossibleHook(Customer customer, Tour tour, int i,
 			double approximateEquality) {
 		// stochastic variant
-		return TourUtils.isInsertionPossibleWrtDeterministicDemandAndTW(
+		return TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(
 				customer, tour, i);
 	}
 

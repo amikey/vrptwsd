@@ -1,4 +1,4 @@
-package de.rwth.lofip.libray.misc;
+package de.rwth.lofip.library.misc;
 
 import static org.junit.Assert.assertEquals;
 
@@ -84,18 +84,7 @@ public class Misc_TEST {
 
 		assertEquals(solution.getTours().get(0).getId(), solution2.getTours()
 				.get(0).getId());
-		// Note: Ids are the same :-)
-
-		System.out.println("Customers in Tour laut tour.getCustomers().size() "
-				+ tour.getCustomers().size());
-		// Note: tour.getCustomers().size() is 3.
-		for (CustomerInTour c : tour.getCustomersInTour())
-			System.out.println("Position Customer "
-					+ c.getCustomer().getCustomerNo() + ": " + c.getPosition());
-		// Note:
-		// Position Customer 11: 0
-		// Position Customer 12: 1
-		// Position Customer 13: 2
+		// Note: Ids are the same :-)	
 	}
 
 }

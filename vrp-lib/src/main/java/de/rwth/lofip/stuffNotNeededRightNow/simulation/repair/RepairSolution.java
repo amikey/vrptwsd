@@ -18,12 +18,12 @@ import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.util.CustomerInTour;
-import de.rwth.lofip.library.util.RemovedCustomer;
 //import static org.junit.Assert.assertSame;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 import de.rwth.lofip.stuffNotNeededRightNow.simulation.repair.util.RepairedSolution;
 import de.rwth.lofip.stuffNotNeededRightNow.simulation.scenario.Event;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemoval;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 
 /**

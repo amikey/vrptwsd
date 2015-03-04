@@ -12,8 +12,8 @@ import java.util.concurrent.Future;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * Implementation of the heuristic proposed by Lei et al. (2011).

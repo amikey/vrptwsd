@@ -10,9 +10,6 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.VrpConfiguration;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.HeuristicInterface;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
-import de.rwth.lofip.library.util.IntermediateSolution;
-import de.rwth.lofip.library.util.IntermediateSolutionGot;
-import de.rwth.lofip.library.util.RemovedCustomer;
 import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.InsertionInterfaceGot;
@@ -26,6 +23,9 @@ import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.Rando
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.RemovalInterfaceGot;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.removals.SimilarityRemovalGot;
+import de.rwth.lofip.stuffNotNeededRightNow.util.IntermediateSolution;
+import de.rwth.lofip.stuffNotNeededRightNow.util.IntermediateSolutionGot;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * An implementation of the meta heuristic proposed by Lei et al. (2011).

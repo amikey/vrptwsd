@@ -19,10 +19,10 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.DistanceComparatorWithSimilarity;
-import de.rwth.lofip.library.solver.util.FVComparatorWithSimilarity;
 import de.rwth.lofip.library.solver.util.TourUtils;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.FVComparatorWithSimilarity;
 
 /**
  * A start heuristic, based on the Push Forward Insertion by Solomon (1987).
@@ -82,7 +82,7 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
                 cheapestCustomer = new CustomerWithCost(null,
                         null, Double.MAX_VALUE);
                 for (Customer customer : unassignedCustomers) {
-                	CustomerWithCost calculatedCustomer = TourUtils.calculateCostStochasticSolver(customer, firstTour, 0.99999);                 
+                	CustomerWithCost calculatedCustomer = TourUtils.calculateCost(customer, firstTour);                 
                     if (calculatedCustomer != null
                             && calculatedCustomer.getCost() < cheapestCustomer
                                     .getCost()) {
@@ -95,8 +95,7 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
                     // unassignedCustomers
                     firstTour.insertCustomerAtPosition(
                             cheapestCustomer.getCustomer(),
-                            cheapestCustomer.getPosition(), iteration++,
-                            getClass().getSimpleName());
+                            cheapestCustomer.getPosition());
                     unassignedCustomers.remove(cheapestCustomer.getCustomer());
                     assignedCustomersInGot.add(cheapestCustomer.getCustomer());
                     logger.info(
@@ -133,7 +132,7 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
                     double maxCost = Double.MIN_VALUE;
                     //here the cheapest customer is selected
                     for (Customer customer : unassignedCustomers) {
-                    	CustomerWithCost calculatedCustomer = TourUtils.calculateCostStochasticSolver(customer, tour, 0.99999);
+                    	CustomerWithCost calculatedCustomer = TourUtils.calculateCost(customer, tour);
                     	if (calculatedCustomer != null)
                     		cwcs.add(calculatedCustomer);
                         if (calculatedCustomer != null
@@ -158,8 +157,7 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
                         // unassignedCustomers
                         tour.insertCustomerAtPosition(
                                 cheapestCustomer.getCustomer(),
-                                cheapestCustomer.getPosition(), iteration++,
-                                getClass().getSimpleName());
+                                cheapestCustomer.getPosition());
                         unassignedCustomers.remove(cheapestCustomer.getCustomer());
                         assignedCustomersInNextTour.add(cheapestCustomer.getCustomer());
                         logger.info(
@@ -187,7 +185,7 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
         List<Customer> customersByInitialCost = new ArrayList<Customer>(unassignedCustomers);
         Collections.sort(customersByInitialCost,firstVertexCostFunctionComparator);
         Customer lowestCostCustomer = customersByInitialCost.get(0);    
-        solution.createNewTourWithCustomer(lowestCostCustomer, iteration, getClass().getSimpleName());
+        solution.createNewTourWithCustomer(lowestCostCustomer);
         unassignedCustomers.remove(lowestCostCustomer);
         assignedCustomersInGot.add(lowestCostCustomer);
         logger.info("{} customers left for insertion after creating new route", unassignedCustomers.size());
@@ -216,12 +214,8 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
         Customer firstCustomer = tour.getCustomers().get(0);
         double cost = Double.MAX_VALUE;
         int position = 0;
-        //now set condition such that either a deterministic setting (demand has to be smaller than capacity) or 
-        //probabilisitic (demand has to be smaller than twice vehicle capacity with probability approximateEquality) solver is used.
-        boolean condition;
-        condition = TourUtils.isInsertionPossibleWrtStochasticDemandAndTW(customer, tour, position,
-                    approximateEquality);
-        if (condition) {
+        boolean isInsertionPossible = TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, position);
+        if (isInsertionPossible) {
             cost = new Edge(tour.getDepot(), customer).getLength()
                     + new Edge(customer, firstCustomer).getLength()
                     - new Edge(tour.getDepot(), firstCustomer).getLength();
@@ -237,9 +231,8 @@ public class GroupPushForwardInsertionSolver implements SolverInterfaceGot {
             if (tour.getCustomers().size() > position) {
                 nextCustomer = tour.getCustomers().get(position);
             }
-            condition = TourUtils.isInsertionPossibleWrtStochasticDemandAndTW(customer, tour, position,
-                        approximateEquality);
-            if (condition) {
+            isInsertionPossible = TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, position);
+            if (isInsertionPossible) {
                 cost = new Edge(tourCustomer, customer).getLength()
                         + new Edge(customer, nextCustomer).getLength()
                         - new Edge(tourCustomer, nextCustomer).getLength();

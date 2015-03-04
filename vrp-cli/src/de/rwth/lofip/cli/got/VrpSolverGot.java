@@ -13,8 +13,8 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.solver.GroupPushForwardInsertionSolver;
 import de.rwth.lofip.library.solver.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.util.DistanceComparatorWithSimilarity;
-import de.rwth.lofip.library.util.IntermediateSolutionGot;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.LeiEtAlHeuristicGot;
+import de.rwth.lofip.stuffNotNeededRightNow.util.IntermediateSolutionGot;
 
 public class VrpSolverGot extends AbstractVrpSolverZumTestenGot {
 	

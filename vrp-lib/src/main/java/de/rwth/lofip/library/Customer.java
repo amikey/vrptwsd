@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.rwth.lofip.library.interfaces.SolutionElement;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 
 public class Customer extends AbstractPointInSpace implements Cloneable{
 

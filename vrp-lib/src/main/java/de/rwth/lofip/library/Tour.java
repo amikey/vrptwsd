@@ -227,8 +227,7 @@ public class Tour implements Cloneable, SolutionElement {
     public Tour clone() {
         Tour t = new Tour(depot, vehicle.clone());        
         for (CustomerInTour cit : customers) {
-            t.addCustomer(cit.getCustomer(), cit.getInsertedInIteration(),
-                    cit.getInsertionHeuristic());
+            t.addCustomer(cit.getCustomer());
         }
         t.setId(this.id);
         t.setRefsFromBeginning(getRefsFromBeginning());
@@ -236,6 +235,21 @@ public class Tour implements Cloneable, SolutionElement {
         return t;
     }
     
+	public Tour cloneAndSetPointersToCustomersInVrpProblem(VrpProblem vrpProblemClone) {
+		Tour t = new Tour(depot, vehicle.clone());
+        for (CustomerInTour cit : customers) 
+        {
+        	//find customer with same number in vrpProblem
+        	Customer cust = null;
+        	for (Customer c : vrpProblemClone.getCustomers())
+        		if (c.getCustomerNo() == cit.getCustomer().getCustomerNo())
+        			cust = c;        	
+            t.addCustomer(cust);
+        }
+        t.setId(this.id);
+        return t;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -258,22 +272,6 @@ public class Tour implements Cloneable, SolutionElement {
 			return false;
 		return true;
 	}
-
-	public Tour cloneAndSetPointersToCustomersInVrpProblem(VrpProblem vrpProblemClone) {
-		Tour t = new Tour(depot, vehicle.clone());
-        for (CustomerInTour cit : customers) 
-        {
-        	//find customer with same number in vrpProblem
-        	Customer cust = null;
-        	for (Customer c : vrpProblemClone.getCustomers())
-        		if (c.getCustomerNo() == cit.getCustomer().getCustomerNo())
-        			cust = c;        	
-            t.addCustomer(cust, cit.getInsertedInIteration(),
-                    cit.getInsertionHeuristic());
-        }
-        t.setId(this.id);
-        return t;
-	}
     
     
     /****************************************************************************
@@ -288,19 +286,7 @@ public class Tour implements Cloneable, SolutionElement {
      */
     public void addCustomer(Customer customer) {
         insertCustomerAtPosition(customer, customers.size());
-    }
-
-    public void addCustomer(Customer customer, int iteration,
-            String insertionClassName, boolean isFixedCustomer) {
-        insertCustomerAtPosition(customer, customers.size(), iteration,
-                insertionClassName, isFixedCustomer);
-    }
-   
-    public void addCustomer(Customer customer, int iteration,
-            String insertionClassName) {
-        insertCustomerAtPosition(customer, customers.size(), iteration,
-                insertionClassName, false);
-    }
+    } 
     
 	public void insertCustomersAtPosition(List<Customer> customers2, int position) {
 		//TODO: Das kann man auch in konstanter Zeit implementieren
@@ -311,53 +297,21 @@ public class Tour implements Cloneable, SolutionElement {
 			position++;
 		}			
 	}
-	       
-    // A helper method if you don't have an insertion class name.     
-    public void insertCustomerAtPosition(Customer customer, int position) {
-        insertCustomerAtPosition(customer, position, 0, "", false);
-    }
-    
-    public void insertCustomerAtPosition(Customer customer, int position,
-            int iteration, String insertionClassName) {
-    	insertCustomerAtPosition(customer, position, iteration, insertionClassName, false);
-    }
-    
+	         
     /**
      * Inserts the customer at the specified position within this tour. This
      * method does not check if this insertion violates the time window of any
      * customers, it only does the insertion!
      */
-    public void insertCustomerAtPosition(Customer customer, int position,
-            int iteration, String insertionClassName, boolean isFixedCustomer) {
+    public void insertCustomerAtPosition(Customer customer, int position) {
 
     	assertThatRefsFromPositionToEndContainSameCustomersAsTour();
     	
-        CustomerInTour newCustomerInTour = new CustomerInTour(this);
-        newCustomerInTour.setPosition(position);
-        newCustomerInTour.setCustomer(customer);
-        newCustomerInTour.setInsertedInIteration(iteration);
-        newCustomerInTour.setInsertionHeuristic(insertionClassName);
-        if (position == 0) {
-            newCustomerInTour.setPreviousVertex(getDepot());
-        } else {
-            newCustomerInTour.setPreviousVertex(customers.get(position - 1)
-                    .getCustomer());
-            customers.get(position - 1).setNextVertex(customer);
-        }
-        if (position >= customers.size()) {
-            newCustomerInTour.setNextVertex(getDepot());
-        } else {
-            newCustomerInTour.setNextVertex(customers.get(position)
-                    .getCustomer());
-            customers.get(position).setPreviousVertex(customer);
-        }
-
+    	//TODO: Klasse Customer in Tour loswerden und nur noch Customer benutzen
+        CustomerInTour newCustomerInTour = new CustomerInTour(this);        
+        newCustomerInTour.setCustomer(customer);                   
         customers.add(position, newCustomerInTour);
-        // update the position of all CustomerInTour which come after the newly
-        // inserted, increase them by one
-        for (int i = position + 1; i < customers.size(); i++) {
-            customers.get(i).setPosition(i);
-        }
+
         vehicle.addCapacityUsage(customer.getDemand());
         recalculateTimes();    
         recalculateEdges();
@@ -529,21 +483,8 @@ public class Tour implements Cloneable, SolutionElement {
         			"Kunden fangen bei Position 0 an und gehen bis n-1 bei n Kunden. Wenn daher z.B.  versucht wird, an Position 8 zu entfernen, muss es 9 Kunden in der Tour geben.");	 
                 
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();        
-        
-        //TODO: Sind die linked Lists wirklich nötig?
-        //Ist das nicht auch total teuer?
-        if (customerToBeRemovedIsNotAtFirstPositionInTour(position)) {
-        	maintainOutgoingPointerInDoublyLinkedList(position);          
-        }
-        if (customerToBeRemovedIsNotAtLastPositionInTour(position)) {
-        	maintainIncomingPointerInDoublyLinkedList(position);
-        }
-        
+               
         Customer removedCustomer = customers.remove(position).getCustomer();
-        //TODO: ist das hier nicht auch völlig unnötig und compulationally teuer?
-        for (int i = 0; i < customers.size(); i++) {
-            customers.get(i).setPosition(i);
-        }
         vehicle.addCapacityUsage(removedCustomer.getDemand() * -1);
         //TODO: Ist recalculate times noch nötig?
         recalculateTimes();  
@@ -598,20 +539,10 @@ public class Tour implements Cloneable, SolutionElement {
     	return position >= 1;
 	}
 	
-	private void maintainOutgoingPointerInDoublyLinkedList(int position) {
-        customers.get(position - 1).setNextVertex(
-                customers.get(position).getNextVertex());
-	}
-	
     private boolean customerToBeRemovedIsNotAtLastPositionInTour(int position) {
     	return position < customers.size() - 1;
 	}
     
-	private void maintainIncomingPointerInDoublyLinkedList(int position) {
-        customers.get(position + 1).setPreviousVertex(
-                customers.get(position).getPreviousVertex());
-	}
-
 	public List<Customer> removeCustomersBetween(
 			int positionStartOfSegmentTour1, int positionEndOfSegmentTour1) {		
 		List<Customer> customers = new LinkedList<Customer>();	

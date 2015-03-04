@@ -3,7 +3,7 @@ package de.rwth.lofip.library.solver.util;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 
-public class SolutionUtils {
+public class SolutionGotUtils {
 
 	public static boolean isSolutionDemandFeasible(SolutionGot solution) {
 		boolean feasible = true;

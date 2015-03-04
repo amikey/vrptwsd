@@ -14,8 +14,8 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.solver.util.CustomerWithCostGot;
-import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCostGot;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * Diese Datei implementiert die EWR Heuristik, die so modifiziert ist, dass sie mit GroupOfTours und SolutionGot klar kommt.

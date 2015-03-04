@@ -2,8 +2,8 @@ package de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions;
 
 import java.util.Comparator;
 
-import de.rwth.lofip.library.solver.util.CustomerNoComparator;
-import de.rwth.lofip.library.util.RemovedCustomer;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerNoComparator;
+import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**
  * The {@code Time and failure sorting insertion} as described by Lei et al.
