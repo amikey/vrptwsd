@@ -5,9 +5,9 @@ import java.util.Set;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.solver.util.TabuTourPosition;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.TabuInsertionInterface;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions.deterministic.DeterministicGreedyInsertion;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.TabuTourPosition;
 
 public class DeterministicGreedyInsertionTabuSearch extends DeterministicGreedyInsertion implements
         TabuInsertionInterface {

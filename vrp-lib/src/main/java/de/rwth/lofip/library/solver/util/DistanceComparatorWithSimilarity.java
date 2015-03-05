@@ -5,7 +5,6 @@ import java.util.Set;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 
 public class DistanceComparatorWithSimilarity implements Comparator<CustomerWithCost> {
 		

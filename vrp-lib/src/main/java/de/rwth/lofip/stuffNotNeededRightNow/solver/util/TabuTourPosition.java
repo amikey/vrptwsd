@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.solver.util;
+package de.rwth.lofip.stuffNotNeededRightNow.solver.util;
 
 /**
  * This class is basically an object which holds the information about a tabu

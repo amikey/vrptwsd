@@ -1,9 +1,5 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -20,12 +16,9 @@ import de.rwth.lofip.library.solver.util.TourUtils;
 
 public class CrossNeighborhood implements NeighborhoodInterface {
 	
-	private static Tour tour1;
-	private static Tour tour2;
+	private Tour tour1;
+	private Tour tour2;
 	private SolutionGot solution;
-	
-	private Tour tour1clone;
-	private Tour tour2clone;
 	
 	private int tourCounter1 = 0;
 	private int tourCounter2 = 1;
@@ -300,6 +293,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	
 	private boolean isInnerTourMove() { 
 		return tourCounter1 == tourCounter2;
+		//bei inner Tour moves wird immer aus tour 1 entfernt und in tour zwei eingefügt
 	}
 		
 	public boolean segmentsToBeSwapedAreNotInNeighborhoodRefPositions() {
@@ -323,9 +317,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	
 	public double calculateCostUsingRefs() {
 		double costSolution = solution.getTotalDistance();
-//		if (tourCounter1 == tourCounter2) {}
-//			//inner-tour move
-//		else { 
+		//TODO: stimmt die Kostenberechnung auch für inner tour moves?
+		
 			//move between tours
 			double costTour1 = 0;
 			//calculate cost for tour1
@@ -366,19 +359,10 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			} else 
 				//add edge between last customer before segment and first customer after segment
 				costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
-//		}
-		return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
+			
+			return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;		
 	}
 		
-
-	private boolean isThereIsFirstCustomerAfterSegmentInTour1() {
-		return positionEndOfSegmentTour1 > tour1.getCustomerSize();
-	}
-
-	private boolean isThereIsLastCustomerBeforeSegmentInTour1() {
-		return positionStartOfSegmentTour1 != 0;
-	}
-
 	private boolean isSegmentRemovedFromTour1() {
 		return positionStartOfSegmentTour1 != positionEndOfSegmentTour1;
 	}

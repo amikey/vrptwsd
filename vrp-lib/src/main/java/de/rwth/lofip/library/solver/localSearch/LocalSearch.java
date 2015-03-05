@@ -32,6 +32,7 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 					//TODO: Remove because takes time (O(n))
 					assertEquals(true, SolutionGotUtils.isSolutionDemandFeasible(solution));
 					assertEquals(true, SolutionGotUtils.isSolutionTWFeasible(solution));
+					assertEquals(solution.getTotalDistance(),bestMove.getCost(),0.001);
 					iteration++;
 				}
 			} catch (Exception e) {				

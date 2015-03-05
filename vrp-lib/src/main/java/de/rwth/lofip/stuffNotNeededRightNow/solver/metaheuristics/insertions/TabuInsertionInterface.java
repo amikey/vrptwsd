@@ -2,7 +2,7 @@ package de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.insertions;
 
 import java.util.Set;
 
-import de.rwth.lofip.library.solver.util.TabuTourPosition;
+import de.rwth.lofip.stuffNotNeededRightNow.solver.util.TabuTourPosition;
 
 /**
  * Interface which all insertion heuristics, used by the

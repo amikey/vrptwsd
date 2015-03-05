@@ -10,9 +10,9 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 import de.rwth.lofip.stuffNotNeededRightNow.util.RemovedCustomer;
 
 /**

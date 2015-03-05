@@ -5,7 +5,6 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.util.CustomerInTour;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 
 /**
  * Static helper methods which calculate stuff related to tours. These are

@@ -19,9 +19,9 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
+import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.DistanceComparatorWithSimilarity;
 import de.rwth.lofip.library.solver.util.TourUtils;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.util.CustomerWithCost;
 import de.rwth.lofip.stuffNotNeededRightNow.solver.util.FVComparatorWithSimilarity;
 
 /**

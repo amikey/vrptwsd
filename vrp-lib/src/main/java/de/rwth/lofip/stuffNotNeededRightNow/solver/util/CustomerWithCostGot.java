@@ -3,6 +3,7 @@ package de.rwth.lofip.stuffNotNeededRightNow.solver.util;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.solver.util.CustomerWithCost;
 
 public class CustomerWithCostGot extends CustomerWithCost {
 	
