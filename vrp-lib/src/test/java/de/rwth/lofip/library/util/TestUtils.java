@@ -23,10 +23,14 @@ public class TestUtils {
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
 	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();
 	
+//	private static String directoryInput = "C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems";
+	private static String directoryInput = "C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems";
+	
+	private static String directoryOutput = "C:/Users/Andreas/Dropbox/Uni/Diss/Output";
+	
 	public static List<VrpProblem> readSolomonProblems() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-//		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
-		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+		File dir = new File(directoryInput);		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -47,8 +51,7 @@ public class TestUtils {
 	
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
-//		File dir = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems");
+		File dir = new File(directoryInput);		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -81,6 +84,10 @@ public class TestUtils {
 		return readSolomonProblemX("c103","rc103");
 	}
 	
+	public static List<VrpProblem> readSolomonProblemC106() throws IOException {
+		return readSolomonProblemX("c106","rc106");
+	}
+	
 	public static List<VrpProblem> readSolomonProblemRC101() throws IOException {
 		return readSolomonProblemX("rc101","X");
 	}
@@ -95,8 +102,7 @@ public class TestUtils {
 		setUpBestKnownSolutionVehicleNumbers();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
-		File outputFile = new File("C:/Users/abraun/Dropbox/Uni/Diss/Code/output/"
-//		File outputFile = new File("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/"
+		File outputFile = new File(directoryOutput		
 				+ string + " " 
                 + sdf.format(Calendar.getInstance().getTime())
                 + ".csv");

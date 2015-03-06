@@ -28,18 +28,19 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 
 	//mit den Positionen sind jeweils die Einfügepositionen gemeint. 
 	//D.h. bei einer Tour mit vier Kunden gibt es die Positionen 0,1,2,3,4
-	private static int positionStartOfSegmentTour1 = 0;
-	private static int positionEndOfSegmentTour1 = 0;
-	private static int positionStartOfSegmentTour2 = 0;
-	private static int positionEndOfSegmentTour2 = 0;
+	private int positionStartOfSegmentTour1 = 0;
+	private int positionEndOfSegmentTour1 = 0;
+	private int positionStartOfSegmentTour2 = 0;
+	private int positionEndOfSegmentTour2 = 0;
 	
 	private ResourceExtensionFunction RefSegment1 = new ResourceExtensionFunction();
 	private ResourceExtensionFunction RefSegment2 = new ResourceExtensionFunction();
-	
-	List<AbstractNeighborhoodMove> moves = new LinkedList<AbstractNeighborhoodMove>();
+		
 	private ResourceExtensionFunction currentRef;
 	private Tour currentTour;
 	private int currentPositionEndOfSegment;
+	
+	protected AbstractNeighborhoodMove bestMove = null;
 	
 	public CrossNeighborhood(SolutionGot solution) {
 		this.solution = solution;
@@ -62,6 +63,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		positionEndOfSegmentTour2 = 0;
 		RefSegment1 = new ResourceExtensionFunction();
 		RefSegment2 = new ResourceExtensionFunction();
+		bestMove = null;
 	}
 	
 	public AbstractNeighborhoodMove returnBestMove() throws Exception {
@@ -70,10 +72,10 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	}
 	
 	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
-		initialise();
-		moves.clear();
+		initialise();		
 		generateMovesUsingRefs(iteration);
-		AbstractNeighborhoodMove bestMove = findBestMove();
+		if (bestMove == null)
+			throw new Exception("No feasible move found");
 		return bestMove;
 	}
 		
@@ -82,44 +84,34 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				generateNextCombinationOfSegements();
 				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
 //					FOR DEBUGGING:
-					if (tour1.getId() == 17 && tour2.getId() == 32 &&
-							positionStartOfSegmentTour1 == 0 && positionEndOfSegmentTour1 == 5 &&
-							positionStartOfSegmentTour2 == 0 && positionEndOfSegmentTour2 == 0 &&
-							iteration == 54)
-						System.out.println("MOVE!");
+					if (tour1.getId() == 35 && tour2.getId() == 35 &&
+							positionStartOfSegmentTour1 == 4 && positionEndOfSegmentTour1 == 5 &&
+							positionStartOfSegmentTour2 == 3 && positionEndOfSegmentTour2 == 3 &&
+							iteration == 89)
+						System.out.println("DEBUGGING!");
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();		
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
-						if (isMoveNotTaboo(move))
-							moves.add(move);
+						if (isMoveNewBestMove(move))						
+							if (!isMoveTaboo(move, iteration))
+								bestMove = move;
 					}
 				}
 			}
 		}
 
-		protected boolean isMoveNotTaboo(AbstractNeighborhoodMove move) { 
-			return true;
+		private boolean isMoveNewBestMove(AbstractNeighborhoodMove move) {	
+			if (bestMove == null) 
+				return true;
+			if (move.getCost() <= bestMove.getCost() || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
+					(move.reducesNumberOfVehicles() && !bestMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
+				return true;
+			else 
+				return false;
 		}
 
-		private AbstractNeighborhoodMove findBestMove() throws Exception {
-			if (moves.isEmpty())
-				throw new Exception("no move found");
-			Collections.sort(moves,
-					new Comparator<AbstractNeighborhoodMove>() {
-	                    @Override
-	                    public int compare(AbstractNeighborhoodMove o1,
-	                            AbstractNeighborhoodMove o2) {
-	                        if (o1.getCost() < o2.getCost()) {
-	                            return -1;
-	                        }
-	                        if (o1.getCost() > o2.getCost()) {
-	                            return 1;
-	                        }
-	                        return 0;
-	                    }
-	                }
-			);
-			return moves.get(0);			
+		protected boolean isMoveTaboo(AbstractNeighborhoodMove move, int iteration) { 
+			return false;
 		}
 
 	protected void generateNextCombinationOfSegements() {	
@@ -317,9 +309,12 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	
 	public double calculateCostUsingRefs() {
 		double costSolution = solution.getTotalDistance();
-		//TODO: stimmt die Kostenberechnung auch für inner tour moves?
-		
-			//move between tours
+//		if (isInnerTourMove()) {
+//			...
+//		}			
+		//move between tours		
+		if (isOnlyOneSegmentIsSwapped()) {			
+			
 			double costTour1 = 0;
 			//calculate cost for tour1
 			if (isSegmentRemovedFromTour1()) {
@@ -360,9 +355,42 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				//add edge between last customer before segment and first customer after segment
 				costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
 			
-			return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;		
+			return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
+		} else {
+			//two segments are swapped
+			
+			double costTour1 = 0;
+			//remove edge before segment in tour 1
+			costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1), tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+			//remove edge after segment in tour 1
+			costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1), tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
+			
+			//add edge between tour 1 and start of segment from tour 2
+			costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
+			//add edge between tour 1 and end of segment from tour 2
+			costTour1 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
+			
+			double costTour2 = 0;
+			//remove edge before segment in tour 2
+			costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
+			//remove edge after segment in tour 2
+			costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
+			
+			//add edge between tour 2 and start of segment from tour 1
+			costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1), tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+			//add edge between tour 2 and end of segment from tour 1
+			costTour2 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1), tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
+			
+			return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
+		}
+			
 	}
 		
+	private boolean isOnlyOneSegmentIsSwapped() {		
+		boolean isBothSegmentsAreSwapped = isSegmentRemovedFromTour1() && isSegmentRemovedFromTour2();
+		return !isBothSegmentsAreSwapped;
+	}
+
 	private boolean isSegmentRemovedFromTour1() {
 		return positionStartOfSegmentTour1 != positionEndOfSegmentTour1;
 	}
@@ -445,6 +473,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	public ResourceExtensionFunction getRefSegment2() {
 		return RefSegment2;		
 	}
+
 
 
 

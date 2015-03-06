@@ -19,16 +19,16 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 		this.solution = solutionStart;
 		crossNeighborhood = new CrossNeighborhood(solution);
 		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getSolutionAsTupel());		
-		boolean isImprovement;
+		boolean isImprovement = false;
 		do {
 			try{
 				findBestMove();			
-				printBestMove();
+				printBestMove();				
 				isImprovement = isImprovement();
 				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
 				if (isImprovement) {
 					applyBestMove();					
-					System.out.println("Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
+					System.out.println("Move applied! Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
 					//TODO: Remove because takes time (O(n))
 					assertEquals(true, SolutionGotUtils.isSolutionDemandFeasible(solution));
 					assertEquals(true, SolutionGotUtils.isSolutionTWFeasible(solution));
@@ -36,7 +36,7 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 					iteration++;
 				}
 			} catch (Exception e) {				
-				if (e.getMessage() == "no move found") {
+				if (e.getMessage() == "No feasible move found") {
 					isImprovement = false;
 					System.out.println("Kein feasible Move gefunden");
 				} else 

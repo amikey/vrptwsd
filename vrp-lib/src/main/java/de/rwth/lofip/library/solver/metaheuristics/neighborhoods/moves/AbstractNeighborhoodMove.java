@@ -95,4 +95,14 @@ public class AbstractNeighborhoodMove {
 	public boolean isInnerTourMove() {
 		return tour1.equals(tour2);
 	}
+
+	public boolean reducesNumberOfVehicles() {
+		if (positionStartOfSegmentTour1 == 0 && positionEndOfSegmentTour1 == tour1.getCustomerSize()
+				&& positionStartOfSegmentTour2 == positionEndOfSegmentTour2)
+			return true;
+		if (positionStartOfSegmentTour2 == 0 && positionEndOfSegmentTour2 == tour2.getCustomerSize()
+				&& positionStartOfSegmentTour1 == positionEndOfSegmentTour1)
+			return true;
+		return false;
+	}
 }

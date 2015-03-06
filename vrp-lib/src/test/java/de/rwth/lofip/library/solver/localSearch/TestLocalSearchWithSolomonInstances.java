@@ -1,6 +1,8 @@
 package de.rwth.lofip.library.solver.localSearch;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class TestLocalSearchWithSolomonInstances {
 //	
 	@Test
 	public void TestLocalSearchOnAllSolomonInstances() throws IOException {	
-//		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/Andreas/Dropbox/Uni/Diss/Code/output/output.txt"));
+//		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/abraun/Dropbox/Uni/Diss/Code/output/output.txt"));
 //		System.setOut(out);
 //		
 		problems = TestUtils.readSolomonProblems();
@@ -42,22 +44,22 @@ public class TestLocalSearchWithSolomonInstances {
 		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
 	}
 	
-	private void solveProblemsWithInitialSolver() {
-		SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
-		for (VrpProblem problem : problems) {
-			SolutionGot solution = initialSolver.solve(problem);
-			initialSolutions.add(solution);			
-		}
-	}	
-	
-	private void improveSolutionsWithLocalSearch() {
-		LocalSearch localSearch = new LocalSearch();
-		for (SolutionGot solution : initialSolutions) {
-			System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
-			SolutionGot improvedSolution = localSearch.improve(solution.clone());
-			improvedSolutions.add(improvedSolution);
+		private void solveProblemsWithInitialSolver() {
+			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
+			for (VrpProblem problem : problems) {
+				SolutionGot solution = initialSolver.solve(problem);
+				initialSolutions.add(solution);			
+			}
 		}	
-	}
+		
+		private void improveSolutionsWithLocalSearch() {
+			LocalSearch localSearch = new LocalSearch();
+			for (SolutionGot solution : initialSolutions) {
+				System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
+				SolutionGot improvedSolution = localSearch.improve(solution.clone());
+				improvedSolutions.add(improvedSolution);
+			}	
+		}
 	
 	@Test
 	public void TestLocalSearchOnC101() throws IOException {		
@@ -76,6 +78,13 @@ public class TestLocalSearchWithSolomonInstances {
 	@Test
 	public void TestLocalSearchOnC103() throws IOException {		
 		problems = TestUtils.readSolomonProblemC103();
+		solveProblemsWithInitialSolver();
+		improveSolutionsWithLocalSearch();		
+	}
+	
+	@Test
+	public void TestLocalSearchOnC106() throws IOException {		
+		problems = TestUtils.readSolomonProblemC106();
 		solveProblemsWithInitialSolver();
 		improveSolutionsWithLocalSearch();		
 	}
