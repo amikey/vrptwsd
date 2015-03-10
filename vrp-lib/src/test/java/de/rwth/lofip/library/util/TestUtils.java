@@ -13,7 +13,6 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
@@ -23,14 +22,9 @@ public class TestUtils {
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
 	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();
 	
-//	private static String directoryInput = "C:/Users/abraun/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems";
-	private static String directoryInput = "C:/Users/Andreas/Dropbox/Uni/Diss/Code/vrp-lib/original-solomon-problems";
-	
-	private static String directoryOutput = "C:/Users/Andreas/Dropbox/Uni/Diss/Output";
-	
 	public static List<VrpProblem> readSolomonProblems() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File(directoryInput);		
+		File dir = new File(getInputDirectory());		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -49,9 +43,16 @@ public class TestUtils {
 		return problems;
 	}
 	
+	private static String getInputDirectory() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\vrp-lib\\original-solomon-problems\\";
+		System.out.println(s);
+		return s;		
+	}
+	
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File(directoryInput);		
+		File dir = new File(getInputDirectory());		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -102,7 +103,7 @@ public class TestUtils {
 		setUpBestKnownSolutionVehicleNumbers();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
-		File outputFile = new File(directoryOutput		
+		File outputFile = new File(getOutputDirectory()		
 				+ string + " " 
                 + sdf.format(Calendar.getInstance().getTime())
                 + ".csv");
@@ -129,6 +130,12 @@ public class TestUtils {
 			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i) + "\n",outputStream);
 			i++;
 		}
+	}
+	
+	private static String getOutputDirectory() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\Output\\";		
+		return s;		
 	}
 	
 	private static void setUpBestKnownSolutionValues() {

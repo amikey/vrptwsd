@@ -75,7 +75,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		initialise();		
 		generateMovesUsingRefs(iteration);
 		if (bestMove == null)
-			throw new Exception("No feasible move found");
+			throw new Exception("No feasible move found.");
 		return bestMove;
 	}
 		
@@ -89,12 +89,18 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 							positionStartOfSegmentTour2 == 3 && positionEndOfSegmentTour2 == 3 &&
 							iteration == 89)
 						System.out.println("DEBUGGING!");
-					if (isMoveFeasibleCheckWithRef()) {
+					if (isMoveFeasibleCheckWithRef()) {						
 						calculateCostUsingRefs();		
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
-						if (isMoveNewBestMove(move))						
-							if (!isMoveTaboo(move, iteration))
+//						System.out.println("feasible move found. Kosten: " + move.getCost());
+						if (isMoveNewBestMove(move)) {
+							System.out.println("move ist neuer bester move.");
+							if (!isMoveTaboo(move, iteration)) {
+								System.out.println("move ist NICHT tabu");
 								bestMove = move;
+							} else 
+								System.out.println("move ist tabu");
+						}
 					}
 				}
 			}
@@ -308,12 +314,9 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	}
 	
 	public double calculateCostUsingRefs() {
-		double costSolution = solution.getTotalDistance();
-//		if (isInnerTourMove()) {
-//			...
-//		}			
-		//move between tours		
+		double costSolution = solution.getTotalDistance();			
 		if (isOnlyOneSegmentIsSwapped()) {			
+			//also calculates inner tour moves
 			
 			double costTour1 = 0;
 			//calculate cost for tour1
@@ -358,6 +361,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
 		} else {
 			//two segments are swapped
+			//TODO: ich glaube, das ist redundant mit oben (oben werden zwei segmente auch schon behandelt)
 			
 			double costTour1 = 0;
 			//remove edge before segment in tour 1

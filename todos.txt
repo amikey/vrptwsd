@@ -6,3 +6,5 @@
 - in innerTourMoves auch erlauben, dass zwei Segmente herausgelöst und getauscht werden
 - irgendwann auch mal initialen Solver sinnvoll programmieren (nach der ersten Tour werden nur noch Stichfahrten erzeugt)
 - beschränke die Länge der Segmente, die getauscht werden können (z.B. maximal 7 Kunden)
+- TabuListe vielleicht zu restriktiv? Es gibt ganz viele Iterationen, in denen kein move feasible ist... -> tabu tenure reduzieren? (z.B *1,4...)
+- GI: parallelism entfernen

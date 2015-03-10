@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util;
+package de.rwth.lofip.library.solver.util;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +12,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.solver.util.TourUtils;
+import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestTourUtilsIsConcatenationOfSegmentsPossible {
 	

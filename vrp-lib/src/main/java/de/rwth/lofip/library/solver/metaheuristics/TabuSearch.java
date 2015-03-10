@@ -1,5 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
@@ -19,7 +22,7 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	@Override
 	public SolutionGot improve(SolutionGot solutionStart) {
 		solution = solutionStart;
-		bestOverallSolution = solutionStart;
+		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
 		
 		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getSolutionAsTupel());
@@ -27,30 +30,41 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 			try {
 				findBestNonTabooMove();
 				printBestMove();
-				applyBestNonTabooMove();
 				
+				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
+				
+				updateTabuList();
+				applyBestNonTabooMove();
+								
 				System.out.println("Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
 				
+				if (iteration == 83)
+					System.out.println("DEBUGGING!");
+				
 				if (isNewSolutionIsNewBestOverallSolution()) {
-					setBestOverallSolutionToNewSolution();
-					updateTabuList();
+					setBestOverallSolutionToNewSolution();					
 					iterationsWithoutImprovement = 0;
 				} else
-					iterationsWithoutImprovement++;
-				iteration++;
+					iterationsWithoutImprovement++;				
 			} catch (Exception e) {
-				if (e.getMessage() == "No feasible move found") {					
-					System.out.println("Kein feasible Move gefunden");
-				} else 
+				if (e.getMessage() == "No feasible move found.") {					
+					System.out.println("Kein feasible Move gefunden. Iteration: " + iteration);
+				} else {
+					StackTraceElement[] arr = e.getStackTrace();
+			     	for(int i=0; i<arr.length; i++)
+			     		System.out.println(arr[i].toString());			     	
 					throw new RuntimeException(e);
+				}
 			}
+			iteration++;
 		}
 		
 		return solution;
 	}
 
 	private boolean isStoppingCriterionMet() {
-		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
+		return iteration == 1000;
+//		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
 	}
 	
 	private void findBestNonTabooMove() throws Exception {
@@ -66,16 +80,17 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	}
 	
 	private boolean isNewSolutionIsNewBestOverallSolution() {
-		if (solution.getTotalDistance() <= bestOverallSolution.getTotalDistance()
+//		assertEquals(false, solution.equals(bestOverallSolution));
+		if (solution.getTotalDistance() < bestOverallSolution.getTotalDistance()
 			&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
 			return true;
-		if (solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
+		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
 			return true;
 		return false;
 	}
 	
 	private void setBestOverallSolutionToNewSolution() {
-		bestOverallSolution = solution;	
+		bestOverallSolution = solution.clone();	
 	}
 	
 	private void updateTabuList() {

@@ -9,21 +9,13 @@ import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 
-
-/**
- * A {@code Solution} consists of several tours. It provides convenience methods
- * to get information about the solution quality, e.g. total vehicle count and
- * total distance traveled.
- * 
- * @author Dominik Sandjaja <dominik@dadadom.de>
- * 
- */
 public class SolutionGot implements Cloneable, SolutionElement {
 
     private VrpProblem vrpProblem;
     private double penaltyCost = 0;
     private int iterationInWhichSolutionWasCreated;  
-    private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();       
+    private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();  
+    //TODO: Kosten als Variable speichern
     
     public SolutionGot(VrpProblem vrpProblem) {
         this.vrpProblem = vrpProblem;
@@ -41,24 +33,11 @@ public class SolutionGot implements Cloneable, SolutionElement {
         return distance;
     }
 
-    /**
-     * The total number of vehicles used for the solution may be less than the
-     * total number of tours as a vehicle may be used on several tours.
-     */
     public int getVehicleCount() {
-        // only count the number of distinct vehicle IDs
-    	// das ist eigentlich auch überflüssig, da Vehicle nicht mehrfach starten können
         Set<Integer> vehicles = new HashSet<Integer>();
         for (Tour t : getTours()) 
             vehicles.add(t.getVehicle().getVehicleId());        
         return vehicles.size();
-    }
-
-    public Set<Edge> getEdges() {
-        Set<Edge> edges = new HashSet<Edge>();
-        for (Tour t : getTours()) 
-            edges.addAll(t.getEdges());        
-        return edges;
     }
 
     public List<Tour> getTours() {

@@ -4,7 +4,7 @@ import de.rwth.lofip.library.SolutionGot;
 
 public class TabuList {
 	
-	private int lengthOfList = 100000;
+	private int lengthOfList = 1000000;
 	private int[] tabuList = new int[lengthOfList]; // array ist automatisch mit 0 initialisiert, da ints mit 0 initialisiert werden
 
 	public void addSolutionToTabuList(double objectiveValue, int iteration) {

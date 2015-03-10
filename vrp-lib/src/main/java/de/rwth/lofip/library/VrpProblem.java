@@ -252,5 +252,9 @@ public class VrpProblem implements Cloneable {
 				number++;
 		return (number / customers.size());
 	}
+
+	public Vehicle getVehicle() {
+		return vehicles.iterator().next();
+	}
     
 }

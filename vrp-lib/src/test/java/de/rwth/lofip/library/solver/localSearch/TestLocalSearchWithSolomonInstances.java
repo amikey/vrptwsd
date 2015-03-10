@@ -20,19 +20,6 @@ public class TestLocalSearchWithSolomonInstances {
 	private List<SolutionGot> initialSolutions = new LinkedList<SolutionGot>();
 	private List<SolutionGot> improvedSolutions = new LinkedList<SolutionGot>();
 	
-//	@Test
-//	public void TestLocalSearchOnAllSolomonInstancesSolveSequentially() throws IOException {
-//		problems = TestUtils.readSolomonProblems();		
-//		for (VrpProblem problem : problems) {
-//			System.out.println("SOLVING INSTANCE " + problem.getDescription());
-//			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
-//			SolutionGot solution = initialSolver.solve(problem);
-//			LocalSearch localSearch = new LocalSearch();
-//			SolutionGot improvedSolution = localSearch.improve(solution.clone());
-//			improvedSolutions.add(improvedSolution);
-//		}
-//	}
-//	
 	@Test
 	public void TestLocalSearchOnAllSolomonInstances() throws IOException {	
 //		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/abraun/Dropbox/Uni/Diss/Code/output/output.txt"));
@@ -44,56 +31,56 @@ public class TestLocalSearchWithSolomonInstances {
 		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
 	}
 	
-		private void solveProblemsWithInitialSolver() {
-			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
+		private void solveProblemsWithInitialSolver() {			
 			for (VrpProblem problem : problems) {
+				SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
 				SolutionGot solution = initialSolver.solve(problem);
 				initialSolutions.add(solution);			
 			}
 		}	
 		
-		private void improveSolutionsWithLocalSearch() {
-			LocalSearch localSearch = new LocalSearch();
+		private void improveSolutionsWithLocalSearch() {			
 			for (SolutionGot solution : initialSolutions) {
+				LocalSearch localSearch = new LocalSearch();
 				System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
 				SolutionGot improvedSolution = localSearch.improve(solution.clone());
 				improvedSolutions.add(improvedSolution);
 			}	
 		}
 	
-	@Test
-	public void TestLocalSearchOnC101() throws IOException {		
-		problems = TestUtils.readSolomonProblemC101();
-		solveProblemsWithInitialSolver();
-		improveSolutionsWithLocalSearch();		
-	}
-	
-	@Test
-	public void TestLocalSearchOnC102() throws IOException {		
-		problems = TestUtils.readSolomonProblemC102();
-		solveProblemsWithInitialSolver();
-		improveSolutionsWithLocalSearch();		
-	}
-	
-	@Test
-	public void TestLocalSearchOnC103() throws IOException {		
-		problems = TestUtils.readSolomonProblemC103();
-		solveProblemsWithInitialSolver();
-		improveSolutionsWithLocalSearch();		
-	}
-	
-	@Test
-	public void TestLocalSearchOnC106() throws IOException {		
-		problems = TestUtils.readSolomonProblemC106();
-		solveProblemsWithInitialSolver();
-		improveSolutionsWithLocalSearch();		
-	}
-	
-	@Test
-	public void TestLocalSearchOnRC101() throws IOException {		
-		problems = TestUtils.readSolomonProblemRC101();
-		solveProblemsWithInitialSolver();
-		improveSolutionsWithLocalSearch();		
-	}
+//	@Test
+//	public void TestLocalSearchOnC101() throws IOException {		
+//		problems = TestUtils.readSolomonProblemC101();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithLocalSearch();		
+//	}
+//	
+//	@Test
+//	public void TestLocalSearchOnC102() throws IOException {		
+//		problems = TestUtils.readSolomonProblemC102();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithLocalSearch();		
+//	}
+//	
+//	@Test
+//	public void TestLocalSearchOnC103() throws IOException {		
+//		problems = TestUtils.readSolomonProblemC103();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithLocalSearch();		
+//	}
+//	
+//	@Test
+//	public void TestLocalSearchOnC106() throws IOException {		
+//		problems = TestUtils.readSolomonProblemC106();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithLocalSearch();		
+//	}
+//	
+//	@Test
+//	public void TestLocalSearchOnRC101() throws IOException {		
+//		problems = TestUtils.readSolomonProblemRC101();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithLocalSearch();		
+//	}
 
 }

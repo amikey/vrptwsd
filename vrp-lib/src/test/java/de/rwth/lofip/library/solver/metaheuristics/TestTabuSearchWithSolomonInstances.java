@@ -1,6 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,11 +21,25 @@ public class TestTabuSearchWithSolomonInstances {
 	private List<SolutionGot> improvedSolutions = new LinkedList<SolutionGot>();
 
 	@Test
-	public void TestTabuSearchOnC101() throws IOException {		
-		problems = TestUtils.readSolomonProblemC101();
+	public void TestTabuSearchOnAllSolomonInstances() throws IOException {	
+//		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/abraun/Dropbox/Uni/Diss/Code/output/output.txt"));
+//		System.setOut(out);
+//		
+		problems = TestUtils.readSolomonProblems();
 		solveProblemsWithInitialSolver();
-		improveSolutionsWithTabuSearch();		
-	}
+		improveSolutionsWithTabuSearch();
+		TestUtils.printResultsToFile("TabuSearch",initialSolutions,improvedSolutions);
+	}	
+	
+//	@Test
+//	public void TestTabuSearchOnC101() throws IOException {		
+////		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
+////		System.setOut(out);
+//		
+//		problems = TestUtils.readSolomonProblemC101();
+//		solveProblemsWithInitialSolver();
+//		improveSolutionsWithTabuSearch();		
+//	}
 	
 		private void solveProblemsWithInitialSolver() {
 			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();
@@ -33,13 +49,20 @@ public class TestTabuSearchWithSolomonInstances {
 			}
 		}	
 		
-		private void improveSolutionsWithTabuSearch() {
-			TabuSearch tabuSearch = new TabuSearch();
+		private void improveSolutionsWithTabuSearch() {			
 			for (SolutionGot solution : initialSolutions) {
+				TabuSearch tabuSearch = new TabuSearch();
 				System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
 				SolutionGot improvedSolution = solution.clone();
 				improvedSolution = tabuSearch.improve(improvedSolution);
 				improvedSolutions.add(improvedSolution);
 			}	
+		}
+		
+		private static String getOutputFile() {
+			String s = System.getenv("USERPROFILE");
+			s += "\\Dropbox\\Uni\\Diss\\Code\\output\\output.txt";					
+			System.out.println(s);
+			return s;		
 		}
 }

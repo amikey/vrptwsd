@@ -181,7 +181,7 @@ public class SetUpUtils {
         return tour;
 	}
 	
-	static Tour getTourWithCustomer4() {
+	public static Tour getTourWithCustomer4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         Tour tour = new Tour(depot, vehicle);
         tour.addCustomer(c4);        
@@ -363,7 +363,7 @@ public class SetUpUtils {
         return tour;	
 	}
 	
-	static Tour getTourWithCustomer2() {
+	public static Tour getTourWithCustomer2() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
         tour.addCustomer(c2);        

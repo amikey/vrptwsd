@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util;
+package de.rwth.lofip.library.solver.util;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
