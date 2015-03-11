@@ -31,15 +31,16 @@ public class TestTabuSearchWithSolomonInstances {
 		TestUtils.printResultsToFile("TabuSearch",initialSolutions,improvedSolutions);
 	}	
 	
-//	@Test
-//	public void TestTabuSearchOnC101() throws IOException {		
-////		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
-////		System.setOut(out);
-//		
-//		problems = TestUtils.readSolomonProblemC101();
-//		solveProblemsWithInitialSolver();
-//		improveSolutionsWithTabuSearch();		
-//	}
+	@Test
+	public void TestTabuSearchOnC101() throws IOException {		
+//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
+//		System.setOut(out);
+		
+		problems = TestUtils.readSolomonProblemC101();
+		solveProblemsWithInitialSolver();
+		improveSolutionsWithTabuSearch();
+		TestUtils.printResultsToFile("TabuSearch",initialSolutions,improvedSolutions);
+	}
 	
 		private void solveProblemsWithInitialSolver() {
 			SolverInterfaceGot initialSolver = new GroupPushForwardInsertionSolver();

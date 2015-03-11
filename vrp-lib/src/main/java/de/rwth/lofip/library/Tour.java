@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
@@ -33,6 +34,9 @@ public class Tour implements Cloneable, SolutionElement {
 	//this is an upper triangle matrix; first index -> row: ending position; second index -> column: starting position
 	//ziemlich verwirrend, aber so ist die matrix leichter aufzubauen
 	private List<ArrayList<ResourceExtensionFunction>> refForSegment = new ArrayList<ArrayList<ResourceExtensionFunction>>();
+	
+	//the label that the tour is labeled with for the adaptive memory
+	private double solutionValue;
 	
     /****************************************************************************
      * Constructors
@@ -638,6 +642,22 @@ public class Tour implements Cloneable, SolutionElement {
 		    System.out.print("\n");
 		}
 		System.out.print("\n");
+	}
+
+	public void setSolutionValue(double totalDistanceOfAllTours) {
+		solutionValue = totalDistanceOfAllTours;
+	}
+
+	public double getSolutionValue() {
+		return solutionValue;
+	}
+
+	public boolean containsCustomers(Tour currentNewTour) {
+		List<Customer> customersInThisTour = getCustomers();
+		for (Customer c : currentNewTour.getCustomers())
+			if (customersInThisTour.contains(c))
+				return true;
+		return false;
 	}
 
 }

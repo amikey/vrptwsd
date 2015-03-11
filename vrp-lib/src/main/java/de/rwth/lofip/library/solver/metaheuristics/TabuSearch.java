@@ -59,7 +59,7 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 			iteration++;
 		}
 		
-		return solution;
+		return bestOverallSolution;
 	}
 
 	private boolean isStoppingCriterionMet() {

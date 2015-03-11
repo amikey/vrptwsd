@@ -255,4 +255,20 @@ public class TestTour {
 		tour1.removeCustomerAtPosition(2);
 	}
 	
+	@Test
+	public void testContainsCustomers() {
+		tour1 = SetUpUtils.getTourWithCustomers1And2And3();
+		tour2 = SetUpUtils.getTourWithCustomer1();
+		assertEquals(true, tour1.containsCustomers(tour2));
+		assertEquals(true, tour2.containsCustomers(tour1));
+		
+		tour2 = SetUpUtils.getTourWithCustomer4();
+		assertEquals(false, tour1.containsCustomers(tour2));
+		assertEquals(false, tour2.containsCustomers(tour1));
+		
+		tour2 = SetUpUtils.getTourWithCustomer1And2And4();
+		assertEquals(true, tour1.containsCustomers(tour2));
+		assertEquals(true, tour2.containsCustomers(tour1));
+	}
+	
 }
