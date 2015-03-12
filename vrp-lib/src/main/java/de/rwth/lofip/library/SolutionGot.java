@@ -34,10 +34,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
     }
 
     public int getVehicleCount() {
-        Set<Integer> vehicles = new HashSet<Integer>();
-        for (Tour t : getTours()) 
-            vehicles.add(t.getVehicle().getVehicleId());        
-        return vehicles.size();
+        return getTours().size();
     }
 
     public List<Tour> getTours() {
@@ -48,8 +45,19 @@ public class SolutionGot implements Cloneable, SolutionElement {
     }
 
     public void addTour(Tour tour) {
-    	throw new RuntimeException("addTour wird verwendet. Muss in SolutionGot erst noch definiert werden");
-        //tours.add(tour);
+    	//TODO: add Tour in most similar got
+    	//at the moment the tour is inserted in some random got
+    	GroupOfTours got = null;
+    	for (GroupOfTours tempGot : gots)
+    		if (tempGot.isNewTourCanBeCreated()) {
+    			got = tempGot;
+    			break;
+    		}
+    	if (got == null) {
+    		got = new GroupOfTours();
+    		addGot(got);
+    	}
+    	got.addTour(tour);    	    
     }
   
 	public void createNewTourWithCustomer(Customer c) {
@@ -62,33 +70,32 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		}
 	}
 
-	private GroupOfTours createNewGotInSolution() {
-		GroupOfTours got = new GroupOfTours();
-		this.addGot(got);
-		return got;
-	}
-
-	private void createNewTourInPossibleGotWhereSimilarityToNewCustomerIsGreatest(Customer customer) {
-		GroupOfTours got = getGotWhereCreatingNewTourIsPossibleAndSimilarityToNewCustomerIsGreatest(customer);
-		got.createNewTour(this.getVrpProblem());
-		got.insertCustomerIntoLastTour(customer);		
-	}
-
-    private GroupOfTours getGotWhereCreatingNewTourIsPossibleAndSimilarityToNewCustomerIsGreatest(Customer customer) {
-    	GroupOfTours returnGot = null;
-    	double simVal = Double.MIN_VALUE;
-    	//set maxDistance in SimilarityUtils to maximal distance between customer and all Customers that are in gots
-    	SimilarityUtils.setMaxDistance(customer, this.getCustomersInTours());
-    	for (GroupOfTours got : gots)
-    		if (got.isNewTourCanBeCreated())
-    			if (got.getSimilarityValueToNewCustomer(customer) > simVal)
-    				returnGot = got;
-    	if (returnGot != null)
-    		return returnGot;
-    	else 
-    		throw new RuntimeException("Es konnte kein Got gefunden werden in getGotWhereCreatingNewTourIsPossibleAndSimilarity...");
-    }
-
+		private void createNewTourInPossibleGotWhereSimilarityToNewCustomerIsGreatest(Customer customer) {
+			GroupOfTours got = getGotWhereCreatingNewTourIsPossibleAndSimilarityToNewCustomerIsGreatest(customer);
+			got.createNewTour(this.getVrpProblem());
+			got.insertCustomerIntoLastTour(customer);		
+		}
+	
+	    private GroupOfTours getGotWhereCreatingNewTourIsPossibleAndSimilarityToNewCustomerIsGreatest(Customer customer) {
+	    	GroupOfTours returnGot = null;
+	    	double simVal = Double.MIN_VALUE;
+	    	//set maxDistance in SimilarityUtils to maximal distance between customer and all Customers that are in gots
+	    	SimilarityUtils.setMaxDistance(customer, this.getCustomersInTours());
+	    	for (GroupOfTours got : gots)
+	    		if (got.isNewTourCanBeCreated())
+	    			if (got.getSimilarityValueToNewCustomer(customer) > simVal)
+	    				returnGot = got;
+	    	if (returnGot != null)
+	    		return returnGot;
+	    	else 
+	    		throw new RuntimeException("Es konnte kein Got gefunden werden in getGotWhereCreatingNewTourIsPossibleAndSimilarity...");
+	    }
+	
+	    private GroupOfTours createNewGotInSolution() {
+			GroupOfTours got = new GroupOfTours();
+			this.addGot(got);
+			return got;
+		}
 
     public void removeEmptyTours() {
     	Set<GroupOfTours> emptyGots = new HashSet<GroupOfTours>();
@@ -116,17 +123,9 @@ public class SolutionGot implements Cloneable, SolutionElement {
         return recourseCost;
     }
     
-	public double getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost() {
-		return getTotalDistance() + getExpectedRecourseCost() + penaltyCost;
+	public double getSumOfDistanceAndExpectedRecourseCost() {
+		return getTotalDistance() + getExpectedRecourseCost();
 	}
-
-    public void setPenaltyCost(double penaltyCost) {
-        this.penaltyCost = penaltyCost;
-    }
-
-    public double getPenaltyCost() {
-        return penaltyCost;
-    }
 
     public int getIteration() {
         return iterationInWhichSolutionWasCreated;
@@ -135,7 +134,6 @@ public class SolutionGot implements Cloneable, SolutionElement {
     public void setIteration(int iteration) {
         this.iterationInWhichSolutionWasCreated = iteration;
     }
-
 
 	public void addGot(GroupOfTours got) {
 		gots.add(got);
@@ -203,8 +201,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		
     public SolutionGot clone() {
         SolutionGot s = new SolutionGot(vrpProblem);
-        s.setIteration(iterationInWhichSolutionWasCreated);
-        s.setPenaltyCost(penaltyCost);
+        s.setIteration(iterationInWhichSolutionWasCreated);        
         for (GroupOfTours got : gots) {
             s.addGot(got.clone());
         }
@@ -222,7 +219,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
 
     public String getSolutionAsString() {
         String s = String.format("%.3f %.3f %.3f %d\n", getTotalDistance(),
-                getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCostAndPenaltyCost(), getVehicleCount());
+                getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCost(), getVehicleCount());
         for (Tour t : getTours()) {
             s += ("0 ");
             for (Customer c : t.getCustomers()) {

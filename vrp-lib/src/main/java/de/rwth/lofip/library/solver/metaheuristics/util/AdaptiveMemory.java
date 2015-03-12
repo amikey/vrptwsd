@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Currency;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -15,7 +14,6 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
-import de.rwth.lofip.stuffNotNeededRightNow.Solution;
 
 public class AdaptiveMemory {
 	
@@ -83,8 +81,9 @@ public class AdaptiveMemory {
 	        });
 		}
 		
-		private void cutSetAtLenthOfSet() {		
-			allToursInMemory.subList(0, lengthOfList); 	
+		private void cutSetAtLenthOfSet() {	
+			if (allToursInMemory.size() >= lengthOfList)
+				allToursInMemory.subList(0, lengthOfList); 	
 		}
 
 	
@@ -136,7 +135,8 @@ public class AdaptiveMemory {
 			double cumulativeProbability = 0.0;
 			for (int j = 0; j <= allToursInMemory.size()-1; j++) {
 				int indexForProbability = allToursInMemory.size() - j; //tours with low index in Set shall have high probability. See Rochat And Taillard 1995 for explanation 		
-				double probabilityOfTour = 2 * indexForProbability / (toursThatContainOnlyUnservedCustomers.size() * (toursThatContainOnlyUnservedCustomers.size() + 1));
+				double probabilityOfTour = 2 * indexForProbability;
+				probabilityOfTour = probabilityOfTour / (toursThatContainOnlyUnservedCustomers.size() * (toursThatContainOnlyUnservedCustomers.size() + 1));
 				cumulativeProbability += probabilityOfTour;
 				if (randomNumber <= cumulativeProbability) {
 					currentNewTour = toursThatContainOnlyUnservedCustomers.get(j);

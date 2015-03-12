@@ -6,10 +6,10 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
-import de.rwth.lofip.library.util.TestUtils;
 
 public class TestInitialSolver {
 		
@@ -17,9 +17,9 @@ public class TestInitialSolver {
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();	
 	
 	public void main() throws IOException {		
-		problems = TestUtils.readSolomonProblems();
+		problems = ReadAndWriteUtils.readSolomonProblems();
 		solveProblemsWithInitialSolver();
-		TestUtils.printResultsToFile("initialSolver",solutions);
+		ReadAndWriteUtils.printResultsToFile("initialSolver",solutions);
 	}
 	
 	private void solveProblemsWithInitialSolver() {

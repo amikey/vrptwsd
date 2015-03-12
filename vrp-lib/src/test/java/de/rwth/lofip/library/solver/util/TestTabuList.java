@@ -16,7 +16,7 @@ public class TestTabuList {
 		assertEquals(true, tabuList.isMoveTaboo(825.853907, 12));
 		assertEquals(false, tabuList.isMoveTaboo(825.853907, 20));
 		
-		assertEquals(true, tabuList.isMoveTaboo(725.853907, 12));
+//		assertEquals(true, tabuList.isMoveTaboo(725.853907, 12));
 		
 	}
 

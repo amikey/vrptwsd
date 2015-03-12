@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
-import de.rwth.lofip.library.util.TestUtils;
 
 public class TestRandomI1Solver {
 	
@@ -16,7 +16,7 @@ public class TestRandomI1Solver {
 	
 	@Test
 	public void testRandomI1Solver() throws IOException {
-		solver.initialiseSolverWith(TestUtils.readSolomonProblemC101().get(0));
+		solver.initialiseSolverWith(ReadAndWriteUtils.readSolomonProblemC101().get(0));
 				
 		List<Customer> seedCustomers = solver.randomlySelectSeedCustomers();		
 		assertEquals(solver.getNumberOfSeedCustomers(), seedCustomers.size());

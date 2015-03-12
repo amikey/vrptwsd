@@ -10,15 +10,16 @@ import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractN
 
 public class TabuSearch implements MetaSolverInterfaceGot {
 
-	private final int maxNumberIterationsWithoutImprovement = 1000;
+	private final int maxNumberIterationsWithoutImprovement = 100;
+	private int maximalNumberOfIterations = 100;
 	
 	private SolutionGot solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
 	private int iteration = 1;
 	private int iterationsWithoutImprovement = 1;
-	private SolutionGot bestOverallSolution;	
-	
+	private SolutionGot bestOverallSolution;
+
 	@Override
 	public SolutionGot improve(SolutionGot solutionStart) {
 		solution = solutionStart;
@@ -63,7 +64,7 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	}
 
 	private boolean isStoppingCriterionMet() {
-		return iteration == 1000;
+		return iteration >= maximalNumberOfIterations;
 //		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
 	}
 	

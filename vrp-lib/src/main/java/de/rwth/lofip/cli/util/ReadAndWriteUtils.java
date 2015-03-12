@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util;
+package de.rwth.lofip.cli.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,8 +16,9 @@ import org.apache.commons.io.IOUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.util.VrpUtils;
 
-public class TestUtils {
+public class ReadAndWriteUtils {
 	
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
 	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();

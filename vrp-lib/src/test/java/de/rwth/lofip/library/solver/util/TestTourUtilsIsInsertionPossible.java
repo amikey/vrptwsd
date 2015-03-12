@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.SolutionGot;
@@ -15,7 +16,6 @@ import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.SetUpUtils;
-import de.rwth.lofip.library.util.TestUtils;
 
 
 public class TestTourUtilsIsInsertionPossible {
@@ -72,7 +72,7 @@ public class TestTourUtilsIsInsertionPossible {
 	}
 
 	private void whenGivenProblemC101() throws IOException {
-		problem = TestUtils.readSolomonProblemC101().get(0); 	
+		problem = ReadAndWriteUtils.readSolomonProblemC101().get(0); 	
 	}
 	
 	private void ThenFeasiblityChecksShouldWorkWhenCreatingTourWithCustomers57_55_54_53_56_58_60_59_68_69() {

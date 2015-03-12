@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.solver.localSearch;
+package de.rwth.lofip.cli;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,13 +8,14 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.initialSolver.GroupPushForwardInsertionSolver;
-import de.rwth.lofip.library.util.TestUtils;
+import de.rwth.lofip.library.solver.localSearch.LocalSearch;
 
-public class TestLocalSearchWithSolomonInstances {
+public class RunLocalSearchWithSolomonInstances {
 	
 	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	private List<SolutionGot> initialSolutions = new LinkedList<SolutionGot>();
@@ -25,10 +26,10 @@ public class TestLocalSearchWithSolomonInstances {
 //		PrintStream out = new PrintStream(new FileOutputStream("C:/Users/abraun/Dropbox/Uni/Diss/Code/output/output.txt"));
 //		System.setOut(out);
 //		
-		problems = TestUtils.readSolomonProblems();
+		problems = ReadAndWriteUtils.readSolomonProblems();
 		solveProblemsWithInitialSolver();
 		improveSolutionsWithLocalSearch();
-		TestUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
+		ReadAndWriteUtils.printResultsToFile("localSearch",initialSolutions,improvedSolutions);
 	}
 	
 		private void solveProblemsWithInitialSolver() {			
