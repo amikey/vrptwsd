@@ -1,8 +1,5 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
@@ -10,14 +7,12 @@ import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractN
 
 public class TabuSearch implements MetaSolverInterfaceGot {
 
-	private final int maxNumberIterationsWithoutImprovement = 100;
 	private int maximalNumberOfIterations = 100;
 	
+	private int iteration = 1;
 	private SolutionGot solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
-	private int iteration = 1;
-	private int iterationsWithoutImprovement = 1;
 	private SolutionGot bestOverallSolution;
 
 	@Override
@@ -42,11 +37,9 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 				if (iteration == 83)
 					System.out.println("DEBUGGING!");
 				
-				if (isNewSolutionIsNewBestOverallSolution()) {
-					setBestOverallSolutionToNewSolution();					
-					iterationsWithoutImprovement = 0;
-				} else
-					iterationsWithoutImprovement++;				
+				if (isNewSolutionIsNewBestOverallSolution()) 
+					setBestOverallSolutionToNewSolution();	
+				
 			} catch (Exception e) {
 				if (e.getMessage() == "No feasible move found.") {					
 					System.out.println("Kein feasible Move gefunden. Iteration: " + iteration);
@@ -96,5 +89,9 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	
 	private void updateTabuList() {
 		crossNeighborhood.updateTabuList(iteration);
+	}
+	
+	public void setMaximalNumberOfIterations(int i) {
+		maximalNumberOfIterations = i;
 	}
 }

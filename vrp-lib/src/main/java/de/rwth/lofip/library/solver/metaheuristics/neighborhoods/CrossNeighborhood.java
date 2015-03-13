@@ -94,12 +94,13 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
 //						System.out.println("feasible move found. Kosten: " + move.getCost());
 						if (isMoveNewBestMove(move)) {
-							System.out.println("move ist neuer bester move.");
+//							System.out.println("move ist neuer bester move.");
 							if (!isMoveTaboo(move, iteration)) {
-								System.out.println("move ist NICHT tabu");
+//								System.out.println("move ist NICHT tabu");
 								bestMove = move;
-							} else 
-								System.out.println("move ist tabu");
+							}
+//							} else 
+//								System.out.println("move ist tabu");
 						}
 					}
 				}
