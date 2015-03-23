@@ -84,11 +84,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				generateNextCombinationOfSegements();
 				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
 //					FOR DEBUGGING:
-					if (tour1.getId() == 35 && tour2.getId() == 35 &&
-							positionStartOfSegmentTour1 == 4 && positionEndOfSegmentTour1 == 5 &&
-							positionStartOfSegmentTour2 == 3 && positionEndOfSegmentTour2 == 3 &&
-							iteration == 89)
-						System.out.println("DEBUGGING!");
+//					if (tour1.getId() == 35 && tour2.getId() == 35 &&
+//							positionStartOfSegmentTour1 == 4 && positionEndOfSegmentTour1 == 5 &&
+//							positionStartOfSegmentTour2 == 3 && positionEndOfSegmentTour2 == 3 &&
+//							iteration == 89)
+//						System.out.println("DEBUGGING!");
 					if (isMoveFeasibleCheckWithRef()) {						
 						calculateCostUsingRefs();		
 						AbstractNeighborhoodMove move = getNeigborhoodMove();

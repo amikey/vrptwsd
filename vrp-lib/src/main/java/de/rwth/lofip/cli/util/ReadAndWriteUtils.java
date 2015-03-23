@@ -51,6 +51,13 @@ public class ReadAndWriteUtils {
 		return s;		
 	}
 	
+	public static String getOutputFile() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\output\\output.txt";					
+		System.out.println(s);
+		return s;		
+	}
+	
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
 		File dir = new File(getInputDirectory());		

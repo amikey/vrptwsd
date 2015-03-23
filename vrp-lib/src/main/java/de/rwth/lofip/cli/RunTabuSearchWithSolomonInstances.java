@@ -61,10 +61,5 @@ public class RunTabuSearchWithSolomonInstances {
 			}	
 		}
 		
-		private static String getOutputFile() {
-			String s = System.getenv("USERPROFILE");
-			s += "\\Dropbox\\Uni\\Diss\\Code\\output\\output.txt";					
-			System.out.println(s);
-			return s;		
-		}
+
 }

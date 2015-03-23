@@ -17,6 +17,8 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 
 	@Override
 	public SolutionGot improve(SolutionGot solutionStart) {
+		System.out.println("STARTE TABU SUCHE");
+		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
@@ -25,17 +27,17 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 		while (!isStoppingCriterionMet()) {
 			try {
 				findBestNonTabooMove();
-				printBestMove();
+				//printBestMove();
 				
-				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
+//				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
 				
 				updateTabuList();
 				applyBestNonTabooMove();
 								
-				System.out.println("Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
+//				System.out.println("Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
 				
-				if (iteration == 83)
-					System.out.println("DEBUGGING!");
+//				if (iteration == 83)
+//					System.out.println("DEBUGGING!");
 				
 				if (isNewSolutionIsNewBestOverallSolution()) 
 					setBestOverallSolutionToNewSolution();	

@@ -7,29 +7,41 @@ import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 
 public class AdaptiveMemoryTabuSearch {
 	
-	private int numberOfDifferentInitialSolutions = 20;
-	private int maximalNumberOfCallsToAdaptiveMemory = 20;
-	private int maximalNumberOfIterationsTabuSearch = 100;
+	private int numberOfDifferentInitialSolutions;
+	private int maximalNumberOfCallsToAdaptiveMemory;
+	private int maximalNumberOfIterationsTabuSearch;
 	
 	private int callsToAdaptiveMemory = 0;
 	private AdaptiveMemory adaptiveMemory = new AdaptiveMemory();
 	
+	private SolutionGot solution = null;
+	private SolutionGot bestOverallSolution;
+	
 	public SolutionGot solve(VrpProblem vrpProblem) {
 		
-		SolutionGot solution = null;
+		System.out.println("STARTE INITIALISIERUNG AM");
 		
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
-			
+		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();
+		
+		int iteration = 1;		
 		while (!isStoppingCriterionMet()) {
+			System.out.println("AM CALL Nr. " + iteration);
+			
 			solution = constructInitialSolutionFromAdaptiveMemory();
 			TabuSearch tabuSearch = new TabuSearch();
 			tabuSearch.setMaximalNumberOfIterations(maximalNumberOfIterationsTabuSearch);
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
+			
+			if (isNewSolutionIsNewBestOverallSolution()) 
+				setBestOverallSolutionToNewSolution();
+			
+			iteration++;
 		}
-		if (solution == null)
+		if (solution == null  || bestOverallSolution == null)
 			throw new RuntimeException("Solution ist Null. Fehler!");
-		return solution;
+		return bestOverallSolution;
 	}
 
 		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) {
@@ -56,6 +68,19 @@ public class AdaptiveMemoryTabuSearch {
 			adaptiveMemory.addTours(solution);
 		}
 	
+		private boolean isNewSolutionIsNewBestOverallSolution() {
+//			assertEquals(false, solution.equals(bestOverallSolution));
+			if (solution.getTotalDistance() < bestOverallSolution.getTotalDistance()
+				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
+				return true;
+			if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
+				return true;
+			return false;
+		}
+		
+		private void setBestOverallSolutionToNewSolution() {
+			bestOverallSolution = solution.clone();	
+		}
 	
 	
 	public void setMaximalNumberOfIterationsTabuSearch(int i) {
