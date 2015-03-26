@@ -56,7 +56,11 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 	}
 	
 	private boolean isImprovement() {
-		return (bestMove.getCost() < solution.getTotalDistance());
+		if (bestMove.getCost() < solution.getTotalDistance())
+			return true;
+		if (bestMove.reducesNumberOfVehicles())
+			return true;
+		return false;
 	}	
 
 	private void applyBestMove() {

@@ -11,14 +11,13 @@ import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.CustomerInTour;
 
-public class Tour implements Cloneable, SolutionElement {
+public class Tour implements SolutionElement {
 
     /****************************************************************************
      * Fields
      ***************************************************************************/
 	
 	protected static int seedForId = 1;
-	protected double costFactor = 1;
 	protected long id;
     protected String idTour;
     protected Depot depot;
@@ -62,7 +61,6 @@ public class Tour implements Cloneable, SolutionElement {
         this();
         this.depot = depot;
         this.vehicle = vehicle;
-        this.costFactor = costFactor;
         System.out.println("Kostenfaktor der Tour " + this.getId() + "wird auf " + costFactor + "gesetzt");
     }
     
@@ -71,20 +69,46 @@ public class Tour implements Cloneable, SolutionElement {
     	this();
 		this.depot = tour1.getDepot();
 		this.vehicle = tour1.getVehicle().clone();
-		customers = new LinkedList<CustomerInTour>(tour1.getCustomersInTour());
+		for (CustomerInTour cit : tour1.getCustomersInTour())
+			customers.add(new CustomerInTour(cit));
 		edges = tour1.getEdges();
 		demand = tour1.getDemandOnTour();
 		tourDistance = tour1.getTotalDistance();
-		refsFromStartUpToPosition = new LinkedList<ResourceExtensionFunction>(tour1.getRefsFromBeginning());
-		refsFromPositionToEnd = new LinkedList<ResourceExtensionFunction>(tour1.getRefsToEnd());
+		for (ResourceExtensionFunction ref : tour1.getRefsFromBeginning())
+			refsFromStartUpToPosition.add(new ResourceExtensionFunction(ref));
+		for (ResourceExtensionFunction ref : tour1.getRefsToEnd())
+			refsFromPositionToEnd.add(new ResourceExtensionFunction(ref));		
 		
 		for (int i = 0; i < tour1.getRefMatrix().size(); i++)
 			for (int j = 0; j <= i; j++) 
 				setEntryInRefMatrix(i,j, tour1.getRefMatrix().get(i).get(j).clone());									
 	}
-   
     
-    /****************************************************************************
+    
+
+	public Tour(double costFactor, long id, String idTour, Depot depot,
+			Vehicle vehicle, List<CustomerInTour> customers, List<Edge> edges,
+			double demand, double tourDistance,
+			List<ResourceExtensionFunction> refsFromStartUpToPosition,
+			List<ResourceExtensionFunction> refsFromPositionToEnd,
+			List<ArrayList<ResourceExtensionFunction>> refForSegment,
+			double solutionValue) {
+		super();
+		this.id = id;
+		this.idTour = idTour;
+		this.depot = depot;
+		this.vehicle = vehicle;
+		this.customers = customers;
+		this.edges = edges;
+		this.demand = demand;
+		this.tourDistance = tourDistance;
+		this.refsFromStartUpToPosition = refsFromStartUpToPosition;
+		this.refsFromPositionToEnd = refsFromPositionToEnd;
+		this.refForSegment = refForSegment;
+		this.solutionValue = solutionValue;
+	}
+
+	/****************************************************************************
      * End Constructors
      ***************************************************************************/
 
@@ -111,6 +135,10 @@ public class Tour implements Cloneable, SolutionElement {
     public List<Edge> getEdges() {
         return edges;
     }
+    
+    private void setEdges(List<Edge> edges2) {
+		this.edges = edges2;
+	}
 
     /**
      * Get the {@code CustomerInTour} at the given position. May return null if
@@ -166,19 +194,7 @@ public class Tour implements Cloneable, SolutionElement {
     public int getCustomerSize() {
     	return customers.size();
     } 
-       
-	public double getCostFactor() {
-		return costFactor;
-	}
-	
-	public void setCostFactor(double costFactor) {		 
-		this.costFactor = costFactor;
-	}
-
-    public double getSumOfDistanceMultipliedWithCostFactor() {
-        return getTotalDistance()*getCostFactor();
-    }
-        
+               
     public boolean isTourEmpty() {
     	if (customers.size() == 0)
     		return true;
@@ -225,32 +241,22 @@ public class Tour implements Cloneable, SolutionElement {
      * End Getter and Setter
      * @throws  
      ***************************************************************************/
-    
-    @Override
-    public Tour clone() {
-        Tour t = new Tour(depot, vehicle.clone());        
-        for (CustomerInTour cit : customers) {
-            t.addCustomer(cit.getCustomer());
-        }
-        t.setId(this.id);
-        t.setRefsFromBeginning(getRefsFromBeginning());
-        t.setRefsToEnd(getRefsToEnd());
-        return t;
-    }
+     
     
 	public Tour cloneAndSetPointersToCustomersInVrpProblem(VrpProblem vrpProblemClone) {
-		Tour t = new Tour(depot, vehicle.clone());
-        for (CustomerInTour cit : customers) 
-        {
-        	//find customer with same number in vrpProblem
-        	Customer cust = null;
-        	for (Customer c : vrpProblemClone.getCustomers())
-        		if (c.getCustomerNo() == cit.getCustomer().getCustomerNo())
-        			cust = c;        	
-            t.addCustomer(cust);
-        }
-        t.setId(this.id);
-        return t;
+		throw new RuntimeException("Vorsicht, cloneAndSetPointersToCustomersInVrpProblem clont nicht alle fields einer Tour");
+//		Tour t = new Tour(depot, vehicle.clone());
+//        for (CustomerInTour cit : customers) 
+//        {
+//        	//find customer with same number in vrpProblem
+//        	Customer cust = null;
+//        	for (Customer c : vrpProblemClone.getCustomers())
+//        		if (c.getCustomerNo() == cit.getCustomer().getCustomerNo())
+//        			cust = c;        	
+//            t.addCustomer(cust);
+//        }
+//        t.setId(this.id);
+//        return t;
 	}
 	
 	@Override
@@ -326,7 +332,7 @@ public class Tour implements Cloneable, SolutionElement {
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();
     }    
 
-	private void assertThatRefsFromPositionToEndContainSameCustomersAsTour() {
+	private void assertThatRefsFromPositionToEndContainSameCustomersAsTour() {		
 		for (int i = 0; i < getCustomers().size(); i++) {
 			ResourceExtensionFunction ref = refsFromPositionToEnd.get(0);
 			List<Customer> customersRef = ref.getCustomers();
@@ -595,7 +601,7 @@ public class Tour implements Cloneable, SolutionElement {
     
 	private void recalculateTotalDistance() {
         tourDistance = 0;
-        for (Edge v : getEdges()) {
+        for (Edge v : edges) {
             tourDistance += v.getLength();
         }
 	}    

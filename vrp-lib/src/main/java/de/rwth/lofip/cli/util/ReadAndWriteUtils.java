@@ -51,9 +51,10 @@ public class ReadAndWriteUtils {
 		return s;		
 	}
 	
-	public static String getOutputFile() {
+	public static String getOutputFile() {		
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\output\\output.txt";					
+		s += "\\Dropbox\\Uni\\Diss\\Code\\output\\output - " + sdf.format(Calendar.getInstance().getTime()) + ".txt";					
 		System.out.println(s);
 		return s;		
 	}
@@ -121,6 +122,10 @@ public class ReadAndWriteUtils {
 		if (!solutionsLocalSearch.isEmpty()) 
 			IOUtils.write("LocalSearchValues; LocalSearchVehicleNumber; ", outputStream);
 		IOUtils.write("BestKnownValue; BestKnownVehicleNumber \n", outputStream);
+		
+		double averageDeviationObjValue = 0;
+		double averageDeviationVehicleNumber = 0;
+		
 		for (SolutionGot solution : solutionsInitialSolver) {
 			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
 			IOUtils.write(String.format("%.3f",solution.getTotalDistance()) + ";", outputStream);
@@ -134,10 +139,21 @@ public class ReadAndWriteUtils {
 					IOUtils.write(tour.getDemandOnTour() + ", ", outputStream);
 				IOUtils.write("; ", outputStream);
 			}
-			IOUtils.write(bestKnownSolutionValues.get(i) + ";",outputStream);
-			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i) + "\n",outputStream);
+			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(i).doubleValue()) + ";",outputStream);
+			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i).intValue() + ";",outputStream);
+			//print prozentuale abweichung
+			double deviationObjValue = (solution.getTotalDistance() - bestKnownSolutionValues.get(i).doubleValue()) / bestKnownSolutionValues.get(i).doubleValue() * 100;
+			averageDeviationObjValue += deviationObjValue;
+			double deviationVehicleNumber = ( (double) solution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(i).intValue()) / (double) bestKnownSolutionVehicleNumbers.get(i).intValue() * 100;
+			averageDeviationVehicleNumber += deviationVehicleNumber;
+			IOUtils.write(String.format("%.3f",deviationObjValue) + ";",outputStream);
+			IOUtils.write(String.format("%.3f",deviationVehicleNumber) + "\n",outputStream);
 			i++;
 		}
+		
+		averageDeviationObjValue = averageDeviationObjValue / i;
+		averageDeviationVehicleNumber = averageDeviationVehicleNumber / i;
+		IOUtils.write(";;;;;" + averageDeviationObjValue + ";" + averageDeviationVehicleNumber, outputStream);
 	}
 	
 	private static String getOutputDirectory() {

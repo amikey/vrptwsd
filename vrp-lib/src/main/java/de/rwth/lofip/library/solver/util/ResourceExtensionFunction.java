@@ -68,7 +68,10 @@ public class ResourceExtensionFunction {
 		latestArrivalTime = ref.getLatestArrivalTime();
 		earliestDepartureTime = ref.getEarliestDepartureTime();
 		demand = ref.getDemand();
-		elementsInThisRef = new LinkedList<Customer>(ref.getCustomers());
+		List<Customer> newCustomers = new LinkedList<Customer>();
+		for (Customer c : ref.getCustomers())
+			newCustomers.add(c.clone());		
+		setCustomers(newCustomers);		
 		containsDepot = ref.isContainsDepot();
 		depot = ref.getDepot();
 	}
@@ -229,7 +232,9 @@ public class ResourceExtensionFunction {
 		//TODO: wie sieht das runtime technisch aus? Ist der Befehl unten ein Problem, weil er über jeden einzelnen Eintrag in der List iteriert?
 		//falls ja, sollte ich eine andere Methode wählen, als die Customer in der Ref zu speichern, nämlich
 		//letzten Customer speichern und evtl. ersten Customer speichern
-		List<Customer> newCustomers = new LinkedList<Customer>(elementsInThisRef);
+		List<Customer> newCustomers = new LinkedList<Customer>();
+		for (Customer c : elementsInThisRef)
+			newCustomers.add(c);		
 		ref.setCustomers(newCustomers);
 		ref.setContainsDepot(containsDepot);
 		ref.setDepot(depot);

@@ -26,13 +26,17 @@ public class GroupOfTours implements SolutionElement {
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	Double expectedRecourseCost = null;
 
-    public void addTour(Tour t) {
+	public void addTour(Tour t) {
     	tours.add(t);
     	resetExpectedRecourseCost();
     }
     
 	private void resetExpectedRecourseCost() {
 		expectedRecourseCost = null;
+	}
+	
+	private void setExpectedRecourseCost(Double expectedRecourseCost2) {
+		expectedRecourseCost = expectedRecourseCost2;
 	}
 
 	public List<Tour> getTours() {	
@@ -149,7 +153,8 @@ public class GroupOfTours implements SolutionElement {
     public GroupOfTours clone() {
     	GroupOfTours got = new GroupOfTours();   		    	                       
         for (Tour t : tours)             	      
-	        	got.addTour(t.clone());	        	        	        
+	        	got.addTour(new Tour(t));
+        got.setExpectedRecourseCost(expectedRecourseCost);
         return got;
     }
 

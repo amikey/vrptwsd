@@ -18,9 +18,9 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	
-	private int maximalNumberOfIterationsTabuSearch = 330;
-	private int numberOfDifferentInitialSolutions = 20;
-	private int maximalNumberOfCallsToAdaptiveMemory = 100;
+	private int maximalNumberOfIterationsTabuSearch = 20;
+	private int numberOfDifferentInitialSolutions = 5;
+	private int maximalNumberOfCallsToAdaptiveMemory = 20;
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
@@ -32,15 +32,15 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions);
 	}
 	
-//	@Test
-//	public void TestAdaptiveMemorySearchOnSolomonInstanceRC101() throws IOException {			
-////		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
-////		System.setOut(out);
-//		
-//		problems = ReadAndWriteUtils.readSolomonProblemRC101();
-//		solveProblemsWithAdaptiveMemorySolver();		
-//		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions);
-//	}
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceC101() throws IOException {			
+//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
+//		System.setOut(out);
+		
+		problems = ReadAndWriteUtils.readSolomonProblemC101();
+		solveProblemsWithAdaptiveMemorySolver();		
+		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions);
+	}
 	
 	private void solveProblemsWithAdaptiveMemorySolver() {		
 		for (VrpProblem problem : problems) {

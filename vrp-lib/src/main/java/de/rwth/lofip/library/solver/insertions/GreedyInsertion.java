@@ -30,13 +30,18 @@ import de.rwth.lofip.library.solver.util.TourUtils;
  */
 public class GreedyInsertion {
 	
-	private static Random rnd = new Random(1);
+	private static int seed = 0;
+	private Random random = new Random(seed); 
+	
+	public GreedyInsertion() {
+		seed++;
+	}
 
     public SolutionGot insertCustomers(SolutionGot solution,
             List<Customer> customers) {
     	
     	//TODO: produziert collections.shuffle immer die gleiche Ausgabe?    	    
-    	Collections.shuffle(customers, rnd);
+    	Collections.shuffle(customers, random);
 
     	//get depot
         final Depot depot = solution.getVrpProblem().getDepot();
@@ -50,7 +55,7 @@ public class GreedyInsertion {
             List<CustomerWithCost> insertionPoints = new ArrayList<CustomerWithCost>();
 
             // get number of Processors available and create corresponding number of possible concurrent threads
-            int threads = Runtime.getRuntime().availableProcessors();
+            int threads = 1; //TODO: wieder zu Runtime.getRuntime().availableProcessors(); ändern
             ExecutorService service = Executors.newFixedThreadPool(threads);
             // ??
             List<Future<List<CustomerWithCost>>> costFutures = new ArrayList<Future<List<CustomerWithCost>>>();

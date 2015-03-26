@@ -24,6 +24,19 @@ public class CustomerInTour implements Cloneable, SolutionElement {
 	public CustomerInTour(Tour tour) {
 		this.tour = tour;
 	}
+	
+	//copy constructor
+	public CustomerInTour(CustomerInTour cit) {
+		super();
+		this.customer = cit.getCustomer();
+		this.tour = cit.getTour();
+		this.arrivalTime = cit.getArrivalTime();
+	}
+
+
+	public CustomerInTour() {
+		super();
+	}
 
 	public Customer getCustomer() {
 		return customer;
@@ -31,6 +44,14 @@ public class CustomerInTour implements Cloneable, SolutionElement {
 	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+	
+	private Tour getTour() {
+		return tour;
+	}
+	
+	private void setTour(Tour tour2) {
+		tour = tour2;
 	}
 
 	public double getArrivalTime() {
@@ -53,7 +74,8 @@ public class CustomerInTour implements Cloneable, SolutionElement {
 	protected CustomerInTour clone() {
 		CustomerInTour cloned = new CustomerInTour(tour);
 		cloned.setCustomer(customer);
-		cloned.setArrivalTime(arrivalTime);				
+		cloned.setArrivalTime(arrivalTime);	
+		cloned.setTour(tour);
 		return cloned;
 	}
 

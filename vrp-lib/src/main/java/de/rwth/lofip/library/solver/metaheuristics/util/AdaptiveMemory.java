@@ -30,7 +30,12 @@ public class AdaptiveMemory {
 	private Tour currentNewTour;
 	private SolutionGot currentNewSolution;
 	
-	private static Random randomGenerator = new Random(1);
+	private static int seed = 0;
+	private Random randomGenerator = new Random(seed); 
+	
+	public AdaptiveMemory() {
+		seed++;
+	}
 	
 	public void addTours(SolutionGot solution) {	
 		setVrpProblem(solution);

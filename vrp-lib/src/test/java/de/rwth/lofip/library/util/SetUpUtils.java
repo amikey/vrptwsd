@@ -2,18 +2,13 @@ package de.rwth.lofip.library.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
@@ -22,10 +17,6 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.stuffNotNeededRightNow.Solution;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.VrpConfiguration;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.initialSolver.DeterministicPushForwardInsertionSolver;
-import de.rwth.lofip.stuffNotNeededRightNow.solver.metaheuristics.DeterministicLeiEtAlHeuristic;
 
 public class SetUpUtils {
 	
