@@ -125,33 +125,6 @@ public class CrossNeighborhoodTest {
 		assertEquals(true, solutionWithOneTourWithCustomers1And2And3.equals(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2()));
 	}	
 
-	@Test 
-	public void testIsMovePossibleWithMovesBetweenTours() {
-		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithThreeToursAndTwoCustomersEach);
-		//jump over inner-cross-Moves in Tour 1
-		for (int i = 1; i <= 36; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();			
-		}			
-		
-		//test moves between tour 1 and 2
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true,isMovePossible(crossNeighborhood));	
-	}
-
 	@Test
 	public void performCalculateCostForCrossMove() {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);		

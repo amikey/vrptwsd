@@ -17,53 +17,10 @@ public class CrossNeighborhoodTestPruning {
 	public void initialise() {
 		solutionWithTwoToursAndTwoCustomersEach = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();
 	}
-	
+
 	@Test
-	public void testNoPruningBecauseOfViolationOfCapacityConstraint() {
-		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);
-		//jump over inner-cross-Moves in Tour 1
-		for (int i = 1; i <= 36; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();			
-		}
-		
-		//test moves between tour 1 and 2
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 0, 0));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 0, 1));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 0, 2));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 1, 1));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 1, 2));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 2, 2));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		assertEquals(true,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
-		crossNeighborhood.generateNextCombinationOfSegements();
-				
-		assertEquals(true,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());
-		crossNeighborhood.generateNextCombinationOfSegements();
-		assertEquals(true,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());	
-	}
-	
-	private boolean isMovePossible(CrossNeighborhood crossNeighborhood) {
-		if(crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions())
-			return false;
-		else if (crossNeighborhood.isMoveFeasibleCheckWithRef())
-			return true;
-		else return false;
-	}
-	
-	@Test
-	public void testPruningBecauseOfViolationOfCapacityConstraint() {
-		solutionWithTwoToursAndTwoCustomersEach.getCustomerWithNo(3).setDemand(1000);
+	public void testPruningBecauseOfViolationOfCapacityConstraint() {	
+		initialise();
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);
 		//jump over inner-cross-moves in Tour 1
 		for (int i = 1; i <= 36; i++) {
@@ -90,11 +47,31 @@ public class CrossNeighborhoodTestPruning {
 		
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 1, 0, 0));
 		assertEquals(true,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());
+		assertEquals(true,isMovePossible(crossNeighborhood));
 		crossNeighborhood.generateNextCombinationOfSegements();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 1, 0, 1));
-		assertEquals(false,isMovePossible(crossNeighborhood));
-		assertEquals(false,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());	
+		assertEquals(true,isMovePossible(crossNeighborhood));
+		assertEquals(true,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());	
 	}
+	
+	@Test 
+	public void testIncreaseTour2NoPruning() {	
+		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);
+		//jump over inner-cross-moves in Tour 1
+		for (int i = 1; i <= 36; i++) {
+			crossNeighborhood.generateNextCombinationOfSegements();			
+		}		
+		assertEquals(true, crossNeighborhood.tour2CanBeIncreased());
+	}
+		
+	private boolean isMovePossible(CrossNeighborhood crossNeighborhood) {
+		if(crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions())
+			return false;
+		else if (crossNeighborhood.isMoveFeasibleCheckWithRef())
+			return true;
+		else return false;
+	}
+	
 	
 	
 }

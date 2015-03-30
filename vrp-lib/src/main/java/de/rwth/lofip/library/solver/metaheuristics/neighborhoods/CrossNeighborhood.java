@@ -122,12 +122,12 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			}
 			
 			boolean endOfSegmentToBeRemovedCanBeIncreasedInTour2() {
-				if (isCurrentSegmentLeadsToViolationOfCapacityConstraint())
+				if (isCurrentSegmentLeadsToViolationOfTWorCapacityConstraint())
 					return false;
 				return positionEndOfSegmentTour2 < tour2.length();
 			}
 	
-			private boolean isCurrentSegmentLeadsToViolationOfCapacityConstraint() {
+			private boolean isCurrentSegmentLeadsToViolationOfTWorCapacityConstraint() {
 				return isCurrentSegmentInTour2ViolatesTWorCapacityConstraint;
 			}
 
@@ -143,7 +143,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				return positionEndOfSegmentTour1 < tour1.length();
 			}
 		
-		private boolean tour2CanBeIncreased() {
+		boolean tour2CanBeIncreased() {
 			return tourCounter2 < solution.getNumberOfTours()-1;
 		}
 		

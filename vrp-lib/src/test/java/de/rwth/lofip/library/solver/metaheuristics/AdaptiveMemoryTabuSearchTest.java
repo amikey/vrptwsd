@@ -20,7 +20,7 @@ public class AdaptiveMemoryTabuSearchTest {
 	private List<SolutionGot> solutions2 = new LinkedList<SolutionGot>();
 	private long timeNeeded;
 	
-	private int maximalNumberOfIterationsTabuSearch = 7; //7 findet gutes resultat
+	private int maximalNumberOfIterationsTabuSearch = 7;
 	private int numberOfDifferentInitialSolutions = 3;
 	private int maximalNumberOfCallsToAdaptiveMemory = 15;
 	
@@ -31,9 +31,9 @@ public class AdaptiveMemoryTabuSearchTest {
 				
 		solveProblemsWithAdaptiveMemoryTabuSeach(solutions);		
 
-		maximalNumberOfIterationsTabuSearch = 20;
+		maximalNumberOfIterationsTabuSearch = 7;
 		numberOfDifferentInitialSolutions = 3;
-		maximalNumberOfCallsToAdaptiveMemory = 100;
+		maximalNumberOfCallsToAdaptiveMemory = 20;
 		
 		solveProblemsWithAdaptiveMemoryTabuSeach(solutions2);
 		
