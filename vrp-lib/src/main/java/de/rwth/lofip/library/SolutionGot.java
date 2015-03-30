@@ -247,6 +247,10 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		System.out.println(getSolutionAsTupel());
 	}   
 
+	public void printSolutionCost() {
+		System.out.println(getTotalDistance());
+	}
+	
 	public int getNumberOfTours() {
 		return getTours().size();
 	}
@@ -277,6 +281,17 @@ public class SolutionGot implements Cloneable, SolutionElement {
 				if (got.equals(gotOther))
 					return true;
 			return false;
+		}
+
+		public Customer getCustomerWithNo(int i) {
+			for (CustomerInTour c : getCustomersInTours())
+				if (c.getCustomer().getCustomerNo() == i)
+					return c.getCustomer();
+			throw new RuntimeException ("Customer not found in getCustomerWithNo");
+		}
+
+		public void printVehicleCount() {
+			System.out.println(getVehicleCount());
 		}
 
 

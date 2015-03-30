@@ -1,11 +1,18 @@
 package de.rwth.lofip.library;
 
+import java.util.Random;
+
 
 public class Vehicle implements Cloneable {
 	private int vehicleId;
 	private double capacity;
 	private double usedCapacity = 0;
 
+	public Vehicle(double initialCapacity) {
+		vehicleId = new Random().nextInt(Integer.MAX_VALUE);
+		capacity = initialCapacity;
+	}
+	
 	public Vehicle(int vehicleId, double initialCapacity) {
 		this.vehicleId = vehicleId;
 		capacity = initialCapacity;

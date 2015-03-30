@@ -17,6 +17,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 
 	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
+	private long timeNeeded;
 	
 	private int maximalNumberOfIterationsTabuSearch = 20;
 	private int numberOfDifferentInitialSolutions = 5;
@@ -29,7 +30,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		
 		problems = ReadAndWriteUtils.readSolomonProblems();
 		solveProblemsWithAdaptiveMemorySolver();		
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions);
+		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded);
 	}
 	
 	@Test
@@ -37,22 +38,26 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 //		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
 //		System.setOut(out);
 		
-		problems = ReadAndWriteUtils.readSolomonProblemC101();
+		problems = ReadAndWriteUtils.readSolomonProblemC101();		
 		solveProblemsWithAdaptiveMemorySolver();		
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions);
+		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions,timeNeeded);
 	}
 	
-	private void solveProblemsWithAdaptiveMemorySolver() {		
+	private void solveProblemsWithAdaptiveMemorySolver() {
+		long startTime = System.nanoTime();
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());
 			
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
+			adaptiveMemoryTabuSearch.resetSeeds();
 			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsTabuSearch(maximalNumberOfIterationsTabuSearch);
 			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
 			solutions.add(solution);			
 		}
+		long endTime = System.nanoTime();
+		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
 	}	
 	
 }

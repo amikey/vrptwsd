@@ -83,6 +83,10 @@ public class RandomI1Solver implements SolverInterfaceGot {
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
 		return randomNum;	    	
 	}
+
+	public static void setSeedTo(int i) {
+		seed = i;
+	}
 	
 	
 

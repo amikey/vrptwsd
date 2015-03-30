@@ -66,7 +66,7 @@ public class GroupOfTours implements SolutionElement {
 	
 	public void createNewTour(VrpProblem vrpProblem) {
 		Tour t = new Tour(vrpProblem.getDepot(),
-				new Vehicle(new Random().nextInt(Integer.MAX_VALUE), vrpProblem.getVehicles().iterator().next().getCapacity()));
+				new Vehicle(vrpProblem.getVehicles().iterator().next().getCapacity()));
 		addTour(t);
 		resetExpectedRecourseCost();
 	}

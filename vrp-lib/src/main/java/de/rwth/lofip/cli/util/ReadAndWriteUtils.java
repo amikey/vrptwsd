@@ -104,10 +104,20 @@ public class ReadAndWriteUtils {
 
 	public static void printResultsToFile(String string,List<SolutionGot> solutions) throws IOException {
 		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();	
-		printResultsToFile(string, solutions, dummySolutions); 
+		printResultsToFile(string, solutions, dummySolutions); 		
+	}
+	
+	public static void printResultsToFile(String string,
+			List<SolutionGot> solutions, long timeNeeded) throws IOException {
+		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();
+		printResultsToFile(string, solutions, dummySolutions, timeNeeded);
 	}
 	
 	public static void printResultsToFile(String string, List<SolutionGot> solutionsInitialSolver,List<SolutionGot> solutionsLocalSearch) throws IOException {
+		printResultsToFile(string, solutionsInitialSolver, solutionsLocalSearch, 0);
+	}
+	
+	public static void printResultsToFile(String string, List<SolutionGot> solutionsInitialSolver,List<SolutionGot> solutionsLocalSearch, long timeNeeded) throws IOException {
 		setUpBestKnownSolutionValues();
 		setUpBestKnownSolutionVehicleNumbers();
 		
@@ -118,6 +128,7 @@ public class ReadAndWriteUtils {
                 + ".csv");
 		FileOutputStream outputStream = FileUtils.openOutputStream(outputFile, true);
 		int i = 0;
+		IOUtils.write("Time needed: " + timeNeeded + " min \n\n", outputStream);
 		IOUtils.write("Problem; InitialSolverValues; InitialSolverVehicleNumber; ", outputStream);
 		if (!solutionsLocalSearch.isEmpty()) 
 			IOUtils.write("LocalSearchValues; LocalSearchVehicleNumber; ", outputStream);
@@ -151,9 +162,9 @@ public class ReadAndWriteUtils {
 			i++;
 		}
 		
-		averageDeviationObjValue = averageDeviationObjValue / i;
-		averageDeviationVehicleNumber = averageDeviationVehicleNumber / i;
-		IOUtils.write(";;;;;" + averageDeviationObjValue + ";" + averageDeviationVehicleNumber, outputStream);
+		averageDeviationObjValue = averageDeviationObjValue / (double) i;
+		averageDeviationVehicleNumber = averageDeviationVehicleNumber / (double) i;
+		IOUtils.write(";;;;;" + String.format("%.3f",averageDeviationObjValue) + ";" + String.format("%.3f",averageDeviationVehicleNumber), outputStream);
 	}
 	
 	private static String getOutputDirectory() {
@@ -274,6 +285,7 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
+
 
 
 

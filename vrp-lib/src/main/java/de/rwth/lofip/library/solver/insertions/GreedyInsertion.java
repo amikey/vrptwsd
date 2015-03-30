@@ -182,4 +182,8 @@ public class GreedyInsertion {
         return solution;
     }
 
+	public static void setSeedTo(int i) {
+		seed = i;	
+	}
+
 }

@@ -3,6 +3,7 @@ package de.rwth.lofip.library.solver.metaheuristics;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
+import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 
 public class AdaptiveMemoryTabuSearch {
@@ -16,6 +17,7 @@ public class AdaptiveMemoryTabuSearch {
 	
 	private SolutionGot solution = null;
 	private SolutionGot bestOverallSolution;
+	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 	
 	public SolutionGot solve(VrpProblem vrpProblem) {
 		
@@ -33,6 +35,9 @@ public class AdaptiveMemoryTabuSearch {
 			tabuSearch.setMaximalNumberOfIterations(maximalNumberOfIterationsTabuSearch);
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
+			
+			if (isBestOverallSolutionFoundAgain())
+				increaseNumberOfTimesBestOverallSolutionHasBeenFound();
 			
 			if (isNewSolutionIsNewBestOverallSolution()) 
 				setBestOverallSolutionToNewSolution();
@@ -56,7 +61,11 @@ public class AdaptiveMemoryTabuSearch {
 		}
 		
 		private boolean isStoppingCriterionMet() {
-			return (callsToAdaptiveMemory >= maximalNumberOfCallsToAdaptiveMemory);
+			if (callsToAdaptiveMemory >= maximalNumberOfCallsToAdaptiveMemory)
+				return true;
+//			if (numberOfTimesSameBestOverallSolutionHasBeenFound >= 3)
+//				return true;
+			return false;
 		}
 		
 		private SolutionGot constructInitialSolutionFromAdaptiveMemory() {
@@ -67,14 +76,26 @@ public class AdaptiveMemoryTabuSearch {
 		private void storeNewToursInAdaptiveMemory(SolutionGot solution) {
 			adaptiveMemory.addTours(solution);
 		}
+		
+		private boolean isBestOverallSolutionFoundAgain() {
+			return solution.equals(bestOverallSolution);
+		}
+		
+		private void increaseNumberOfTimesBestOverallSolutionHasBeenFound() {
+			numberOfTimesSameBestOverallSolutionHasBeenFound++;
+		}
 	
 		private boolean isNewSolutionIsNewBestOverallSolution() {
 //			assertEquals(false, solution.equals(bestOverallSolution));
 			if (solution.getTotalDistance() < bestOverallSolution.getTotalDistance()
-				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
+				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
+					numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
+					return true;
+			}
+			if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours()) {				
+				numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 				return true;
-			if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
-				return true;
+			}
 			return false;
 		}
 		
@@ -95,6 +116,12 @@ public class AdaptiveMemoryTabuSearch {
 	public void setMaximalNumberOfCallsToAdaptiveMemory(
 			int maximalNumberOfCallsToAdaptiveMemory2) {
 		maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory2;
+	}
+
+	public void resetSeeds() {
+		AdaptiveMemory.setSeedTo(0);
+		GreedyInsertion.setSeedTo(0);
+		RandomI1Solver.setSeedTo(0);
 	}
 
 }

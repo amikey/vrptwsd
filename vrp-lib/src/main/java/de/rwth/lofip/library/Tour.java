@@ -327,7 +327,7 @@ public class Tour implements SolutionElement {
         recalculateTotalDistance();
         recalculateDemand(customer.getDemand());
         recalculateRefsWhenCustomerIsInserted(position);
-        recalculateRefMatrixWhenCustomerIsInserted(position);
+        recalculateRefMatrixWhenCustomerIsInserted(position);      
         
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();
     }    

@@ -38,6 +38,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private int currentPositionEndOfSegment;
 	
 	protected AbstractNeighborhoodMove bestMove = null;
+	private boolean isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = false;
 	
 	public CrossNeighborhood(SolutionGot solution) {
 		this.solution = solution;
@@ -112,7 +113,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		return false;
 	}
 	
-		private boolean segmentInTour2CanBeIncreased() {
+		boolean segmentInTour2CanBeIncreased() {			
 			return (startOfSegementToBeRemovedCanBeIncreasedInTour2() || endOfSegmentToBeRemovedCanBeIncreasedInTour2());
 		}
 								
@@ -120,10 +121,16 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				return positionStartOfSegmentTour2 < tour2.length();	
 			}
 			
-			private boolean endOfSegmentToBeRemovedCanBeIncreasedInTour2() {
+			boolean endOfSegmentToBeRemovedCanBeIncreasedInTour2() {
+				if (isCurrentSegmentLeadsToViolationOfCapacityConstraint())
+					return false;
 				return positionEndOfSegmentTour2 < tour2.length();
 			}
 	
+			private boolean isCurrentSegmentLeadsToViolationOfCapacityConstraint() {
+				return isCurrentSegmentInTour2ViolatesTWorCapacityConstraint;
+			}
+
 		private boolean segmentInTour1CanBeIncreased() {
 			return (startOfSegementToBeRemovedCanBeIncreasedInTour1() || endOfSegmentToBeRemovedCanBeIncreasedInTour1());
 		}
@@ -195,6 +202,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				positionStartOfSegmentTour2++;
 				positionEndOfSegmentTour2=positionStartOfSegmentTour2;
 				resetRefSegment2();
+				isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = false;
 			}			
 			
 				private void resetRefSegment2() {
@@ -283,8 +291,12 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			return TourUtils.isInsertionOfRefPossibleInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2);					
 		} else {		
 			//move between two tours
-			if (!TourUtils.isInsertionOfRefPossible(tour1,RefSegment2,positionStartOfSegmentTour1,positionEndOfSegmentTour1))
-				isWasInsertionPossible = false;
+			//try inserting segment 2 in tour 1
+			if (!TourUtils.isInsertionOfRefPossible(tour1,RefSegment2,positionStartOfSegmentTour1,positionEndOfSegmentTour1)) { 
+				isWasInsertionPossible = false;				
+				isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = true;
+			}
+			//try inserting segment1 in tour 2
 			else if (!TourUtils.isInsertionOfRefPossible(tour2,RefSegment1,positionStartOfSegmentTour2,positionEndOfSegmentTour2))
 				isWasInsertionPossible = false;
 		}
@@ -480,6 +492,14 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	
 	public Tour getTour1() {
 		return tour1;	
+	}
+	
+	public boolean isNeighborhoodStepEquals(int i1, int i2, int i3, int i4) {
+		boolean returnValue = positionStartOfSegmentTour1 == i1 && positionEndOfSegmentTour1 == i2 &&
+				positionStartOfSegmentTour2 == i3 && positionEndOfSegmentTour2 == i4;
+		if (returnValue == false)
+			printNeighborhoodStep();
+		return returnValue;		
 	}
 
 

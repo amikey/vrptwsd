@@ -13,6 +13,6 @@
 
 - GI: parallelism entfernen
 
-- stop when same best solution is found three times!
+- stop when same best solution is found three times in tabu search? Oder anderer Mechanismus, um tabu suche frühzeitig zu beenden?
 
 - optional: eliminate Randomness when run in a single thread

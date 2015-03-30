@@ -173,5 +173,11 @@ public class AdaptiveMemory {
 			//TODO: hier werden alle Kunden eingefügt, anders als im Paper, in dem nur Kunden in die bestehenden Touren eingefügt und keine neuen Touren eröffnet werden.
 			gi.insertCustomers(currentNewSolution, unservedCustomers);
 		}
+
+		
+		//****************
+		public static void setSeedTo(int i) {
+			seed = i;
+		}
 	
 }

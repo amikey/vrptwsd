@@ -251,6 +251,38 @@ public class TourUtils {
 		return isConcatenationOfRefsFeasible(ref1, ref2, ref3, capacity);		
 	}
 	
+	public static boolean isInsertionOfRefPossibleWrtDemand(Tour tour, ResourceExtensionFunction ref, int positionStartOfSegment, int positionEndOfSegment) {
+		ResourceExtensionFunction ref1;
+		if (positionStartOfSegment == 0)
+			//first position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision
+			ref1 = new ResourceExtensionFunction(tour.getDepot());
+		else 
+			ref1 = tour.getRefFromBeginningAtPosition(positionStartOfSegment-1);
+		ResourceExtensionFunction ref2 = ref;
+		ResourceExtensionFunction ref3;
+		if (positionEndOfSegment == tour.getCustomerSize())
+			//last position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision
+			ref3 = new ResourceExtensionFunction(tour.getDepot());
+		else
+			ref3 = tour.getRefToEndAtPosition(positionEndOfSegment);
+		
+		double capacity = tour.getVehicle().getCapacity();
+		return isConcatenationOfRefsDemandFeasible(ref1, ref2, ref3, capacity);		
+	}
+	
+	
+	private static boolean isConcatenationOfRefsDemandFeasible(
+			ResourceExtensionFunction ref1, ResourceExtensionFunction ref2,
+			ResourceExtensionFunction ref3, double capacity) {
+		if (isConcatenationOfRefsDemandFeasible(ref1,ref2,capacity)) {
+			ResourceExtensionFunction ref12 = new ResourceExtensionFunction(ref1);
+			ref12.updateWithSubsequentRef(ref2);
+			return isConcatenationOfRefsDemandFeasible(ref12,ref3,capacity); 
+		} else 
+			return false;			
+	}
+
+
 	public static boolean isInsertionOfRefPossibleInnerTourMove(Tour tour,
 			int positionStartOfSegment, int positionEndOfSegment,
 			int insertingPos) {		
