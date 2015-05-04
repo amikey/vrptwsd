@@ -19,9 +19,15 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	private long timeNeeded;
 	
-	private int maximalNumberOfIterationsTabuSearch = 20;
-	private int numberOfDifferentInitialSolutions = 5;
-	private int maximalNumberOfCallsToAdaptiveMemory = 20;
+	private int maximalNumberOfIterationsTabuSearch = 50;
+	private int numberOfDifferentInitialSolutions = 10;
+	private int maximalNumberOfCallsToAdaptiveMemory = 50;
+	
+	private int seedI1 = 1;
+	private int seedGI = 1;
+	private int seedAM = 1;
+	
+	private int numberOfExperiments = 100;
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
@@ -29,18 +35,57 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		System.setOut(out);
 		
 		problems = ReadAndWriteUtils.readSolomonProblems();
-		solveProblemsWithAdaptiveMemorySolver();		
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded);
+		solveProblemsWithAdaptiveMemorySolver();	
+		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
+				numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);		
 	}
 	
 	@Test
-	public void TestAdaptiveMemorySearchOnSolomonInstanceC101() throws IOException {			
+	public void TestAdaptiveMemorySearchOnSolomonInstanceC202() throws IOException {			
 //		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
 //		System.setOut(out);
 		
-		problems = ReadAndWriteUtils.readSolomonProblemC101();		
-		solveProblemsWithAdaptiveMemorySolver();		
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions,timeNeeded);
+		problems = ReadAndWriteUtils.readSolomonProblemC202();	
+		for (int i = 1; i < numberOfExperiments; i++) {
+			increaseParameters();
+			solveProblemsWithAdaptiveMemorySolver();		
+			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
+					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
+		}
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceC204() throws IOException {			
+//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
+//		System.setOut(out);
+		
+		problems = ReadAndWriteUtils.readSolomonProblemC204();	
+		for (int i = 1; i < numberOfExperiments; i++) {
+			increaseParameters();
+			solveProblemsWithAdaptiveMemorySolver();		
+			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
+					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
+		}
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceC206() throws IOException {			
+//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
+//		System.setOut(out);
+		
+		problems = ReadAndWriteUtils.readSolomonProblemC206();	
+		for (int i = 1; i < numberOfExperiments; i++) {
+			increaseParameters();
+			solveProblemsWithAdaptiveMemorySolver();		
+			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
+					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
+		}
+	}
+	
+	private void increaseParameters() {
+		seedI1++;
+		seedGI++;
+		seedAM++;
 	}
 	
 	private void solveProblemsWithAdaptiveMemorySolver() {
@@ -49,7 +94,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());
 			
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-			adaptiveMemoryTabuSearch.resetSeeds();
+			adaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsTabuSearch(maximalNumberOfIterationsTabuSearch);
 			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);

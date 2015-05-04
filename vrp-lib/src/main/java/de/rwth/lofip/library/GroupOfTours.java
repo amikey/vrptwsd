@@ -143,8 +143,12 @@ public class GroupOfTours implements SolutionElement {
      ***************************************************************************/        
    
     public double getExpectedRecourseCost() {
-    	if (expectedRecourseCost == null)
+    	if (expectedRecourseCost == null) {
     		throw new RuntimeException("Recourse Kosten in GOT noch nicht implementiert");
+    		
+    		
+    		
+    	}
 		return expectedRecourseCost;
     }
     

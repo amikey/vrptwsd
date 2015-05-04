@@ -124,4 +124,10 @@ public class AdaptiveMemoryTabuSearch {
 		RandomI1Solver.setSeedTo(0);
 	}
 
+	public void setSeeds(int seedI1, int seedGI, int seedAM) {
+		AdaptiveMemory.setSeedTo(seedAM);
+		GreedyInsertion.setSeedTo(seedGI);
+		RandomI1Solver.setSeedTo(seedI1);
+	}
+
 }

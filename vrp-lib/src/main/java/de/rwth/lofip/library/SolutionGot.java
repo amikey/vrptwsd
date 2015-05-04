@@ -13,7 +13,6 @@ public class SolutionGot implements Cloneable, SolutionElement {
 
     private VrpProblem vrpProblem;
     private double penaltyCost = 0;
-    private int iterationInWhichSolutionWasCreated;  
     private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();  
     //TODO: Kosten als Variable speichern
     
@@ -127,14 +126,6 @@ public class SolutionGot implements Cloneable, SolutionElement {
 		return getTotalDistance() + getExpectedRecourseCost();
 	}
 
-    public int getIteration() {
-        return iterationInWhichSolutionWasCreated;
-    }
-
-    public void setIteration(int iteration) {
-        this.iterationInWhichSolutionWasCreated = iteration;
-    }
-
 	public void addGot(GroupOfTours got) {
 		gots.add(got);
 	}
@@ -200,8 +191,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
      */
 		
     public SolutionGot clone() {
-        SolutionGot s = new SolutionGot(vrpProblem);
-        s.setIteration(iterationInWhichSolutionWasCreated);        
+        SolutionGot s = new SolutionGot(vrpProblem);       
         for (GroupOfTours got : gots) {
             s.addGot(got.clone());
         }
