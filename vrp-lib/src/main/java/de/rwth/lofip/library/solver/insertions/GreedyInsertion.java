@@ -39,11 +39,9 @@ public class GreedyInsertion {
 
     public SolutionGot insertCustomers(SolutionGot solution,
             List<Customer> customers) {
-    	
-    	//TODO: produziert collections.shuffle immer die gleiche Ausgabe?    	    
+    	    	    
     	Collections.shuffle(customers, random);
-
-    	//get depot
+    	
         final Depot depot = solution.getVrpProblem().getDepot();
 
         // for all customers, find their N (=10) best insertion points wrt the
@@ -55,7 +53,7 @@ public class GreedyInsertion {
             List<CustomerWithCost> insertionPoints = new ArrayList<CustomerWithCost>();
 
             // get number of Processors available and create corresponding number of possible concurrent threads
-            int threads = 1; //TODO: wieder zu Runtime.getRuntime().availableProcessors(); ändern
+            int threads = Runtime.getRuntime().availableProcessors(); 
             ExecutorService service = Executors.newFixedThreadPool(threads);
             // ??
             List<Future<List<CustomerWithCost>>> costFutures = new ArrayList<Future<List<CustomerWithCost>>>();

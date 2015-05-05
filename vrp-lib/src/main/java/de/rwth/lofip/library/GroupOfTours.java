@@ -6,14 +6,22 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
+import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
+import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
+import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForSolutionGot;
+import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
+import de.rwth.lofip.library.solver.util.SimpleTourUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
+import de.rwth.lofip.library.util.RecourseCost;
+import de.rwth.lofip.library.util.SetUpUtils;
 
 /**
  * @author Andreas Braun
  */
-public class GroupOfTours implements SolutionElement {
+public class GroupOfTours implements ElementWithTours, SolutionElement {
 
 	/****************************************************************************
      * Fields
@@ -21,28 +29,53 @@ public class GroupOfTours implements SolutionElement {
 
 	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 1;
 	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.2;
-	final static int MAXIMAL_NUMBER_OF_TOURS = 1;		
+	static int MAXIMAL_NUMBER_OF_TOURS = 1;		
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
-	Double expectedRecourseCost = null;
+	RecourseCost expectedRecourseCost = null;
 
 	public void addTour(Tour t) {
     	tours.add(t);
     	resetExpectedRecourseCost();
     }
     
+	public static void setNumberOfToursInGot(int numberOfToursInGot) {
+		MAXIMAL_NUMBER_OF_TOURS = numberOfToursInGot;
+	}
+	
 	private void resetExpectedRecourseCost() {
 		expectedRecourseCost = null;
 	}
 	
-	private void setExpectedRecourseCost(Double expectedRecourseCost2) {
+	private void setExpectedRecourseCost(RecourseCost expectedRecourseCost2) {
 		expectedRecourseCost = expectedRecourseCost2;
 	}
-
+	
 	public List<Tour> getTours() {	
 		return tours;
 	}
+	
+	@Override
+	public Tour getTour(int i) {
+		return getTours().get(i);
+	}
+
+	@Override
+	public int getNumberOfTours() {
+		return getTours().size();
+	}
+
+	@Override
+	public double getTotalDistance() {
+		//TODO: distance zwischenspeichern und nur ändern, wenn sich Touren ändern
+		double distance = 0;
+        for (Tour t : this.getTours()) {
+            distance += t.getTotalDistanceWithCostFactor();
+        }
+        return distance;
+    }
     
+	@Override
     public void removeEmptyTours() {
       Set<Tour> emptyTours = new HashSet<Tour>();
       for (Tour t : tours) {
@@ -67,8 +100,7 @@ public class GroupOfTours implements SolutionElement {
 	public void createNewTour(VrpProblem vrpProblem) {
 		Tour t = new Tour(vrpProblem.getDepot(),
 				new Vehicle(vrpProblem.getVehicles().iterator().next().getCapacity()));
-		addTour(t);
-		resetExpectedRecourseCost();
+		addTour(t); //recourse Cost wird schon resetted, wenn neue Tour geaddet wird
 	}
 	
 	public void insertCustomerIntoLastTour(Customer customer) {
@@ -142,17 +174,46 @@ public class GroupOfTours implements SolutionElement {
      * Calculation of Probabilities and Recourse Cost
      ***************************************************************************/        
    
-    public double getExpectedRecourseCost() {
-    	if (expectedRecourseCost == null) {
-    		throw new RuntimeException("Recourse Kosten in GOT noch nicht implementiert");
+    public RecourseCost getExpectedRecourseCost() {
+    	if (expectedRecourseCost == null) {   		    		
+    		double overallRecourseCost = 0;
+    		int [] listOfPossibleSolutionValues = new int[1000000]; //wird automatisch mit 0-en initialisiert
+    		int numberOfDifferentRecourseActions = 0;
+    		SimulationUtils.resetSeed();
     		
+    		for (int i = 1; i <= NUMBER_OF_DEMAND_SCENARIO_RUNS; i++) {
+    			GroupOfTours gotClone = this.cloneWithCopyOfCustomers();
+    			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);    			
+    			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
+    				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //TODO: Hier auch Tabu Search testen
+    				//create Solution from gotClone for processing with local search    				    				
+    				ls.improve(gotClone);
+    				if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) //got is still demand infeasible -> no feasible solution could be found for demand
+    					gotClone.addEmptyTour();
+    					ls.improve(gotClone);
+    			}
+    			//TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
+    			double recourseCost = -this.getTotalDistance() + gotClone.getTotalDistance();
+    			overallRecourseCost += recourseCost;
+    			
+    			//calculate number of different recourse actions
+    			//TODO: For problems with more than 100 customers its possible that the index exceeds the size of the array -> modulo wie in TabuList
+    			if (listOfPossibleSolutionValues[(int) gotClone.getTotalDistance() * 1000] == 0) {
+    				numberOfDifferentRecourseActions++;
+    				listOfPossibleSolutionValues[(int) gotClone.getTotalDistance() * 1000] = 1;
+    			}
+    		}
+    		overallRecourseCost = overallRecourseCost / NUMBER_OF_DEMAND_SCENARIO_RUNS;
     		
-    		
-    	}
+    		expectedRecourseCost = new RecourseCost(overallRecourseCost, numberOfDifferentRecourseActions);
+    	}    	
 		return expectedRecourseCost;
     }
     
-    
+    private void addEmptyTour() {
+    	addTour(SimpleTourUtils.getEmptyTourWithDoubleCostFactor(getFirstTour()));
+	}
+
 	@Override
     public GroupOfTours clone() {
     	GroupOfTours got = new GroupOfTours();   		    	                       
@@ -161,6 +222,34 @@ public class GroupOfTours implements SolutionElement {
         got.setExpectedRecourseCost(expectedRecourseCost);
         return got;
     }
+    
+	GroupOfTours cloneWithCopyOfCustomers() {
+		GroupOfTours got = new GroupOfTours();
+		for (Tour t : tours)             	      
+        	got.addTour(t.cloneWithCopyOfCustomers());
+		got.setExpectedRecourseCost(expectedRecourseCost);
+		return got;
+	}
+
+	public List<Customer> getCustomers() {
+		List<Customer> customers = new ArrayList<Customer>();
+		for (Tour tour : getTours())
+			customers.addAll(tour.getCustomers());
+		return customers;			
+	}
+
+	@Override
+	public String getAsTupel() {
+		String s = "";
+	    s += "(";
+		for (Tour t : getTours()) {
+			s += t.getTourAsTupel();
+		}
+		s += ") ";	     
+	    return s;
+	}
+
+	
 
 	
     

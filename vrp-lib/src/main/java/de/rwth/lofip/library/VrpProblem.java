@@ -122,11 +122,8 @@ public class VrpProblem implements Cloneable {
 		this.maxTime = maxTime;
 	}
 
-	public int getVehicleCount() {
-		if (vehicles == null) {
-			return 0;
-		}
-		return vehicles.size();
+	public int getMinimalNumberOfVehiclesWrtDemand() {
+		return (int) Math.round((double) getTotalDemandOfAllCustomersOnTour() / vehicles.iterator().next().getCapacity());		
 	}
 
 	// AB: Attention: this only works if we deal with a homogeneous fleet
@@ -142,12 +139,7 @@ public class VrpProblem implements Cloneable {
 	public void setVehicleCapacity(double capacity) {
 		for (Vehicle v : vehicles)
 			v.setCapacity(capacity);
-	}
-	
-	public int getTargetVehicleNumber() {
-		return getVehicleCount();
-	}
-    
+	}   
 
 	/**
 	 * Getter and Setter ENDE

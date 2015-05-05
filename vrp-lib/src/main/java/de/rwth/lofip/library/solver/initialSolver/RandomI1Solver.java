@@ -17,7 +17,7 @@ public class RandomI1Solver implements SolverInterfaceGot {
 	private static int seed = 0;
 	private Random rand = new Random(seed); 
 	
-	private final int numberOfSeedCustomers = 10;
+	private int numberOfSeedCustomers;
 		
 	private VrpProblem vrpProblem;
 	private SolutionGot solution;
@@ -45,6 +45,7 @@ public class RandomI1Solver implements SolverInterfaceGot {
 	}
 
 	protected List<Customer> randomlySelectSeedCustomers() {
+		numberOfSeedCustomers = vrpProblem.getMinimalNumberOfVehiclesWrtDemand();
 		if (numberOfSeedCustomers > remainingCustomers.size()-1)
 			throw new RuntimeException("numberOfSeedCustomers > remainingCustomers.size()-1");
 		for (int m = 1; m <= numberOfSeedCustomers; m++) {

@@ -23,14 +23,14 @@ public class TestLocalSearch {
 	}
 	
 	private void whenSolutionIsImprovedWithLocalSearch() {
-		LocalSearch localSearch = new LocalSearch();
-		solution = localSearch.improve(solution);
+		LocalSearchForElementWithTours localSearch = new LocalSearchForElementWithTours();
+		solution = (SolutionGot) localSearch.improve(solution);
 	}
 
 	private void thenSolutionShouldHaveOneTourWithFourCustomers() {
-		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().getSolutionAsTupel());
+		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().getAsTupel());
 		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().getTotalDistance());
-		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4().getSolutionAsTupel());
+		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4().getAsTupel());
 		System.out.println(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4().getTotalDistance());
 		assertEquals(true, solution.equals(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4()));
 	}

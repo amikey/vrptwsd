@@ -13,7 +13,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.initialSolver.GroupPushForwardInsertionSolver;
-import de.rwth.lofip.library.solver.metaheuristics.TabuSearch;
+import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForSolutionGot;
 
 public class RunTabuSearchWithSolomonInstances {
 	
@@ -53,7 +53,7 @@ public class RunTabuSearchWithSolomonInstances {
 		
 		private void improveSolutionsWithTabuSearch() {			
 			for (SolutionGot solution : initialSolutions) {
-				TabuSearch tabuSearch = new TabuSearch();
+				TabuSearchForSolutionGot tabuSearch = new TabuSearchForSolutionGot();
 				System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
 				SolutionGot improvedSolution = solution.clone();
 				improvedSolution = tabuSearch.improve(improvedSolution);

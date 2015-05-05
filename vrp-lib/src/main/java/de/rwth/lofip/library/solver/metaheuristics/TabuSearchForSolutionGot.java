@@ -1,29 +1,30 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 
-public class TabuSearch implements MetaSolverInterfaceGot {
+public class TabuSearchForSolutionGot implements MetaSolverInterfaceGot {
 
 	private int maximalNumberOfIterations = 100;
 	
 	private int iteration = 1;
-	private SolutionGot solution;
+	private ElementWithTours solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
-	private SolutionGot bestOverallSolution;
+	private ElementWithTours bestOverallSolution;
 
 	@Override
-	public SolutionGot improve(SolutionGot solutionStart) {
+	public ElementWithTours improve(ElementWithTours solutionStart) {
 		System.out.println("STARTE TABU SUCHE");
 		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
 		
-		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getSolutionAsTupel());
+		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());
 		while (!isStoppingCriterionMet()) {
 			try {
 				findBestNonTabooMove();
@@ -72,7 +73,7 @@ public class TabuSearch implements MetaSolverInterfaceGot {
 	}
 	
 	private void applyBestNonTabooMove() {
-		solution = crossNeighborhood.acctuallyApplyMove(bestMove);
+		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);
 	}
 	
 	private boolean isNewSolutionIsNewBestOverallSolution() {

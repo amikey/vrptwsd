@@ -5,11 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 
-public class SolutionGot implements Cloneable, SolutionElement {
+public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable {
 
     private VrpProblem vrpProblem;
     private double penaltyCost = 0;
@@ -27,7 +28,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
     public double getTotalDistance() {
         double distance = 0;
         for (Tour t : this.getTours()) {
-            distance += t.getTotalDistance();
+            distance += t.getTotalDistanceWithCostFactor();
         }
         return distance;
     }
@@ -115,11 +116,13 @@ public class SolutionGot implements Cloneable, SolutionElement {
     }
 
     public double getExpectedRecourseCost() {
-        double recourseCost = 0;
-        for (GroupOfTours got : gots) {
-            recourseCost += got.getExpectedRecourseCost();
-        }
-        return recourseCost;
+    	throw new RuntimeException("getExpectedRecourseCost muss noch implementiert werden");
+//        double recourseCost = 0;
+//        for (GroupOfTours got : gots) {
+//        	//TODO: korrekt implementieren 
+//            recourseCost += got.getExpectedRecourseCost();
+//        }
+//        return recourseCost;
     }
     
 	public double getSumOfDistanceAndExpectedRecourseCost() {
@@ -204,7 +207,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
      */
 	
 	public void printSolution() {
-        System.out.println(getSolutionAsTupel());
+        System.out.println(getAsTupel());
     }
 
     public String getSolutionAsString() {
@@ -220,7 +223,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
         return s;
     }
 	
-    public String getSolutionAsTupel() {    	    	  	
+    public String getAsTupel() {    	    	  	
         String s = "";
         for (GroupOfTours got : gots)
         {
@@ -234,7 +237,7 @@ public class SolutionGot implements Cloneable, SolutionElement {
     }
     
 	public void printSolutionAsTupel() {
-		System.out.println(getSolutionAsTupel());
+		System.out.println(getAsTupel());
 	}   
 
 	public void printSolutionCost() {

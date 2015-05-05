@@ -26,6 +26,7 @@ public class Tour implements SolutionElement {
 	private List<Edge> edges = new LinkedList<Edge>();
 	private double demand = 0;
 	private double tourDistance = 0;
+	private double costFactor = 1;
 	
 	private List<ResourceExtensionFunction> refsFromStartUpToPosition = new LinkedList<ResourceExtensionFunction>(); 
 	private List<ResourceExtensionFunction> refsFromPositionToEnd = new LinkedList<ResourceExtensionFunction>();
@@ -73,7 +74,7 @@ public class Tour implements SolutionElement {
 			customers.add(new CustomerInTour(cit));
 		edges = tour1.getEdges();
 		demand = tour1.getDemandOnTour();
-		tourDistance = tour1.getTotalDistance();
+		tourDistance = tour1.getTotalDistanceWithCostFactor();
 		for (ResourceExtensionFunction ref : tour1.getRefsFromBeginning())
 			refsFromStartUpToPosition.add(new ResourceExtensionFunction(ref));
 		for (ResourceExtensionFunction ref : tour1.getRefsToEnd())
@@ -107,6 +108,15 @@ public class Tour implements SolutionElement {
 		this.refForSegment = refForSegment;
 		this.solutionValue = solutionValue;
 	}
+	
+	
+	public Tour cloneWithCopyOfCustomers() {
+		Tour clonedTour = new Tour(this);
+		for (CustomerInTour cit : clonedTour.getCustomersInTour()) {
+			cit.setCustomer(cit.getCustomer().clone());
+		}
+		return clonedTour;
+	}
 
 	/****************************************************************************
      * End Constructors
@@ -136,10 +146,6 @@ public class Tour implements SolutionElement {
         return edges;
     }
     
-    private void setEdges(List<Edge> edges2) {
-		this.edges = edges2;
-	}
-
     /**
      * Get the {@code CustomerInTour} at the given position. May return null if
      * no such position exists.
@@ -187,8 +193,8 @@ public class Tour implements SolutionElement {
 		return customers.size();
 	}
     
-    public double getTotalDistance() {  
-        return tourDistance;
+    public double getTotalDistanceWithCostFactor() {  
+        return costFactor * tourDistance;
     }
     
     public int getCustomerSize() {
@@ -242,23 +248,7 @@ public class Tour implements SolutionElement {
      * @throws  
      ***************************************************************************/
      
-    
-	public Tour cloneAndSetPointersToCustomersInVrpProblem(VrpProblem vrpProblemClone) {
-		throw new RuntimeException("Vorsicht, cloneAndSetPointersToCustomersInVrpProblem clont nicht alle fields einer Tour");
-//		Tour t = new Tour(depot, vehicle.clone());
-//        for (CustomerInTour cit : customers) 
-//        {
-//        	//find customer with same number in vrpProblem
-//        	Customer cust = null;
-//        	for (Customer c : vrpProblemClone.getCustomers())
-//        		if (c.getCustomerNo() == cit.getCustomer().getCustomerNo())
-//        			cust = c;        	
-//            t.addCustomer(cust);
-//        }
-//        t.setId(this.id);
-//        return t;
-	}
-	
+ 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -611,13 +601,7 @@ public class Tour implements SolutionElement {
      * End Utilities for adding and deleting customers
      ***************************************************************************/
     
-    
-
-      
-    /****************************************************************************
-     * END Calculation of Probabilities and Recourse Cost
-     ***************************************************************************/ 
-    
+        
     
     public String getTourAsTupel()
     {
@@ -663,6 +647,10 @@ public class Tour implements SolutionElement {
 			if (customersInThisTour.contains(c))
 				return true;
 		return false;
+	}
+
+	public void setCostFactor(int i) {
+		costFactor = i;
 	}
 
 }

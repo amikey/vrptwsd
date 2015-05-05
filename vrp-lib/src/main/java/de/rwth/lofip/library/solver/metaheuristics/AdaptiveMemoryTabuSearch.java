@@ -31,7 +31,7 @@ public class AdaptiveMemoryTabuSearch {
 			System.out.println("AM CALL Nr. " + iteration);
 			
 			solution = constructInitialSolutionFromAdaptiveMemory();
-			TabuSearch tabuSearch = new TabuSearch();
+			TabuSearchForSolutionGot tabuSearch = new TabuSearchForSolutionGot();
 			tabuSearch.setMaximalNumberOfIterations(maximalNumberOfIterationsTabuSearch);
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
@@ -53,7 +53,7 @@ public class AdaptiveMemoryTabuSearch {
 			for (int i = 1; i <= numberOfDifferentInitialSolutions; i++) {
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
-				TabuSearch tabuSearch = new TabuSearch();
+				TabuSearchForSolutionGot tabuSearch = new TabuSearchForSolutionGot();
 				tabuSearch.setMaximalNumberOfIterations(maximalNumberOfIterationsTabuSearch);
 				tabuSearch.improve(newSolution);
 				adaptiveMemory.addTours(newSolution);

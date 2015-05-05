@@ -2,23 +2,24 @@ package de.rwth.lofip.library.solver.localSearch;
 
 import static org.junit.Assert.assertEquals;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
-import de.rwth.lofip.library.solver.util.SolutionGotUtils;
+import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 
-public class LocalSearch implements MetaSolverInterfaceGot {
+public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
-	private SolutionGot solution;
+	private ElementWithTours solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhood crossNeighborhood;
 	private int iteration = 1;
 			
 	@Override
-	public SolutionGot improve(SolutionGot solutionStart) {
+	public ElementWithTours improve(ElementWithTours solutionStart) {
 		this.solution = solutionStart;
 		crossNeighborhood = new CrossNeighborhood(solution);
-		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getSolutionAsTupel());		
+		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());		
 		boolean isImprovement = false;
 		do {
 			try{
@@ -28,10 +29,10 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
 				if (isImprovement) {
 					applyBestMove();					
-					System.out.println("Move applied! Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
+//					System.out.println("Move applied! Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
 					//TODO: Remove because takes time (O(n))
-					assertEquals(true, SolutionGotUtils.isSolutionDemandFeasible(solution));
-					assertEquals(true, SolutionGotUtils.isSolutionTWFeasible(solution));
+					assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(solution));
+					assertEquals(true, ElementWithToursUtils.isElementTWFeasible(solution));
 					assertEquals(solution.getTotalDistance(),bestMove.getCost(),0.001);
 					iteration++;
 				}
@@ -64,6 +65,7 @@ public class LocalSearch implements MetaSolverInterfaceGot {
 	}	
 
 	private void applyBestMove() {
-		solution = crossNeighborhood.acctuallyApplyMove(bestMove);		
+		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);		
 	}
+
 }

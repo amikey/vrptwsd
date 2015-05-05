@@ -1,11 +1,11 @@
 package de.rwth.lofip.library.solver.util;
 
-import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 
-public class SolutionGotUtils {
+public class ElementWithToursUtils {
 
-	public static boolean isSolutionDemandFeasible(SolutionGot solution) {
+	public static boolean isElementDemandFeasible(ElementWithTours solution) {
 		boolean feasible = true;
 		for (Tour tour : solution.getTours()) {
 			if (!TourUtils.isTourFeasibleWrtDemand(tour))
@@ -14,7 +14,7 @@ public class SolutionGotUtils {
 		return feasible;
 	}
 	
-	public static boolean isSolutionTWFeasible(SolutionGot solution) {
+	public static boolean isElementTWFeasible(ElementWithTours solution) {
 		boolean feasible = true;
 		for (Tour tour : solution.getTours()) {
 			if (!TourUtils.isTourFeasibleWrtTW(tour))

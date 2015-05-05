@@ -33,7 +33,6 @@ public class CustomerInTour implements Cloneable, SolutionElement {
 		this.arrivalTime = cit.getArrivalTime();
 	}
 
-
 	public CustomerInTour() {
 		super();
 	}
@@ -74,6 +73,14 @@ public class CustomerInTour implements Cloneable, SolutionElement {
 	protected CustomerInTour clone() {
 		CustomerInTour cloned = new CustomerInTour(tour);
 		cloned.setCustomer(customer);
+		cloned.setArrivalTime(arrivalTime);	
+		cloned.setTour(tour);
+		return cloned;
+	}
+	
+	public CustomerInTour cloneWithCopyOfCustomer() {
+		CustomerInTour cloned = new CustomerInTour(tour);
+		cloned.setCustomer(customer.clone());
 		cloned.setArrivalTime(arrivalTime);	
 		cloned.setTour(tour);
 		return cloned;

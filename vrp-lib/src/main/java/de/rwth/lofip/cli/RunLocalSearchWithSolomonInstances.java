@@ -13,7 +13,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.initialSolver.GroupPushForwardInsertionSolver;
-import de.rwth.lofip.library.solver.localSearch.LocalSearch;
+import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 
 public class RunLocalSearchWithSolomonInstances {
 	
@@ -42,7 +42,7 @@ public class RunLocalSearchWithSolomonInstances {
 		
 		private void improveSolutionsWithLocalSearch() {			
 			for (SolutionGot solution : initialSolutions) {
-				LocalSearch localSearch = new LocalSearch();
+				LocalSearchForElementWithTours localSearch = new LocalSearchForElementWithTours();
 				System.out.println("SOLVING INSTANCE " + solution.getVrpProblem().getDescription());
 				SolutionGot improvedSolution = localSearch.improve(solution.clone());
 				improvedSolutions.add(improvedSolution);

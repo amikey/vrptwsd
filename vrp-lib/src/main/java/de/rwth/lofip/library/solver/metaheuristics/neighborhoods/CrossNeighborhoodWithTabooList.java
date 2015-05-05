@@ -1,6 +1,7 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.TabuList;
 
@@ -8,7 +9,7 @@ public class CrossNeighborhoodWithTabooList extends CrossNeighborhood {
 	
 	TabuList tabuList = new TabuList();
 		
-	public CrossNeighborhoodWithTabooList(SolutionGot solution) {
+	public CrossNeighborhoodWithTabooList(ElementWithTours solution) {
 		super(solution);
 	}
 

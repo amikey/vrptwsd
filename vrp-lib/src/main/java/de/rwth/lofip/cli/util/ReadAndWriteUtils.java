@@ -163,7 +163,7 @@ public class ReadAndWriteUtils {
 			if (!solutions2.isEmpty()) {
 				IOUtils.write(String.format("%.3f",solutions2.get(i).getTotalDistance()) + ";", outputStream);
 				IOUtils.write(solutions2.get(i).getVehicleCount() + ";", outputStream);
-				IOUtils.write(solutions2.get(i).getSolutionAsTupel() + ";", outputStream);
+				IOUtils.write(solutions2.get(i).getAsTupel() + ";", outputStream);
 				IOUtils.write("Demands: ", outputStream);
 				for (Tour tour : solutions2.get(i).getTours())
 					IOUtils.write(tour.getDemandOnTour() + ", ", outputStream);

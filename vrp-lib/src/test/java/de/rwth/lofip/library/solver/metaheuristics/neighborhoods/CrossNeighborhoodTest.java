@@ -151,7 +151,7 @@ public class CrossNeighborhoodTest {
 		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
 		cost = crossNeighborhood.calculateCostUsingRefs();
 //		cost = crossNeighborhood.calculateCost();	
-		assertEquals(SetUpUtils.getTourWithCustomer1And4().getTotalDistance() + SetUpUtils.getTourWithCustomer3And2().getTotalDistance(),cost,0.1);
+		assertEquals(SetUpUtils.getTourWithCustomer1And4().getTotalDistanceWithCostFactor() + SetUpUtils.getTourWithCustomer3And2().getTotalDistanceWithCostFactor(),cost,0.1);
 		
 		crossNeighborhood.generateNextCombinationOfSegements();
 		crossNeighborhood.generateNextCombinationOfSegements();
@@ -161,10 +161,10 @@ public class CrossNeighborhoodTest {
 		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
 		cost = crossNeighborhood.calculateCostUsingRefs();	
 		
-		SolutionGot solution = crossNeighborhood.acctuallyApplyMove(crossNeighborhood.getNeigborhoodMove());
-		System.out.print(solution.getSolutionAsTupel());
+		SolutionGot solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(crossNeighborhood.getNeigborhoodMove());
+		System.out.print(solution.getAsTupel());
 		
-		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistance(),cost,0.1);		
+		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(),cost,0.1);		
 	}
 		
 	@Test 
@@ -201,11 +201,11 @@ public class CrossNeighborhoodTest {
                 }
 		);			
 		AbstractNeighborhoodMove bestMove = moves.get(0); 
-		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistance(), bestMove.getCost(), 0.1);
+		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(), bestMove.getCost(), 0.1);
 				
 		//now actually apply best move
-		solutionWithTwoToursAndTwoCustomersEach = crossNeighborhood.acctuallyApplyMove(bestMove);
-		System.out.println(solutionWithTwoToursAndTwoCustomersEach.getSolutionAsTupel());
+		solutionWithTwoToursAndTwoCustomersEach = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);
+		System.out.println(solutionWithTwoToursAndTwoCustomersEach.getAsTupel());
 		Tour tempTour;
 		Iterator<Tour> tourIterator = solutionWithTwoToursAndTwoCustomersEach.getTours().iterator();
 		tempTour = tourIterator.next();
@@ -216,7 +216,7 @@ public class CrossNeighborhoodTest {
 	public void testReturnBestMove() throws Exception {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);
 		AbstractNeighborhoodMove bestMove = crossNeighborhood.returnBestMove();
-		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistance(), bestMove.getCost(), 0.01);
+		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(), bestMove.getCost(), 0.01);
 	}
 	
 	@Test 

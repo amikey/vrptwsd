@@ -119,23 +119,6 @@ public class SetUpUtils {
 		return depot;
 	}
 	
-	public static VrpProblem SetUpR201Problem() throws IOException {
-		//setUp();
-		//---------VRP------------------------------------------------
-		File datei1 = new File("solomon-problems/rc201t.txt");
-		BufferedReader br = new BufferedReader(new FileReader(datei1));
-		String zeile = "";
-		List<String> liste = new ArrayList<String>(0);
-		while ((zeile = br.readLine()) != null) {
-			liste.add(zeile);
-		}
-		
-		VrpProblem vrpProblem = VrpUtils
-                .createProblemFromStringList(liste);
-		br.close();
-		
-		return vrpProblem;
-	}
 	
 	public static Tour getTourWithFourCustomers() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
@@ -415,60 +398,12 @@ public class SetUpUtils {
         return tour;
 	}
 
-	
-	public static Tour SetUpTourThatIsExecutedTheNextDay() {
-        Customer c11 = new Customer();
-        c11.setxCoordinate(15);
-        c11.setyCoordinate(80);
-        c11.setCustomerNo(11);
-        c11.setDemand(20);
-        c11.setTimeWindowOpen(278);
-        c11.setTimeWindowClose(345);
-        c11.setServiceTime(90);
-        
-        Customer c12 = new Customer();
-        c12.setCustomerNo(12);
-        c12.setxCoordinate(20);
-        c12.setyCoordinate(85);
-        c12.setDemand(20);
-        c12.setTimeWindowOpen(475);
-        c12.setTimeWindowClose(528);
-        c12.setServiceTime(90);
-
-        Customer c13 = new Customer();
-        c13.setCustomerNo(13);
-        c13.setxCoordinate(25);
-        c13.setyCoordinate(85);
-        c13.setDemand(20);
-        c13.setTimeWindowOpen(625);
-        c13.setTimeWindowClose(721);
-        c13.setServiceTime(90);
-        
-        Customer c14 = new Customer();
-        c14.setCustomerNo(14);
-        c14.setxCoordinate(35);
-        c14.setyCoordinate(70);
-        c14.setDemand(20);
-        c14.setTimeWindowOpen(873);
-        c14.setTimeWindowClose(921);
-        c14.setServiceTime(90);
-        
-        Depot depot = new Depot();
-        depot.setxCoordinate(40);
-        depot.setyCoordinate(50);
-        
-        Vehicle vehicle = new Vehicle(1, 85);
-        Set<Vehicle> vehicles = new HashSet<Vehicle>();
-        vehicles.add(vehicle);
-        
-        double costFactor = 2;
-        Tour tour = new Tour(depot, vehicle, costFactor);
-        tour.addCustomer(c11);
-        tour.addCustomer(c12);
-        tour.addCustomer(c13);
-        tour.addCustomer(c14);
-        
-        return tour;
+	public static GroupOfTours getGotWithCustomer1And2() {
+		GroupOfTours got = new GroupOfTours();
+		got.addTour(getTourWithCustomer1And2());
+		return got;
 	}
+	
+
 	
 }

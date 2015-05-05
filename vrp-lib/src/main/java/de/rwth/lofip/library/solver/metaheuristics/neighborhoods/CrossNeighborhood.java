@@ -6,6 +6,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
@@ -15,7 +16,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	
 	private Tour tour1;
 	private Tour tour2;
-	private SolutionGot solution;
+	private ElementWithTours elementWithTours;
 	
 	private int tourCounter1 = 0;
 	private int tourCounter2 = 1;
@@ -40,8 +41,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	protected AbstractNeighborhoodMove bestMove = null;
 	private boolean isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = false;
 	
-	public CrossNeighborhood(SolutionGot solution) {
-		this.solution = solution;
+	public CrossNeighborhood(ElementWithTours solution) {
+		this.elementWithTours = solution;
 		resetNeighborhood();
 	}
 	
@@ -49,8 +50,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		firstNeighborhoodStep = true;
 		tourCounter1 = 0;
 		tourCounter2 = 0;
-		this.tour1 = solution.getTour(tourCounter1);		
-		this.tour2 = solution.getTour(tourCounter2);
+		this.tour1 = elementWithTours.getTour(tourCounter1);		
+		this.tour2 = elementWithTours.getTour(tourCounter2);
 		positionStartOfSegmentTour1 = 0;
 		positionEndOfSegmentTour1 = 0;
 		positionStartOfSegmentTour2 = 0;
@@ -144,11 +145,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			}
 		
 		boolean tour2CanBeIncreased() {
-			return tourCounter2 < solution.getNumberOfTours()-1;
+			return tourCounter2 < elementWithTours.getNumberOfTours()-1;
 		}
 		
 		private boolean tour1CanBeIncreased() {
-			return tourCounter1 < solution.getNumberOfTours()-1; 
+			return tourCounter1 < elementWithTours.getNumberOfTours()-1; 
 		}
 		
 		
@@ -246,7 +247,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			
 		private void increaseTour2() {
 			tourCounter2++;
-			tour2 = solution.getTour(tourCounter2);
+			tour2 = elementWithTours.getTour(tourCounter2);
 		}
 		
 		private void resetSegmentInTour1() {
@@ -256,12 +257,12 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		
 		private void increaseTour1() {
 			tourCounter1++;
-			tour1 = solution.getTour(tourCounter1);
+			tour1 = elementWithTours.getTour(tourCounter1);
 		}
 	
 		private void setTour2Accordingly() {
 			tourCounter2 = tourCounter1;
-			tour2 = solution.getTour(tourCounter2);
+			tour2 = elementWithTours.getTour(tourCounter2);
 		}
 	
 	
@@ -310,7 +311,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		
 	
 		public double calculateCostUsingRefs() {
-			double costSolution = solution.getTotalDistance();			
+			double costSolution = elementWithTours.getTotalDistance();			
 			if (isOnlyOneSegmentIsSwapped()) {			
 				//also calculates inner tour moves
 				
@@ -423,7 +424,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		}
 		
 	//********************	
-	public SolutionGot acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {
+	public ElementWithTours acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {
 		if (bestMove.isInnerTourMove()) {
 			Tour tour1 = bestMove.getTour1();
 			if (isInsertedBeforePositionWhereSegmentIsRemoved(bestMove)) {
@@ -441,10 +442,10 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			List<Customer> customers2 = tour2.removeCustomersBetween(bestMove.getStartPositionTour2(),bestMove.getEndPositionTour2());		
 			tour1.insertCustomersAtPosition(customers2, bestMove.getStartPositionTour1());
 			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());
-			solution.removeEmptyTours();
+			elementWithTours.removeEmptyTours();
 		}					
 		resetNeighborhood();
-		return solution;		
+		return elementWithTours;		
 	}
 	
 		private boolean isInsertedBeforePositionWhereSegmentIsRemoved(AbstractNeighborhoodMove bestMove) {		
@@ -455,7 +456,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	
 	//Utilities
 
-	public SolutionGot acctuallyApplyMove() {
+	public ElementWithTours acctuallyApplyMove() {
 		AbstractNeighborhoodMove move = this.getNeigborhoodMove();
 		return acctuallyApplyMove(move);		
 	}
