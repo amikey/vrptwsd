@@ -10,7 +10,7 @@ import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
-import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForSolutionGot;
+import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.solver.util.SimpleTourUtils;
@@ -36,6 +36,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
 
 	public void addTour(Tour t) {
     	tours.add(t);
+    	t.setParentGot(this);
     	resetExpectedRecourseCost();
     }
     
@@ -43,7 +44,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
 		MAXIMAL_NUMBER_OF_TOURS = numberOfToursInGot;
 	}
 	
-	private void resetExpectedRecourseCost() {
+	protected void resetExpectedRecourseCost() {
 		expectedRecourseCost = null;
 	}
 	
@@ -101,6 +102,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
 		Tour t = new Tour(vrpProblem.getDepot(),
 				new Vehicle(vrpProblem.getVehicles().iterator().next().getCapacity()));
 		addTour(t); //recourse Cost wird schon resetted, wenn neue Tour geaddet wird
+		t.setParentGot(this);
 	}
 	
 	public void insertCustomerIntoLastTour(Customer customer) {
@@ -211,22 +213,30 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
     }
     
     private void addEmptyTour() {
-    	addTour(SimpleTourUtils.getEmptyTourWithDoubleCostFactor(getFirstTour()));
+    	Tour tour = SimpleTourUtils.getEmptyTourWithDoubleCostFactor(getFirstTour());
+    	addTour(tour);
+    	tour.setParentGot(this);
 	}
 
 	@Override
     public GroupOfTours clone() {
     	GroupOfTours got = new GroupOfTours();   		    	                       
-        for (Tour t : tours)             	      
-	        	got.addTour(new Tour(t));
+        for (Tour t : tours)  {
+        	Tour tour = new Tour(t);
+        	got.addTour(tour);
+        	tour.setParentGot(got);
+        }	        
         got.setExpectedRecourseCost(expectedRecourseCost);
         return got;
     }
     
 	GroupOfTours cloneWithCopyOfCustomers() {
 		GroupOfTours got = new GroupOfTours();
-		for (Tour t : tours)             	      
-        	got.addTour(t.cloneWithCopyOfCustomers());
+		for (Tour t : tours) {
+			Tour tour = t.cloneWithCopyOfCustomers();
+			got.addTour(tour);
+			tour.setParentGot(got);
+		}        	
 		got.setExpectedRecourseCost(expectedRecourseCost);
 		return got;
 	}

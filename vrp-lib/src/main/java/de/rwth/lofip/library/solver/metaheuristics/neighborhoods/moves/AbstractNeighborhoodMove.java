@@ -12,7 +12,7 @@ public class AbstractNeighborhoodMove {
 	private int positionEndOfSegmentTour1;
 	private int positionStartOfSegmentTour2;
 	private int positionEndOfSegmentTour2;
-	private double costOfMove;
+	private double costOfCompleteSolutionThatResultsFromMove;
 	
 	public AbstractNeighborhoodMove(Tour tour1, Tour tour2, int posStart1, int posEnd1, int posStart2, int posEnd2, double cost) {
 		this.tour1 = tour1;
@@ -21,11 +21,11 @@ public class AbstractNeighborhoodMove {
 		this.positionEndOfSegmentTour1 = posEnd1;
 		this.positionStartOfSegmentTour2 = posStart2;
 		this.positionEndOfSegmentTour2 = posEnd2;
-		this.costOfMove = cost;
+		this.costOfCompleteSolutionThatResultsFromMove = cost;
 	}
 
 	public double getCost() {
-		return costOfMove;
+		return costOfCompleteSolutionThatResultsFromMove;
 	}
 
 	public Tour getTour1() {
@@ -68,8 +68,8 @@ public class AbstractNeighborhoodMove {
 		if (getClass() != obj.getClass())
 			return false;
 		AbstractNeighborhoodMove other = (AbstractNeighborhoodMove) obj;
-		if (Double.doubleToLongBits(costOfMove) != Double
-				.doubleToLongBits(other.costOfMove))
+		if (Double.doubleToLongBits(costOfCompleteSolutionThatResultsFromMove) != Double
+				.doubleToLongBits(other.costOfCompleteSolutionThatResultsFromMove))
 			return false;
 		if (positionEndOfSegmentTour1 != other.positionEndOfSegmentTour1)
 			return false;

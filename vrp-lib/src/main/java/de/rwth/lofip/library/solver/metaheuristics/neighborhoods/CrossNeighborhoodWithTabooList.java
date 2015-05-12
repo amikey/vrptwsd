@@ -19,6 +19,6 @@ public class CrossNeighborhoodWithTabooList extends CrossNeighborhood {
 	}
 	
 	public void updateTabuList(int iteration) {
-		tabuList.addSolutionToTabuList(bestMove.getCost(), iteration);
+		tabuList.addSolutionToTabuList(bestNonTabooMove.getCost(), iteration);
 	}
 }

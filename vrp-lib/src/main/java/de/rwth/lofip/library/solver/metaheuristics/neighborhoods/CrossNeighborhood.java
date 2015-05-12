@@ -2,6 +2,7 @@ package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
 import java.util.List;
 
+import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.SolutionGot;
@@ -38,7 +39,8 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private Tour currentTour;
 	private int currentPositionEndOfSegment;
 	
-	protected AbstractNeighborhoodMove bestMove = null;
+	protected AbstractNeighborhoodMove bestNonTabooMove = null;
+	private AbstractNeighborhoodMove bestMoveThatMightBeTaboo = null;
 	private boolean isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = false;
 	
 	public CrossNeighborhood(ElementWithTours solution) {
@@ -58,7 +60,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		positionEndOfSegmentTour2 = 0;
 		RefSegment1 = new ResourceExtensionFunction();
 		RefSegment2 = new ResourceExtensionFunction();
-		bestMove = null;
+		bestNonTabooMove = null;
 	}
 		
 	public AbstractNeighborhoodMove returnBestMove() throws Exception {
@@ -69,9 +71,14 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
 		resetNeighborhood();		
 		generateMovesUsingRefs(iteration);
-		if (bestMove == null)
-			throw new Exception("No feasible move found.");
-		return bestMove;
+		if (bestNonTabooMove == null) {
+			if (bestMoveThatMightBeTaboo == null)
+				throw new NoSolutionExistsException("No feasible move found because of feasibility constraints");
+			else 
+				throw new NoSolutionExistsException("No move found because all feasible moves are taboo");
+		}
+			
+		return bestNonTabooMove;
 	}
 		
 		private void generateMovesUsingRefs(int iteration) {
@@ -89,10 +96,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
 //						System.out.println("feasible move found. Kosten: " + move.getCost());
 						if (isMoveNewBestMove(move)) {
+							bestMoveThatMightBeTaboo = move;
 //							System.out.println("move ist neuer bester move.");
 							if (!isMoveTaboo(move, iteration)) {
 //								System.out.println("move ist NICHT tabu");
-								bestMove = move;
+								bestNonTabooMove = move;
 							}
 //							} else 
 //								System.out.println("move ist tabu");
@@ -410,10 +418,10 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		
 		
 		private boolean isMoveNewBestMove(AbstractNeighborhoodMove move) {	
-			if (bestMove == null) 
+			if (bestNonTabooMove == null) 
 				return true;
-			if (move.getCost() <= bestMove.getCost() || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
-					(move.reducesNumberOfVehicles() && !bestMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
+			if (move.getCost() <= bestNonTabooMove.getCost() || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
+					(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
 				return true;
 			else 
 				return false;

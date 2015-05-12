@@ -1,20 +1,23 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 
-public class TabuSearchForSolutionGot implements MetaSolverInterfaceGot {
+public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
 	private int maximalNumberOfIterations = 100;
+	private int maxNumberIterationsWithoutImprovement = 50;
 	
 	private int iteration = 1;
 	private ElementWithTours solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
 	private ElementWithTours bestOverallSolution;
+	private int iterationsWithoutImprovement = 0;
 
 	@Override
 	public ElementWithTours improve(ElementWithTours solutionStart) {
@@ -40,12 +43,16 @@ public class TabuSearchForSolutionGot implements MetaSolverInterfaceGot {
 //				if (iteration == 83)
 //					System.out.println("DEBUGGING!");
 				
-				if (isNewSolutionIsNewBestOverallSolution()) 
+				if (isNewSolutionIsNewBestOverallSolution()) { 
 					setBestOverallSolutionToNewSolution();	
-				
+ 					iterationsWithoutImprovement = 0;
+				} else
+					iterationsWithoutImprovement++;
 			} catch (Exception e) {
-				if (e.getMessage() == "No feasible move found.") {					
-					System.out.println("Kein feasible Move gefunden. Iteration: " + iteration);
+				if (e instanceof NoSolutionExistsException) {													
+//				if (e.getMessage() == "No feasible move found.") {						
+					System.out.println(e.getMessage() + " Iteration: " + iteration + "; Solution: " + solution);
+					iterationsWithoutImprovement++;
 				} else {
 					StackTraceElement[] arr = e.getStackTrace();
 			     	for(int i=0; i<arr.length; i++)
@@ -60,8 +67,8 @@ public class TabuSearchForSolutionGot implements MetaSolverInterfaceGot {
 	}
 
 	private boolean isStoppingCriterionMet() {
-		return iteration >= maximalNumberOfIterations;
-//		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
+//		return iteration >= maximalNumberOfIterations;
+		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
 	}
 	
 	private void findBestNonTabooMove() throws Exception {
@@ -96,5 +103,9 @@ public class TabuSearchForSolutionGot implements MetaSolverInterfaceGot {
 	
 	public void setMaximalNumberOfIterations(int i) {
 		maximalNumberOfIterations = i;
+	}
+	
+	public void setMaximalNumberOfIterationsWithoutImprovement(int i) {
+		maxNumberIterationsWithoutImprovement = i;
 	}
 }

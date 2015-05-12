@@ -20,6 +20,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private long timeNeeded;
 	
 	private int maximalNumberOfIterationsTabuSearch = 50;
+	private int maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 	private int numberOfDifferentInitialSolutions = 10;
 	private int maximalNumberOfCallsToAdaptiveMemory = 50;
 	
@@ -31,13 +32,16 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
-		PrintStream out = new PrintStream(new FileOutputStream(ReadAndWriteUtils.getOutputFile()));
-		System.setOut(out);
+//		PrintStream out = new PrintStream(new FileOutputStream(ReadAndWriteUtils.getOutputFile()));
+//		System.setOut(out);
 		
 		problems = ReadAndWriteUtils.readSolomonProblems();
-		solveProblemsWithAdaptiveMemorySolver();	
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
-				numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);		
+		for (int i = 1; i < numberOfExperiments; i++) {
+			increaseParameters();
+			solveProblemsWithAdaptiveMemorySolver();		
+			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
+					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
+		}		
 	}
 	
 	@Test
@@ -96,6 +100,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
 			adaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsTabuSearch(maximalNumberOfIterationsTabuSearch);
+			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsWithoutImprovementTabuSerach(maximalNumberOfIterationsWithoutImprovementTabuSearch);
 			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);

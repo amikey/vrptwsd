@@ -41,6 +41,7 @@ public class GreedyInsertion {
             List<Customer> customers) {
     	    	    
     	Collections.shuffle(customers, random);
+    	System.out.println(customers);
     	
         final Depot depot = solution.getVrpProblem().getDepot();
 
@@ -53,7 +54,8 @@ public class GreedyInsertion {
             List<CustomerWithCost> insertionPoints = new ArrayList<CustomerWithCost>();
 
             // get number of Processors available and create corresponding number of possible concurrent threads
-            int threads = Runtime.getRuntime().availableProcessors(); 
+            // int threads = Runtime.getRuntime().availableProcessors();
+            int threads = 1; //wenn man mehr als einen Thread macht, kommen nicht mehr bei zwei Runs die gleichen Ergebnisse raus. 
             ExecutorService service = Executors.newFixedThreadPool(threads);
             // ??
             List<Future<List<CustomerWithCost>>> costFutures = new ArrayList<Future<List<CustomerWithCost>>>();

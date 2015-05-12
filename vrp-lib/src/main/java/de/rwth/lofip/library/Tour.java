@@ -36,6 +36,7 @@ public class Tour implements SolutionElement {
 	
 	//the label that the tour is labeled with for the adaptive memory
 	private double solutionValue;
+	private GroupOfTours gotThatTourBelongsTo;
 	
     /****************************************************************************
      * Constructors
@@ -57,14 +58,7 @@ public class Tour implements SolutionElement {
         this.depot = depot;
         this.vehicle = vehicle;
     }
-    
-    public Tour(Depot depot, Vehicle vehicle, double costFactor) {
-        this();
-        this.depot = depot;
-        this.vehicle = vehicle;
-        System.out.println("Kostenfaktor der Tour " + this.getId() + "wird auf " + costFactor + "gesetzt");
-    }
-    
+        
     //copy constructor
     public Tour(Tour tour1) {
     	this();
@@ -125,7 +119,11 @@ public class Tour implements SolutionElement {
 	/****************************************************************************
      * Getter and Setter
      ***************************************************************************/
-       
+    
+	public void setParentGot(GroupOfTours groupOfTours) {
+		gotThatTourBelongsTo = groupOfTours;
+	}
+	
     public long getId() {
         return id;
     }
@@ -287,9 +285,9 @@ public class Tour implements SolutionElement {
         insertCustomerAtPosition(customer, customers.size());
     } 
     
-	public void insertCustomersAtPosition(List<Customer> customers2, int position) {
+	public void insertCustomersAtPosition(List<Customer> customers, int position) {
 		//TODO: Das kann man auch in konstanter Zeit implementieren
-		Iterator<Customer> customerIterator = customers2.iterator(); 
+		Iterator<Customer> customerIterator = customers.iterator(); 
 		while (customerIterator.hasNext()) {
 			Customer customer = customerIterator.next();			
 			insertCustomerAtPosition(customer, position);
@@ -317,10 +315,12 @@ public class Tour implements SolutionElement {
         recalculateTotalDistance();
         recalculateDemand(customer.getDemand());
         recalculateRefsWhenCustomerIsInserted(position);
-        recalculateRefMatrixWhenCustomerIsInserted(position);      
+        recalculateRefMatrixWhenCustomerIsInserted(position);
+        
+        resetRecourseCostInParentGot();
         
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();
-    }    
+    }    	
 
 	private void assertThatRefsFromPositionToEndContainSameCustomersAsTour() {		
 		for (int i = 0; i < getCustomers().size(); i++) {
@@ -455,10 +455,11 @@ public class Tour implements SolutionElement {
 		return refTemp;
 	}
 	
-	public List<Customer> removeCustomersBetweenPositions(int position1, int position2) {
-		//TODO: Das kann man auch in konstanter Zeit implementieren
-		throw new RuntimeException("Methode removeCustomersBetweenPositions noch nicht implementiert");
+	private void resetRecourseCostInParentGot() {
+		gotThatTourBelongsTo.resetExpectedRecourseCost();
 	}
+	
+
 	
 	/**
      * Remove the customer at {@code position} if the tour has at least that
@@ -493,6 +494,8 @@ public class Tour implements SolutionElement {
         recalculateDemand(removedCustomer.getDemand() * -1);
         recalculateRefsWhenCustomerIsDeleted(position);
         recalculateRefMatrixWhenCustomerIsDeleted(position);
+        
+        resetRecourseCostInParentGot();
         
         assertThatRefsFromPositionToEndContainSameCustomersAsTour();
         return removedCustomer;
@@ -652,5 +655,6 @@ public class Tour implements SolutionElement {
 	public void setCostFactor(int i) {
 		costFactor = i;
 	}
+
 
 }

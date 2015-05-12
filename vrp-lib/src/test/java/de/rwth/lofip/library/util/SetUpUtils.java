@@ -124,6 +124,7 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour = new Tour(depot, vehicle);
+        tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c2);
         tour.addCustomer(c3);
@@ -136,6 +137,7 @@ public class SetUpUtils {
 	setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour = new Tour(depot, vehicle);
+        tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c3);
         tour.addCustomer(c2);
@@ -148,6 +150,7 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour = new Tour(depot, vehicle);
+        tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c2);
         tour.addCustomer(c3);
@@ -158,6 +161,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         Tour tour = new Tour(depot, vehicle);
+        tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c4);        
         return tour;
 	}
@@ -166,22 +170,22 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
                   
         Tour tour1 = new Tour(depot, vehicle);
-        tour1.addCustomer(c1);
-        tour1.addCustomer(c2);
         GroupOfTours got1 = new GroupOfTours();
         got1.addTour(tour1);
+        tour1.addCustomer(c1);
+        tour1.addCustomer(c2);                
         
         Tour tour2 = new Tour(depot, vehicle);
-        tour2.addCustomer(c3);
-        tour2.addCustomer(c4);
         GroupOfTours got2 = new GroupOfTours();
         got2.addTour(tour2);
+        tour2.addCustomer(c3);
+        tour2.addCustomer(c4);        
         
         Tour tour3 = new Tour(depot, vehicle);
-        tour3.addCustomer(c1);
-        tour3.addCustomer(c2);
         GroupOfTours got3 = new GroupOfTours();
         got3.addTour(tour3);
+        tour3.addCustomer(c1);
+        tour3.addCustomer(c2);        
         	            
 	    //create solution
 	    solution.addGot(got1);
@@ -195,12 +199,14 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
                   
         Tour tour1 = new Tour(depot, vehicle);
+        tour1.setParentGot(new GroupOfTours());
         tour1.addCustomer(c1);
         tour1.addCustomer(c2);
         GroupOfTours got1 = new GroupOfTours();
         got1.addTour(tour1);
         
         Tour tour2 = new Tour(depot, vehicle);
+        tour2.setParentGot(new GroupOfTours());
         tour2.addCustomer(c3);
         tour2.addCustomer(c4);
         GroupOfTours got2 = new GroupOfTours();
@@ -308,6 +314,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer2And3() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c2);
         tour.addCustomer(c3);
         return tour;	
@@ -316,6 +323,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer3And2() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c3);
         tour.addCustomer(c2);
         return tour;	
@@ -324,6 +332,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer1And4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c4);
         return tour;	
@@ -332,6 +341,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer1And2() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c2);
         return tour;	
@@ -340,6 +350,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer2() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c2);        
         return tour;
 	}
@@ -347,6 +358,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer3() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c3);        
         return tour;	
 	}
@@ -354,6 +366,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer1() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);        
         return tour;	
 	}
@@ -361,6 +374,7 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer1And2And4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c2);
         tour.addCustomer(c4);
@@ -369,7 +383,8 @@ public class SetUpUtils {
 	
 	private static Tour getTourWithCustomer3And4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);       
+		Tour tour = new Tour(depot, vehicle); 
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c3);
         tour.addCustomer(c4);
         return tour;
@@ -378,12 +393,14 @@ public class SetUpUtils {
 	public static Tour getEmptyTour() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
 		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
 		return tour;
 	}
 	
 	public static Tour getTourWithCustomers1And3() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);       
+		Tour tour = new Tour(depot, vehicle); 
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c3);
         return tour;
@@ -391,7 +408,8 @@ public class SetUpUtils {
 	
 	private static Tour getTourWithCustomersC1C3C2() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);       
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours());
         tour.addCustomer(c1);
         tour.addCustomer(c3);
         tour.addCustomer(c2);

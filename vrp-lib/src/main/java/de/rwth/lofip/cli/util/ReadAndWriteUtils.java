@@ -471,9 +471,8 @@ public class ReadAndWriteUtils {
 			int maximalNumberOfIterationsTabuSearch, int seedI1, int seedGI,
 			int seedAM) throws IOException {
 		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();
-		printResultsToFile("UberAdaptiveMemorySearch",solutions, dummySolutions, timeNeeded,
-				numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
-		
+		printResultsToFile(nameOfFile,solutions, dummySolutions, timeNeeded,
+				numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);		
 	}
 
 

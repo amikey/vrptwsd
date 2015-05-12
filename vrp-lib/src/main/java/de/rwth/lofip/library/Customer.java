@@ -157,5 +157,10 @@ public class Customer extends AbstractPointInSpace implements Cloneable{
 	public void print() {
 		System.out.print(customerNo);
 	}
+	
+	@Override
+	public String toString() {
+		return "" + customerNo;
+	}
 
 }
