@@ -1,7 +1,8 @@
 package de.rwth.lofip.library.solver.insertions;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -17,7 +18,6 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
 
@@ -40,8 +40,7 @@ public class GreedyInsertion {
     public SolutionGot insertCustomers(SolutionGot solution,
             List<Customer> customers) {
     	    	    
-    	Collections.shuffle(customers, random);
-    	System.out.println(customers);
+    	Collections.shuffle(customers, random);    	
     	
         final Depot depot = solution.getVrpProblem().getDepot();
 
@@ -72,9 +71,7 @@ public class GreedyInsertion {
                         List<CustomerWithCost> retList = new ArrayList<CustomerWithCost>();
 
                         for (int i = 0; i <= tourCustomerCount; i++) {
-                            if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(
-                                                    customerToBeInserted,
-                                                    tour, i)) {
+                            if (isInsertionPossible(customerToBeInserted, tour, i)) {
                                 // calculate the cost of insertion
                                 double cost = 0;
                                 if (i == 0) {
@@ -181,6 +178,11 @@ public class GreedyInsertion {
         }
         return solution;
     }
+
+	protected boolean isInsertionPossible(Customer customerToBeInserted,
+			Tour tour, int i) {
+		return TourUtils.isInsertionOfCustomerFeasibleTestWithRef(tour, customerToBeInserted, i);
+	}
 
 	public static void setSeedTo(int i) {
 		seed = i;	

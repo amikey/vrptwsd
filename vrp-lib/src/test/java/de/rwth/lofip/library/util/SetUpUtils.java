@@ -17,6 +17,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 
 public class SetUpUtils {
 	
@@ -70,6 +71,10 @@ public class SetUpUtils {
         depot = new Depot();
         depot.setxCoordinate(40);
         depot.setyCoordinate(50);
+        depot.setDemand(0);
+        depot.setTimeWindowOpen(0);
+        depot.setTimeWindowClose(2000);
+        depot.setServiceTime(0);
         
         vehicle = new Vehicle(1, 85);
         Set<Vehicle> vehicles = new HashSet<Vehicle>();
@@ -420,6 +425,16 @@ public class SetUpUtils {
 		GroupOfTours got = new GroupOfTours();
 		got.addTour(getTourWithCustomer1And2());
 		return got;
+	}
+	
+	public static GroupOfTours getGotWithCustomer3And4() {
+		GroupOfTours got = new GroupOfTours();
+		got.addTour(getTourWithCustomer3And4());
+		return got;
+	}
+
+	public static ElementWithTours getEmptySolution() {
+		return new SolutionGot();
 	}
 	
 

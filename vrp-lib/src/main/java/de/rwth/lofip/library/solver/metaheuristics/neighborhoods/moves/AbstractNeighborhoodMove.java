@@ -1,10 +1,14 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves;
 
+import java.io.Serializable;
+
+import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
 
-public class AbstractNeighborhoodMove {
+public class AbstractNeighborhoodMove implements Serializable {
 	
 	//helper class to store a cross move including its cost
+	private static final long serialVersionUID = 1L;
 	
 	private Tour tour1;
 	private Tour tour2;
@@ -23,6 +27,10 @@ public class AbstractNeighborhoodMove {
 		this.positionEndOfSegmentTour2 = posEnd2;
 		this.costOfCompleteSolutionThatResultsFromMove = cost;
 	}
+	
+	public AbstractNeighborhoodMove(double cost) {
+		this.costOfCompleteSolutionThatResultsFromMove = cost;
+	}
 
 	public double getCost() {
 		return costOfCompleteSolutionThatResultsFromMove;
@@ -31,9 +39,17 @@ public class AbstractNeighborhoodMove {
 	public Tour getTour1() {
 		return tour1;
 	}
+	
+	private void setTour1(Tour tour) {
+		tour1 = tour;		
+	}
 
 	public Tour getTour2() {
 		return tour2;
+	}
+	
+	private void setTour2(Tour tour) {
+		tour2 = tour;		
 	}
 
 	public int getStartPositionTour1() {
@@ -105,4 +121,33 @@ public class AbstractNeighborhoodMove {
 			return true;
 		return false;
 	}
+	
+	public AbstractNeighborhoodMove cloneWithCopyOfToursAndGotsAndCustomers() {
+		AbstractNeighborhoodMove newMove = new AbstractNeighborhoodMove(tour1, tour2, positionStartOfSegmentTour1, positionEndOfSegmentTour1, positionStartOfSegmentTour2, positionEndOfSegmentTour2, costOfCompleteSolutionThatResultsFromMove);
+		//Achtung, Touren sind noch nicht geklont
+		
+		GroupOfTours got1 = tour1.getParentGot().cloneWithCopyOfCustomers();
+		Tour tour1InGot1 = got1.getTourThatIsEqualTo(tour1);
+		//Setze Pointer in newMove auf geklonte Tour  
+		newMove.setTour1(tour1InGot1);
+
+		if (isParentGotOfTour2IsSameAsParentGotOfTour1()) {
+			//no need to clone got because it's the same
+			Tour tour2InGot2 = got1.getTourThatIsEqualTo(tour2);
+			//Setze Pointer in newMove auf geklonte Tour  
+			newMove.setTour2(tour2InGot2);
+		} else { //parent gots are different			
+			GroupOfTours got2 = tour2.getParentGot().cloneWithCopyOfCustomers();
+			Tour tour2InGot2 = got2.getTourThatIsEqualTo(tour2);
+			//Setze Pointer in newMove auf geklonte Tour  
+			newMove.setTour2(tour2InGot2);
+		}
+		return newMove;
+	}
+
+	public boolean isParentGotOfTour2IsSameAsParentGotOfTour1() {
+		return tour1.getParentGot().cloneWithCopyOfCustomers().equals(tour2.getParentGot().cloneWithCopyOfCustomers());
+	}
+
+
 }

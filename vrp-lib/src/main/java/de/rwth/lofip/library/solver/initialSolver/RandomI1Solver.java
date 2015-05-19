@@ -8,9 +8,11 @@ import org.apache.commons.lang.math.RandomUtils;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
+import de.rwth.lofip.library.util.VrpUtils;
 
 public class RandomI1Solver implements SolverInterfaceGot {
 	
@@ -20,13 +22,19 @@ public class RandomI1Solver implements SolverInterfaceGot {
 	private int numberOfSeedCustomers;
 		
 	private VrpProblem vrpProblem;
-	private SolutionGot solution;
+	protected SolutionGot solution;
 	
-	private List<Customer> remainingCustomers = new ArrayList<Customer>();
+	protected List<Customer> remainingCustomers = new ArrayList<Customer>();
 	private List<Customer> seedCustomers = new ArrayList<Customer>();
 
 	public RandomI1Solver() {
 		seed++;
+		rand = new Random(seed); 
+	}
+	
+	public SolutionGot solve(Tour tour) {
+		VrpProblem problem = VrpUtils.constructVrpProblemFromTour(tour);
+		return solve(problem);
 	}
 	
 	@Override

@@ -9,10 +9,6 @@ import de.rwth.lofip.library.solver.util.CustomerWithCost;
 public class Customer extends AbstractPointInSpace implements Cloneable{
 
 	protected long customerNo;
-	protected long demand;
-	protected double serviceTime;
-	protected double timeWindowClose;
-	protected double timeWindowOpen;
 	private List<CustomerWithCost> similarCustomers = new ArrayList<CustomerWithCost>();
 	
 	public Customer() {
@@ -43,38 +39,6 @@ public class Customer extends AbstractPointInSpace implements Cloneable{
 	public void setCustomerNo(long customerNo) {
 		this.customerNo = customerNo;
 		this.setId();
-	}
-
-	public long getDemand() {
-		return demand;
-	}
-
-	public void setDemand(long demand) {
-		this.demand = demand;
-	}
-
-	public double getTimeWindowOpen() {
-		return timeWindowOpen;
-	}
-
-	public void setTimeWindowOpen(double timeWindowOpen) {
-		this.timeWindowOpen = timeWindowOpen;
-	}
-
-	public double getTimeWindowClose() {
-		return timeWindowClose;
-	}
-
-	public void setTimeWindowClose(double timeWindowClose) {
-		this.timeWindowClose = timeWindowClose;
-	}
-
-	public double getServiceTime() {
-		return serviceTime;
-	}
-
-	public void setServiceTime(double serviceTime) {
-		this.serviceTime = serviceTime;
 	}
 	
 	public List<CustomerWithCost> getSimilarCustomers() {

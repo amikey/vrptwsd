@@ -1,5 +1,6 @@
 package de.rwth.lofip.library;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,24 +22,19 @@ import de.rwth.lofip.library.util.SetUpUtils;
 /**
  * @author Andreas Braun
  */
-public class GroupOfTours implements ElementWithTours, SolutionElement {
+public class GroupOfTours implements ElementWithTours, SolutionElement, Serializable {
 
 	/****************************************************************************
      * Fields
      ***************************************************************************/
-
+	private static final long serialVersionUID = 417229827834858665L;	
+	
 	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 1;
 	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.2;
 	static int MAXIMAL_NUMBER_OF_TOURS = 1;		
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	RecourseCost expectedRecourseCost = null;
-
-	public void addTour(Tour t) {
-    	tours.add(t);
-    	t.setParentGot(this);
-    	resetExpectedRecourseCost();
-    }
     
 	public static void setNumberOfToursInGot(int numberOfToursInGot) {
 		MAXIMAL_NUMBER_OF_TOURS = numberOfToursInGot;
@@ -98,11 +94,23 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
 		return tours.size() < MAXIMAL_NUMBER_OF_TOURS;
 	}
 	
+	public void addTour(Tour t) {
+    	tours.add(t);
+    	t.setParentGot(this);
+    	resetExpectedRecourseCost();
+    }
+	
 	public void createNewTour(VrpProblem vrpProblem) {
 		Tour t = new Tour(vrpProblem.getDepot(),
 				new Vehicle(vrpProblem.getVehicles().iterator().next().getCapacity()));
 		addTour(t); //recourse Cost wird schon resetted, wenn neue Tour geaddet wird
 		t.setParentGot(this);
+	}
+	
+	public void setTour(int j, Tour tour) {
+		tours.set(j, tour);
+		tour.setParentGot(this);
+		resetExpectedRecourseCost();
 	}
 	
 	public void insertCustomerIntoLastTour(Customer customer) {
@@ -230,7 +238,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
         return got;
     }
     
-	GroupOfTours cloneWithCopyOfCustomers() {
+	public GroupOfTours cloneWithCopyOfCustomers() {
 		GroupOfTours got = new GroupOfTours();
 		for (Tour t : tours) {
 			Tour tour = t.cloneWithCopyOfCustomers();
@@ -258,6 +266,21 @@ public class GroupOfTours implements ElementWithTours, SolutionElement {
 		s += ") ";	     
 	    return s;
 	}
+
+	public Tour getTourThatIsEqualTo(Tour tour1) {
+		for (Tour t : tours) {
+			if (t.equals(tour1))
+				return t; 
+		}
+		throw new RuntimeException("No tour found. Should not happen");
+	}
+
+	public void print() {
+		System.out.println(getAsTupel());
+	}
+
+
+	
 
 	
 

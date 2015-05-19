@@ -1,16 +1,22 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
+import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
+import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
+import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 
 public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
-	private int maximalNumberOfIterations = 100;
-	private int maxNumberIterationsWithoutImprovement = 50;
+	private int maximalNumberOfIterations;
+	private int maxNumberIterationsWithoutImprovement;
 	
 	private int iteration = 1;
 	private ElementWithTours solution;
@@ -21,13 +27,12 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
 	@Override
 	public ElementWithTours improve(ElementWithTours solutionStart) {
-		System.out.println("STARTE TABU SUCHE");
 		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
 		
-		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());
+//		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());
 		while (!isStoppingCriterionMet()) {
 			try {
 				findBestNonTabooMove();
@@ -44,6 +49,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 //					System.out.println("DEBUGGING!");
 				
 				if (isNewSolutionIsNewBestOverallSolution()) { 
+					tryToImproveNewBestSolutionWithIntensificationPhase();
 					setBestOverallSolutionToNewSolution();	
  					iterationsWithoutImprovement = 0;
 				} else
@@ -51,7 +57,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			} catch (Exception e) {
 				if (e instanceof NoSolutionExistsException) {													
 //				if (e.getMessage() == "No feasible move found.") {						
-					System.out.println(e.getMessage() + " Iteration: " + iteration + "; Solution: " + solution);
+//					System.out.println(e.getMessage() + " Iteration: " + iteration + "; Solution: " + solution);
 					iterationsWithoutImprovement++;
 				} else {
 					StackTraceElement[] arr = e.getStackTrace();
@@ -93,6 +99,26 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		return false;
 	}
 	
+	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
+		//TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
+		SolutionGot solutionTemp = (SolutionGot) solution;
+		for (GroupOfTours got : solutionTemp.getGots())
+			for (int j = 0; j < got.getTours().size(); j++) {
+				Tour tour = got.getTour(j);
+				for (int i = 0; i < 10; i++) { // 10 Verbesserungsversuche pro Tour
+					SolutionGot newSolution = new RandomI1Solver().solve(tour);
+					new LocalSearchForElementWithTours().improve(newSolution);
+					if (newSolution.getNumberOfTours() == 1)
+						if (newSolution.getTotalDistance() <  tour.getTotalDistanceWithCostFactor()) {
+							System.out.println("Hurra, Intensification Procedure hat eine bessere Tour gefunden");
+							tour = newSolution.getTour(0);
+							got.setTour(j, newSolution.getTour(0));
+	//						break;
+						}
+				}
+			}	
+	}
+	
 	private void setBestOverallSolutionToNewSolution() {
 		bestOverallSolution = solution.clone();	
 	}
@@ -107,5 +133,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	public void setMaximalNumberOfIterationsWithoutImprovement(int i) {
 		maxNumberIterationsWithoutImprovement = i;
+	}
+
+	public void tryToImproveNewBestSolutionWithIntensificationPhase(
+			SolutionGot solution2) {
+		solution = solution2;
+		tryToImproveNewBestSolutionWithIntensificationPhase();
 	}
 }

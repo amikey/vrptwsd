@@ -77,12 +77,11 @@ public class ResourceExtensionFunction {
 	}
 
 	public ResourceExtensionFunction(Depot depot) {
-		//TODO: get values from Depot
 		super();
-		duration = 0;
-		latestArrivalTime = 1236;
-		earliestDepartureTime = 0;
-		demand = 0;
+		duration = depot.getServiceTime();
+		latestArrivalTime = depot.getTimeWindowClose();
+		earliestDepartureTime = depot.getTimeWindowOpen();
+		demand = (int) depot.getDemand();
 		containsDepot = true;
 		this.depot = depot;
 	}

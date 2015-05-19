@@ -1,5 +1,7 @@
 package de.rwth.lofip.cli;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -12,6 +14,7 @@ import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
+import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 
 public class RunAdaptiveMemorySearchWithSolomonInstances {
 
@@ -19,14 +22,15 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	private long timeNeeded;
 	
-	private int maximalNumberOfIterationsTabuSearch = 50;
+	private int numberOfDifferentInitialSolutions = 20;
+	private int maximalNumberOfIterationsTabuSearch = 0;
 	private int maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
-	private int numberOfDifferentInitialSolutions = 10;
-	private int maximalNumberOfCallsToAdaptiveMemory = 50;
+	private int maximalNumberOfCallsToAdaptiveMemory = 0;
+	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 	
-	private int seedI1 = 1;
-	private int seedGI = 1;
-	private int seedAM = 1;
+	private int seedI1 = 13;
+	private int seedGI = 13;
+	private int seedAM = 13;
 	
 	private int numberOfExperiments = 100;
 	
@@ -34,57 +38,22 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
 //		PrintStream out = new PrintStream(new FileOutputStream(ReadAndWriteUtils.getOutputFile()));
 //		System.setOut(out);
-		
 		problems = ReadAndWriteUtils.readSolomonProblems();
-		for (int i = 1; i < numberOfExperiments; i++) {
-			increaseParameters();
-			solveProblemsWithAdaptiveMemorySolver();		
-			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
-					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
-		}		
+		processProblems();
 	}
-	
+
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceC202() throws IOException {			
-//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
-//		System.setOut(out);
-		
 		problems = ReadAndWriteUtils.readSolomonProblemC202();	
-		for (int i = 1; i < numberOfExperiments; i++) {
-			increaseParameters();
-			solveProblemsWithAdaptiveMemorySolver();		
-			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
-					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
-		}
+		processProblems();
 	}
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceC204() throws IOException {			
-//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
-//		System.setOut(out);
-		
 		problems = ReadAndWriteUtils.readSolomonProblemC204();	
-		for (int i = 1; i < numberOfExperiments; i++) {
-			increaseParameters();
-			solveProblemsWithAdaptiveMemorySolver();		
-			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
-					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
-		}
+		processProblems();
 	}
-	
-	@Test
-	public void TestAdaptiveMemorySearchOnSolomonInstanceC206() throws IOException {			
-//		PrintStream out = new PrintStream(new FileOutputStream(getOutputFile()));
-//		System.setOut(out);
-		
-		problems = ReadAndWriteUtils.readSolomonProblemC206();	
-		for (int i = 1; i < numberOfExperiments; i++) {
-			increaseParameters();
-			solveProblemsWithAdaptiveMemorySolver();		
-			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
-					numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);
-		}
-	}
+
 	
 	private void increaseParameters() {
 		seedI1++;
@@ -92,17 +61,59 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		seedAM++;
 	}
 	
+	private void processProblems() throws IOException {
+		for (int i = 1; i < numberOfExperiments; i++) {
+			increaseParameters();
+			solveProblemsWithAdaptiveMemorySolver();		
+			ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
+					numberOfDifferentInitialSolutions, 
+					maximalNumberOfIterationsTabuSearch, 
+					maximalNumberOfIterationsWithoutImprovementTabuSearch, 
+					maximalNumberOfCallsToAdaptiveMemory,
+					maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+					seedI1, seedGI, seedAM);
+		}		
+	}
+	
+	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(
+			List<VrpProblem> vrpProblems,
+			List<SolutionGot> solutionsTemp, 
+			int numberOfDifferentInitialSolutions,
+			int maximalNumberOfIterationsTabuSearch,
+			int maximalNumberOfIterationsWithoutImprovementTabuSearch,
+			int maximalNumberOfCallsToAdaptiveMemory,
+			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+			int seedI1,
+			int seedGI,
+			int seedAM) {
+		
+		this.problems = vrpProblems;
+		this.solutions = solutionsTemp;
+		this.numberOfDifferentInitialSolutions = numberOfDifferentInitialSolutions;
+		this.maximalNumberOfIterationsTabuSearch = maximalNumberOfIterationsTabuSearch;
+		this.maximalNumberOfIterationsWithoutImprovementTabuSearch = maximalNumberOfIterationsWithoutImprovementTabuSearch; 
+		this.maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory;
+		this.maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
+		this.seedI1 = seedI1;
+		this.seedGI = seedGI;
+		this.seedAM = seedAM;
+		
+		solveProblemsWithAdaptiveMemorySolver();
+		return solutions;
+	}
+	
 	private void solveProblemsWithAdaptiveMemorySolver() {
 		long startTime = System.nanoTime();
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());
-			
+						
+			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-			adaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsTabuSearch(maximalNumberOfIterationsTabuSearch);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsWithoutImprovementTabuSerach(maximalNumberOfIterationsWithoutImprovementTabuSearch);
 			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
+			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(maximalNumberOfCallsWithoutImprovementToAdaptiveMemory);
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
 			solutions.add(solution);			
 		}

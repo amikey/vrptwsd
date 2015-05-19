@@ -10,6 +10,7 @@ public class AdaptiveMemoryTabuSearch {
 	
 	private int numberOfDifferentInitialSolutions;
 	private int maximalNumberOfCallsToAdaptiveMemory;
+	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
 	private int maximalNumberOfIterationsTabuSearch;
 	private int maximalNumberOfIterationsWithoutImprovementTabuSearch;
 	
@@ -57,6 +58,7 @@ public class AdaptiveMemoryTabuSearch {
 
 		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) {
 			for (int i = 1; i <= numberOfDifferentInitialSolutions; i++) {
+				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
 				TabuSearchForElementWithTours tabuSearch = new TabuSearchForElementWithTours();
@@ -68,7 +70,7 @@ public class AdaptiveMemoryTabuSearch {
 		}
 		
 		private boolean isStoppingCriterionMet() {
-			if (numberOfAMCallsWithoutImprovement >= 3)
+			if (numberOfAMCallsWithoutImprovement >= maximalNumberOfCallsWithoutImprovementToAdaptiveMemory)
 				return true;
 //			if (callsToAdaptiveMemory >= maximalNumberOfCallsToAdaptiveMemory)
 //				return true;
@@ -131,13 +133,18 @@ public class AdaptiveMemoryTabuSearch {
 		maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory2;
 	}
 
+	public void setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(
+			int i) {
+		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = i;
+	}
+	
 	public void resetSeeds() {
 		AdaptiveMemory.setSeedTo(0);
 		GreedyInsertion.setSeedTo(0);
 		RandomI1Solver.setSeedTo(0);
 	}
 
-	public void setSeeds(int seedI1, int seedGI, int seedAM) {
+	public static void setSeeds(int seedI1, int seedGI, int seedAM) {
 		AdaptiveMemory.setSeedTo(seedAM);
 		GreedyInsertion.setSeedTo(seedGI);
 		RandomI1Solver.setSeedTo(seedI1);

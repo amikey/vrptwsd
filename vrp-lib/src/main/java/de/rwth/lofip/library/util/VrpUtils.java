@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
+import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 
@@ -99,6 +100,10 @@ public class VrpUtils {
 					Depot depot = new Depot();
 					depot.setxCoordinate(Double.parseDouble(split[1]));
 					depot.setyCoordinate(Double.parseDouble(split[2]));
+					depot.setDemand(Long.parseLong(split[3]));
+					depot.setTimeWindowOpen(Long.parseLong(split[4]));
+					depot.setTimeWindowClose(Long.parseLong(split[5]));
+					depot.setServiceTime(Long.parseLong(split[6]));
 					vrpProblem.addDepot(depot);
 					vrpProblem.setMaxTime(Long.parseLong(split[5]));
 					state = ImportFileState.CUSTOMER;
@@ -120,4 +125,18 @@ public class VrpUtils {
 		}
 		return vrpProblem;
 	}
+	
+	public static VrpProblem constructVrpProblemFromTour(Tour tour) {
+		VrpProblem vrpProblem = new VrpProblem();
+		vrpProblem.setDescription("Auxiliary vrpProblem for TDP - Intensification Phase");
+		for (Customer c : tour.getCustomers())
+			vrpProblem.addCustomer(c);
+		vrpProblem.addDepot(tour.getDepot());
+		
+		Set<Vehicle> vehicles = new HashSet<Vehicle>(1);
+		vehicles.add(tour.getVehicle());
+		vrpProblem.setVehicles(vehicles);
+		return vrpProblem;
+	}
+
 }

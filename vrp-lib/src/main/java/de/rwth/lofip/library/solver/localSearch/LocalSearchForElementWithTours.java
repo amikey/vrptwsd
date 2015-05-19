@@ -1,6 +1,7 @@
 package de.rwth.lofip.library.solver.localSearch;
 
 import static org.junit.Assert.assertEquals;
+import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
@@ -10,8 +11,8 @@ import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 
 public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
-	private ElementWithTours solution;
-	private AbstractNeighborhoodMove bestMove;
+	protected ElementWithTours solution;
+	protected AbstractNeighborhoodMove bestMove = null;
 	private CrossNeighborhood crossNeighborhood;
 	private int iteration = 1;
 			
@@ -19,32 +20,29 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	public ElementWithTours improve(ElementWithTours solutionStart) {
 		this.solution = solutionStart;
 		crossNeighborhood = new CrossNeighborhood(solution);
-		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());		
+//		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());		
 		boolean isImprovement = false;
 		do {
 			try{
 				findBestMove();			
-				printBestMove();				
+//				printBestMove();				
 				isImprovement = isImprovement();
-				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
+//				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
 				if (isImprovement) {
 					applyBestMove();					
 //					System.out.println("Move applied! Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
-					//TODO: Remove because takes time (O(n))
-					assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(solution));
-					assertEquals(true, ElementWithToursUtils.isElementTWFeasible(solution));
-					assertEquals(solution.getTotalDistance(),bestMove.getCost(),0.001);
+					assertEqualsHook();
 					iteration++;
 				}
 			} catch (Exception e) {				
-				if (e.getMessage() == "No feasible move found") {
+				if (e instanceof NoSolutionExistsException) {
 					isImprovement = false;
-					System.out.println("Kein feasible Move gefunden");
+//					System.out.println(e.getMessage() + " Iteration: " + iteration + "; Solution: " + solution);
 				} else 
 					throw new RuntimeException(e);
 			}			
 		} while (isImprovement);
-		System.out.println("");
+//		System.out.println("");
 		return solution;
 	}
 	
@@ -66,6 +64,10 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 
 	private void applyBestMove() {
 		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);		
+	}
+	
+	protected void assertEqualsHook() {
+		//nothing to do here, hook exists for testing only 
 	}
 
 }

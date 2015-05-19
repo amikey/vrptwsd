@@ -205,6 +205,9 @@ public class TourUtils {
 
 	
 	
+	public static boolean isInsertionOfCustomerFeasibleTestWithRef(Tour tour, Customer customer, int position) {
+		return isInsertionOfRefPossible(tour, new ResourceExtensionFunction(customer), position);
+	}
 	
 	public static boolean isConcatenationOfRefsTWFeasible(ResourceExtensionFunction ref1, ResourceExtensionFunction ref2) {		
 		double duration = new Edge(ref1.getLastCustomer(), ref2.getFirstCustomer()).getLength();

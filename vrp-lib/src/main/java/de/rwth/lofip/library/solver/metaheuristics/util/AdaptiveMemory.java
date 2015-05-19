@@ -24,8 +24,6 @@ public class AdaptiveMemory {
 	private VrpProblem vrpProblem;
 	
 	private List<Customer> unservedCustomers;
-	//TODO: remove served Customers. Nicht nötig, wird gar nicht verwendet
-	private Collection<Customer> servedCustomers;
 	private List<Tour> toursThatContainOnlyUnservedCustomers;
 	private Tour currentNewTour;
 	private SolutionGot currentNewSolution;
@@ -96,14 +94,12 @@ public class AdaptiveMemory {
 	
 	public SolutionGot constructSolutionFromTours() {
 		initialiseCurrentNewSolution();
-		initialiseUnservedCustomers();
-		initialiseServedCustomers();		
+		initialiseUnservedCustomers();		
 		initialiseToursThatContainOnlyUnservedCustomers();
 		while (!(setOfSelectedToursCoversAllCustomers() ||
 				thereIsNoAdmissibleTourLeftInAdaptiveMemory())) {			
 			pickTourWithProbability();
-			updateUnservedCustomers();
-			updateServedCustomers();
+			updateUnservedCustomers();			
 			removeAllToursThatContainAlreadyServedCustomers();		
 		}
 		constructSolutionWithCustomersThatRemainUnserved();
@@ -116,10 +112,6 @@ public class AdaptiveMemory {
 	
 		private void initialiseUnservedCustomers() {
 			unservedCustomers = new ArrayList<Customer>(vrpProblem.getCustomers());
-		}
-		
-		private void initialiseServedCustomers() {
-			servedCustomers = new HashSet<Customer>();
 		}
 		
 		private void initialiseToursThatContainOnlyUnservedCustomers() {
@@ -153,10 +145,6 @@ public class AdaptiveMemory {
 			
 		private void updateUnservedCustomers() {
 			unservedCustomers.removeAll(currentNewTour.getCustomers());		
-		}
-		
-		private void updateServedCustomers() {
-			servedCustomers.addAll(currentNewTour.getCustomers());
 		}
 		
 		private void removeAllToursThatContainAlreadyServedCustomers() {

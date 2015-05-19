@@ -3,72 +3,76 @@ package de.rwth.lofip.library.solver.metaheuristics;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
 
+import de.rwth.lofip.cli.RunAdaptiveMemorySearchWithSolomonInstances;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
+import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 
 public class AdaptiveMemoryTabuSearchTest {
 	
 	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	private List<SolutionGot> solutions2 = new LinkedList<SolutionGot>();
-	private long timeNeeded;
-	
-	private int maximalNumberOfIterationsTabuSearch = 7;
-	private int numberOfDifferentInitialSolutions = 3;
-	private int maximalNumberOfCallsToAdaptiveMemory = 15;
+	private List<SolutionGot> solutions3 = new LinkedList<SolutionGot>();
 	
 	@Test
-	public void testThatTwoRunsOfAMSearchProduceTheSameResults() throws IOException {
-			
-		problems = ReadAndWriteUtils.readSolomonProblemRC101();		
+	public void testThatTwoRunsOfAMSearchProduceTheSameResults1() throws IOException {
+	
+		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();	
+		
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
+				problems, solutions, 2, 7, 7, 7, 7, 1, 1, 1);	
+		
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
+				problems, solutions2, 2, 7, 7, 7, 7, 1, 1, 1);
+		
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
+				problems, solutions3, 2, 7, 7, 10, 10, 1, 1, 1);
 				
-		solveProblemsWithAdaptiveMemoryTabuSeach(solutions);		
-
-		maximalNumberOfIterationsTabuSearch = 7;
-		numberOfDifferentInitialSolutions = 3;
-		maximalNumberOfCallsToAdaptiveMemory = 20;
-		
-		solveProblemsWithAdaptiveMemoryTabuSeach(solutions2);
-		
 		for (int i = 0; i < solutions.size(); i++) {
 			solutions.get(i).printSolutionCost();
 			solutions.get(i).printVehicleCount();
 			solutions2.get(i).printSolutionCost();
 			solutions2.get(i).printVehicleCount();
-			assertEquals(true,isSolutionOneWorseThanSolutionTwo(solutions.get(i),solutions2.get(i)));
+			solutions3.get(i).printSolutionCost();
+			solutions3.get(i).printVehicleCount();
+			assertEquals(true,solutions.get(i).equals(solutions2.get(i)));
+			assertEquals(true,isSolutionOneWorseThanOrEqualToSolutionTwo(solutions.get(i),solutions3.get(i)));
 		}
 	}
 	
-	private void solveProblemsWithAdaptiveMemoryTabuSeach(List<SolutionGot> solutionsTemp) {
-		long startTime = System.nanoTime();
-		for (VrpProblem problem : problems) {
-			System.out.println("SOLVING PROBLEM " + problem.getDescription());
-			
-			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-			adaptiveMemoryTabuSearch.resetSeeds();
-			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsTabuSearch(maximalNumberOfIterationsTabuSearch);
-			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
-			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
-			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
-			solutionsTemp.add(solution);			
-		}
-		long endTime = System.nanoTime();
-		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
-	}	
-	
-	private Object isSolutionOneWorseThanSolutionTwo(SolutionGot solutionGot, SolutionGot solutionGot2) {
+	private Object isSolutionOneWorseThanOrEqualToSolutionTwo(SolutionGot solutionGot, SolutionGot solutionGot2) {
 		if (solutionGot.getTotalDistance() >= solutionGot2.getTotalDistance())
 			return true;
 		if (solutionGot.getVehicleCount() > solutionGot2.getVehicleCount())
 			return true;
 		return false;
+	}
+	
+	@Test
+	public void testFeasibilityOfC101Solution() throws IOException {
+		
+		problems = ReadAndWriteUtils.readSolomonProblemC101();	
+		
+		solutions = new ArrayList<SolutionGot>();
+		
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
+				problems, solutions, 2, 0, 10, 0, 10, 1, 1, 1);
+		
+		SolutionGot solutionC101 = solutions.get(0);
+		
+		solutionC101.printSolutionCost();
+		solutionC101.printSolutionAsTupel();
+		assertEquals(true,SolutionGotUtils.isSolutionFeasibleWrtDemand(solutionC101));
+		assertEquals(true,SolutionGotUtils.isSolutionFeasibleWrtTW(solutionC101));
 	}
 	
 }

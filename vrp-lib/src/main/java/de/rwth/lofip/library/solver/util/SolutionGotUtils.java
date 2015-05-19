@@ -1,0 +1,26 @@
+package de.rwth.lofip.library.solver.util;
+
+import de.rwth.lofip.library.Customer;
+import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.util.CustomerInTour;
+
+public class SolutionGotUtils {
+	
+	public static boolean isSolutionFeasibleWrtDemand(SolutionGot solution){
+		for (Tour tour : solution.getTours()) {
+			if (!TourUtils.isTourFeasibleWrtDemand(tour))
+				return false;
+		}
+		return true;
+	}
+	
+	public static boolean isSolutionFeasibleWrtTW(SolutionGot solution){
+		for (Tour tour : solution.getTours()) {
+			if (!TourUtils.isTourFeasibleWrtTW(tour))
+				return false;
+		}
+		return true;
+	}
+	
+}

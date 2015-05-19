@@ -2,6 +2,7 @@ package de.rwth.lofip.library;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,9 +12,11 @@ import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.CustomerInTour;
 
-public class Tour implements SolutionElement {
+public class Tour implements SolutionElement, Serializable {
 
-    /****************************************************************************
+	private static final long serialVersionUID = 1897416552132511414L;
+	
+	/****************************************************************************
      * Fields
      ***************************************************************************/
 	
@@ -124,6 +127,10 @@ public class Tour implements SolutionElement {
 		gotThatTourBelongsTo = groupOfTours;
 	}
 	
+	public GroupOfTours getParentGot() {
+		return gotThatTourBelongsTo;
+	}
+	
     public long getId() {
         return id;
     }
@@ -214,16 +221,8 @@ public class Tour implements SolutionElement {
 		return refsFromStartUpToPosition;		
 	}
 	
-    private void setRefsFromBeginning(List<ResourceExtensionFunction> refsFromBeginning1) {
-    	refsFromStartUpToPosition = refsFromBeginning1;
-	}
-
-	public List<ResourceExtensionFunction> getRefsToEnd() {
+    public List<ResourceExtensionFunction> getRefsToEnd() {
 		return refsFromPositionToEnd;		
-	}
-	
-	private void setRefsToEnd(List<ResourceExtensionFunction> refsToEnd1) {
-    	refsFromPositionToEnd = refsToEnd1;		
 	}
 	
 	public ResourceExtensionFunction getRefFromBeginningAtPosition(int i) {
@@ -344,7 +343,7 @@ public class Tour implements SolutionElement {
 		}			
 		
 		//recalculate refsFromPositionToEnd		
-		shiftRefsUpFromPositionOneTimeToTheRight(position);
+		shiftRefsUpFromPositionToEndOneTimeToTheRight(position);
 		for (int i = position; i >= 0; i--) {
 			ResourceExtensionFunction refTemp = createRefUpToEndAtPosition(i);
 			setRefUpToEndAtPosition(refTemp,i);
@@ -360,7 +359,7 @@ public class Tour implements SolutionElement {
 		refsFromPositionToEnd.remove(customers.size());
 	}
 
-	private void shiftRefsUpFromPositionOneTimeToTheRight(int position) {		
+	private void shiftRefsUpFromPositionToEndOneTimeToTheRight(int position) {		
 		for (int i = customers.size()-1; i > position; i--) {
 			if (isLastPosition(i))
 				refsFromPositionToEnd.add(refsFromPositionToEnd.get(i-1));

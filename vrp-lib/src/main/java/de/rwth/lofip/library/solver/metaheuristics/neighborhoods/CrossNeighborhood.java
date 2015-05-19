@@ -20,7 +20,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private ElementWithTours elementWithTours;
 	
 	private int tourCounter1 = 0;
-	private int tourCounter2 = 1;
+	private int tourCounter2 = 0;
 	
 	private double costOfCompleteSolutionThatResultsFromMove;
 	private boolean firstNeighborhoodStep;
@@ -32,16 +32,17 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private int positionStartOfSegmentTour2 = 0;
 	private int positionEndOfSegmentTour2 = 0;
 	
-	private ResourceExtensionFunction RefSegment1 = new ResourceExtensionFunction();
-	private ResourceExtensionFunction RefSegment2 = new ResourceExtensionFunction();
+	private ResourceExtensionFunction RefSegment1;
+	private ResourceExtensionFunction RefSegment2;
 		
+	//auxiliary fields
 	private ResourceExtensionFunction currentRef;
 	private Tour currentTour;
 	private int currentPositionEndOfSegment;
+	private boolean isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = false;
 	
 	protected AbstractNeighborhoodMove bestNonTabooMove = null;
 	private AbstractNeighborhoodMove bestMoveThatMightBeTaboo = null;
-	private boolean isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = false;
 	
 	public CrossNeighborhood(ElementWithTours solution) {
 		this.elementWithTours = solution;
@@ -61,6 +62,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		RefSegment1 = new ResourceExtensionFunction();
 		RefSegment2 = new ResourceExtensionFunction();
 		bestNonTabooMove = null;
+		bestMoveThatMightBeTaboo = null;
 	}
 		
 	public AbstractNeighborhoodMove returnBestMove() throws Exception {
@@ -76,8 +78,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				throw new NoSolutionExistsException("No feasible move found because of feasibility constraints");
 			else 
 				throw new NoSolutionExistsException("No move found because all feasible moves are taboo");
-		}
-			
+		}			
 		return bestNonTabooMove;
 	}
 		
@@ -100,7 +101,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 //							System.out.println("move ist neuer bester move.");
 							if (!isMoveTaboo(move, iteration)) {
 //								System.out.println("move ist NICHT tabu");
-								bestNonTabooMove = move;
+								setRespAddBestNonTabooMove(move);								
 							}
 //							} else 
 //								System.out.println("move ist tabu");
@@ -108,8 +109,9 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 					}
 				}
 			}
+			setBestNonTabooMove();
 		}
-		
+
 	public boolean isExistsNextCombinationOfSegments() {
 		if (segmentInTour2CanBeIncreased())
 			return true;
@@ -429,6 +431,14 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 
 		protected boolean isMoveTaboo(AbstractNeighborhoodMove move, int iteration) { 
 			return false;
+		}
+		
+		protected void setRespAddBestNonTabooMove(AbstractNeighborhoodMove move) {
+			bestNonTabooMove = move;
+		}
+		
+		protected void setBestNonTabooMove() {
+			//nothing to do here; hook is needed for Recourse calculation
 		}
 		
 	//********************	

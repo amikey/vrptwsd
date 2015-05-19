@@ -126,16 +126,6 @@ public class VrpProblem implements Cloneable {
 		return (int) Math.round((double) getTotalDemandOfAllCustomersOnTour() / vehicles.iterator().next().getCapacity());		
 	}
 
-	// AB: Attention: this only works if we deal with a homogeneous fleet
-	public void setVehicleCount(int vehicleAmount) {
-		double vehicleCapacity = vehicles.iterator().next().getCapacity();
-		Set<Vehicle> newVehicles = new HashSet<Vehicle>();
-		for (int i = 0; i < vehicleAmount; i++) {
-			newVehicles.add(new Vehicle(i, vehicleCapacity));
-		}
-		this.setVehicles(newVehicles);
-	}
-
 	public void setVehicleCapacity(double capacity) {
 		for (Vehicle v : vehicles)
 			v.setCapacity(capacity);

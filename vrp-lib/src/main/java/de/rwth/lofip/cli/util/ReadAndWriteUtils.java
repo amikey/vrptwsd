@@ -112,10 +112,14 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("c206","rc206");
 	}
 	
-	public static List<VrpProblem> readSolomonProblemRC101() throws IOException {
+	public static List<VrpProblem> readSolomonProblemRC101AsList() throws IOException {
 		return readSolomonProblemX("rc101","X");
 	}
 
+	public static VrpProblem readSolomonProblemRC101() throws IOException {
+		return readSolomonProblemX("rc101","X").get(0);
+	}
+	
 	public static void printResultsToFile(String string,List<SolutionGot> solutions) throws IOException {
 		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();	
 		printResultsToFile(string, solutions, dummySolutions); 		
@@ -131,8 +135,14 @@ public class ReadAndWriteUtils {
 		printResultsToFile(string, solutionsInitialSolver, solutionsLocalSearch, 0);
 	}
 	
+	
+	
 	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1,List<SolutionGot> solutions2, long timeNeeded,
-											int initialNumberOfDifferentInitialSolutions, int initialNumberOfIterationsTabuSearch,
+											int initialNumberOfDifferentInitialSolutions, 
+											int initialNumberOfIterationsTabuSearch,
+											int maximalNumberOfIterationsWithoutImprovementTabuSearch,
+											int maximalNumberOfCallsToAdaptiveMemory,
+											int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
 											int seedI1, int seedGI, int seedAM) throws IOException {
 		setUpBestKnownSolutionValues();
 		setUpBestKnownSolutionVehicleNumbers();
@@ -140,9 +150,12 @@ public class ReadAndWriteUtils {
 		FileOutputStream outputStream = openOutputFile(nameOfFile);
 		
 		int i = 0;
-		IOUtils.write("Start-Parameter: " + 
-				"initialNumberOfDifferentInitialSolutions " + initialNumberOfDifferentInitialSolutions + " " +
-				"initialNumberOfIterationsTabuSearch " + initialNumberOfIterationsTabuSearch + " " +
+		IOUtils.write("Start-Parameter:; " + 
+				"initialNumberOfDifferentInitialSolutions " + initialNumberOfDifferentInitialSolutions + "; " +
+				"initialNumberOfIterationsTabuSearch " + initialNumberOfIterationsTabuSearch + "; " +
+				"maximalNumberOfIterationsWithoutImprovementTabuSearch " + maximalNumberOfIterationsWithoutImprovementTabuSearch + ";" + 
+				"maximalNumberOfCallsToAdaptiveMemory " + maximalNumberOfCallsToAdaptiveMemory + "; " +  
+				"maximalNumberOfCallsWithoutImprovementToAdaptiveMemory " + maximalNumberOfCallsWithoutImprovementToAdaptiveMemory +";" + 
 				"seedI1 " + seedI1 + " " +
 				"seedGI " + seedGI + " " +
 				"seedAM " + seedAM + "\n "
@@ -468,11 +481,20 @@ public class ReadAndWriteUtils {
 	public static void printResultsToFile(String nameOfFile,
 			List<SolutionGot> solutions,
 			long timeNeeded, int numberOfDifferentInitialSolutions,
-			int maximalNumberOfIterationsTabuSearch, int seedI1, int seedGI,
+			int maximalNumberOfIterationsTabuSearch, 
+			int maximalNumberOfIterationsWithoutImprovementTabuSearch,
+			int maximalNumberOfCallsToAdaptiveMemory,
+			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+			int seedI1, int seedGI,
 			int seedAM) throws IOException {
 		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();
 		printResultsToFile(nameOfFile,solutions, dummySolutions, timeNeeded,
-				numberOfDifferentInitialSolutions, maximalNumberOfIterationsTabuSearch, seedI1, seedGI, seedAM);		
+				numberOfDifferentInitialSolutions, 
+				maximalNumberOfIterationsTabuSearch,
+				maximalNumberOfIterationsWithoutImprovementTabuSearch,
+				maximalNumberOfCallsToAdaptiveMemory,
+				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+				seedI1, seedGI, seedAM);		
 	}
 
 

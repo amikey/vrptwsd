@@ -19,5 +19,5 @@ public interface ElementWithTours {
 	public String getAsTupel();
 
 	public ElementWithTours clone();
-	
+
 }

@@ -10,8 +10,10 @@ import org.junit.Test;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
+import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
@@ -41,7 +43,7 @@ public class TestRandomI1Solver {
 	
 	@Test
 	public void testThatTwoRunsOfRandomI1SolverProduceTheSameResults() throws IOException {		
-		problems = ReadAndWriteUtils.readSolomonProblemRC101();		
+		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();		
 		
 		RandomI1Solver.setSeedTo(1);
 		GreedyInsertion.setSeedTo(1);
@@ -58,6 +60,15 @@ public class TestRandomI1Solver {
 		}
 	}
 	
+	@Test
+	public void TestThatNumberOfToursInGotsIsCorrectAfterInitialSolver() throws IOException {
+		int numberOfToursInGot = 2;	
+		GroupOfTours.setNumberOfToursInGot(numberOfToursInGot);
+		problems = ReadAndWriteUtils.readSolomonProblemC202();	
+		solveProblemsWithRandomI1Solver(solutions);				
+		assertEquals(2, solutions.get(0).maximalNumberOfToursInGots());
+	}
+	
 	private void solveProblemsWithRandomI1Solver(List<SolutionGot> solutionsTemp) {		
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());
@@ -67,5 +78,8 @@ public class TestRandomI1Solver {
 			solutionsTemp.add(solution);			
 		}				
 	}	
+
+
+	
 	
 }

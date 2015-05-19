@@ -9,4 +9,8 @@ public class CrossNeighborhoodMove extends AbstractNeighborhoodMove {
 		super(tour1, tour2, posStart1, posEnd1, posStart2, posEnd2, cost);
 	}
 
+	public CrossNeighborhoodMove(double i) {
+		super(i);
+	}
+
 }

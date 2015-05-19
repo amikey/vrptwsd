@@ -17,11 +17,15 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();  
     //TODO: Kosten als Variable speichern
     
+    public SolutionGot() {
+		// TODO Auto-generated constructor stub
+	}
+    
     public SolutionGot(VrpProblem vrpProblem) {
         this.vrpProblem = vrpProblem;
-    }
+    }    
 
-    public VrpProblem getVrpProblem() {
+	public VrpProblem getVrpProblem() {
         return vrpProblem;
     }
 
@@ -117,14 +121,8 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 
     public double getExpectedRecourseCost() {
     	throw new RuntimeException("getExpectedRecourseCost muss noch implementiert werden");
-//        double recourseCost = 0;
-//        for (GroupOfTours got : gots) {
-//        	//TODO: korrekt implementieren 
-//            recourseCost += got.getExpectedRecourseCost();
-//        }
-//        return recourseCost;
     }
-    
+    	
 	public double getSumOfDistanceAndExpectedRecourseCost() {
 		return getTotalDistance() + getExpectedRecourseCost();
 	}
@@ -287,6 +285,15 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 			System.out.println(getVehicleCount());
 		}
 
+		public int maximalNumberOfToursInGots() {
+			int maxNumberOfGots = 0;
+			for (GroupOfTours got : getGots()) {
+				if (got.getTours().size() > maxNumberOfGots)
+					maxNumberOfGots = got.getTours().size();
+			}
+			return maxNumberOfGots;
+		}
+		
 
 }
 

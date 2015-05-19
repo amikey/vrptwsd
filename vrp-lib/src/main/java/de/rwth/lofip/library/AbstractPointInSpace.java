@@ -7,6 +7,10 @@ public abstract class AbstractPointInSpace implements SolutionElement {
 	private double xCoordinate;
 	private double yCoordinate;	
     protected String id;
+	protected double timeWindowClose;
+	protected double timeWindowOpen;
+	protected long demand;
+	protected double serviceTime;
 
 	public AbstractPointInSpace() {
 		super();
@@ -49,6 +53,38 @@ public abstract class AbstractPointInSpace implements SolutionElement {
     public void setId() {
     	this.id = "PS"+this.toString();
     }
+    
+	public double getTimeWindowOpen() {
+		return timeWindowOpen;
+	}
+
+	public void setTimeWindowOpen(double timeWindowOpen) {
+		this.timeWindowOpen = timeWindowOpen;
+	}
+
+	public double getTimeWindowClose() {
+		return timeWindowClose;
+	}
+	
+	public long getDemand() {
+		return demand;
+	}
+
+	public void setDemand(long demand) {
+		this.demand = demand;
+	}
+
+	public double getServiceTime() {
+		return serviceTime;
+	}
+
+	public void setServiceTime(double serviceTime) {
+		this.serviceTime = serviceTime;
+	}
+
+	public void setTimeWindowClose(double timeWindowClose) {
+		this.timeWindowClose = timeWindowClose;
+	}
     
 	@Override
 	public String toString() {
