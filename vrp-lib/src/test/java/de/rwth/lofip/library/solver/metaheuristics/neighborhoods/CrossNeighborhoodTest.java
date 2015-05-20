@@ -19,20 +19,17 @@ import de.rwth.lofip.library.util.SetUpUtils;
 
 public class CrossNeighborhoodTest {
 
-	private SolutionGot solutionWithThreeToursAndTwoCustomersEach;
 	private SolutionGot solutionWithTwoToursAndTwoCustomersEach;
 	private SolutionGot solutionWithOneTourWithCustomers2And3;
-	private SolutionGot solutionWithOneTourWithFourCustomersC3BeforeC2;
 	private SolutionGot solutionWithOneTourWithFourCustomers;
-	private SolutionGot solutionWithTwoToursWithThreeAndOneCustomersResp;
 	private SolutionGot solutionWithOneTourWithCustomers1And2And3;
 	
 	@Before
 	public void initialise() {
-		solutionWithThreeToursAndTwoCustomersEach = SetUpUtils.getSolutionWithThreeToursAndTwoCustomersEach();
+		SetUpUtils.getSolutionWithThreeToursAndTwoCustomersEach();
 		solutionWithTwoToursAndTwoCustomersEach = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();
 		solutionWithOneTourWithCustomers2And3 = SetUpUtils.SetUpSolutionWithOneTourWithCustomer2And3();
-		solutionWithOneTourWithFourCustomersC3BeforeC2 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
+		SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
 		solutionWithOneTourWithFourCustomers = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4();
 		solutionWithOneTourWithCustomers1And2And3 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3();
 	}
@@ -69,14 +66,6 @@ public class CrossNeighborhoodTest {
 		}
 		assertEquals(false,crossNeighborhood.isExistsNextCombinationOfSegments());		
 	}	
-	
-	private boolean isMovePossible(CrossNeighborhood crossNeighborhood) {
-		if(crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions())
-			return false;
-		else if (crossNeighborhood.isMoveFeasibleCheckWithRef())
-			return true;
-		else return false;
-	}
 	
 	@Test
 	public void testIsMovePossibleInnerTourMovesTestWithRef() {

@@ -38,7 +38,7 @@ public class TestSortingUsingJava8 {
 		neighborhood.setRespAddBestNonTabooMove(new CrossNeighborhoodMove(800));
 		
 		neighborhood.takeFirstXNumberOfMoves();
-		assertEquals(neighborhood.getNumberOfMovesThatRecourseCostAreCalculatedFor(),neighborhood.getListOfNonTabooMoves().size());
+		assertEquals(CrossNeighborhoodWithTabooListAndRecourse.getNumberOfMovesThatRecourseCostAreCalculatedFor(),neighborhood.getListOfNonTabooMoves().size());
 	}
 	
 }

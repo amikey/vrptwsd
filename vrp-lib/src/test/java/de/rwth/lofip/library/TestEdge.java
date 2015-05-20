@@ -11,7 +11,6 @@ public class TestEdge {
 	@Test
 	public void testLengthMethod() {
 		Customer c1 = SetUpUtils.getC1();
-		Customer c2 = SetUpUtils.getC2();
 		Customer c3 = SetUpUtils.getC3();
 		Customer c4 = SetUpUtils.getC4();
 		AbstractPointInSpace depot = new Depot(50.0,40.0);

@@ -179,6 +179,7 @@ public class Tour implements SolutionElement, Serializable {
     		if (cit.getCustomer().getCustomerNo() == customerNo)
     			return cit;
     	//case: customer not in tour
+    	//CODE_SMELL_TODO: bad practice
     	return null;
     }
      
@@ -238,7 +239,18 @@ public class Tour implements SolutionElement, Serializable {
 		else
 			return refsFromPositionToEnd.get(i);
 	}
+	
+	public boolean containsCustomers(Tour currentNewTour) {
+		List<Customer> customersInThisTour = getCustomers();
+		for (Customer c : currentNewTour.getCustomers())
+			if (customersInThisTour.contains(c))
+				return true;
+		return false;
+	}
 
+	public void setCostFactor(int i) {
+		costFactor = i;
+	}
     
     /****************************************************************************
      * End Getter and Setter
@@ -408,18 +420,6 @@ public class Tour implements SolutionElement, Serializable {
 			refForSegment.get(i).add(newEntry);
 		else 
 			refForSegment.get(i).set(j, newEntry);
-	}
-
-	private void printRefsFromStart() {
-		System.out.println("Länge refsFromStart...: " + refsFromStartUpToPosition.size());
-		for (int i = 0; i < refsFromStartUpToPosition.size(); i++)
-			refsFromStartUpToPosition.get(i).print();
-	}
-	
-	private void printRefsToEnd() {
-		System.out.println("Länge refsToEnd...: " + refsFromPositionToEnd.size());
-		for (int i = 0; i < refsFromPositionToEnd.size(); i++)
-			refsFromPositionToEnd.get(i).print();
 	}
 	
 	private boolean isLastPosition(int i) {
@@ -626,6 +626,20 @@ public class Tour implements SolutionElement, Serializable {
 		}
 		System.out.print("\n");
 	}
+	
+	@SuppressWarnings("unused")
+	private void printRefsFromStart() {
+		System.out.println("Länge refsFromStart...: " + refsFromStartUpToPosition.size());
+		for (int i = 0; i < refsFromStartUpToPosition.size(); i++)
+			refsFromStartUpToPosition.get(i).print();
+	}
+	
+	@SuppressWarnings("unused")
+	private void printRefsToEnd() {
+		System.out.println("Länge refsToEnd...: " + refsFromPositionToEnd.size());
+		for (int i = 0; i < refsFromPositionToEnd.size(); i++)
+			refsFromPositionToEnd.get(i).print();
+	}
 
 	public void setSolutionValue(double totalDistanceOfAllTours) {
 		solutionValue = totalDistanceOfAllTours;
@@ -633,18 +647,6 @@ public class Tour implements SolutionElement, Serializable {
 
 	public double getSolutionValue() {
 		return solutionValue;
-	}
-
-	public boolean containsCustomers(Tour currentNewTour) {
-		List<Customer> customersInThisTour = getCustomers();
-		for (Customer c : currentNewTour.getCustomers())
-			if (customersInThisTour.contains(c))
-				return true;
-		return false;
-	}
-
-	public void setCostFactor(int i) {
-		costFactor = i;
 	}
 
 

@@ -85,6 +85,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		bestMove = crossNeighborhood.returnBestMove(iteration);
 	}
 	
+	@SuppressWarnings("unused")
 	private void printBestMove() {
 		bestMove.print();
 	}

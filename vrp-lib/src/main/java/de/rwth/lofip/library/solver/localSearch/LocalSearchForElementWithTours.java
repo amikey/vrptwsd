@@ -47,7 +47,8 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private void findBestMove() throws Exception {
 		bestMove = crossNeighborhood.returnBestMove(iteration);				
 	}
-	
+		
+	@SuppressWarnings("unused")
 	private void printBestMove() {
 		bestMove.print();
 	}

@@ -9,18 +9,21 @@ import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 public class AdaptiveMemoryTabuSearch {
 	
 	private int numberOfDifferentInitialSolutions;
+	@SuppressWarnings("unused")
 	private int maximalNumberOfCallsToAdaptiveMemory;
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
 	private int maximalNumberOfIterationsTabuSearch;
 	private int maximalNumberOfIterationsWithoutImprovementTabuSearch;
 	
-	private int callsToAdaptiveMemory = 0;
 	private AdaptiveMemory adaptiveMemory = new AdaptiveMemory();
 	
 	private SolutionGot solution = null;
 	private SolutionGot bestOverallSolution;
-	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
+	@SuppressWarnings("unused")
+	private int callsToAdaptiveMemory = 0;
 	private int numberOfAMCallsWithoutImprovement = 0;
+	@SuppressWarnings("unused")
+	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 	
 	public SolutionGot solve(VrpProblem vrpProblem) {
 		

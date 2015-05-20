@@ -4,6 +4,8 @@ import de.rwth.lofip.library.Tour;
 
 public class CrossNeighborhoodMove extends AbstractNeighborhoodMove {
 
+	private static final long serialVersionUID = -7324358312531093469L;
+
 	public CrossNeighborhoodMove(Tour tour1, Tour tour2, int posStart1,
 			int posEnd1, int posStart2, int posEnd2, double cost) {
 		super(tour1, tour2, posStart1, posEnd1, posStart2, posEnd2, cost);

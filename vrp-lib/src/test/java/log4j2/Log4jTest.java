@@ -22,6 +22,7 @@ public class Log4jTest {
 	private static void createLoggingFileForLog4J2() {
 		String logFilename = "C:/Users/Andreas/Dropbox/Uni/Diss/Code/logging/" + "Log - "        
                 + sdf.format(Calendar.getInstance().getTime()) + ".log";
+		@SuppressWarnings("unused")
 		File outputFile = new File(logFilename);		
 		System.setProperty("logFilename", logFilename);	  
 	}

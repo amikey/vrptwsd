@@ -5,13 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import de.rwth.lofip.library.Tour;
-import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestTourUtilsIsConcatenationOfSegmentsPossible {
 	
 	Tour tour;
-	private VrpProblem problem;
 
 	@Test
 	public void testThatIsConcatenationOfSegmentsWorskCorrectly() {

@@ -17,6 +17,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 
 	private List<AbstractNeighborhoodMove> listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
+	//CODE_SMELL_TODO: eine Parameterklasse anlegen
 	private static int numberOfMovesThatRecourseCostAreCalculatedFor = 10;
 
 	@Override
@@ -67,13 +68,11 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 
 	private void sortMovesWrtToStochasticCost() {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("sortMovesWrtToStochasticCost() noch nicht implementiert");
 	}
 
 	private void setBestNonTabooMoveToBestCalculatedMove() {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("setBestNonTabooMoveToBestCalculatedMove() noch nicht implementiert");
 	}
 
 	

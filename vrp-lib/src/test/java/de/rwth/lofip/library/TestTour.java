@@ -90,7 +90,6 @@ public class TestTour {
 	private void thenEdgesShouldBeTheVeryEdgesInThisTour() {
 		Depot depot = SetUpUtils.getDepot();
 		Customer c1 = SetUpUtils.getC1();
-		Customer c2 = SetUpUtils.getC2();
 		assertEquals(new Edge(depot,c1).getLength(),tour1.getEdges().get(0).getLength(),0.001);		
 	}
 	
