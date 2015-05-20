@@ -1,7 +1,5 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import org.hamcrest.core.IsInstanceOf;
-
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
@@ -15,6 +13,7 @@ import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractN
 
 public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
+	@SuppressWarnings("unused")
 	private int maximalNumberOfIterations;
 	private int maxNumberIterationsWithoutImprovement;
 	
@@ -32,21 +31,25 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
 		
+		System.out.println("Starting Tabu Search");
 //		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());
 		while (!isStoppingCriterionMet()) {
-			try {
+			try {				
+				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
+				
+				if (iteration == 3)
+					System.out.println("DEBUGGING!");
+				
+				if (iteration == 11)
+					System.out.println("DEBUGGING!");
+				
 				findBestNonTabooMove();
 				//printBestMove();
 				
 //				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
 				
 				updateTabuList();
-				applyBestNonTabooMove();
-								
-//				System.out.println("Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
-				
-//				if (iteration == 83)
-//					System.out.println("DEBUGGING!");
+				applyBestNonTabooMove();							
 				
 				if (isNewSolutionIsNewBestOverallSolution()) { 
 					tryToImproveNewBestSolutionWithIntensificationPhase();
@@ -69,6 +72,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			iteration++;
 		}
 		
+		System.out.println("Anzahl Iterationen Tabu Suche : " + iteration + "\n");
 		return bestOverallSolution;
 	}
 
@@ -100,7 +104,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
-		//TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
+		//IMPORTANT_TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
 		SolutionGot solutionTemp = (SolutionGot) solution;
 		for (GroupOfTours got : solutionTemp.getGots())
 			for (int j = 0; j < got.getTours().size(); j++) {
@@ -110,7 +114,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 					new LocalSearchForElementWithTours().improve(newSolution);
 					if (newSolution.getNumberOfTours() == 1)
 						if (newSolution.getTotalDistance() <  tour.getTotalDistanceWithCostFactor()) {
-							System.out.println("Hurra, Intensification Procedure hat eine bessere Tour gefunden");
+							System.out.println("Hurra, Intensification Procedure hat eine bessere Tour gefunden in Iteration Intensification Procedure " + i + "; Iteration TS: " + iteration);
 							tour = newSolution.getTour(0);
 							got.setTour(j, newSolution.getTour(0));
 	//						break;

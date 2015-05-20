@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestTour {

@@ -1,10 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics.util;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -140,7 +138,7 @@ public class AdaptiveMemory {
 					break;
 				}
 			}			
-			currentNewSolution.addTour(currentNewTour);
+			currentNewSolution.addTourToLastOrNewGot(currentNewTour);
 		}
 			
 		private void updateUnservedCustomers() {
@@ -158,7 +156,7 @@ public class AdaptiveMemory {
 		
 		private void constructSolutionWithCustomersThatRemainUnserved() {
 			GreedyInsertion gi = new GreedyInsertion();
-			//TODO: hier werden alle Kunden eingefügt, anders als im Paper, in dem nur Kunden in die bestehenden Touren eingefügt und keine neuen Touren eröffnet werden.
+			//DESIGN_TODO: hier werden alle Kunden eingefügt, anders als im Paper, in dem nur Kunden in die bestehenden Touren eingefügt und keine neuen Touren eröffnet werden.
 			gi.insertCustomers(currentNewSolution, unservedCustomers);
 		}
 

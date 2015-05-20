@@ -1,6 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ import de.rwth.lofip.cli.RunAdaptiveMemorySearchWithSolomonInstances;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 
 public class AdaptiveMemoryTabuSearchTest {

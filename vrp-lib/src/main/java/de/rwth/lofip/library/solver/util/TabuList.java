@@ -1,6 +1,5 @@
 package de.rwth.lofip.library.solver.util;
 
-import de.rwth.lofip.library.SolutionGot;
 
 public class TabuList {
 	

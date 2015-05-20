@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class CrossNeighborhoodTestPruning {

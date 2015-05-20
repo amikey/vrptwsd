@@ -1,7 +1,8 @@
 package de.rwth.lofip.library.monteCarloSimulation;
 
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;

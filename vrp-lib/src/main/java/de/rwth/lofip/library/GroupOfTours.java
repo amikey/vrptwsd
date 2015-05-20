@@ -4,20 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
-import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.solver.util.SimpleTourUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RecourseCost;
-import de.rwth.lofip.library.util.SetUpUtils;
 
 /**
  * @author Andreas Braun
@@ -64,7 +61,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 
 	@Override
 	public double getTotalDistance() {
-		//TODO: distance zwischenspeichern und nur ändern, wenn sich Touren ändern
+		//RUNTIME_TODO: distance zwischenspeichern und nur ändern, wenn sich Touren ändern
 		double distance = 0;
         for (Tour t : this.getTours()) {
             distance += t.getTotalDistanceWithCostFactor();
@@ -166,6 +163,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 			if (other.tours != null)
 				return false;			
 		} else {
+			//RUNTIME_TODO: kann man das mit Hashing in besserer Zeit implementieren?
 			for (Tour tour : tours)
 				if (!other.isExists(tour))
 					return false;						
@@ -187,7 +185,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     public RecourseCost getExpectedRecourseCost() {
     	if (expectedRecourseCost == null) {   		    		
     		double overallRecourseCost = 0;
-    		int [] listOfPossibleSolutionValues = new int[1000000]; //wird automatisch mit 0-en initialisiert
+    		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
     		int numberOfDifferentRecourseActions = 0;
     		SimulationUtils.resetSeed();
     		
@@ -195,23 +193,25 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     			GroupOfTours gotClone = this.cloneWithCopyOfCustomers();
     			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);    			
     			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
-    				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //TODO: Hier auch Tabu Search testen
+    				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
     				//create Solution from gotClone for processing with local search    				    				
     				ls.improve(gotClone);
-    				if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) //got is still demand infeasible -> no feasible solution could be found for demand
+    				if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) { 
+    					//got is still demand infeasible -> no feasible solution could be found for demand
     					gotClone.addEmptyTour();
     					ls.improve(gotClone);
+    				}
     			}
-    			//TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
+    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
     			double recourseCost = -this.getTotalDistance() + gotClone.getTotalDistance();
     			overallRecourseCost += recourseCost;
     			
-    			//calculate number of different recourse actions
-    			//TODO: For problems with more than 100 customers its possible that the index exceeds the size of the array -> modulo wie in TabuList
-    			if (listOfPossibleSolutionValues[(int) gotClone.getTotalDistance() * 1000] == 0) {
+    			//calculate number of different recourse actions    		
+    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
     				numberOfDifferentRecourseActions++;
-    				listOfPossibleSolutionValues[(int) gotClone.getTotalDistance() * 1000] = 1;
+    				listOfRecourseActions.add(gotClone);
     			}
+    		
     		}
     		overallRecourseCost = overallRecourseCost / NUMBER_OF_DEMAND_SCENARIO_RUNS;
     		
@@ -220,7 +220,18 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 		return expectedRecourseCost;
     }
     
-    private void addEmptyTour() {
+    public boolean isGotAlreadyExistsInRecourseActions(GroupOfTours gotClone, List<GroupOfTours> list) {
+		boolean exists = false;
+		for (GroupOfTours got : list) {
+			if (got.equals(gotClone)) {
+				exists = true;
+				break;
+			}			
+		}
+		return exists;
+	}
+
+	private void addEmptyTour() {
     	Tour tour = SimpleTourUtils.getEmptyTourWithDoubleCostFactor(getFirstTour());
     	addTour(tour);
     	tour.setParentGot(this);

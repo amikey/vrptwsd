@@ -16,7 +16,6 @@ import org.apache.commons.io.IOUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.util.SetUpUtils;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class ReadAndWriteUtils {
@@ -120,23 +119,42 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("rc101","X").get(0);
 	}
 	
-	public static void printResultsToFile(String string,List<SolutionGot> solutions) throws IOException {
-		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();	
-		printResultsToFile(string, solutions, dummySolutions); 		
+	public static List<VrpProblem> readSolomonProblemRC102AsList() throws IOException {
+		return readSolomonProblemX("rc102","X");
 	}
 	
-	public static void printResultsToFile(String string,
-			List<SolutionGot> solutions, long timeNeeded) throws IOException {
+	public static List<VrpProblem> readSolomonProblemRC103AsList() throws IOException {
+		return readSolomonProblemX("rc103","X");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemRC104AsList() throws IOException {
+		return readSolomonProblemX("rc104","X");
+	}
+
+	public static List<VrpProblem> readSolomonProblemRC105AsList() throws IOException {
+		return readSolomonProblemX("rc105","X");
+	}
+	
+	
+	public static void printResultsToFile(String nameOfFile,
+			List<SolutionGot> solutions,
+			long timeNeeded, int numberOfDifferentInitialSolutions,
+			int maximalNumberOfIterationsTabuSearch, 
+			int maximalNumberOfIterationsWithoutImprovementTabuSearch,
+			int maximalNumberOfCallsToAdaptiveMemory,
+			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+			int seedI1, int seedGI,
+			int seedAM) throws IOException {
 		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();
-		printResultsToFile(string, solutions, dummySolutions, timeNeeded);
+		printResultsToFile(nameOfFile,solutions, dummySolutions, timeNeeded,
+				numberOfDifferentInitialSolutions, 
+				maximalNumberOfIterationsTabuSearch,
+				maximalNumberOfIterationsWithoutImprovementTabuSearch,
+				maximalNumberOfCallsToAdaptiveMemory,
+				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+				seedI1, seedGI, seedAM);		
 	}
-	
-	public static void printResultsToFile(String string, List<SolutionGot> solutionsInitialSolver,List<SolutionGot> solutionsLocalSearch) throws IOException {
-		printResultsToFile(string, solutionsInitialSolver, solutionsLocalSearch, 0);
-	}
-	
-	
-	
+		
 	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1,List<SolutionGot> solutions2, long timeNeeded,
 											int initialNumberOfDifferentInitialSolutions, 
 											int initialNumberOfIterationsTabuSearch,
@@ -392,110 +410,96 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
-
-	public static void printResultsOverSeveralRunsToFile(List<List<SolutionGot>> solutionsOfAllRuns, FileOutputStream outputStream) throws IOException {
-		IOUtils.write("Results after " + solutionsOfAllRuns.size() + " Experiments \n\n", outputStream);
-		
-		IOUtils.write("; best ; ; average ; ; worst ; ; bestKnown; ; Experiment Best Solution Was Found in \n", outputStream);
-		IOUtils.write("; value ; vehicleNumber ; value ; vehicleNumber ; value ; VehicleNumber ; value ; VehicleNumber ; \n", outputStream);
-		
-		int problemCounter = 0;
-		for (SolutionGot solution : solutionsOfAllRuns.get(0)) {
-			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
-			
-			SolutionGot bestSolution = getBestSolution(solutionsOfAllRuns, problemCounter);
-			IOUtils.write(String.format("%.3f",bestSolution.getTotalDistance()) + ";", outputStream);
-			IOUtils.write(bestSolution.getVehicleCount() + ";", outputStream);
-			
-			double averageSolutionValue = getAverageSolutionValue(solutionsOfAllRuns, problemCounter);
-			double averageVehicleNumber = getAverageVehicleNumber(solutionsOfAllRuns, problemCounter);
-			IOUtils.write(String.format("%.3f",averageSolutionValue) + ";", outputStream);
-			IOUtils.write(String.format("%.3f",averageVehicleNumber) + ";", outputStream);
-			
-			SolutionGot worstSolution = getWorstSolution(solutionsOfAllRuns, problemCounter);
-			IOUtils.write(String.format("%.3f",worstSolution.getTotalDistance()) + ";", outputStream);
-			IOUtils.write(worstSolution.getVehicleCount() + ";", outputStream);
-			
-			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(problemCounter).doubleValue()) + ";",outputStream);
-			IOUtils.write(bestKnownSolutionVehicleNumbers.get(problemCounter).intValue() + ";",outputStream);
-			
-			IOUtils.write(getBestSolutionExperiment(solutionsOfAllRuns, problemCounter) + ";", outputStream);
-			IOUtils.write("\n", outputStream);	
-			
-			problemCounter++;
-		}
-		IOUtils.write("\n\n", outputStream);
-	}
-
-	private static SolutionGot getBestSolution(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
-		SolutionGot bestSolution = SetUpUtils.getDummySolutionThatIsWorseThanEveryPossibleSolution();
-		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
-			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
-			if (currentSolution.isBetterThan(bestSolution))
-				bestSolution = currentSolution.clone();
-		}
-		return bestSolution;
-	}
 	
-	private static int getBestSolutionExperiment(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
-		int experimentNumber = 0;
-		SolutionGot bestSolution = SetUpUtils.getDummySolutionThatIsWorseThanEveryPossibleSolution();
-		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
-			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
-			if (currentSolution.isBetterThan(bestSolution)) {
-				bestSolution = currentSolution.clone();			
-				experimentNumber = i;
-			}
-		}
-		return experimentNumber+1;
-	}
-
-	private static double getAverageSolutionValue(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
-		double averageValue = 0.0;
-		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
-			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
-			averageValue += currentSolution.getTotalDistance();
-		}
-		return averageValue / (double) solutionsOfAllRuns.size();
-	}
 	
-	private static double getAverageVehicleNumber(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
-		double averageNumber = 0.0;
-		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
-			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
-			averageNumber += currentSolution.getVehicleCount();
-		}
-		return averageNumber / (double) solutionsOfAllRuns.size();
-	}
 	
-	private static SolutionGot getWorstSolution(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
-		SolutionGot worstSolution = solutionsOfAllRuns.get(0).get(problemCounter);
-		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
-			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
-			if (worstSolution.isBetterThan(currentSolution))
-				worstSolution = currentSolution.clone();
-		}
-		return worstSolution;
-	}
+//	*************************** utilities for printing results such as average values etc of several runs
 
-	public static void printResultsToFile(String nameOfFile,
-			List<SolutionGot> solutions,
-			long timeNeeded, int numberOfDifferentInitialSolutions,
-			int maximalNumberOfIterationsTabuSearch, 
-			int maximalNumberOfIterationsWithoutImprovementTabuSearch,
-			int maximalNumberOfCallsToAdaptiveMemory,
-			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-			int seedI1, int seedGI,
-			int seedAM) throws IOException {
-		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();
-		printResultsToFile(nameOfFile,solutions, dummySolutions, timeNeeded,
-				numberOfDifferentInitialSolutions, 
-				maximalNumberOfIterationsTabuSearch,
-				maximalNumberOfIterationsWithoutImprovementTabuSearch,
-				maximalNumberOfCallsToAdaptiveMemory,
-				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-				seedI1, seedGI, seedAM);		
-	}
+//	public static void printResultsOverSeveralRunsToFile(List<List<SolutionGot>> solutionsOfAllRuns, FileOutputStream outputStream) throws IOException {
+//		IOUtils.write("Results after " + solutionsOfAllRuns.size() + " Experiments \n\n", outputStream);
+//		
+//		IOUtils.write("; best ; ; average ; ; worst ; ; bestKnown; ; Experiment Best Solution Was Found in \n", outputStream);
+//		IOUtils.write("; value ; vehicleNumber ; value ; vehicleNumber ; value ; VehicleNumber ; value ; VehicleNumber ; \n", outputStream);
+//		
+//		int problemCounter = 0;
+//		for (SolutionGot solution : solutionsOfAllRuns.get(0)) {
+//			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
+//			
+//			SolutionGot bestSolution = getBestSolution(solutionsOfAllRuns, problemCounter);
+//			IOUtils.write(String.format("%.3f",bestSolution.getTotalDistance()) + ";", outputStream);
+//			IOUtils.write(bestSolution.getVehicleCount() + ";", outputStream);
+//			
+//			double averageSolutionValue = getAverageSolutionValue(solutionsOfAllRuns, problemCounter);
+//			double averageVehicleNumber = getAverageVehicleNumber(solutionsOfAllRuns, problemCounter);
+//			IOUtils.write(String.format("%.3f",averageSolutionValue) + ";", outputStream);
+//			IOUtils.write(String.format("%.3f",averageVehicleNumber) + ";", outputStream);
+//			
+//			SolutionGot worstSolution = getWorstSolution(solutionsOfAllRuns, problemCounter);
+//			IOUtils.write(String.format("%.3f",worstSolution.getTotalDistance()) + ";", outputStream);
+//			IOUtils.write(worstSolution.getVehicleCount() + ";", outputStream);
+//			
+//			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(problemCounter).doubleValue()) + ";",outputStream);
+//			IOUtils.write(bestKnownSolutionVehicleNumbers.get(problemCounter).intValue() + ";",outputStream);
+//			
+//			IOUtils.write(getBestSolutionExperiment(solutionsOfAllRuns, problemCounter) + ";", outputStream);
+//			IOUtils.write("\n", outputStream);	
+//			
+//			problemCounter++;
+//		}
+//		IOUtils.write("\n\n", outputStream);
+//	}
+//
+//	private static SolutionGot getBestSolution(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
+//		SolutionGot bestSolution = SetUpUtils.getDummySolutionThatIsWorseThanEveryPossibleSolution();
+//		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
+//			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
+//			if (currentSolution.isBetterThan(bestSolution))
+//				bestSolution = currentSolution.clone();
+//		}
+//		return bestSolution;
+//	}
+//	
+//	private static int getBestSolutionExperiment(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
+//		int experimentNumber = 0;
+//		SolutionGot bestSolution = SetUpUtils.getDummySolutionThatIsWorseThanEveryPossibleSolution();
+//		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
+//			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
+//			if (currentSolution.isBetterThan(bestSolution)) {
+//				bestSolution = currentSolution.clone();			
+//				experimentNumber = i;
+//			}
+//		}
+//		return experimentNumber+1;
+//	}
+//
+//	private static double getAverageSolutionValue(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
+//		double averageValue = 0.0;
+//		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
+//			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
+//			averageValue += currentSolution.getTotalDistance();
+//		}
+//		return averageValue / (double) solutionsOfAllRuns.size();
+//	}
+//	
+//	private static double getAverageVehicleNumber(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
+//		double averageNumber = 0.0;
+//		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
+//			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
+//			averageNumber += currentSolution.getVehicleCount();
+//		}
+//		return averageNumber / (double) solutionsOfAllRuns.size();
+//	}
+//	
+//	private static SolutionGot getWorstSolution(List<List<SolutionGot>> solutionsOfAllRuns, int problemCounter) {
+//		SolutionGot worstSolution = solutionsOfAllRuns.get(0).get(problemCounter);
+//		for (int i = 0; i < solutionsOfAllRuns.size(); i++) {
+//			SolutionGot currentSolution = solutionsOfAllRuns.get(i).get(problemCounter);
+//			if (worstSolution.isBetterThan(currentSolution))
+//				worstSolution = currentSolution.clone();
+//		}
+//		return worstSolution;
+//	}
+
 
 
 

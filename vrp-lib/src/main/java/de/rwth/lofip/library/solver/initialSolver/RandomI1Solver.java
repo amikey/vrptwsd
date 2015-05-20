@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.math.RandomUtils;
-
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
@@ -95,6 +93,11 @@ public class RandomI1Solver implements SolverInterfaceGot {
 
 	public static void setSeedTo(int i) {
 		seed = i;
+	}
+
+	@Override
+	public String getDescriptiveName() {
+		return "RandomI1Solver";
 	}
 	
 	

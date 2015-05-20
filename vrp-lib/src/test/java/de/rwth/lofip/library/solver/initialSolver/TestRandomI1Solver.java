@@ -13,10 +13,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.interfaces.SolverInterfaceGot;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
-import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
-import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 
 public class TestRandomI1Solver {
 	

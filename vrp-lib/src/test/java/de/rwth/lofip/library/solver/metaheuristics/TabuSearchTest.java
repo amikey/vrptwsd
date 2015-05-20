@@ -1,6 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 

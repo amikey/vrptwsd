@@ -285,7 +285,7 @@ public class Tour implements SolutionElement, Serializable {
     } 
     
 	public void insertCustomersAtPosition(List<Customer> customers, int position) {
-		//TODO: Das kann man auch in konstanter Zeit implementieren
+		//RUNTIME_TODO: Das kann man auch in konstanter Zeit implementieren
 		Iterator<Customer> customerIterator = customers.iterator(); 
 		while (customerIterator.hasNext()) {
 			Customer customer = customerIterator.next();			
@@ -303,7 +303,7 @@ public class Tour implements SolutionElement, Serializable {
 
     	assertThatRefsFromPositionToEndContainSameCustomersAsTour();
     	
-    	//TODO: Klasse Customer in Tour loswerden und nur noch Customer benutzen
+    	//CODE_SMELL_TODO: Klasse Customer in Tour loswerden und nur noch Customer benutzen
         CustomerInTour newCustomerInTour = new CustomerInTour(this);        
         newCustomerInTour.setCustomer(customer);                   
         customers.add(position, newCustomerInTour);
@@ -485,11 +485,11 @@ public class Tour implements SolutionElement, Serializable {
                
         Customer removedCustomer = customers.remove(position).getCustomer();
         vehicle.addCapacityUsage(removedCustomer.getDemand() * -1);
-        //TODO: Ist recalculate times noch nötig?
+        //RUNTIME_TODO: Ist recalculate times noch nötig?
         recalculateTimes();  
         recalculateEdges();
         recalculateTotalDistance();
-        //TODO: ist recalculate Demand noch nötig?
+        //RUNTIME_TODO: ist recalculate Demand noch nötig?
         recalculateDemand(removedCustomer.getDemand() * -1);
         recalculateRefsWhenCustomerIsDeleted(position);
         recalculateRefMatrixWhenCustomerIsDeleted(position);
@@ -534,14 +534,6 @@ public class Tour implements SolutionElement, Serializable {
 		for (int i = position; i < refsFromPositionToEnd.size()-1; i++)
 			refsFromPositionToEnd.set(i, refsFromPositionToEnd.get(i+1));
 		deleteLastRef();
-	}
-
-	private boolean customerToBeRemovedIsNotAtFirstPositionInTour(int position) {
-    	return position >= 1;
-	}
-	
-    private boolean customerToBeRemovedIsNotAtLastPositionInTour(int position) {
-    	return position < customers.size() - 1;
 	}
     
 	public List<Customer> removeCustomersBetween(

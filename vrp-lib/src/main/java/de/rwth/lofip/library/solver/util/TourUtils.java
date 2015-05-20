@@ -14,7 +14,7 @@ import de.rwth.lofip.library.util.CustomerInTour;
 
 public class TourUtils {
 	
-	//TODO: Ist diese statische Variable nicht auch eine total komische Idee?
+	//CODE_SMELL_TODO: Ist diese statische Variable nicht auch eine total komische Idee?
 	static double currentTime;	
 
 	/**

@@ -5,7 +5,6 @@ import java.util.List;
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
-import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
@@ -368,7 +367,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
 			} else {
 				//two segments are swapped
-				//TODO: ich glaube, das ist redundant mit oben (oben werden zwei segmente auch schon behandelt)
+				//CODE_SMELL_TODO: ich glaube, das ist redundant mit oben (oben werden zwei segmente auch schon behandelt)
 				
 				double costTour1 = 0;
 				//remove edge before segment in tour 1

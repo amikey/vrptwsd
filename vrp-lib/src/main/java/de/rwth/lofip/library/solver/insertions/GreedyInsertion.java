@@ -1,7 +1,5 @@
 package de.rwth.lofip.library.solver.insertions;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;

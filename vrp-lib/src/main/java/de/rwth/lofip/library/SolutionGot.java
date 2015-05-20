@@ -13,12 +13,11 @@ import de.rwth.lofip.library.util.CustomerInTour;
 public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable {
 
     private VrpProblem vrpProblem;
-    private double penaltyCost = 0;
     private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();  
-    //TODO: Kosten als Variable speichern
+    //RUNTIME_TODO: Kosten als Variable speichern
     
     public SolutionGot() {
-		// TODO Auto-generated constructor stub
+    	// dieser Konstruktor wird nur für temporäre Solutions verwendet, in denen das VRP nicht benötigt wird. 
 	}
     
     public SolutionGot(VrpProblem vrpProblem) {
@@ -26,6 +25,9 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }    
 
 	public VrpProblem getVrpProblem() {
+		//IMPORTANT_TODO: Konstruktor-Hack beheben
+		if (vrpProblem == null)
+			throw new RuntimeException("VrpProblem existiert nicht in Got. Falscher Konstruktor verwendet; muss dort übergeben werden");
         return vrpProblem;
     }
 
@@ -48,20 +50,20 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
         return tours;
     }
 
-    public void addTour(Tour tour) {
-    	//TODO: add Tour in most similar got
-    	//at the moment the tour is inserted in some random got
+    public void addTourToLastOrNewGot(Tour tour) {    	
     	GroupOfTours got = null;
-    	for (GroupOfTours tempGot : gots)
+    	for (int i = Math.max(0, gots.size()-1); i < gots.size(); i++) {//
+    		GroupOfTours tempGot = gots.get(i);
     		if (tempGot.isNewTourCanBeCreated()) {
     			got = tempGot;
     			break;
     		}
+    	}
     	if (got == null) {
     		got = new GroupOfTours();
     		addGot(got);
     	}
-    	got.addTour(tour);    	    
+    	got.addTour(tour);     	
     }
   
 	public void createNewTourWithCustomer(Customer c) {
@@ -259,6 +261,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 			if (other.gots != null)
 				return false;
 		} else { 
+			//RUNTIME_TODO: kann man das über Hashing in besserer Zeit implementieren?
 			for (GroupOfTours got : gots)
 				if (!other.isExistsEqualGot(got))
 					return false;			

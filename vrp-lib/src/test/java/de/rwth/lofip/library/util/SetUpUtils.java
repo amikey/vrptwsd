@@ -1,10 +1,5 @@
 package de.rwth.lofip.library.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,7 +12,6 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.interfaces.ElementWithTours;
 
 public class SetUpUtils {
 	
@@ -432,11 +426,6 @@ public class SetUpUtils {
 		got.addTour(getTourWithCustomer3And4());
 		return got;
 	}
-
-	public static ElementWithTours getEmptySolution() {
-		return new SolutionGot();
-	}
-	
 
 	
 }

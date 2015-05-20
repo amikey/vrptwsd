@@ -1,10 +1,6 @@
 package de.rwth.lofip.cli;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +10,6 @@ import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
-import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 
 public class RunAdaptiveMemorySearchWithSolomonInstances {
 
@@ -51,6 +46,36 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceC204() throws IOException {			
 		problems = ReadAndWriteUtils.readSolomonProblemC204();	
+		processProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC101() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();	
+		processProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC102() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC102AsList();	
+		processProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC103() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC103AsList();	
+		processProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC104() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC104AsList();	
+		processProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC105() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC105AsList();	
 		processProblems();
 	}
 

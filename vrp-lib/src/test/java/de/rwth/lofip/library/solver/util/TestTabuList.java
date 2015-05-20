@@ -1,9 +1,8 @@
 package de.rwth.lofip.library.solver.util;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 
-import de.rwth.lofip.library.solver.util.TabuList;
+import org.junit.Test;
 
 public class TestTabuList {
 	

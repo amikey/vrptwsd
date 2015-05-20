@@ -1,13 +1,11 @@
 package de.rwth.lofip.library.solver.localSearch;
 
-import static org.junit.Assert.assertEquals;
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
-import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 
 public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	

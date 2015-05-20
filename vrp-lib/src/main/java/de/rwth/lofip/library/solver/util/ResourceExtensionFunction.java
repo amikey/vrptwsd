@@ -21,7 +21,7 @@ public class ResourceExtensionFunction {
 	private double latestArrivalTime = Double.MAX_VALUE;
 	private double earliestDepartureTime = 0;
 	private int demand = 0;
-	//TODO: have depot in list elementsInThisRef
+	//CODE_SMELL_TODO: have depot in list elementsInThisRef
 	private List<Customer> elementsInThisRef = new LinkedList<Customer>();	
 	private int id;
 	private boolean containsDepot = false;
@@ -228,7 +228,7 @@ public class ResourceExtensionFunction {
 		ref.setEarliestLeavingTime(earliestDepartureTime);
 		ref.setLatestArrivalTime(latestArrivalTime);
 		ref.setDemand(demand);
-		//TODO: wie sieht das runtime technisch aus? Ist der Befehl unten ein Problem, weil er über jeden einzelnen Eintrag in der List iteriert?
+		//RUNTIME_TODO: wie sieht das runtime technisch aus? Ist der Befehl unten ein Problem, weil er über jeden einzelnen Eintrag in der List iteriert?
 		//falls ja, sollte ich eine andere Methode wählen, als die Customer in der Ref zu speichern, nämlich
 		//letzten Customer speichern und evtl. ersten Customer speichern
 		List<Customer> newCustomers = new LinkedList<Customer>();
@@ -306,7 +306,7 @@ public class ResourceExtensionFunction {
 			if (containsDepot)
 				return depot;
 			else
-				//TODO: bad practice
+				//CODE_SMELL_TODO: bad practice
 				return null;
 		else return elementsInThisRef.get(0);
 	}
@@ -316,7 +316,7 @@ public class ResourceExtensionFunction {
 			if (containsDepot)
 				return depot;
 			else
-				//TODO: bad practice
+				//CODE_SMELL_TODO: bad practice
 				return null;
 		else return elementsInThisRef.get(elementsInThisRef.size()-1);
 	}
