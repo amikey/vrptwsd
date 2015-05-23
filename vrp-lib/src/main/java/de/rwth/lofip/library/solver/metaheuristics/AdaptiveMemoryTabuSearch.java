@@ -5,6 +5,7 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class AdaptiveMemoryTabuSearch {
 	
@@ -101,7 +102,7 @@ public class AdaptiveMemoryTabuSearch {
 	
 		private boolean isNewSolutionIsNewBestOverallSolution() {
 //			assertEquals(false, solution.equals(bestOverallSolution));
-			if (solution.getTotalDistance() < bestOverallSolution.getTotalDistance()
+			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(),bestOverallSolution.getTotalDistanceWithCostFactor())
 				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
 					numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 					return true;

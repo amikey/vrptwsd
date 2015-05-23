@@ -52,7 +52,8 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		
 	}
 
-	private void applyMoveToUnderlyingGots(AbstractNeighborhoodMove copyOfMove) {
+	public static void applyMoveToUnderlyingGots(AbstractNeighborhoodMove copyOfMove) {
+		//IMPORTANT_TODO: mit clonen wurden die Kosten nicht richtig berechnet in normaler TS und LS
 		SolutionGot solution = new SolutionGot();
 		solution.addGot(copyOfMove.getTour1().getParentGot());
 		if (!copyOfMove.isParentGotOfTour2IsSameAsParentGotOfTour1())

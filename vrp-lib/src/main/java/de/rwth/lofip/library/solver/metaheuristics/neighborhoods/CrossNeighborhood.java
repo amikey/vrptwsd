@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
@@ -21,7 +23,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	private int tourCounter1 = 0;
 	private int tourCounter2 = 0;
 	
-	private double costOfCompleteSolutionThatResultsFromMove;
+	protected double costOfCompleteSolutionThatResultsFromMove;
 	private boolean firstNeighborhoodStep;
 
 	//mit den Positionen sind jeweils die Einfügepositionen gemeint. 
@@ -83,7 +85,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		
 		private void generateMovesUsingRefs(int iteration) {
 			while (isExistsNextCombinationOfSegments()) {
-				generateNextCombinationOfSegements();
+				generateNextCombinationOfSegments();
 				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
 //					FOR DEBUGGING:
 //					if (tour1.getId() == 35 && tour2.getId() == 35 &&
@@ -162,7 +164,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		}
 		
 		
-	protected void generateNextCombinationOfSegements() {	
+	protected void generateNextCombinationOfSegments() {	
 		if (firstNeighborhoodStep) {
 			//do nothing; first step was already created in initialization
 			firstNeighborhoodStep = false;
@@ -319,12 +321,38 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		}
 		
 	
-		public double calculateCostUsingRefs() {
-			double costSolution = elementWithTours.getTotalDistance();			
+		public double calculateCostUsingRefs() {					
+			
+			double costSolution = elementWithTours.getTotalDistanceWithCostFactor();
+			double costTour1 = 0;
+			double costTour2 = 0;
+			if (isInnerTourMove()) {
+				//remove edge between last customer before segment and first customer in segment from tour 1			
+				double costEdge1 = new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+				costTour1 -= costEdge1;
+				//remove edge between last customer in segment and first customer after segment from tour 1		
+				double costEdge2 = new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
+				costTour1 -= costEdge2;
+				//add edge between last customer before segment and first customer after segment
+				double costEdge3 = new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
+				costTour1 += costEdge3;
+				
+				//remove edge between last customer before inserting position and first customer after inserting position
+				double costEdge4 = new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
+				costTour1 -= costEdge4;
+				//add edge between last customer before segment from tour 2 and first customer in segment from tour 1
+				double costEdge5 = new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1), tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+				costTour1 += costEdge5;
+				//add edge between last customer in segment from tour 1 and first customer after inserting position
+				double costEdge6 = new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
+				costTour1 += costEdge6;
+
+				costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1;
+				
+			} else
 			if (isOnlyOneSegmentIsSwapped()) {			
 				//also calculates inner tour moves
 				
-				double costTour1 = 0;
 				//calculate cost for tour1
 				if (isSegmentRemovedFromTour1()) {
 					//remove edge between last customer before segment and first customer in segment from tour 1			
@@ -343,8 +371,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				} else
 					//add edge between last customer before segment and first customer after segment
 					costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
-					
-				double costTour2 = 0;
+									
 				//calculate cost for tour2
 				if (isSegmentRemovedFromTour2()) {
 					//remove edge between last customer before segment and first customer in segment from tour 2
@@ -364,12 +391,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 					//add edge between last customer before segment and first customer after segment
 					costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
 				
-				return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
+				costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
 			} else {
 				//two segments are swapped
 				//CODE_SMELL_TODO: ich glaube, das ist redundant mit oben (oben werden zwei segmente auch schon behandelt)
-				
-				double costTour1 = 0;
+							
 				//remove edge before segment in tour 1
 				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1), tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
 				//remove edge after segment in tour 1
@@ -379,8 +405,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
 				//add edge between tour 1 and end of segment from tour 2
 				costTour1 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
-				
-				double costTour2 = 0;
+								
 				//remove edge before segment in tour 2
 				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
 				//remove edge after segment in tour 2
@@ -391,11 +416,37 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 				//add edge between tour 2 and end of segment from tour 1
 				costTour2 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1), tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
 				
-				return costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
-			}
-				
-		}
+				costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
+			}			
 			
+//			costOfCompleteSolutionThatResultsFromMove =
+//			assertCalculatedCostEqualsActualCostHook();
+			
+			return costOfCompleteSolutionThatResultsFromMove;
+		}
+
+			private double assertCalculatedCostEqualsActualCostHook() {
+			//RUNTIME_TODO: auslagern, so dass es im eigentlichen System nicht mehr aufgerufen wird.
+			//RUNTIME_TODO: Testen, ob clonen wirklich viel langsamer ist als die alte Berechnung
+				long startTime = System.nanoTime();
+				AbstractNeighborhoodMove move = getNeigborhoodMove();
+				AbstractNeighborhoodMove moveClone = move.cloneWithCopyOfToursAndGotsAndCustomers();
+				CrossNeighborhoodWithTabooListAndRecourse.applyMoveToUnderlyingGots(moveClone);
+				double costOfSolutionCalculatedUsingCloning = 
+						elementWithTours.getTotalDistanceWithCostFactor() - 
+						move.getTour1().getTotalDistanceWithCostFactor() - 
+						move.getTour2().getTotalDistanceWithCostFactor() +
+						moveClone.getTour1().getTotalDistanceWithCostFactor() + 
+						moveClone.getTour2().getTotalDistanceWithCostFactor();
+				long endTime = System.nanoTime();
+				long timeNeeded = (endTime - startTime);
+				
+				System.out.println("time needed for calculation via cloning: " + timeNeeded);
+				System.out.println("is inner tour move: " + move.isInnerTourMove());
+				assertEquals(costOfSolutionCalculatedUsingCloning, costOfCompleteSolutionThatResultsFromMove, 0.001);
+				return costOfSolutionCalculatedUsingCloning;
+			}
+
 			private boolean isOnlyOneSegmentIsSwapped() {		
 				boolean isBothSegmentsAreSwapped = isSegmentRemovedFromTour1() && isSegmentRemovedFromTour2();
 				return !isBothSegmentsAreSwapped;

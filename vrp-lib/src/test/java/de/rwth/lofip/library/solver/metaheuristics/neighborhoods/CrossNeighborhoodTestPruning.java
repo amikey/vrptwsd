@@ -23,31 +23,31 @@ public class CrossNeighborhoodTestPruning {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);
 		//jump over inner-cross-moves in Tour 1
 		for (int i = 1; i <= 36; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();			
+			crossNeighborhood.generateNextCombinationOfSegments();			
 		}
 		
 		//test moves between tour 1 and 2
-		crossNeighborhood.generateNextCombinationOfSegements();
+		crossNeighborhood.generateNextCombinationOfSegments();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 0, 0));
 		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
+		crossNeighborhood.generateNextCombinationOfSegments();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 0, 1));
 		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
+		crossNeighborhood.generateNextCombinationOfSegments();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 1, 1));
 		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
+		crossNeighborhood.generateNextCombinationOfSegments();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 1, 2));
 		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
+		crossNeighborhood.generateNextCombinationOfSegments();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 0, 2, 2));
 		assertEquals(false,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();		
+		crossNeighborhood.generateNextCombinationOfSegments();		
 		
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 1, 0, 0));
 		assertEquals(true,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());
 		assertEquals(true,isMovePossible(crossNeighborhood));
-		crossNeighborhood.generateNextCombinationOfSegements();
+		crossNeighborhood.generateNextCombinationOfSegments();
 		assertEquals(true, crossNeighborhood.isNeighborhoodStepEquals(0, 1, 0, 1));
 		assertEquals(true,isMovePossible(crossNeighborhood));
 		assertEquals(true,crossNeighborhood.endOfSegmentToBeRemovedCanBeIncreasedInTour2());	
@@ -58,7 +58,7 @@ public class CrossNeighborhoodTestPruning {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solutionWithTwoToursAndTwoCustomersEach);
 		//jump over inner-cross-moves in Tour 1
 		for (int i = 1; i <= 36; i++) {
-			crossNeighborhood.generateNextCombinationOfSegements();			
+			crossNeighborhood.generateNextCombinationOfSegments();			
 		}		
 		assertEquals(true, crossNeighborhood.tour2CanBeIncreased());
 	}

@@ -10,6 +10,7 @@ import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
@@ -36,27 +37,35 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		while (!isStoppingCriterionMet()) {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
-				
-				if (iteration == 3)
-					System.out.println("DEBUGGING!");
-				
+
 				if (iteration == 11)
 					System.out.println("DEBUGGING!");
 				
 				findBestNonTabooMove();
-				//printBestMove();
+				System.out.println("Find best non taboo move succeeded");
+				//printBestMove();											
 				
 //				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
 				
 				updateTabuList();
-				applyBestNonTabooMove();							
+				System.out.println("Updated Tabu List");// + "; Solution: " + solution.getAsTupel() + "\n");
+				
+				applyBestNonTabooMove();				
+				System.out.println("applied best move");				
 				
 				if (isNewSolutionIsNewBestOverallSolution()) { 
+					System.out.println("new solution is new best found solution");		
+					
+					if (iteration == 3)
+						System.out.println("DEBUGGING!");
+					
 					tryToImproveNewBestSolutionWithIntensificationPhase();
 					setBestOverallSolutionToNewSolution();	
  					iterationsWithoutImprovement = 0;
 				} else
 					iterationsWithoutImprovement++;
+				
+				System.out.println("checked if new solution is new best found solution");
 			} catch (Exception e) {
 				if (e instanceof NoSolutionExistsException) {													
 //				if (e.getMessage() == "No feasible move found.") {						
@@ -68,7 +77,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			     		System.out.println(arr[i].toString());			     	
 					throw new RuntimeException(e);
 				}
-			}
+			}			
 			iteration++;
 		}
 		
@@ -96,7 +105,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	private boolean isNewSolutionIsNewBestOverallSolution() {
 //		assertEquals(false, solution.equals(bestOverallSolution));
-		if (solution.getTotalDistance() < bestOverallSolution.getTotalDistance()
+		if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(), bestOverallSolution.getTotalDistanceWithCostFactor())
 			&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
 			return true;
 		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
@@ -107,14 +116,23 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
 		//IMPORTANT_TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
 		SolutionGot solutionTemp = (SolutionGot) solution;
-		for (GroupOfTours got : solutionTemp.getGots())
+		int k = 0;
+		for (GroupOfTours got : solutionTemp.getGots()) {
+			k++;
+			System.out.println("Improvement Phase: looking at Got " + k + " out of " + solutionTemp.getGots().size());
 			for (int j = 0; j < got.getTours().size(); j++) {
+				System.out.println("Improvement Phase: looking at Tour " + j+1 + " out of " +  got.getTours().size());
 				Tour tour = got.getTour(j);
+				//RUNTIME_TODO: versuche hier weniger Iterationen
 				for (int i = 0; i < 10; i++) { // 10 Verbesserungsversuche pro Tour
+					System.out.println("Improvement Phase: Verbesserungsversuch " + i + " out of " +  10);
+					//CODE_SMELL_TODO: construct incomplete vrpProblem first and start I1Solver with vrpProblem
 					SolutionGot newSolution = new RandomI1Solver().solve(tour);
+					System.out.println("Improvement Phase: Constructed new initial solution");
 					new LocalSearchForElementWithTours().improve(newSolution);
+					System.out.println("Improvement Phase: improved initial solution with local search");
 					if (newSolution.getNumberOfTours() == 1)
-						if (newSolution.getTotalDistance() <  tour.getTotalDistanceWithCostFactor()) {
+						if (newSolution.getTotalDistanceWithCostFactor() <  tour.getTotalDistanceWithCostFactor()) {
 							System.out.println("Hurra, Intensification Procedure hat eine bessere Tour gefunden in Iteration Intensification Procedure " + i + "; Iteration TS: " + iteration);
 							tour = newSolution.getTour(0);
 							got.setTour(j, newSolution.getTour(0));
@@ -122,6 +140,13 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 						}
 				}
 			}	
+		}
+	}
+	
+	public void tryToImproveNewBestSolutionWithIntensificationPhase(
+			SolutionGot solution2) {
+		solution = solution2;
+		tryToImproveNewBestSolutionWithIntensificationPhase();
 	}
 	
 	private void setBestOverallSolutionToNewSolution() {
@@ -140,9 +165,4 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		maxNumberIterationsWithoutImprovement = i;
 	}
 
-	public void tryToImproveNewBestSolutionWithIntensificationPhase(
-			SolutionGot solution2) {
-		solution = solution2;
-		tryToImproveNewBestSolutionWithIntensificationPhase();
-	}
 }

@@ -31,7 +31,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
         return vrpProblem;
     }
 
-    public double getTotalDistance() {
+    public double getTotalDistanceWithCostFactor() {
         double distance = 0;
         for (Tour t : this.getTours()) {
             distance += t.getTotalDistanceWithCostFactor();
@@ -126,7 +126,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }
     	
 	public double getSumOfDistanceAndExpectedRecourseCost() {
-		return getTotalDistance() + getExpectedRecourseCost();
+		return getTotalDistanceWithCostFactor() + getExpectedRecourseCost();
 	}
 
 	public void addGot(GroupOfTours got) {
@@ -211,7 +211,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }
 
     public String getSolutionAsString() {
-        String s = String.format("%.3f %.3f %.3f %d\n", getTotalDistance(),
+        String s = String.format("%.3f %.3f %.3f %d\n", getTotalDistanceWithCostFactor(),
                 getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCost(), getVehicleCount());
         for (Tour t : getTours()) {
             s += ("0 ");
@@ -241,7 +241,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	}   
 
 	public void printSolutionCost() {
-		System.out.println(getTotalDistance());
+		System.out.println(getTotalDistanceWithCostFactor());
 	}
 	
 	public int getNumberOfTours() {

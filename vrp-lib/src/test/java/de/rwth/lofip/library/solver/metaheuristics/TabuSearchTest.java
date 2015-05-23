@@ -25,6 +25,9 @@ public class TabuSearchTest {
 	public void testTryToImproveRoutesWithIntensificationPhase() {
 		solution = SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
 		solution.printSolutionAsTupel();
+		
+		SolutionGot solution1324 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
+		System.out.println("Cost Solution1324: " + solution1324.getTotalDistanceWithCostFactor());
 		new TabuSearchForElementWithTours().tryToImproveNewBestSolutionWithIntensificationPhase(solution);
 		solution.printSolutionAsTupel();
 		assertEquals(true, SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().equals(solution));

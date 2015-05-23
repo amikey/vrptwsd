@@ -48,7 +48,7 @@ public class AdaptiveMemory {
 	
 		private void labelToursWithSolutionValue(SolutionGot solution) {
 			for (Tour tour : solution.getTours())
-				tour.setSolutionValue(solution.getTotalDistance());		
+				tour.setSolutionValue(solution.getTotalDistanceWithCostFactor());		
 		}
 		
 		private void addToursOfSolutionToTours(SolutionGot solution) {

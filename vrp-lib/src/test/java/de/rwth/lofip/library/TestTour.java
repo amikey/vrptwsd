@@ -13,6 +13,12 @@ public class TestTour {
 	
 	private Tour tour1, tour2;
 	
+	@Test
+	public void testCalculationOfLenghtOfTour() {
+		tour1 = SetUpUtils.getTourWithFourCustomers();
+		assertEquals(97.250, tour1.getTotalDistanceWithCostFactor(), 0.001);
+	}
+
 	@Test 
 	public void testInsertCustomersAtPostion() {
 		whenGivenOneEmptyTour();

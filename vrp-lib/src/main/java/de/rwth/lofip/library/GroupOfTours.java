@@ -60,7 +60,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	}
 
 	@Override
-	public double getTotalDistance() {
+	public double getTotalDistanceWithCostFactor() {
 		//RUNTIME_TODO: distance zwischenspeichern und nur ändern, wenn sich Touren ändern
 		double distance = 0;
         for (Tour t : this.getTours()) {
@@ -203,7 +203,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     				}
     			}
     			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
-    			double recourseCost = -this.getTotalDistance() + gotClone.getTotalDistance();
+    			double recourseCost = -this.getTotalDistanceWithCostFactor() + gotClone.getTotalDistanceWithCostFactor();
     			overallRecourseCost += recourseCost;
     			
     			//calculate number of different recourse actions    		

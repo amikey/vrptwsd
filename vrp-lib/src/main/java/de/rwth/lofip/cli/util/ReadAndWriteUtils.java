@@ -123,6 +123,10 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("rc102","X");
 	}
 	
+	public static VrpProblem readSolomonProblemRC103() throws IOException {
+		return readSolomonProblemX("rc103","X").get(0);
+	}
+	
 	public static List<VrpProblem> readSolomonProblemRC103AsList() throws IOException {
 		return readSolomonProblemX("rc103","X");
 	}
@@ -189,10 +193,10 @@ public class ReadAndWriteUtils {
 		
 		for (SolutionGot solution : solutions1) {			
 			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
-			IOUtils.write(String.format("%.3f",solution.getTotalDistance()) + ";", outputStream);
+			IOUtils.write(String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";", outputStream);
 			IOUtils.write(solution.getVehicleCount() + ";", outputStream);
 			if (!solutions2.isEmpty()) {
-				IOUtils.write(String.format("%.3f",solutions2.get(i).getTotalDistance()) + ";", outputStream);
+				IOUtils.write(String.format("%.3f",solutions2.get(i).getTotalDistanceWithCostFactor()) + ";", outputStream);
 				IOUtils.write(solutions2.get(i).getVehicleCount() + ";", outputStream);
 				IOUtils.write(solutions2.get(i).getAsTupel() + ";", outputStream);
 				IOUtils.write("Demands: ", outputStream);
@@ -203,7 +207,7 @@ public class ReadAndWriteUtils {
 			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(i).doubleValue()) + ";",outputStream);
 			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i).intValue() + ";",outputStream);
 			//print prozentuale abweichung
-			double deviationObjValue = (solution.getTotalDistance() - bestKnownSolutionValues.get(i).doubleValue()) / bestKnownSolutionValues.get(i).doubleValue() * 100;
+			double deviationObjValue = (solution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(i).doubleValue()) / bestKnownSolutionValues.get(i).doubleValue() * 100;
 			averageDeviationObjValue += deviationObjValue;
 			double deviationVehicleNumber = ( (double) solution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(i).intValue()) / (double) bestKnownSolutionVehicleNumbers.get(i).intValue() * 100;
 			averageDeviationVehicleNumber += deviationVehicleNumber;
@@ -292,7 +296,7 @@ public class ReadAndWriteUtils {
 			if (solution.getVrpProblem().getDescription().contains(string)
 				&& !solution.getVrpProblem().getDescription().contains(stringNotContain)) {
 				numberOfSolutions++;
-				distance += solution.getTotalDistance();
+				distance += solution.getTotalDistanceWithCostFactor();
 			}
 		}
 		return distance / numberOfSolutions;

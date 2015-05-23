@@ -9,6 +9,6 @@ public class LocalSearchForTesting extends LocalSearchForElementWithTours {
 	protected void assertEqualsHook() {
 		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(solution));
 		assertEquals(true, ElementWithToursUtils.isElementTWFeasible(solution));
-		assertEquals(solution.getTotalDistance(),bestMove.getCost(),0.001);
+		assertEquals(solution.getTotalDistanceWithCostFactor(),bestMove.getCost(),0.001);
 	}
 }
