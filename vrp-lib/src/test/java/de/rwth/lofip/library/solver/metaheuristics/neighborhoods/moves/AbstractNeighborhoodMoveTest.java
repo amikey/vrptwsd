@@ -15,7 +15,7 @@ public class AbstractNeighborhoodMoveTest {
 		GroupOfTours got1 = SetUpUtils.getGotWithCustomer1And2();
 		GroupOfTours got2 = SetUpUtils.getGotWithCustomer3And4();
 		
-		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 1, 2, 0, 1, 100);
+		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 1, 2, 0, 1, 100, 15);
 		
 		AbstractNeighborhoodMove cloneOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
 		cloneOfMove.getTour2().removeCustomerAtPosition(0);
@@ -23,7 +23,10 @@ public class AbstractNeighborhoodMoveTest {
 		assertEquals(true, move.getTour1().getParentGot().equals(cloneOfMove.getTour1().getParentGot()));
 		assertEquals(false, move.getTour2().getParentGot().equals(cloneOfMove.getTour2().getParentGot()));
 		assertEquals(true, move.getTour1().equals(cloneOfMove.getTour1()));
-		assertEquals(false, move.getTour2().equals(cloneOfMove.getTour2()));		
+		assertEquals(false, move.getTour2().equals(cloneOfMove.getTour2()));
+		
+		assertEquals(move.getCost(), cloneOfMove.getCost(), 0.00001);
+		assertEquals(move.getCostDifferenceToPreviousSolution(), cloneOfMove.getCostDifferenceToPreviousSolution(), 0.00001);
 	}
 	
 	@Test 
@@ -31,7 +34,7 @@ public class AbstractNeighborhoodMoveTest {
 		GroupOfTours got1 = SetUpUtils.getGotWithCustomer1And2();
 		got1.addTour(SetUpUtils.getTourWithCustomer1And4());
 		
-		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got1.getLastTour(), 1, 2, 0, 1, 100);
+		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got1.getLastTour(), 1, 2, 0, 1, 100, 15);
 		
 		AbstractNeighborhoodMove cloneOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
 		cloneOfMove.getTour2().removeCustomerAtPosition(0);
@@ -45,5 +48,8 @@ public class AbstractNeighborhoodMoveTest {
 		assertEquals(false, move.getTour2().getParentGot().equals(cloneOfMove.getTour2().getParentGot()));
 		assertEquals(true, move.getTour1().equals(cloneOfMove.getTour1()));
 		assertEquals(false, move.getTour2().equals(cloneOfMove.getTour2()));
+		
+		assertEquals(move.getCost(), cloneOfMove.getCost(), 0.00001);
+		assertEquals(move.getCostDifferenceToPreviousSolution(), cloneOfMove.getCostDifferenceToPreviousSolution(), 0.00001);
 	}
 }

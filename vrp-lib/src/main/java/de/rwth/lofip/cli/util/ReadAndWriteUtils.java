@@ -98,10 +98,13 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("c106","rc106");
 	}
 	
+	public static List<VrpProblem> readSolomonProblemC2XX() throws IOException {
+		return readSolomonProblemX("c2","rc2");
+	}
+	
 	public static List<VrpProblem> readSolomonProblemC202() throws IOException {
 		return readSolomonProblemX("c202","rc202");
 	}
-	
 
 	public static List<VrpProblem> readSolomonProblemC204() throws IOException {
 		return readSolomonProblemX("c204","rc204");
@@ -414,6 +417,8 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
+
+
 	
 	
 	

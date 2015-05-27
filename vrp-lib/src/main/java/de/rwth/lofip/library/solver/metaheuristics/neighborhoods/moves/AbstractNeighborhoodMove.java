@@ -17,8 +17,9 @@ public class AbstractNeighborhoodMove implements Serializable {
 	private int positionStartOfSegmentTour2;
 	private int positionEndOfSegmentTour2;
 	private double costOfCompleteSolutionThatResultsFromMove;
+	private double costDifferenceToPreviousSolution;
 	
-	public AbstractNeighborhoodMove(Tour tour1, Tour tour2, int posStart1, int posEnd1, int posStart2, int posEnd2, double cost) {
+	public AbstractNeighborhoodMove(Tour tour1, Tour tour2, int posStart1, int posEnd1, int posStart2, int posEnd2, double cost, double costDifferenceToPreviousSolution) {
 		this.tour1 = tour1;
 		this.tour2 = tour2;
 		this.positionStartOfSegmentTour1 = posStart1;
@@ -26,6 +27,7 @@ public class AbstractNeighborhoodMove implements Serializable {
 		this.positionStartOfSegmentTour2 = posStart2;
 		this.positionEndOfSegmentTour2 = posEnd2;
 		this.costOfCompleteSolutionThatResultsFromMove = cost;
+		this.costDifferenceToPreviousSolution = costDifferenceToPreviousSolution;
 	}
 	
 	public AbstractNeighborhoodMove(double cost) {
@@ -67,12 +69,22 @@ public class AbstractNeighborhoodMove implements Serializable {
 	public int getEndPositionTour2() {
 		return positionEndOfSegmentTour2;
 	}
+	
+	public double getCostDifferenceToPreviousSolution() {
+		return costDifferenceToPreviousSolution;
+	}
+
+	public void setCostDifferenceToPreviousSolution(
+			double costDifferenceToPreviousSolution) {
+		this.costDifferenceToPreviousSolution = costDifferenceToPreviousSolution;
+	}
 
 	public void print() {
-		System.out.println("Tour1: " + tour1.getId());
+		System.out.println("Tour1: " + tour1.getId() + "; " + tour1.getTourAsTupel());
 		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
-		System.out.println("Tour2: " + tour2.getId());
-		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);		
+		System.out.println("Tour2: " + tour2.getId()  + "; " + tour2.getTourAsTupel());;
+		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);	
+		System.out.println("CostDifference = " + costDifferenceToPreviousSolution);
 	}
 	
 	@Override
@@ -87,6 +99,9 @@ public class AbstractNeighborhoodMove implements Serializable {
 		if (Double.doubleToLongBits(costOfCompleteSolutionThatResultsFromMove) != Double
 				.doubleToLongBits(other.costOfCompleteSolutionThatResultsFromMove))
 			return false;
+		if (Double.doubleToLongBits(costDifferenceToPreviousSolution) != Double
+				.doubleToLongBits(other.costDifferenceToPreviousSolution))
+			return false; 
 		if (positionEndOfSegmentTour1 != other.positionEndOfSegmentTour1)
 			return false;
 		if (positionEndOfSegmentTour2 != other.positionEndOfSegmentTour2)
@@ -123,7 +138,7 @@ public class AbstractNeighborhoodMove implements Serializable {
 	}
 	
 	public AbstractNeighborhoodMove cloneWithCopyOfToursAndGotsAndCustomers() {
-		AbstractNeighborhoodMove newMove = new AbstractNeighborhoodMove(tour1, tour2, positionStartOfSegmentTour1, positionEndOfSegmentTour1, positionStartOfSegmentTour2, positionEndOfSegmentTour2, costOfCompleteSolutionThatResultsFromMove);
+		AbstractNeighborhoodMove newMove = new AbstractNeighborhoodMove(tour1, tour2, positionStartOfSegmentTour1, positionEndOfSegmentTour1, positionStartOfSegmentTour2, positionEndOfSegmentTour2, costOfCompleteSolutionThatResultsFromMove, costDifferenceToPreviousSolution);
 		//Achtung, Touren sind noch nicht geklont
 		
 		GroupOfTours got1 = tour1.getParentGot().cloneWithCopyOfCustomers();
@@ -147,6 +162,19 @@ public class AbstractNeighborhoodMove implements Serializable {
 
 	public boolean isParentGotOfTour2IsSameAsParentGotOfTour1() {
 		return tour1.getParentGot().cloneWithCopyOfCustomers().equals(tour2.getParentGot().cloneWithCopyOfCustomers());
+	}
+
+	public boolean isSwapsTwoSegments() {
+		boolean isBothSegmentsAreSwapped = isSegmentRemovedFromTour1() && isSegmentRemovedFromTour2();
+		return isBothSegmentsAreSwapped;
+	}
+	
+	private boolean isSegmentRemovedFromTour1() {
+		return positionStartOfSegmentTour1 != positionEndOfSegmentTour1;
+	}
+	
+	private boolean isSegmentRemovedFromTour2() {
+		return positionStartOfSegmentTour2 != positionEndOfSegmentTour2;
 	}
 
 

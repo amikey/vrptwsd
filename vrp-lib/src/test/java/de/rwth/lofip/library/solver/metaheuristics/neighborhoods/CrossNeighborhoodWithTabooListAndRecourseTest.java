@@ -15,7 +15,7 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		GroupOfTours got1 = SetUpUtils.getGotWithCustomer1And2();
 		GroupOfTours got2 = SetUpUtils.getGotWithCustomer3And4();
 		
-		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, 100);
+		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, 100, 15);
 		
 		CrossNeighborhoodWithTabooListAndRecourse neighborhood = new CrossNeighborhoodWithTabooListAndRecourse(SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3());
 		neighborhood.acctuallyApplyMove(move);

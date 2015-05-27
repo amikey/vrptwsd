@@ -38,6 +38,12 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	}
 
 	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceC2XX() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemC2XX();	
+		processProblems();
+	}
+	
+	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceC202() throws IOException {			
 		problems = ReadAndWriteUtils.readSolomonProblemC202();	
 		processProblems();
