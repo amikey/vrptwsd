@@ -14,6 +14,7 @@ import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class AdaptiveMemoryTabuSearchTest {
 	
@@ -49,7 +50,8 @@ public class AdaptiveMemoryTabuSearchTest {
 	}
 	
 	private Object isSolutionOneWorseThanOrEqualToSolutionTwo(SolutionGot solutionGot, SolutionGot solutionGot2) {
-		if (solutionGot.getTotalDistanceWithCostFactor() >= solutionGot2.getTotalDistanceWithCostFactor())
+		if (MathUtils.greaterThan(solutionGot.getTotalDistanceWithCostFactor(), solutionGot2.getTotalDistanceWithCostFactor()) ||
+				MathUtils.equals(solutionGot.getTotalDistanceWithCostFactor(), solutionGot2.getTotalDistanceWithCostFactor()))
 			return true;
 		if (solutionGot.getVehicleCount() > solutionGot2.getVehicleCount())
 			return true;

@@ -1,6 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
@@ -175,6 +177,18 @@ public class AbstractNeighborhoodMove implements Serializable {
 	
 	private boolean isSegmentRemovedFromTour2() {
 		return positionStartOfSegmentTour2 != positionEndOfSegmentTour2;
+	}
+
+	public List<GroupOfTours> getGots() {
+		List<GroupOfTours> list = new ArrayList<GroupOfTours>();
+		if (isParentGotOfTour2IsSameAsParentGotOfTour1())
+			list.add(tour1.getParentGot());
+		else {
+			list.add(tour1.getParentGot());
+			list.add(tour2.getParentGot());
+		}
+		return list;
+			
 	}
 
 

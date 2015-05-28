@@ -22,7 +22,7 @@ public class ResourceExtensionFunction {
 	private double earliestDepartureTime = 0;
 	private int demand = 0;
 	//CODE_SMELL_TODO: have depot in list elementsInThisRef
-	private List<Customer> elementsInThisRef = new LinkedList<Customer>();	
+	private List<Customer> customersInThisRef = new LinkedList<Customer>();	
 	private int id;
 	private boolean containsDepot = false;
 	private Depot depot;
@@ -30,7 +30,7 @@ public class ResourceExtensionFunction {
 	public ResourceExtensionFunction() {
 		id = seedId;
 		seedId++;
-		elementsInThisRef.clear();
+		customersInThisRef.clear();
 	}
 	
 	public ResourceExtensionFunction(double d, double e, double f, int i) {
@@ -38,7 +38,7 @@ public class ResourceExtensionFunction {
 		latestArrivalTime = e;
 		earliestDepartureTime = f;
 		demand = i;
-		elementsInThisRef.clear();
+		customersInThisRef.clear();
 		id = seedId;
 		seedId++;
 	}
@@ -49,7 +49,7 @@ public class ResourceExtensionFunction {
 		latestArrivalTime = customer.getTimeWindowClose();
 		earliestDepartureTime = customer.getTimeWindowOpen() + duration;
 		demand += customer.getDemand();
-		elementsInThisRef.add(customer);
+		customersInThisRef.add(customer);
 	}
 	
 	public ResourceExtensionFunction(CustomerInTour customerInTour) {
@@ -58,7 +58,7 @@ public class ResourceExtensionFunction {
 		latestArrivalTime = customerInTour.getCustomer().getTimeWindowClose();
 		earliestDepartureTime = customerInTour.getCustomer().getTimeWindowOpen() + duration;
 		demand += customerInTour.getCustomer().getDemand();
-		elementsInThisRef.add(customerInTour.getCustomer());
+		customersInThisRef.add(customerInTour.getCustomer());
 	}
 
 	//Copy Constructor
@@ -73,7 +73,7 @@ public class ResourceExtensionFunction {
 			newCustomers.add(c.clone());		
 		setCustomers(newCustomers);		
 		containsDepot = ref.isContainsDepot();
-		depot = ref.getDepot();
+		depot = ref.getDepot();		
 	}
 
 	public ResourceExtensionFunction(Depot depot) {
@@ -169,7 +169,7 @@ public class ResourceExtensionFunction {
 		//update demand
 			demand += newRef.getDemand();
 			
-		elementsInThisRef.addAll(newRef.getCustomers());			
+		customersInThisRef.addAll(newRef.getCustomers());			
 	}
 	
 	public void updateWithPreceedingCustomer(CustomerInTour customerInTour) {
@@ -209,14 +209,14 @@ public class ResourceExtensionFunction {
 			demand += newRef.getDemand();
 		
 		LinkedList<Customer> tempElements = new LinkedList<Customer>(newRef.getCustomers());
-		tempElements.addAll(elementsInThisRef);
-		elementsInThisRef = tempElements;			
+		tempElements.addAll(customersInThisRef);
+		customersInThisRef = tempElements;			
 	}
 
 	public void print() {
 		System.out.print("Ref: (" + duration + "," + latestArrivalTime + "," + earliestDepartureTime + ")");
 		System.out.print("; Customers: ");
-		for (Customer c : elementsInThisRef)
+		for (Customer c : customersInThisRef)
 			c.print();
 		System.out.println("; ID: " + id);
 	}
@@ -232,7 +232,7 @@ public class ResourceExtensionFunction {
 		//falls ja, sollte ich eine andere Methode wählen, als die Customer in der Ref zu speichern, nämlich
 		//letzten Customer speichern und evtl. ersten Customer speichern
 		List<Customer> newCustomers = new LinkedList<Customer>();
-		for (Customer c : elementsInThisRef)
+		for (Customer c : customersInThisRef)
 			newCustomers.add(c);		
 		ref.setCustomers(newCustomers);
 		ref.setContainsDepot(containsDepot);
@@ -249,7 +249,7 @@ public class ResourceExtensionFunction {
 	}
 
 	private void setCustomers(List<Customer> customers2) {
-		elementsInThisRef = customers2;
+		customersInThisRef = customers2;
 	}
 	
 	@Override
@@ -290,7 +290,7 @@ public class ResourceExtensionFunction {
 	}
 
 	public List<Customer> getCustomers() {
-		return elementsInThisRef;
+		return customersInThisRef;
 	}
 
 	public void reset() {
@@ -298,27 +298,29 @@ public class ResourceExtensionFunction {
 		latestArrivalTime = Double.MAX_VALUE;
 		earliestDepartureTime = 0;
 		demand = 0;
-		elementsInThisRef.clear();
+		customersInThisRef.clear();
 	}
 
+	//CODE_SMELL_TODO: getCustomers umbenennen, denn kann auch Depot zurückgeben
 	public AbstractPointInSpace getFirstCustomer() {
-		if (elementsInThisRef.isEmpty())
+		if (customersInThisRef.isEmpty())
 			if (containsDepot)
 				return depot;
 			else
 				//CODE_SMELL_TODO: bad practice
 				return null;
-		else return elementsInThisRef.get(0);
+		else return customersInThisRef.get(0);
 	}
 
+	//CODE_SMELL_TODO: getCustomers umbenennen, denn kann auch Depot zurückgeben
 	public AbstractPointInSpace getLastCustomer() {
-		if (elementsInThisRef.isEmpty())
+		if (customersInThisRef.isEmpty())
 			if (containsDepot)
 				return depot;
 			else
 				//CODE_SMELL_TODO: bad practice
 				return null;
-		else return elementsInThisRef.get(elementsInThisRef.size()-1);
+		else return customersInThisRef.get(customersInThisRef.size()-1);
 	}
 	
 

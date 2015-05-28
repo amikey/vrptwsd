@@ -5,6 +5,7 @@ import java.util.Set;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class DistanceComparatorWithSimilarity implements Comparator<CustomerWithCost> {
 		
@@ -49,7 +50,7 @@ public class DistanceComparatorWithSimilarity implements Comparator<CustomerWith
 	    	for (Customer c2 : assignedCustomers)
 	    	{
 	    		double distance = new Edge(c1, c2).getLength();
-	            if (distance > maxDistance) {
+	            if (MathUtils.greaterThan(distance,maxDistance)) {
 	                maxDistance = distance;
 	            }
 	
@@ -69,9 +70,9 @@ public class DistanceComparatorWithSimilarity implements Comparator<CustomerWith
 		                                j.getTimeWindowOpen(), i.getTimeWindowOpen()
 		                                        + distance + i.getServiceTime()));
 	
-	            if (tauIJ > maxTWsize) 
+	            if (MathUtils.greaterThan(tauIJ, maxTWsize)) 
 	                maxTWsize = tauIJ;
-	            if (tauJI > maxTWsize)
+	            if (MathUtils.greaterThan(tauJI, maxTWsize))
 	            	maxTWsize = tauJI;
 	    	}
 	    }	
@@ -81,7 +82,7 @@ public class DistanceComparatorWithSimilarity implements Comparator<CustomerWith
 		for (Customer c : unassignedCustomers)
 	    {
 	    	double simVal = calculateSimilarityValue(c);
-	    	if (simVal > maxSimValue)
+	    	if (MathUtils.greaterThan(simVal, maxSimValue))
 	    		maxSimValue = simVal;
 	    }
 		return maxSimValue;
@@ -123,11 +124,11 @@ public class DistanceComparatorWithSimilarity implements Comparator<CustomerWith
 	                            j.getTimeWindowOpen(), i.getTimeWindowOpen()
 	                                    + distance + i.getServiceTime()));
 	
-	    if (tauIJ > tauJI) 
+	    if (MathUtils.greaterThan(tauIJ,tauJI)) 
 	        TWsize = tauIJ;
 	    else 
 	    	TWsize = tauJI;
-	    if (TWsize < 0)
+	    if (MathUtils.lessThan(TWsize, 0))
 	    	TWsize = 0;
 	    
 	    double timeWindowTerm = TWsize / maxTWsize;
@@ -144,10 +145,10 @@ public class DistanceComparatorWithSimilarity implements Comparator<CustomerWith
 		double valueCustomer2 = (1-WEIGHT_SIMVAL_FV) * o2.getCost() / maxCostDistance + WEIGHT_SIMVAL_FV * calculateSimilarityValue(o2.getCustomer()) / maxSimValue; 
 		
 	    // the one with the lowest value should be used as initial customer
-	    if (valueCustomer1 < valueCustomer2) {
+	    if (MathUtils.lessThan(valueCustomer1, valueCustomer2)) {
 	        return -1;
 	    }
-	    if (valueCustomer1 > valueCustomer2) {
+	    if (MathUtils.greaterThan(valueCustomer1, valueCustomer2)) {
 	        return 1;
 	    }
 	    return 0;

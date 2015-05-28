@@ -41,4 +41,17 @@ public class TestGotCloneWithCopyOfCustomers {
 		System.out.println(got1.getCustomers());
 	}
 	
+	@Test
+	public void TestThatREFsareClonedCorrectly() {
+		givenOneGot();
+		andCloningThatGotWithCopyOfCustomers();
+		thenRefsShouldBeTheSame();
+	}
+
+	private void thenRefsShouldBeTheSame() {
+		got1.getFirstTour().printRefMatrix();
+		got2.getFirstTour().printRefMatrix();
+		throw new RuntimeException("immplement with assert");
+	}
+	
 }

@@ -112,6 +112,7 @@ public class Tour implements SolutionElement, Serializable {
 		for (CustomerInTour cit : clonedTour.getCustomersInTour()) {
 			cit.setCustomer(cit.getCustomer().clone());
 		}
+		//IMPORTANT_TODO: hier müssen auch die Customer in den Refs angepasst werden
 		return clonedTour;
 	}
 
@@ -338,7 +339,9 @@ public class Tour implements SolutionElement, Serializable {
 			ResourceExtensionFunction ref = refsFromPositionToEnd.get(0);
 			List<Customer> customersRef = ref.getCustomers();
 			Customer customerRef = customersRef.get(i);
-			Customer customerTour = getCustomers().get(i);			
+			Customer customerTour = getCustomers().get(i);	
+			System.out.println("Demand customerRef: " + customerRef.getDemand());
+			System.out.println("Demand customerTour: " + customerTour.getDemand());
 			assertEquals(true, customerRef.equals(customerTour));
 		}
 	}

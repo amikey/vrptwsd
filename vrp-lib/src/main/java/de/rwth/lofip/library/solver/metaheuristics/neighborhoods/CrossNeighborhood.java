@@ -13,6 +13,7 @@ import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterf
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.solver.util.TourUtils;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class CrossNeighborhood implements NeighborhoodInterface {
 	
@@ -375,28 +376,6 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 
 			return costOfCompleteSolutionThatResultsFromMove;
 		}
-
-			private double assertCalculatedCostEqualsActualCostHook() {
-			//RUNTIME_TODO: auslagern, so dass es im eigentlichen System nicht mehr aufgerufen wird.
-			//RUNTIME_TODO: Testen, ob clonen wirklich viel langsamer ist als die alte Berechnung
-				long startTime = System.nanoTime();
-				AbstractNeighborhoodMove move = getNeigborhoodMove();
-				AbstractNeighborhoodMove moveClone = move.cloneWithCopyOfToursAndGotsAndCustomers();
-				CrossNeighborhoodWithTabooListAndRecourse.applyMoveToUnderlyingGots(moveClone);
-				double costOfSolutionCalculatedUsingCloning = 
-						elementWithTours.getTotalDistanceWithCostFactor() - 
-						move.getTour1().getTotalDistanceWithCostFactor() - 
-						move.getTour2().getTotalDistanceWithCostFactor() +
-						moveClone.getTour1().getTotalDistanceWithCostFactor() + 
-						moveClone.getTour2().getTotalDistanceWithCostFactor();
-				long endTime = System.nanoTime();
-				long timeNeeded = (endTime - startTime);
-				
-				System.out.println("time needed for calculation via cloning: " + timeNeeded);
-				System.out.println("is inner tour move: " + move.isInnerTourMove());
-				assertEquals(costOfSolutionCalculatedUsingCloning, costOfCompleteSolutionThatResultsFromMove, 0.001);
-				return costOfSolutionCalculatedUsingCloning;
-			}
 		
 			private boolean isSegmentRemovedFromTour1() {
 				return positionStartOfSegmentTour1 != positionEndOfSegmentTour1;
@@ -418,7 +397,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		private boolean isMoveNewBestMove(AbstractNeighborhoodMove move) {	
 			if (bestNonTabooMove == null) 
 				return true;
-			if (move.getCost() <= bestNonTabooMove.getCost() || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
+			if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()) || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
 					(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
 				return true;
 			else 

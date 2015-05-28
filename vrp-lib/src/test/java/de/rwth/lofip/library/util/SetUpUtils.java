@@ -1,10 +1,12 @@
 package de.rwth.lofip.library.util;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.GroupOfTours;
@@ -427,5 +429,33 @@ public class SetUpUtils {
 		return got;
 	}
 
-	
+	public static GroupOfTours getSomeExampleGotFromRC103() throws IOException {
+		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();
+		
+		//create first tour for got
+		Tour tour3 = new Tour(problem.getDepot(), problem.getVehicle());
+		GroupOfTours got2 = new GroupOfTours();
+		got2.addTour(tour3);
+		tour3.addCustomer(problem.getCustomerWithCustomerNo(39));
+		tour3.addCustomer(problem.getCustomerWithCustomerNo(88));
+		tour3.addCustomer(problem.getCustomerWithCustomerNo(60));
+		tour3.addCustomer(problem.getCustomerWithCustomerNo(55));
+		tour3.addCustomer(problem.getCustomerWithCustomerNo(68));
+		tour3.addCustomer(problem.getCustomerWithCustomerNo(70));
+		SolutionGot solution2 = new SolutionGot(problem);
+		solution2.addGot(got2);
+				
+		//create tour two for got
+		Tour tour4 = new Tour(problem.getDepot(), problem.getVehicle());		
+		got2.addTour(tour4);
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(69));
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(53));
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(78));
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(73));
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(17));
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(47));
+		tour4.addCustomer(problem.getCustomerWithCustomerNo(98));
+		
+		return got2;
+	}
 }

@@ -132,7 +132,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 					new LocalSearchForElementWithTours().improve(newSolution);
 					System.out.println("Improvement Phase: improved initial solution with local search");
 					if (newSolution.getNumberOfTours() == 1)
-						if (newSolution.getTotalDistanceWithCostFactor() <  tour.getTotalDistanceWithCostFactor()) {
+						if (MathUtils.lessThan(newSolution.getTotalDistanceWithCostFactor(), tour.getTotalDistanceWithCostFactor())) {
 							System.out.println("Hurra, Intensification Procedure hat eine bessere Tour gefunden in Iteration Intensification Procedure " + i + "; Iteration TS: " + iteration);
 							tour = newSolution.getTour(0);
 							got.setTour(j, newSolution.getTour(0));

@@ -18,6 +18,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.solver.util.TourUtils;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 /**
  * Implement the Greedy Insertion as described by Lei et al. in section 3.3.5 of
@@ -156,10 +157,10 @@ public class GreedyInsertion {
                             @Override
                             public int compare(CustomerWithCost o1,
                                     CustomerWithCost o2) {
-                                if (o1.getCost() < o2.getCost()) {
+                                if (MathUtils.lessThan(o1.getCost(),o2.getCost())) {
                                     return -1;
                                 }
-                                if (o1.getCost() > o2.getCost()) {
+                                if (MathUtils.greaterThan(o1.getCost(),o2.getCost())) {
                                     return 1;
                                 }
                                 return 0;

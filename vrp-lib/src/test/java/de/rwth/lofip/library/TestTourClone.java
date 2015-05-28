@@ -33,4 +33,5 @@ public class TestTourClone {
 	private void ThenCustomersInOriginalTourAndClonedTourShouldBeDifferent() {
 		assertEquals(true, tour1.getCustomerAtPosition(1).getCustomer().getDemand() != tour2.getCustomerAtPosition(1).getCustomer().getDemand());	
 	}
+	
 }

@@ -5,6 +5,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.util.CustomerInTour;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 /**
  * Static helper methods which calculate stuff related to tours. These are
@@ -63,7 +64,7 @@ public class TourUtils {
 				cost = new Edge(tourCustomer, customer).getLength()
 						+ new Edge(customer, nextCustomer).getLength()
 						- new Edge(tourCustomer, nextCustomer).getLength();
-				if (cost < returnObject.getCost()) {
+				if (MathUtils.lessThan(cost, returnObject.getCost())) {
 					returnObject.setCost(cost);
 					returnObject.setPosition(position);
 				}
@@ -148,7 +149,7 @@ public class TourUtils {
 
 		private static boolean areTimeWindowsViolated(AbstractPointInSpace previousPoint, Customer currentCustomer) {
 			currentTime += new Edge(previousPoint, currentCustomer).getLength();
-			if (currentTime > currentCustomer.getTimeWindowClose()) 
+			if (MathUtils.greaterThan(currentTime, currentCustomer.getTimeWindowClose())) 
 				return true;
 			else 
 				return false;
@@ -197,7 +198,7 @@ public class TourUtils {
 		tour.recalculateTimes();
 		boolean feasible = true;
 		for (CustomerInTour c : tour.getCustomersInTour()) {			
-			if (c.getArrivalTime() > c.getCustomer().getTimeWindowClose())
+			if (MathUtils.greaterThan(c.getArrivalTime(), c.getCustomer().getTimeWindowClose()))
 				feasible = false;
 		}
 		return feasible;

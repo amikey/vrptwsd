@@ -15,6 +15,7 @@ import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.solver.util.SimpleTourUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RecourseCost;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 /**
  * @author Andreas Braun
@@ -26,8 +27,8 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
      ***************************************************************************/
 	private static final long serialVersionUID = 417229827834858665L;	
 	
-	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 1;
-	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.2;
+	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
+	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.8;
 	static int MAXIMAL_NUMBER_OF_TOURS = 1;		
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
@@ -143,7 +144,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 			for (CustomerInTour cit : t.getCustomersInTour())
 			{
 				double similarity = SimilarityUtils.calculateSimilarity(cit.getCustomer(),customer);
-				if (similarity > maxSimVal)
+				if (MathUtils.greaterThan(similarity, maxSimVal))
 					maxSimVal = similarity;
 			}
 		if (tours.isEmpty()) throw new RuntimeException("keine Tour in Got. Kann keine Similarity berechnen");
@@ -182,7 +183,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
      * Calculation of Probabilities and Recourse Cost
      ***************************************************************************/        
    
-    public RecourseCost getExpectedRecourseCost() {
+    public RecourseCost getExpectedRecourseCost() {    	
     	if (expectedRecourseCost == null) {   		    		
     		double overallRecourseCost = 0;
     		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
@@ -201,17 +202,17 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     					gotClone.addEmptyTour();
     					ls.improve(gotClone);
     				}
+
+	    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
+	    			double recourseCost = -this.getTotalDistanceWithCostFactor() + gotClone.getTotalDistanceWithCostFactor();
+	    			overallRecourseCost += recourseCost;
+	    			
+	    			//calculate number of different recourse actions    		
+	    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
+	    				numberOfDifferentRecourseActions++;
+	    				listOfRecourseActions.add(gotClone);
+	    			}
     			}
-    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
-    			double recourseCost = -this.getTotalDistanceWithCostFactor() + gotClone.getTotalDistanceWithCostFactor();
-    			overallRecourseCost += recourseCost;
-    			
-    			//calculate number of different recourse actions    		
-    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
-    				numberOfDifferentRecourseActions++;
-    				listOfRecourseActions.add(gotClone);
-    			}
-    		
     		}
     		overallRecourseCost = overallRecourseCost / NUMBER_OF_DEMAND_SCENARIO_RUNS;
     		
@@ -256,6 +257,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 			got.addTour(tour);
 			tour.setParentGot(got);
 		}        	
+		//expectedRecourseCost wird immer null sein
 		got.setExpectedRecourseCost(expectedRecourseCost);
 		return got;
 	}

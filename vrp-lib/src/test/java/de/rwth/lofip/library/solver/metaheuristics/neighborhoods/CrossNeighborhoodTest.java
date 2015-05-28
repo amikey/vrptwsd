@@ -16,6 +16,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.SetUpUtils;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class CrossNeighborhoodTest {
 
@@ -179,10 +180,10 @@ public class CrossNeighborhoodTest {
                     @Override
                     public int compare(AbstractNeighborhoodMove o1,
                             AbstractNeighborhoodMove o2) {
-                        if (o1.getCost() < o2.getCost()) {
+                        if (MathUtils.lessThan(o1.getCost(), o2.getCost())) {
                             return -1;
                         }
-                        if (o1.getCost() > o2.getCost()) {
+                        if (MathUtils.greaterThan(o1.getCost(), o2.getCost())) {
                             return 1;
                         }
                         return 0;

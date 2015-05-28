@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import de.rwth.lofip.library.util.CustomerInTour;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class VrpProblem implements Cloneable {
 
@@ -222,7 +223,7 @@ public class VrpProblem implements Cloneable {
 	public double getPercentageWithTW() {
 		double number = 0;
 		for (Customer c : customers)
-			if ((c.getTimeWindowClose() - c.getTimeWindowOpen()) < 400)
+			if (MathUtils.lessThan(c.getTimeWindowClose() - c.getTimeWindowOpen(), 400))
 				number++;
 		return (number / customers.size());
 	}
@@ -230,7 +231,7 @@ public class VrpProblem implements Cloneable {
 	public double getPercentageWithTightTW() {
 		double number = 0;
 		for (Customer c : customers)
-			if ((c.getTimeWindowClose() - c.getTimeWindowOpen()) < 200)
+			if (MathUtils.lessThan(c.getTimeWindowClose() - c.getTimeWindowOpen(), 200))
 				number++;
 		return (number / customers.size());
 	}

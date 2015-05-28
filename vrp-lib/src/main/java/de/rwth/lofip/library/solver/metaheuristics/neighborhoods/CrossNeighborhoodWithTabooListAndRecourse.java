@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
@@ -53,7 +54,6 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 
 	public static void applyMoveToUnderlyingGots(AbstractNeighborhoodMove copyOfMove) {
-		//IMPORTANT_TODO: mit clonen wurden die Kosten nicht richtig berechnet in normaler TS und LS
 		SolutionGot solution = new SolutionGot();
 		solution.addGot(copyOfMove.getTour1().getParentGot());
 		if (!copyOfMove.isParentGotOfTour2IsSameAsParentGotOfTour1())
@@ -64,9 +64,11 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 
 	private RecourseCost calculateRecourseCostOfMove(
 			AbstractNeighborhoodMove copyOfMove) {
-		throw new RuntimeException("calculateRecourseCostOfMove noch nicht implementiert");
-//		Double recourseCost = copyOfMove.getTour1().getParentGot().getExpectedRecourseCost();
+		RecourseCost recourseCost = new RecourseCost(copyOfMove.getGots());		
+		return recourseCost;	
 	}
+
+
 
 	private void sortMovesWrtToStochasticCost() {
 		throw new RuntimeException("sortMovesWrtToStochasticCost() noch nicht implementiert");

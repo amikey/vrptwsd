@@ -5,6 +5,7 @@ import java.util.List;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.util.CustomerInTour;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class SimilarityUtils {
 	
@@ -14,7 +15,7 @@ public class SimilarityUtils {
 		for (CustomerInTour c : customers)
 		{
 			double distance = new Edge(c, customer).getLength();
-			if (distance > maxDistanceOfAll) 
+			if (MathUtils.greaterThan(distance, maxDistanceOfAll)) 
 				maxDistanceOfAll = distance;
 		}
 	}
