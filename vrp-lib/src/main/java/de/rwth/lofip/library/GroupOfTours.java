@@ -1,5 +1,7 @@
 package de.rwth.lofip.library;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -191,17 +193,25 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     		SimulationUtils.resetSeed();
     		
     		for (int i = 1; i <= NUMBER_OF_DEMAND_SCENARIO_RUNS; i++) {
-    			GroupOfTours gotClone = this.cloneWithCopyOfCustomers();
+    			GroupOfTours gotClone = this.cloneWithCopyOfTourAndCustomers();
     			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);    			
     			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
+    				System.out.println("Solution not feasible after altering demands");
+    				System.out.println(gotClone.getAsTupelWithDemand());
+    				//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
     				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
     				//create Solution from gotClone for processing with local search    				    				
     				ls.improve(gotClone);
     				if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) { 
     					//got is still demand infeasible -> no feasible solution could be found for demand
     					gotClone.addEmptyTour();
-    					ls.improve(gotClone);
+    					System.out.println("New Empty Tour added. ");
+    					ls.improve(gotClone);    					
     				}
+    				System.out.println("Resulting solution is: ");    				
+    				gotClone.print();
+    				//RUNTIME_TODO: revome assert
+    				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 
 	    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
 	    			double recourseCost = -this.getTotalDistanceWithCostFactor() + gotClone.getTotalDistanceWithCostFactor();
@@ -209,10 +219,13 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	    			
 	    			//calculate number of different recourse actions    		
 	    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
+	    				System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
+	    				gotClone.print();
 	    				numberOfDifferentRecourseActions++;
 	    				listOfRecourseActions.add(gotClone);
 	    			}
-    			}
+    			} else 
+    				System.out.println("Solution is feasible after altering demands");
     		}
     		overallRecourseCost = overallRecourseCost / NUMBER_OF_DEMAND_SCENARIO_RUNS;
     		
@@ -250,12 +263,11 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
         return got;
     }
     
-	public GroupOfTours cloneWithCopyOfCustomers() {
+	public GroupOfTours cloneWithCopyOfTourAndCustomers() {
 		GroupOfTours got = new GroupOfTours();
 		for (Tour t : tours) {
-			Tour tour = t.cloneWithCopyOfCustomers();
-			got.addTour(tour);
-			tour.setParentGot(got);
+			Tour tour = t.cloneWithCopyOfCustomersAndVehicleAndSetParentGot(got);
+			got.addTour(tour);			
 		}        	
 		//expectedRecourseCost wird immer null sein
 		got.setExpectedRecourseCost(expectedRecourseCost);
@@ -279,6 +291,17 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 		s += ") ";	     
 	    return s;
 	}
+	
+	@Override
+	public String getAsTupelWithDemand() {
+		String s = "";
+	    s += "(";
+		for (Tour t : getTours()) {
+			s += t.getTourAsTupelWithDemand();
+		}
+		s += ") ";	     
+	    return s;
+	}
 
 	public Tour getTourThatIsEqualTo(Tour tour1) {
 		for (Tour t : tours) {
@@ -291,6 +314,8 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	public void print() {
 		System.out.println(getAsTupel());
 	}
+
+	
 
 
 	

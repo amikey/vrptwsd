@@ -296,8 +296,33 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 			}
 			return maxNumberOfGots;
 		}
-		
 
+		public String getUseOfCapacityInTours() {
+			String s = "";
+	        for (GroupOfTours got : gots)
+	        {
+	        	s += "(";
+		        for (Tour t : got.getTours()) {
+		            s += t.getUseOfCapacity();
+		        }
+		        s += ") ";
+	        }
+	        s += "; total: ( " + vrpProblem.getTotalDemandOfAllCustomersOnTour() + ":" + getNumberOfTours()*getLastTour().getVehicle().getCapacity() + 
+	        		") -> " + vrpProblem.getTotalDemandOfAllCustomersOnTour()/(getNumberOfTours()*getLastTour().getVehicle().getCapacity());
+	        return s;
+		}
+		
+		@Override
+		public String getAsTupelWithDemand() {
+			String s = "";
+		    s += "(";
+			for (Tour t : getTours()) {
+				s += t.getTourAsTupelWithDemand();
+			}
+			s += ") ";	     
+		    return s;
+		}
+		
 }
 
 

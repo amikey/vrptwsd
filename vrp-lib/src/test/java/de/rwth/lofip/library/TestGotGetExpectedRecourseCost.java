@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.rwth.lofip.cli.util.ReadAndWriteUtils;
+import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.SetUpUtils;
 
@@ -14,7 +14,7 @@ public class TestGotGetExpectedRecourseCost {
 	
 	@Test
 	public void testGetExpectedRecourseCostInGot() throws IOException {
-		got = SetUpUtils.getSomeExampleGotFromRC103();
+		got = SetUpUtils.getSomeExampleGotFromRC103();		
 		
 		System.out.println(got.getTour(0).getDemandOnTour());
 		System.out.println(got.getTour(1).getDemandOnTour());

@@ -83,6 +83,11 @@ public class MathUtils {
 	public static boolean lessThan(double a, double b){
 	    return lessThan(a, b, EPSILON);
 	}
+	
+	public static boolean lessThanOrEqual(double a, double b){
+		return lessThan(a, b, EPSILON) || equals(a, b, EPSILON);
+	}
+	
 
 
 	/**

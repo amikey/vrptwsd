@@ -14,6 +14,15 @@ public class ElementWithToursUtils {
 		return feasible;
 	}
 	
+	public static boolean isElementDemandFeasibleCheckWithRef(ElementWithTours solution) {
+		boolean feasible = true;
+		for (Tour tour : solution.getTours()) {
+			if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(tour))
+				feasible = false;			
+		}
+		return feasible;
+	}
+	
 	public static boolean isElementTWFeasible(ElementWithTours solution) {
 		boolean feasible = true;
 		for (Tour tour : solution.getTours()) {

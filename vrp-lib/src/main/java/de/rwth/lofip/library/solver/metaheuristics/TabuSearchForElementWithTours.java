@@ -118,22 +118,16 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		SolutionGot solutionTemp = (SolutionGot) solution;
 		int k = 0;
 		for (GroupOfTours got : solutionTemp.getGots()) {
-			k++;
-			System.out.println("Improvement Phase: looking at Got " + k + " out of " + solutionTemp.getGots().size());
-			for (int j = 0; j < got.getTours().size(); j++) {
-				System.out.println("Improvement Phase: looking at Tour " + j+1 + " out of " +  got.getTours().size());
+			k++;			
+			for (int j = 0; j < got.getTours().size(); j++) {				
 				Tour tour = got.getTour(j);
 				//RUNTIME_TODO: versuche hier weniger Iterationen
-				for (int i = 0; i < 10; i++) { // 10 Verbesserungsversuche pro Tour
-					System.out.println("Improvement Phase: Verbesserungsversuch " + i + " out of " +  10);
+				for (int i = 0; i < 10; i++) { // 10 Verbesserungsversuche pro Tour					
 					//CODE_SMELL_TODO: construct incomplete vrpProblem first and start I1Solver with vrpProblem
-					SolutionGot newSolution = new RandomI1Solver().solve(tour);
-					System.out.println("Improvement Phase: Constructed new initial solution");
-					new LocalSearchForElementWithTours().improve(newSolution);
-					System.out.println("Improvement Phase: improved initial solution with local search");
+					SolutionGot newSolution = new RandomI1Solver().solve(tour);					
+					new LocalSearchForElementWithTours().improve(newSolution);					
 					if (newSolution.getNumberOfTours() == 1)
-						if (MathUtils.lessThan(newSolution.getTotalDistanceWithCostFactor(), tour.getTotalDistanceWithCostFactor())) {
-							System.out.println("Hurra, Intensification Procedure hat eine bessere Tour gefunden in Iteration Intensification Procedure " + i + "; Iteration TS: " + iteration);
+						if (MathUtils.lessThan(newSolution.getTotalDistanceWithCostFactor(), tour.getTotalDistanceWithCostFactor())) {							
 							tour = newSolution.getTour(0);
 							got.setTour(j, newSolution.getTour(0));
 	//						break;

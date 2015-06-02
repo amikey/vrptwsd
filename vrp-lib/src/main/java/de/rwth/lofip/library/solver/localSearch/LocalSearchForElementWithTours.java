@@ -1,12 +1,13 @@
 package de.rwth.lofip.library.solver.localSearch;
 
 import static org.junit.Assert.assertEquals;
+
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
-import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
+import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
@@ -20,36 +21,30 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	public ElementWithTours improve(ElementWithTours solutionStart) {
 		this.solution = solutionStart;
 		crossNeighborhood = new CrossNeighborhood(solution);
-//		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());		
 		boolean isImprovement = false;
 		do {
-			try{
-				System.out.println("LS on " + solutionStart.getAsTupel() + "; iteration: " + iteration);
+			try{				
 				findBestMove();							
-//				printBestMove();				
-				isImprovement = isImprovement();				
-//				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
+				isImprovement = isImprovement();								
 				if (isImprovement) {					
-					applyBestMove();		
-					System.out.println("LS: Applied Move: Iteration" + iteration);
-						
-					assertEquals(true, iteration < 100);
-					if (iteration > 100)
-						System.out.println("Debugging" + solutionStart.getAsTupel());
+					applyBestMove();	
 					
-//					System.out.println("Move applied! Iteration: " + iteration + "; Solution: " + solution.getSolutionAsTupel() + "\n");
+//					System.out.println(solution.getAsTupelWithDemand());
+					assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(solution));	
+//					assertEquals(true, solution.getTours().size() <= 2);
+//					System.out.println(iteration);
+					assertEquals(true, iteration < 100);
+					
 					assertEqualsHook();
 					iteration++;
 				}
 			} catch (Exception e) {				
 				if (e instanceof NoSolutionExistsException) {
-					isImprovement = false;
-//					System.out.println(e.getMessage() + " Iteration: " + iteration + "; Solution: " + solution);
+					isImprovement = false;//					
 				} else 
 					throw new RuntimeException(e);
 			}			
 		} while (isImprovement);
-//		System.out.println("");
 		return solution;
 	}
 	
@@ -63,21 +58,23 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	private boolean isImprovement() {
-		if (MathUtils.lessThan(bestMove.getCost(), solution.getTotalDistanceWithCostFactor())) {
-			System.out.println("bestMove.getCost() < solution.getTotalDistance()");
-			System.out.println(bestMove.getCost() + " < " + solution.getTotalDistanceWithCostFactor());
-			return true;
-		}			
-		if (bestMove.reducesNumberOfVehicles()) {
-			System.out.println("bestMove.reducesNumberOfVehicles()");
+		if (!ElementWithToursUtils.isElementDemandFeasible(solution)) {
+			System.out.println("Previous Solution was infeasible: " + solution.getAsTupel());
+			System.out.println("Demand Tour 1: " + solution.getTour(0).getDemandOnTour() + "; Capacity 106");
+			System.out.println("Demand Tour 2: " + solution.getTour(1).getDemandOnTour() + "; Capacity 103");
 			return true;
 		}
-		System.out.println("IsImprovement is false");
+		if (MathUtils.lessThan(bestMove.getCost(), solution.getTotalDistanceWithCostFactor())) {			
+			return true;
+		}			
+		if (bestMove.reducesNumberOfVehicles()) {		
+			return true;
+		}		
 		return false;
 	}	
 
 	private void applyBestMove() {
-		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);		
+		solution = crossNeighborhood.acctuallyApplyMove(bestMove);		
 	}
 	
 	protected void assertEqualsHook() {

@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.solver.util;
 
+import static org.junit.Assert.assertEquals;
+
 import de.rwth.lofip.library.AbstractPointInSpace;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
@@ -182,10 +184,13 @@ public class TourUtils {
 	}
 
 	public static boolean isTourFeasibleWrtDemand(Tour tour) {
+		//RUNTIME_TODO: hier auch variante erstellen, die das in O(1) checkt
+		//DONE -> überall wo diese Variante verwendet wird auf Variante Check with Refs umstellen
 		long totalDemand = 0;
 		for (Customer c : tour.getCustomers()) {
 			totalDemand += c.getDemand();
 		}
+		assertEquals(totalDemand, tour.getDemandOnTour(), 0.00001);
 		double tourCapacity = new Double(tour.getVehicle().getCapacity());
 		if (tourCapacity < totalDemand) {
 			return false;
@@ -194,6 +199,7 @@ public class TourUtils {
 	}
 
 	public static boolean isTourFeasibleWrtTW(Tour tour) {
+		//RUNTIME_TODO: hier auch variante erstellen und einsetzen, die das in O(1) checkt
 		// check whether time window constraints are satisfied
 		tour.recalculateTimes();
 		boolean feasible = true;
@@ -229,7 +235,8 @@ public class TourUtils {
 		private static boolean isConcatenationOfRefsDemandFeasible(
 				ResourceExtensionFunction ref1, ResourceExtensionFunction ref2,
 				double capacity) {
-			return ref1.getDemand() + ref2.getDemand() <= capacity;
+			return MathUtils.lessThan(ref1.getDemand() + ref2.getDemand(), capacity) || 
+					MathUtils.equals(ref1.getDemand() + ref2.getDemand(), capacity);
 		}
 
 	public static boolean isInsertionOfRefPossible(Tour tour,ResourceExtensionFunction ref, int position) {
@@ -287,7 +294,7 @@ public class TourUtils {
 	}
 
 
-	public static boolean isInsertionOfRefPossibleInnerTourMove(Tour tour,
+	public static boolean isInsertionOfRefPossibleWrtTWAndDemandInnerTourMove(Tour tour,
 			int positionStartOfSegment, int positionEndOfSegment,
 			int insertingPos) {		
 		if (insertingPos < positionStartOfSegment) {
@@ -297,16 +304,17 @@ public class TourUtils {
 			ResourceExtensionFunction refFromInsertingPosToStartPosSegmentToBeSwapped = tour.getRefMatrix().get(positionStartOfSegment-1).get(insertingPos);
 			ResourceExtensionFunction refFromEndOfSegToBeSwappedToEndOfTourIncludingDepot = tour.getRefToEndAtPosition(positionEndOfSegment);
 			
-			boolean possible1 = isConcatenationOfRefsTWFeasible(refUpToInsertingPosIncludingDepot, refForSegmentThatIsSwapped);
+			boolean possibleTW1 = isConcatenationOfRefsTWFeasible(refUpToInsertingPosIncludingDepot, refForSegmentThatIsSwapped);
 			ResourceExtensionFunction refTemp = new ResourceExtensionFunction(refUpToInsertingPosIncludingDepot);
 			refTemp.updateWithSubsequentRef(refForSegmentThatIsSwapped);
 			
-			boolean possible2 = isConcatenationOfRefsTWFeasible(refTemp, refFromInsertingPosToStartPosSegmentToBeSwapped);
+			boolean possibleTW2 = isConcatenationOfRefsTWFeasible(refTemp, refFromInsertingPosToStartPosSegmentToBeSwapped);
 			refTemp.updateWithSubsequentRef(refFromInsertingPosToStartPosSegmentToBeSwapped);
 			
-			boolean possible3 = isConcatenationOfRefsTWFeasible(refTemp, refFromEndOfSegToBeSwappedToEndOfTourIncludingDepot);
+			boolean possibleTW3 = isConcatenationOfRefsTWFeasible(refTemp, refFromEndOfSegToBeSwappedToEndOfTourIncludingDepot);
+			boolean possibleDemand = isConcatenationOfRefsDemandFeasible(refTemp, refFromEndOfSegToBeSwappedToEndOfTourIncludingDepot, tour.getVehicle().getCapacity());
 				
-			return possible1 && possible2 && possible3;
+			return possibleTW1 && possibleTW2 && possibleTW3 && possibleDemand;
 		} else {
 			//inserting position after removed segment
 			ResourceExtensionFunction refUpToStartOfSegmentToBeSwappedIncludingDepot = tour.getRefFromBeginningAtPosition(positionStartOfSegment-1);
@@ -322,10 +330,16 @@ public class TourUtils {
 			refTemp.updateWithSubsequentRef(refForSegmentThatIsSwapped);
 			
 			boolean possible3 = isConcatenationOfRefsTWFeasible(refTemp, refFromInsertionPosToEndOfTourIncludingDepot);
-				
-			boolean overallPossible = possible1 && possible2 && possible3; 
+			boolean possibleDemand = isConcatenationOfRefsDemandFeasible(refTemp, refFromInsertionPosToEndOfTourIncludingDepot, tour.getVehicle().getCapacity());	
+			
+			boolean overallPossible = possible1 && possible2 && possible3 && possibleDemand;
 			return overallPossible;
 		}		
+	}
+
+
+	public static boolean isTourFeasibleWrtDemandCheckWithRef(Tour tour) {
+		return tour.getDemandOnTour() < tour.getVehicle().getCapacity();
 	}
 
 }

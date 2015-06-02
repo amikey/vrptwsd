@@ -23,9 +23,9 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private int maximalNumberOfCallsToAdaptiveMemory = 0;
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 	
-	private int seedI1 = 13;
-	private int seedGI = 13;
-	private int seedAM = 13;
+	private int seedI1 = 14;
+	private int seedGI = 14;
+	private int seedAM = 14;
 	
 	private int numberOfExperiments = 100;
 	
@@ -52,6 +52,12 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceC204() throws IOException {			
 		problems = ReadAndWriteUtils.readSolomonProblemC204();	
+		processProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC1XX() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC1XX();	
 		processProblems();
 	}
 	

@@ -114,6 +114,10 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("c206","rc206");
 	}
 	
+	public static List<VrpProblem> readSolomonProblemRC1XX() throws IOException {
+		return readSolomonProblemX("rc1","X");
+	}
+	
 	public static List<VrpProblem> readSolomonProblemRC101AsList() throws IOException {
 		return readSolomonProblemX("rc101","X");
 	}
@@ -198,6 +202,8 @@ public class ReadAndWriteUtils {
 			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
 			IOUtils.write(String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";", outputStream);
 			IOUtils.write(solution.getVehicleCount() + ";", outputStream);
+			IOUtils.write(solution.getUseOfCapacityInTours() + ";", outputStream);
+			IOUtils.write(solution.getAsTupel() + ";", outputStream);
 			if (!solutions2.isEmpty()) {
 				IOUtils.write(String.format("%.3f",solutions2.get(i).getTotalDistanceWithCostFactor()) + ";", outputStream);
 				IOUtils.write(solutions2.get(i).getVehicleCount() + ";", outputStream);

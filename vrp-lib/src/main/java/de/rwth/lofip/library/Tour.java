@@ -79,7 +79,10 @@ public class Tour implements SolutionElement, Serializable {
 		
 		for (int i = 0; i < tour1.getRefMatrix().size(); i++)
 			for (int j = 0; j <= i; j++) 
-				setEntryInRefMatrix(i,j, tour1.getRefMatrix().get(i).get(j).clone());									
+				setEntryInRefMatrix(i,j, tour1.getRefMatrix().get(i).get(j).clone());
+		//IMPORTANT_TODO: stimmt das so und ist das was ich machen möchte?
+		//Aufruf des Konstruktors angucken und ansehen, wie er verwendet wird.
+		this.gotThatTourBelongsTo = tour1.getParentGot();
 	}
     
     
@@ -107,12 +110,14 @@ public class Tour implements SolutionElement, Serializable {
 	}
 	
 	
-	public Tour cloneWithCopyOfCustomers() {
-		Tour clonedTour = new Tour(this);
-		for (CustomerInTour cit : clonedTour.getCustomersInTour()) {
-			cit.setCustomer(cit.getCustomer().clone());
+	public Tour cloneWithCopyOfCustomersAndVehicleAndSetParentGot(GroupOfTours got) {
+		//RUNTIME_TODO: Das hier ist bestimmt sehr langsam. Kann man das schneller machen?
+		//Das neusetzen der Refs ist hier wahrscheinlich gar nicht nötig, weil das eh noch mal gemacht werden muss, wenn die Demands bei den Customern verändert werden.
+		Tour clonedTour = new Tour(this.getDepot(),this.getVehicle().clone());
+		clonedTour.setParentGot(got);
+		for (CustomerInTour cit : this.getCustomersInTour()) {
+			clonedTour.addCustomer(cit.getCustomer().clone());			
 		}
-		//IMPORTANT_TODO: hier müssen auch die Customer in den Refs angepasst werden
 		return clonedTour;
 	}
 
@@ -216,7 +221,9 @@ public class Tour implements SolutionElement, Serializable {
     }
          
     public double getDemandOnTour(){
-    	return demand;
+    	if (isTourEmpty())
+    		return 0;
+    	return refsFromStartUpToPosition.get(refsFromStartUpToPosition.size()-1).getDemand();
     }
     
 	public List<ResourceExtensionFunction> getRefsFromBeginning() {
@@ -340,8 +347,6 @@ public class Tour implements SolutionElement, Serializable {
 			List<Customer> customersRef = ref.getCustomers();
 			Customer customerRef = customersRef.get(i);
 			Customer customerTour = getCustomers().get(i);	
-			System.out.println("Demand customerRef: " + customerRef.getDemand());
-			System.out.println("Demand customerTour: " + customerTour.getDemand());
 			assertEquals(true, customerRef.equals(customerTour));
 		}
 	}
@@ -610,6 +615,15 @@ public class Tour implements SolutionElement, Serializable {
 //        s += "); Demand: " + getDemandOnTour();
         return s;
     }
+    
+    public String getTourAsTupelWithDemand() {
+    	String s = ("(0 ");
+        for (Customer c : this.getCustomers()) {
+            s += (c.getCustomerNo() + ":" + c.getDemand() + " ");
+        }
+        s += ")";
+        return s;
+	}
 
 	public void print() {
 		System.out.println(getTourAsTupel());		
@@ -651,6 +665,13 @@ public class Tour implements SolutionElement, Serializable {
 	public double getSolutionValue() {
 		return solutionValue;
 	}
+
+	public String getUseOfCapacity() {
+		String s = "(" + getDemandOnTour() + ":" + getVehicle().getCapacity() + ")";
+		return s;
+	}
+
+	
 
 
 }

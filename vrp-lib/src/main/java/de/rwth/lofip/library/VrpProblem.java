@@ -237,7 +237,7 @@ public class VrpProblem implements Cloneable {
 	}
 
 	public Vehicle getVehicle() {
-		return vehicles.iterator().next();
+		return vehicles.iterator().next().clone();
 	}
     
 }

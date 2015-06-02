@@ -143,7 +143,7 @@ public class AbstractNeighborhoodMove implements Serializable {
 		AbstractNeighborhoodMove newMove = new AbstractNeighborhoodMove(tour1, tour2, positionStartOfSegmentTour1, positionEndOfSegmentTour1, positionStartOfSegmentTour2, positionEndOfSegmentTour2, costOfCompleteSolutionThatResultsFromMove, costDifferenceToPreviousSolution);
 		//Achtung, Touren sind noch nicht geklont
 		
-		GroupOfTours got1 = tour1.getParentGot().cloneWithCopyOfCustomers();
+		GroupOfTours got1 = tour1.getParentGot().cloneWithCopyOfTourAndCustomers();
 		Tour tour1InGot1 = got1.getTourThatIsEqualTo(tour1);
 		//Setze Pointer in newMove auf geklonte Tour  
 		newMove.setTour1(tour1InGot1);
@@ -154,7 +154,7 @@ public class AbstractNeighborhoodMove implements Serializable {
 			//Setze Pointer in newMove auf geklonte Tour  
 			newMove.setTour2(tour2InGot2);
 		} else { //parent gots are different			
-			GroupOfTours got2 = tour2.getParentGot().cloneWithCopyOfCustomers();
+			GroupOfTours got2 = tour2.getParentGot().cloneWithCopyOfTourAndCustomers();
 			Tour tour2InGot2 = got2.getTourThatIsEqualTo(tour2);
 			//Setze Pointer in newMove auf geklonte Tour  
 			newMove.setTour2(tour2InGot2);
@@ -163,7 +163,7 @@ public class AbstractNeighborhoodMove implements Serializable {
 	}
 
 	public boolean isParentGotOfTour2IsSameAsParentGotOfTour1() {
-		return tour1.getParentGot().cloneWithCopyOfCustomers().equals(tour2.getParentGot().cloneWithCopyOfCustomers());
+		return tour1.getParentGot().cloneWithCopyOfTourAndCustomers().equals(tour2.getParentGot().cloneWithCopyOfTourAndCustomers());
 	}
 
 	public boolean isSwapsTwoSegments() {

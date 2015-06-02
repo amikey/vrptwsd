@@ -303,7 +303,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 	public boolean isMoveFeasibleCheckWithRef() {		
 		boolean isWasInsertionPossible = true;
 		if (isInnerTourMove()) { 			
-			return TourUtils.isInsertionOfRefPossibleInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2);					
+			return TourUtils.isInsertionOfRefPossibleWrtTWAndDemandInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2);					
 		} else {		
 			//move between two tours
 			//try inserting segment 2 in tour 1

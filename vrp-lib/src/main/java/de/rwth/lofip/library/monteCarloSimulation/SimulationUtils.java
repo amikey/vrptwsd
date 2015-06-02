@@ -1,9 +1,11 @@
 package de.rwth.lofip.library.monteCarloSimulation;
 
+import java.util.List;
 import java.util.Random;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
+import de.rwth.lofip.library.Tour;
 
 public class SimulationUtils {
 	
@@ -27,6 +29,14 @@ public class SimulationUtils {
 		    if (demand < 1)
 		        demand = 1;       
 		    c.setDemand(demand);
+		}
+		
+		//baue touren in got neu auf, damit Refs auch richtig sind.
+		for (Tour tour : got.getTours()) {
+			System.out.println("baue tour neu auf. alte Tour: " + tour.getTourAsTupel());
+			List<Customer> customers = tour.removeCustomersBetween(0, tour.getCustomerSize());
+			tour.insertCustomersAtPosition(customers, 0);
+			System.out.println("neue Tour: " + tour.getTourAsTupel());
 		}
 		return got;			
 			

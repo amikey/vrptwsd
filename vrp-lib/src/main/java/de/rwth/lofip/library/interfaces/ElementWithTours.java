@@ -20,4 +20,6 @@ public interface ElementWithTours {
 
 	public ElementWithTours clone();
 
+	public String getAsTupelWithDemand();
+
 }
