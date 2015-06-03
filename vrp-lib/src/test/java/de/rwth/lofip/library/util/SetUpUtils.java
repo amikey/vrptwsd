@@ -458,4 +458,14 @@ public class SetUpUtils {
 		
 		return got2;
 	}
+
+	public static Tour getTourWithCustomer_42_44_fromRC101() throws IOException {
+		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC101();
+		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
+		GroupOfTours got = new GroupOfTours();
+		got.addTour(tour);
+		tour.addCustomer(problem.getCustomerWithCustomerNo(42));
+		tour.addCustomer(problem.getCustomerWithCustomerNo(44));
+		return tour;
+	}
 }

@@ -1,8 +1,8 @@
 package de.rwth.lofip.library.solver.localSearch;
 
 import static org.junit.Assert.assertEquals;
-
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
@@ -29,8 +29,9 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 				if (isImprovement) {					
 					applyBestMove();	
 					
-//					System.out.println(solution.getAsTupelWithDemand());
-					assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(solution));	
+					System.out.println(solution.getAsTupel());
+					System.out.println(solution.getUseOfCapacityInTours());
+//					System.out.println(solution.getAsTupelWithDemand());					
 //					assertEquals(true, solution.getTours().size() <= 2);
 //					System.out.println(iteration);
 					assertEquals(true, iteration < 100);
@@ -44,7 +45,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 				} else 
 					throw new RuntimeException(e);
 			}			
-		} while (isImprovement);
+		} while (isImprovement);		
 		return solution;
 	}
 	
@@ -58,10 +59,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	private boolean isImprovement() {
-		if (!ElementWithToursUtils.isElementDemandFeasible(solution)) {
-			System.out.println("Previous Solution was infeasible: " + solution.getAsTupel());
-			System.out.println("Demand Tour 1: " + solution.getTour(0).getDemandOnTour() + "; Capacity 106");
-			System.out.println("Demand Tour 2: " + solution.getTour(1).getDemandOnTour() + "; Capacity 103");
+		if (previousSolutionWasInfeasible()) {			
 			return true;
 		}
 		if (MathUtils.lessThan(bestMove.getCost(), solution.getTotalDistanceWithCostFactor())) {			
@@ -72,6 +70,10 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 		}		
 		return false;
 	}	
+
+	private boolean previousSolutionWasInfeasible() {
+		return !ElementWithToursUtils.isElementDemandFeasible(solution);
+	}
 
 	private void applyBestMove() {
 		solution = crossNeighborhood.acctuallyApplyMove(bestMove);		

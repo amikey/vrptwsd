@@ -91,6 +91,11 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		processProblems();
 	}
 
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceR21XX() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC2XX();	
+		processProblems();
+	}
 	
 	private void increaseParameters() {
 		seedI1++;

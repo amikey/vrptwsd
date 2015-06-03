@@ -196,13 +196,17 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     			GroupOfTours gotClone = this.cloneWithCopyOfTourAndCustomers();
     			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);    			
     			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
-    				System.out.println("Solution not feasible after altering demands");
+    				System.out.println("Solution not feasible after altering demands");    			
     				System.out.println(gotClone.getAsTupelWithDemand());
+    				System.out.println(gotClone.getUseOfCapacityInTours());
     				//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
     				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
-    				//create Solution from gotClone for processing with local search    				    				
+    				//create Solution from gotClone for processing with local search    	
+    				if (gotClone.getTour(0).getDemandOnTour() == 114.0 && gotClone.getTour(1).getDemandOnTour() == 120.0)
+    					System.out.println("DEBUGGING!");
     				ls.improve(gotClone);
-    				if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) { 
+    				assertEquals(true, gotClone.getNumberOfTours() <= 2);
+    				if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
     					//got is still demand infeasible -> no feasible solution could be found for demand
     					gotClone.addEmptyTour();
     					System.out.println("New Empty Tour added. ");
@@ -210,7 +214,9 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     				}
     				System.out.println("Resulting solution is: ");    				
     				gotClone.print();
+    				System.out.println(gotClone.getUseOfCapacityInTours());
     				//RUNTIME_TODO: revome assert
+    				assertEquals(true, gotClone.getNumberOfTours() <= 3);
     				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 
 	    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
@@ -315,7 +321,17 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 		System.out.println(getAsTupel());
 	}
 
-	
+	@Override
+	public String getUseOfCapacityInTours() {
+		String s = "(";                	
+	        for (Tour t : getTours()) {
+	            s += t.getUseOfCapacity();
+	        }
+	        s += ") ";              
+        return s;
+	}
+
+
 
 
 	

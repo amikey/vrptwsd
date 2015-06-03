@@ -49,7 +49,7 @@ public class AdaptiveMemoryTabuSearchTest {
 		}
 	}
 	
-	private Object isSolutionOneWorseThanOrEqualToSolutionTwo(SolutionGot solutionGot, SolutionGot solutionGot2) {
+	private boolean isSolutionOneWorseThanOrEqualToSolutionTwo(SolutionGot solutionGot, SolutionGot solutionGot2) {
 		if (MathUtils.greaterThan(solutionGot.getTotalDistanceWithCostFactor(), solutionGot2.getTotalDistanceWithCostFactor()) ||
 				MathUtils.equals(solutionGot.getTotalDistanceWithCostFactor(), solutionGot2.getTotalDistanceWithCostFactor()))
 			return true;

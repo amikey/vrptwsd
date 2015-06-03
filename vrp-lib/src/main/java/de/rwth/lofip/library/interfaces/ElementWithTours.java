@@ -22,4 +22,5 @@ public interface ElementWithTours {
 
 	public String getAsTupelWithDemand();
 
+	public String getUseOfCapacityInTours();
 }

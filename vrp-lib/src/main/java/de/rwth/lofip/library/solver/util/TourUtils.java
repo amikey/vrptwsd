@@ -259,7 +259,8 @@ public class TourUtils {
 			ref3 = tour.getRefToEndAtPosition(positionEndOfSegment);
 		
 		double capacity = tour.getVehicle().getCapacity();
-		return isConcatenationOfRefsFeasible(ref1, ref2, ref3, capacity);		
+		boolean feasible = isConcatenationOfRefsFeasible(ref1, ref2, ref3, capacity); 
+		return feasible;
 	}
 	
 	public static boolean isInsertionOfRefPossibleWrtDemand(Tour tour, ResourceExtensionFunction ref, int positionStartOfSegment, int positionEndOfSegment) {
@@ -337,9 +338,8 @@ public class TourUtils {
 		}		
 	}
 
-
 	public static boolean isTourFeasibleWrtDemandCheckWithRef(Tour tour) {
-		return tour.getDemandOnTour() < tour.getVehicle().getCapacity();
+		return tour.getDemandOnTour() <= tour.getVehicle().getCapacity();
 	}
 
 }

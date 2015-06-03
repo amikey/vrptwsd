@@ -65,6 +65,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		RefSegment1 = new ResourceExtensionFunction();
 		RefSegment2 = new ResourceExtensionFunction();
 		bestNonTabooMove = null;
+		//bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
 		bestMoveThatMightBeTaboo = null;
 	}
 		
@@ -98,17 +99,15 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
-//						move.print();
-//						System.out.println("feasible move found. Kosten: " + move.getCost());
 						if (isMoveNewBestMove(move)) {
-							bestMoveThatMightBeTaboo = move;
-//							System.out.println("move ist neuer bester move.");
-							if (!isMoveTaboo(move, iteration)) {
-//								System.out.println("move ist NICHT tabu");
-								setRespAddBestNonTabooMove(move);								
-							}
-//							} else 
-//								System.out.println("move ist tabu");
+							//IMPORTANT_TODO: Hier nur die beiden Touren betrachten, die gerade verändert werden und Zulässigkeit aller Touren am Ende der LS nochmals prüfen
+//							if (isAllOtherToursAreDemandFeasible()) {
+							// bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
+								bestMoveThatMightBeTaboo = move;
+								if (!isMoveTaboo(move, iteration)) {								
+									setRespAddBestNonTabooMove(move);
+								}
+//							}
 						}
 					}
 				}
@@ -298,13 +297,13 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		}
 		return false;
 	}
-		
-	
+			
 	public boolean isMoveFeasibleCheckWithRef() {		
 		boolean isWasInsertionPossible = true;
-		if (isInnerTourMove()) { 			
-			return TourUtils.isInsertionOfRefPossibleWrtTWAndDemandInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2);					
-		} else {		
+		if (isInnerTourMove()) {			
+			if(!TourUtils.isInsertionOfRefPossibleWrtTWAndDemandInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2))
+				isWasInsertionPossible = false;			
+		} else {					
 			//move between two tours
 			//try inserting segment 2 in tour 1
 			if (!TourUtils.isInsertionOfRefPossible(tour1,RefSegment2,positionStartOfSegmentTour1,positionEndOfSegmentTour1)) { 
@@ -314,9 +313,24 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 			//try inserting segment1 in tour 2
 			else if (!TourUtils.isInsertionOfRefPossible(tour2,RefSegment1,positionStartOfSegmentTour2,positionEndOfSegmentTour2))
 				isWasInsertionPossible = false;
+			//check whether tour 1 is feasible 			
 		}
 		return isWasInsertionPossible;
 	}
+	
+		private boolean isAllOtherToursAreDemandFeasible() {
+			//IMPORTANT_TODO: auslagern, da das sehr lange braucht
+			//RUNTIME_TODO: auslagern, da das sehr lange braucht
+			//alternativ: nur durchführen, wenn Move neuere bester move ist
+			boolean feasible = true;
+			for (int i = 0; i < elementWithTours.getNumberOfTours(); i++)
+				if (i != tourCounter1 && i != tourCounter2)
+					if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(elementWithTours.getTour(i))) {
+						feasible = false;
+						break;
+					}			
+			return feasible;
+		}
 	
 		private boolean isInnerTourMove() { 
 			return tourCounter1 == tourCounter2;
@@ -397,11 +411,20 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		private boolean isMoveNewBestMove(AbstractNeighborhoodMove move) {	
 			if (bestNonTabooMove == null) 
 				return true;
+			if (bestNonTabooMove.makesInfeasibleToursFeasible()) {
+				if (move.makesInfeasibleToursFeasible() && moveReducesCostOrNumberOfVehicles(move))
+					return true;
+			} else // !bestNonTabooMove.makesInfeasibleToursFeasible()
+				if (move.makesInfeasibleToursFeasible() || moveReducesCostOrNumberOfVehicles(move))
+					return true;
+			return false;			
+		}
+
+		private boolean moveReducesCostOrNumberOfVehicles(AbstractNeighborhoodMove move) {
 			if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()) || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
 					(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
 				return true;
-			else 
-				return false;
+			return false;
 		}
 
 		protected boolean isMoveTaboo(AbstractNeighborhoodMove move, int iteration) { 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.solver.util.TourUtils;
 
 public class AbstractNeighborhoodMove implements Serializable {
 	
@@ -189,6 +190,14 @@ public class AbstractNeighborhoodMove implements Serializable {
 		}
 		return list;
 			
+	}
+
+	public boolean makesInfeasibleToursFeasible() {
+		if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(tour1))
+			return true;
+		if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(tour2))
+			return true;
+		return false;
 	}
 
 

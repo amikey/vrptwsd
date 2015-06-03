@@ -146,6 +146,9 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("rc105","X");
 	}
 	
+	public static List<VrpProblem> readSolomonProblemRC2XX() throws IOException {
+		return readSolomonProblemX("rc2","X");
+	}
 	
 	public static void printResultsToFile(String nameOfFile,
 			List<SolutionGot> solutions,
