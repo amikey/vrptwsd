@@ -32,11 +32,9 @@ public class SimulationUtils {
 		}
 		
 		//baue touren in got neu auf, damit Refs auch richtig sind.
-		for (Tour tour : got.getTours()) {
-			System.out.println("baue tour neu auf. alte Tour: " + tour.getTourAsTupel());
+		for (Tour tour : got.getTours()) {			
 			List<Customer> customers = tour.removeCustomersBetween(0, tour.getCustomerSize());
-			tour.insertCustomersAtPosition(customers, 0);
-			System.out.println("neue Tour: " + tour.getTourAsTupel());
+			tour.insertCustomersAtPosition(customers, 0);			
 		}
 		return got;			
 			

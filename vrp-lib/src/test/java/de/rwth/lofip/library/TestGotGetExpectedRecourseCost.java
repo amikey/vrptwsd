@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.SetUpUtils;
 

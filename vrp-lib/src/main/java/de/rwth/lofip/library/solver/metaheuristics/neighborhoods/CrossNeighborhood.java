@@ -1,7 +1,5 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.List;
 
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
@@ -101,13 +99,11 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
 						if (isMoveNewBestMove(move)) {
 							//IMPORTANT_TODO: Hier nur die beiden Touren betrachten, die gerade verändert werden und Zulässigkeit aller Touren am Ende der LS nochmals prüfen
-//							if (isAllOtherToursAreDemandFeasible()) {
 							// bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
-								bestMoveThatMightBeTaboo = move;
-								if (!isMoveTaboo(move, iteration)) {								
-									setRespAddBestNonTabooMove(move);
-								}
-//							}
+							bestMoveThatMightBeTaboo = move;
+							if (!isMoveTaboo(move, iteration)) {								
+								setRespAddBestNonTabooMove(move);
+							}
 						}
 					}
 				}
@@ -317,20 +313,6 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 		}
 		return isWasInsertionPossible;
 	}
-	
-		private boolean isAllOtherToursAreDemandFeasible() {
-			//IMPORTANT_TODO: auslagern, da das sehr lange braucht
-			//RUNTIME_TODO: auslagern, da das sehr lange braucht
-			//alternativ: nur durchführen, wenn Move neuere bester move ist
-			boolean feasible = true;
-			for (int i = 0; i < elementWithTours.getNumberOfTours(); i++)
-				if (i != tourCounter1 && i != tourCounter2)
-					if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(elementWithTours.getTour(i))) {
-						feasible = false;
-						break;
-					}			
-			return feasible;
-		}
 	
 		private boolean isInnerTourMove() { 
 			return tourCounter1 == tourCounter2;

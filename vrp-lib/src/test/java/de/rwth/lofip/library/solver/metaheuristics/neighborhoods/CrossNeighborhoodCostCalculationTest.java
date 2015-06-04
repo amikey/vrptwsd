@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.apache.commons.math3.util.MathUtils;
 import org.junit.Test;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;

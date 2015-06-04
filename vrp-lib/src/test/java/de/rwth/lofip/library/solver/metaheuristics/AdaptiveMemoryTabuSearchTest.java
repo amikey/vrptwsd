@@ -29,13 +29,13 @@ public class AdaptiveMemoryTabuSearchTest {
 		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();	
 		
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions, 2, 7, 7, 7, 7, 1, 1, 1);	
+				problems, solutions, 2, 5, 5, 5, 5, 1, 1, 1);	
 		
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions2, 2, 7, 7, 7, 7, 1, 1, 1);
+				problems, solutions2, 2, 5, 5, 5, 5, 1, 1, 1);
 		
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions3, 2, 7, 7, 10, 10, 1, 1, 1);
+				problems, solutions3, 2, 5, 5, 7, 7, 1, 1, 1);
 				
 		for (int i = 0; i < solutions.size(); i++) {
 			solutions.get(i).printSolutionCost();
@@ -66,7 +66,7 @@ public class AdaptiveMemoryTabuSearchTest {
 		solutions = new ArrayList<SolutionGot>();
 		
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions, 2, 0, 10, 0, 10, 1, 1, 1);
+				problems, solutions, 1, 0, 5, 0, 5, 1, 1, 1);
 		
 		SolutionGot solutionC101 = solutions.get(0);
 		

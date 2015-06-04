@@ -27,7 +27,6 @@ public class Tour implements SolutionElement, Serializable {
     protected Vehicle vehicle;
     protected List<CustomerInTour> customers = new LinkedList<CustomerInTour>();
 	private List<Edge> edges = new LinkedList<Edge>();
-	private double demand = 0;
 	private double tourDistance = 0;
 	private double costFactor = 1;
 	
@@ -70,7 +69,6 @@ public class Tour implements SolutionElement, Serializable {
 		for (CustomerInTour cit : tour1.getCustomersInTour())
 			customers.add(new CustomerInTour(cit));
 		edges = tour1.getEdges();
-		demand = tour1.getDemandOnTour();
 		tourDistance = tour1.getTotalDistanceWithCostFactor();
 		for (ResourceExtensionFunction ref : tour1.getRefsFromBeginning())
 			refsFromStartUpToPosition.add(new ResourceExtensionFunction(ref));
@@ -101,7 +99,6 @@ public class Tour implements SolutionElement, Serializable {
 		this.vehicle = vehicle;
 		this.customers = customers;
 		this.edges = edges;
-		this.demand = demand;
 		this.tourDistance = tourDistance;
 		this.refsFromStartUpToPosition = refsFromStartUpToPosition;
 		this.refsFromPositionToEnd = refsFromPositionToEnd;
@@ -332,7 +329,6 @@ public class Tour implements SolutionElement, Serializable {
         recalculateTimes();    
         recalculateEdges();
         recalculateTotalDistance();
-        recalculateDemand(customer.getDemand());
         recalculateRefsWhenCustomerIsInserted(position);
         recalculateRefMatrixWhenCustomerIsInserted(position);
         
@@ -496,9 +492,7 @@ public class Tour implements SolutionElement, Serializable {
         //RUNTIME_TODO: Ist recalculate times noch nötig?
         recalculateTimes();  
         recalculateEdges();
-        recalculateTotalDistance();
-        //RUNTIME_TODO: ist recalculate Demand noch nötig?
-        recalculateDemand(removedCustomer.getDemand() * -1);
+        recalculateTotalDistance();        
         recalculateRefsWhenCustomerIsDeleted(position);
         recalculateRefMatrixWhenCustomerIsDeleted(position);
         
@@ -586,10 +580,6 @@ public class Tour implements SolutionElement, Serializable {
 	        edges.add(new Edge(customers.get(customers.size()-1),depot));
         }       
     }
-        
-    private void recalculateDemand(long demand2) {
-    	demand += demand2;
-	}
     
 	private void recalculateTotalDistance() {
         tourDistance = 0;

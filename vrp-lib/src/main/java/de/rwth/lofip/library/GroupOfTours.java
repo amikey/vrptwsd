@@ -191,30 +191,31 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
     		int numberOfDifferentRecourseActions = 0;
     		SimulationUtils.resetSeed();
+    		int numberOfInfeasibleScenarios = 0;
     		
     		for (int i = 1; i <= NUMBER_OF_DEMAND_SCENARIO_RUNS; i++) {
     			GroupOfTours gotClone = this.cloneWithCopyOfTourAndCustomers();
     			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);    			
     			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
-    				System.out.println("Solution not feasible after altering demands");    			
-    				System.out.println(gotClone.getAsTupelWithDemand());
-    				System.out.println(gotClone.getUseOfCapacityInTours());
+    				numberOfInfeasibleScenarios++;
+    				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
+    				
     				//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
+//    				//first try recourse actions that have already been created
+//    				//RUNTIME_TODO: will ich hier wirklich sortieren?
+//    				Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
+//    				Collections.sort(listOfRecourseActions, gotByCostComparator);
+//    				if 
+    				
     				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
-    				//create Solution from gotClone for processing with local search    	
-    				if (gotClone.getTour(0).getDemandOnTour() == 114.0 && gotClone.getTour(1).getDemandOnTour() == 120.0)
-    					System.out.println("DEBUGGING!");
+    				//create Solution from gotClone for processing with local search    	    				
     				ls.improve(gotClone);
     				assertEquals(true, gotClone.getNumberOfTours() <= 2);
     				if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
     					//got is still demand infeasible -> no feasible solution could be found for demand
     					gotClone.addEmptyTour();
-    					System.out.println("New Empty Tour added. ");
     					ls.improve(gotClone);    					
     				}
-    				System.out.println("Resulting solution is: ");    				
-    				gotClone.print();
-    				System.out.println(gotClone.getUseOfCapacityInTours());
     				//RUNTIME_TODO: revome assert
     				assertEquals(true, gotClone.getNumberOfTours() <= 3);
     				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));

@@ -37,9 +37,6 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		while (!isStoppingCriterionMet()) {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
-
-				if (iteration == 11)
-					System.out.println("DEBUGGING!");
 				
 				findBestNonTabooMove();
 				System.out.println("Find best non taboo move succeeded");
@@ -55,9 +52,6 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				
 				if (isNewSolutionIsNewBestOverallSolution()) { 
 					System.out.println("new solution is new best found solution");		
-					
-					if (iteration == 3)
-						System.out.println("DEBUGGING!");
 					
 					tryToImproveNewBestSolutionWithIntensificationPhase();
 					setBestOverallSolutionToNewSolution();	
@@ -116,9 +110,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
 		//IMPORTANT_TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
 		SolutionGot solutionTemp = (SolutionGot) solution;
-		int k = 0;
 		for (GroupOfTours got : solutionTemp.getGots()) {
-			k++;			
 			for (int j = 0; j < got.getTours().size(); j++) {				
 				Tour tour = got.getTour(j);
 				//RUNTIME_TODO: versuche hier weniger Iterationen

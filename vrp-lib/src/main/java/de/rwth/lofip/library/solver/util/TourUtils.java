@@ -1,7 +1,6 @@
 package de.rwth.lofip.library.solver.util;
 
 import static org.junit.Assert.assertEquals;
-
 import de.rwth.lofip.library.AbstractPointInSpace;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
