@@ -25,7 +25,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }    
 
 	public VrpProblem getVrpProblem() {
-		//IMPORTANT_TODO: Konstruktor-Hack beheben
+		//IMPORTANT_TODO: Konstruktor-Hack beheben: S.o., beim leeren Construktor wird kein vrpProblem gesetzt
 		if (vrpProblem == null)
 			throw new RuntimeException("VrpProblem existiert nicht in Got. Falscher Konstruktor verwendet; muss dort übergeben werden");
         return vrpProblem;

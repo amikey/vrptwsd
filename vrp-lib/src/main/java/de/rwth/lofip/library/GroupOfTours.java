@@ -11,6 +11,7 @@ import java.util.Set;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
@@ -29,17 +30,9 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
      ***************************************************************************/
 	private static final long serialVersionUID = 417229827834858665L;	
 	
-	final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
-	final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.8;
-	static int MAXIMAL_NUMBER_OF_TOURS = 1;		
-	
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	RecourseCost expectedRecourseCost = null;
     
-	public static void setNumberOfToursInGot(int numberOfToursInGot) {
-		MAXIMAL_NUMBER_OF_TOURS = numberOfToursInGot;
-	}
-	
 	protected void resetExpectedRecourseCost() {
 		expectedRecourseCost = null;
 	}
@@ -91,7 +84,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	}
 	
 	public boolean isNewTourCanBeCreated() {
-		return tours.size() < MAXIMAL_NUMBER_OF_TOURS;
+		return tours.size() < Parameters.getMaximalNumberOfToursInGots();
 	}
 	
 	public void addTour(Tour t) {
@@ -125,10 +118,6 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     
     public Tour getFirstTour() {
     	return tours.get(0);
-	}
-
-	public int getMaximalNumberOfTours() {
-		return MAXIMAL_NUMBER_OF_TOURS;
 	}
 	
 	public boolean isHasTours() {
@@ -185,7 +174,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
      * Calculation of Probabilities and Recourse Cost
      ***************************************************************************/        
    
-    public RecourseCost getExpectedRecourseCost() {    	
+    public RecourseCost getExpectedRecourse() {    	
     	if (expectedRecourseCost == null) {   		    		
     		double overallRecourseCost = 0;
     		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
@@ -193,9 +182,9 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     		SimulationUtils.resetSeed();
     		int numberOfInfeasibleScenarios = 0;
     		
-    		for (int i = 1; i <= NUMBER_OF_DEMAND_SCENARIO_RUNS; i++) {
+    		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {
     			GroupOfTours gotClone = this.cloneWithCopyOfTourAndCustomers();
-    			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);    			
+    			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());    			
     			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
     				numberOfInfeasibleScenarios++;
     				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
@@ -216,7 +205,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     					gotClone.addEmptyTour();
     					ls.improve(gotClone);    					
     				}
-    				//RUNTIME_TODO: revome assert
+    				//RUNTIME_TODO: remove assert
     				assertEquals(true, gotClone.getNumberOfTours() <= 3);
     				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 
@@ -234,7 +223,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     			} else 
     				System.out.println("Solution is feasible after altering demands");
     		}
-    		overallRecourseCost = overallRecourseCost / NUMBER_OF_DEMAND_SCENARIO_RUNS;
+    		overallRecourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
     		
     		expectedRecourseCost = new RecourseCost(overallRecourseCost, numberOfDifferentRecourseActions);
     	}    	

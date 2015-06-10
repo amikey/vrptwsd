@@ -13,6 +13,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 
 public class TestRandomI1Solver {
@@ -60,7 +61,7 @@ public class TestRandomI1Solver {
 	@Test
 	public void TestThatNumberOfToursInGotsIsCorrectAfterInitialSolver() throws IOException {
 		int numberOfToursInGot = 2;	
-		GroupOfTours.setNumberOfToursInGot(numberOfToursInGot);
+		Parameters.setNumberOfToursInGot(numberOfToursInGot);
 		problems = ReadAndWriteUtils.readSolomonProblemC202();	
 		solveProblemsWithRandomI1Solver(solutions);				
 		assertEquals(2, solutions.get(0).maximalNumberOfToursInGots());

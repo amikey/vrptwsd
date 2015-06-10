@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import org.hamcrest.core.IsInstanceOf;
+
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
@@ -32,38 +34,23 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
 		
-		System.out.println("Starting Tabu Search");
-//		System.out.println("Iteration: " + 0 + "; Solution: " + solution.getAsTupel());
+		System.out.println("Starting Tabu Search");		
 		while (!isStoppingCriterionMet()) {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
 				
-				findBestNonTabooMove();
-				System.out.println("Find best non taboo move succeeded");
-				//printBestMove();											
+				findBestNonTabooMove();				
+				updateTabuList();								
+				applyBestNonTabooMove();								
 				
-//				System.out.println("bestMove.getCost() < solution.getTotalDistance(): " + bestMove.getCost() +"; " + solution.getTotalDistance());
-				
-				updateTabuList();
-				System.out.println("Updated Tabu List");// + "; Solution: " + solution.getAsTupel() + "\n");
-				
-				applyBestNonTabooMove();				
-				System.out.println("applied best move");				
-				
-				if (isNewSolutionIsNewBestOverallSolution()) { 
-					System.out.println("new solution is new best found solution");		
-					
+				if (isNewSolutionIsNewBestOverallSolution()) { 					
 					tryToImproveNewBestSolutionWithIntensificationPhase();
 					setBestOverallSolutionToNewSolution();	
  					iterationsWithoutImprovement = 0;
 				} else
-					iterationsWithoutImprovement++;
-				
-				System.out.println("checked if new solution is new best found solution");
+					iterationsWithoutImprovement++;			
 			} catch (Exception e) {
 				if (e instanceof NoSolutionExistsException) {													
-//				if (e.getMessage() == "No feasible move found.") {						
-//					System.out.println(e.getMessage() + " Iteration: " + iteration + "; Solution: " + solution);
 					iterationsWithoutImprovement++;
 				} else {
 					StackTraceElement[] arr = e.getStackTrace();
@@ -73,8 +60,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				}
 			}			
 			iteration++;
-		}
-		
+		}		
 		System.out.println("Anzahl Iterationen Tabu Suche : " + iteration + "\n");
 		return bestOverallSolution;
 	}
@@ -108,6 +94,8 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
+		if (solution instanceof GroupOfTours)
+			throw new RuntimeException("tryToImproveNewBestSolutionWithIntensificationPhase ist nicht für Gots implementiert");		
 		//IMPORTANT_TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
 		SolutionGot solutionTemp = (SolutionGot) solution;
 		for (GroupOfTours got : solutionTemp.getGots()) {

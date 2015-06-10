@@ -23,5 +23,15 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		assertEquals(true, got1.getFirstTour().equals(SetUpUtils.getTourWithCustomers1And2And3()));
 		assertEquals(true, got2.getFirstTour().equals(SetUpUtils.getTourWithCustomer4()));
 	}
+	
+	@Test
+	public void testCalculateRecourseCostForMoves() {
+		throw new RuntimeException("Impelement test for CalculateRecourseCostForMoves()");
+	}
+	
+	@Test 
+	public void testSortMovesWrtToStochasticAspect() {
+		throw new RuntimeException("Impelement test for SortMovesWrtToStochasticAspect()");
+	}
 
 }

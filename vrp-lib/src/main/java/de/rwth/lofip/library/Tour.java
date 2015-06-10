@@ -78,7 +78,7 @@ public class Tour implements SolutionElement, Serializable {
 		for (int i = 0; i < tour1.getRefMatrix().size(); i++)
 			for (int j = 0; j <= i; j++) 
 				setEntryInRefMatrix(i,j, tour1.getRefMatrix().get(i).get(j).clone());
-		//IMPORTANT_TODO: stimmt das so und ist das was ich machen möchte?
+		//IMPORTANT_TODO: stimmt das so und ist das was ich machen möchte? Oder muss das Got auch geklont werden?
 		//Aufruf des Konstruktors angucken und ansehen, wie er verwendet wird.
 		this.gotThatTourBelongsTo = tour1.getParentGot();
 	}

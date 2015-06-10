@@ -24,7 +24,7 @@ public class TestGotGetExpectedRecourseCost {
 	}
 
 	private void thenCaluclationOfRecourseCostInGotShouldBeCorrect() {
-		RecourseCost rc = got.getExpectedRecourseCost();
+		RecourseCost rc = got.getExpectedRecourse();
 		rc.print();
 	}
 	

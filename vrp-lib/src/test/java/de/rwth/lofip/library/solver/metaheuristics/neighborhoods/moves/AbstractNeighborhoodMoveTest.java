@@ -52,4 +52,9 @@ public class AbstractNeighborhoodMoveTest {
 		assertEquals(move.getCost(), cloneOfMove.getCost(), 0.00001);
 		assertEquals(move.getCostDifferenceToPreviousSolution(), cloneOfMove.getCostDifferenceToPreviousSolution(), 0.00001);
 	}
+	
+	@Test
+	public void testGetDeterministicAndStochasticCostDifference() {
+		throw new RuntimeException("implement test for GetDeterministicAndStochasticCostDifference()");
+	}
 }

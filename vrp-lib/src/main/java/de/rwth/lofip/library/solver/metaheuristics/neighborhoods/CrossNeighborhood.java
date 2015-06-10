@@ -97,8 +97,7 @@ public class CrossNeighborhood implements NeighborhoodInterface {
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
-						if (isMoveNewBestMove(move)) {
-							//IMPORTANT_TODO: Hier nur die beiden Touren betrachten, die gerade verändert werden und Zulässigkeit aller Touren am Ende der LS nochmals prüfen
+						if (isMoveNewBestMove(move)) {							
 							// bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
 							bestMoveThatMightBeTaboo = move;
 							if (!isMoveTaboo(move, iteration)) {								

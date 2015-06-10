@@ -18,10 +18,10 @@ public class RecourseCost {
 	public RecourseCost(List<GroupOfTours> gots) {
 		double cost = 0;
 		for (GroupOfTours got : gots)
-			cost += got.getExpectedRecourseCost().getRecourseCost();		
+			cost += got.getExpectedRecourse().getRecourseCost();		
 		double numberOfDifferentRecourseActionsTemp = 0;
 		for (GroupOfTours got : gots)
-			numberOfDifferentRecourseActionsTemp += got.getExpectedRecourseCost().getNumberOfDifferentRecourseActions();
+			numberOfDifferentRecourseActionsTemp += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
 		numberOfDifferentRecourseActionsTemp = numberOfDifferentRecourseActionsTemp / gots.size();
 		recourseCost = cost;
 		numberOfDifferentRecourseActions =  numberOfDifferentRecourseActionsTemp;		

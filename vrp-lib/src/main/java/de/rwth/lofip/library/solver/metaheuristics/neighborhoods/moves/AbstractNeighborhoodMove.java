@@ -7,6 +7,7 @@ import java.util.List;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.util.TourUtils;
+import de.rwth.lofip.library.util.RecourseCost;
 
 public class AbstractNeighborhoodMove implements Serializable {
 	
@@ -20,7 +21,11 @@ public class AbstractNeighborhoodMove implements Serializable {
 	private int positionStartOfSegmentTour2;
 	private int positionEndOfSegmentTour2;
 	private double costOfCompleteSolutionThatResultsFromMove;
+	//cost difference is a negative value if new solution does cost less than previous solution; otherwise positive: newCost - OldCost
 	private double costDifferenceToPreviousSolution;
+	
+	private RecourseCost oldRecourseCostOfLocalGots;
+	private RecourseCost newRecourseCostAfterMoveIsApplied;
 	
 	public AbstractNeighborhoodMove(Tour tour1, Tour tour2, int posStart1, int posEnd1, int posStart2, int posEnd2, double cost, double costDifferenceToPreviousSolution) {
 		this.tour1 = tour1;
@@ -35,6 +40,11 @@ public class AbstractNeighborhoodMove implements Serializable {
 	
 	public AbstractNeighborhoodMove(double cost) {
 		this.costOfCompleteSolutionThatResultsFromMove = cost;
+	}
+
+	public AbstractNeighborhoodMove(double cost, double difference) {
+		this.costOfCompleteSolutionThatResultsFromMove = cost;
+		this.costDifferenceToPreviousSolution = difference;
 	}
 
 	public double getCost() {
@@ -77,9 +87,16 @@ public class AbstractNeighborhoodMove implements Serializable {
 		return costDifferenceToPreviousSolution;
 	}
 
-	public void setCostDifferenceToPreviousSolution(
-			double costDifferenceToPreviousSolution) {
+	public void setCostDifferenceToPreviousSolution(double costDifferenceToPreviousSolution) {
 		this.costDifferenceToPreviousSolution = costDifferenceToPreviousSolution;
+	}
+	
+	public void setOldRecourseCost(RecourseCost rc) {
+		this.oldRecourseCostOfLocalGots = rc;
+	}
+	
+	public void setNewRecourseCost(RecourseCost rc) {
+		this.newRecourseCostAfterMoveIsApplied = rc;
 	}
 
 	public void print() {

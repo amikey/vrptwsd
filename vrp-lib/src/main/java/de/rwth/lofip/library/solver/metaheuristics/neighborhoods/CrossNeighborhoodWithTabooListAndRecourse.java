@@ -7,6 +7,7 @@ import java.util.List;
 
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.RecourseCost;
 
@@ -15,10 +16,9 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	public CrossNeighborhoodWithTabooListAndRecourse(ElementWithTours solution) {
 		super(solution);
 	}
-
+	
+	private List<SolutionGot> listOfParetoOptimalSolutions = new ArrayList<SolutionGot>();
 	private List<AbstractNeighborhoodMove> listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
-	//CODE_SMELL_TODO: eine Parameterklasse anlegen
-	private static int numberOfMovesThatRecourseCostAreCalculatedFor = 10;
 
 	@Override
 	public void setRespAddBestNonTabooMove(AbstractNeighborhoodMove move) {
@@ -30,26 +30,30 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		sortMovesWrtDeterministicCost();
 		takeFirstXNumberOfMoves();
 		calculateRecourseCostForMoves();
-		sortMovesWrtToStochasticCost();
-		setBestNonTabooMoveToBestCalculatedMove();
+		sortMovesWrtToStochasticAspectsAndSetBestMove();
 	}
 
 	public void sortMovesWrtDeterministicCost() {
 		Comparator<AbstractNeighborhoodMove> byDeterministicCost = (e1,e2) -> Double.compare(e1.getCost(),e2.getCost());		
-		Collections.sort(listOfNonTabooMoves, byDeterministicCost);		
+		Collections.sort(listOfNonTabooMoves, byDeterministicCost);				
+	}
+	
+	public void sortMovesWrtCostDifference() {
+		Comparator<AbstractNeighborhoodMove> byCostDifference = (e1,e2) -> Double.compare(e1.getCostDifferenceToPreviousSolution(),e2.getCostDifferenceToPreviousSolution());		
+		Collections.sort(listOfNonTabooMoves, byCostDifference);
 	}
 
 	public void takeFirstXNumberOfMoves() {
-		listOfNonTabooMoves = listOfNonTabooMoves.subList(0, Math.min(listOfNonTabooMoves.size(),getNumberOfMovesThatRecourseCostAreCalculatedFor()));		
+		listOfNonTabooMoves = listOfNonTabooMoves.subList(0, Math.min(listOfNonTabooMoves.size(),Parameters.getNumberOfMovesThatRecourseCostAreCalculatedFor()));		
 	}
 
 	private void calculateRecourseCostForMoves() {
-		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {			
+		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {
+			move.setOldRecourseCost(calculateRecourseCostOfMove(move));
 			AbstractNeighborhoodMove copyOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
 			applyMoveToUnderlyingGots(copyOfMove);
-			RecourseCost recourseCost = calculateRecourseCostOfMove(copyOfMove);
-		}
-		
+			move.setNewRecourseCost(calculateRecourseCostOfMove(copyOfMove));
+		}		
 	}
 
 	public static void applyMoveToUnderlyingGots(AbstractNeighborhoodMove copyOfMove) {
@@ -67,14 +71,30 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		return recourseCost;	
 	}
 
-
-
-	private void sortMovesWrtToStochasticCost() {
-		throw new RuntimeException("sortMovesWrtToStochasticCost() noch nicht implementiert");
+	private void sortMovesWrtToStochasticAspectsAndSetBestMove() {
+		throw new RuntimeException("impelement"); //s. Code unten
+		
+//		//if exists element which is dominant in both regards -> done
+//		for (AbstractNeighborhoodMove move : listOfNonTabooMoves)
+//			if (isMovePareotoOptimalWrtParetoSet(move))
+//				bestNonTabooMove = move;			
+//		
+//		if (bestNonTabooMove == null) {//no move pareto optimal
+//			sortMovesWrtToStochasticAspect();
+//			setBestNonTabooMoveToBestCalculatedMove();
+//		}		
 	}
 
+	private void sortMovesWrtToStochasticAspect() {
+		throw new RuntimeException("implement");
+		
+//		//IMPORTANT_TODO: hier zwischen Kosten und #RecourseActions alternieren, oder gucken wie Thomas das gemacht hat
+//		Comparator<AbstractNeighborhoodMove> byDeterministicAndStochasticCost = (e1,e2) -> Double.compare(e1.getDeterministicAndStochasticCostDifference(),e2.getDeterministicAndStochasticCostDifference());		
+//		Collections.sort(listOfNonTabooMoves, byDeterministicAndStochasticCost);
+	}
+	
 	private void setBestNonTabooMoveToBestCalculatedMove() {
-		throw new RuntimeException("setBestNonTabooMoveToBestCalculatedMove() noch nicht implementiert");
+		bestNonTabooMove = listOfNonTabooMoves.get(0);
 	}
 
 	
@@ -84,12 +104,5 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		return listOfNonTabooMoves;
 	}
 
-	public static int getNumberOfMovesThatRecourseCostAreCalculatedFor() {
-		return numberOfMovesThatRecourseCostAreCalculatedFor;
-	}
 
-	public static void setNumberOfMovesThatRecourseCostAreCalculatedFor(
-			int numberOfMovesThatRecourseCostAreCalculatedFor) {
-		CrossNeighborhoodWithTabooListAndRecourse.numberOfMovesThatRecourseCostAreCalculatedFor = numberOfMovesThatRecourseCostAreCalculatedFor;
-	}
 }
