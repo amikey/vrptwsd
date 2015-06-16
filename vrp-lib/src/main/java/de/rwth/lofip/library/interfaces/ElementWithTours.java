@@ -12,7 +12,7 @@ public interface ElementWithTours {
 	
 	public double getTotalDistanceWithCostFactor();
 	
-	public void removeEmptyTours();
+	public void removeEmptyToursAndGots();
 	
 	public List<Tour> getTours();
 

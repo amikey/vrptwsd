@@ -6,10 +6,11 @@ import java.util.List;
 
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodMoveInterface;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.RecourseCost;
 
-public class AbstractNeighborhoodMove implements Serializable {
+public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Serializable {
 	
 	//helper class to store a cross move including its cost
 	private static final long serialVersionUID = 1L;
@@ -50,6 +51,10 @@ public class AbstractNeighborhoodMove implements Serializable {
 	public double getCost() {
 		return costOfCompleteSolutionThatResultsFromMove;
 	}
+	
+	public double getCostDifferenceToPreviousSolution() {
+		return costDifferenceToPreviousSolution;
+	}
 
 	public Tour getTour1() {
 		return tour1;
@@ -81,10 +86,6 @@ public class AbstractNeighborhoodMove implements Serializable {
 
 	public int getEndPositionTour2() {
 		return positionEndOfSegmentTour2;
-	}
-	
-	public double getCostDifferenceToPreviousSolution() {
-		return costDifferenceToPreviousSolution;
 	}
 
 	public void setCostDifferenceToPreviousSolution(double costDifferenceToPreviousSolution) {

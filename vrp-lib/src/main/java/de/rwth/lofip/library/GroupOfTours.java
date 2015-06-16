@@ -66,7 +66,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     }
     
 	@Override
-    public void removeEmptyTours() {
+    public void removeEmptyToursAndGots() {
       Set<Tour> emptyTours = new HashSet<Tour>();
       for (Tour t : tours) {
           if (t.getCustomers().size() == 0) {

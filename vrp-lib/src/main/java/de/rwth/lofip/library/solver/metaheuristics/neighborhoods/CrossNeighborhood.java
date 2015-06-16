@@ -406,7 +406,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			List<Customer> customers2 = tour2.removeCustomersBetween(bestMove.getStartPositionTour2(),bestMove.getEndPositionTour2());		
 			tour1.insertCustomersAtPosition(customers2, bestMove.getStartPositionTour1());
 			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());
-			elementWithTours.removeEmptyTours();
+			elementWithTours.removeEmptyToursAndGots();
 		}					
 		resetNeighborhood();
 		return elementWithTours;		

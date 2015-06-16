@@ -21,10 +21,25 @@ public abstract class AbstractNeighborhood {
 	}
 	
 	private boolean moveReducesCostOrNumberOfVehicles(AbstractNeighborhoodMove move) {
-		if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()) || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
-				(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
-			return true;
-		return false;
+		// hier werden moves hierarchisch geordnet:
+		// zuerst werden moves bevorzugt, die die Anzahl der Fahrzeuge reduzieren
+		// unter diesen moves wird der günstigste Move bevorzugt
+		if (bestNonTabooMove.reducesNumberOfVehicles())
+			if (!move.reducesNumberOfVehicles())
+				return false;
+			else // beide moves reduzieren Fahrzeuganzahl
+				if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()))
+					return true;
+				else // move reduziert Kosten nicht
+					return false;
+		else // bestNonTabooMove reduziert Fahrzeuganzahl nicht
+			if (move.reducesNumberOfVehicles())
+				return true;
+			else // beide moves reduzieren Fahrzeuganzahl nicht
+				if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()))
+					return true;
+				else // move reduziert Kosten nicht
+					return false;
 	}
 	
 	protected boolean isMoveTaboo(AbstractNeighborhoodMove move, int iteration) { 

@@ -104,10 +104,10 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 			return got;
 		}
 
-    public void removeEmptyTours() {
+    public void removeEmptyToursAndGots() {
     	Set<GroupOfTours> emptyGots = new HashSet<GroupOfTours>();
     	for (GroupOfTours got : gots)     		
-    	    got.removeEmptyTours();    	  		    
+    	    got.removeEmptyToursAndGots();    	  		    
     	for (GroupOfTours got : gots) 
     		if(!got.isHasTours())
     	        emptyGots.add(got);    	        	  		   
@@ -174,6 +174,13 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	
 	public Tour getTour(int i) {
 		return getTours().get(i);
+	}
+	
+	public List<Customer> deleteTour(int i) {
+		Tour tour = getTour(i);
+		List<Customer> customers = tour.removeCustomersBetween(0, tour.getCustomerSize());
+		removeEmptyToursAndGots();
+		return customers;
 	}
 	
 	public GroupOfTours findGotForTour(Tour tour) {
