@@ -44,11 +44,40 @@ public class ReadAndWriteUtils {
 		return problems;
 	}
 	
+	public static List<VrpProblem> readModifiedSolomonProblems() throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		File dir = new File(getInputDirectoryForModifiedSolomonFiles());		
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();	
+			System.out.println(file.getName());
+			FileInputStream openInputStream = null;
+			try {
+				openInputStream = FileUtils.openInputStream(file);
+				List<String> lines = IOUtils.readLines(openInputStream);
+				VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+				problems.add(problem);
+			} finally {
+				IOUtils.closeQuietly(openInputStream);
+			}			
+		}
+		return problems;
+	}
+
 	private static String getInputDirectory() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Code\\vrp-lib\\original-solomon-problems\\";
 		System.out.println(s);
 		return s;		
+	}
+	
+	private static String getInputDirectoryForModifiedSolomonFiles() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\vrp-lib\\modified-solomon-problems\\";
+		System.out.println(s);
+		return s;	
 	}
 	
 	public static String getOutputFile() {		
@@ -98,6 +127,10 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("c106","rc106");
 	}
 	
+	public static List<VrpProblem> readSolomonProblemC1XX() throws IOException {
+		return readSolomonProblemX("c1","rc1");
+	}
+	
 	public static List<VrpProblem> readSolomonProblemC2XX() throws IOException {
 		return readSolomonProblemX("c2","rc2");
 	}
@@ -112,6 +145,14 @@ public class ReadAndWriteUtils {
 
 	public static List<VrpProblem> readSolomonProblemC206() throws IOException {
 		return readSolomonProblemX("c206","rc206");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemR1XX() throws IOException {
+		return readSolomonProblemX("r1","rc1");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemR2XX() throws IOException {
+		return readSolomonProblemX("r2","rc2");
 	}
 	
 	public static List<VrpProblem> readSolomonProblemRC1XX() throws IOException {
@@ -426,6 +467,8 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
+
+	
 
 
 	

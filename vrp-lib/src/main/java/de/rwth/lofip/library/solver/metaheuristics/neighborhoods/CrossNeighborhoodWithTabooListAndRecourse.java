@@ -44,7 +44,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 
 	public void takeFirstXNumberOfMoves() {
-		listOfNonTabooMoves = listOfNonTabooMoves.subList(0, Math.min(listOfNonTabooMoves.size(),Parameters.getNumberOfMovesThatRecourseCostAreCalculatedFor()));		
+		listOfNonTabooMoves = listOfNonTabooMoves.subList(0, Math.min(listOfNonTabooMoves.size(),Parameters.getNumberOfMovesThatStochasticCostIsCalculatedFor()));		
 	}
 
 	private void calculateRecourseCostForMoves() {

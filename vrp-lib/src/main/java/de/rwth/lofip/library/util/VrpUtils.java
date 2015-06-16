@@ -110,6 +110,7 @@ public class VrpUtils {
 				}
 				break;
 			case CUSTOMER:
+				System.out.println(line);
 				String[] split = StringUtils.split(line);
 				Customer customer = new Customer();
 				customer.setCustomerNo(Long.parseLong(split[0]));

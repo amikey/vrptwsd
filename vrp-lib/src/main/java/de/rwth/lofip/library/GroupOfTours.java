@@ -220,8 +220,8 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	    				numberOfDifferentRecourseActions++;
 	    				listOfRecourseActions.add(gotClone);
 	    			}
-    			} else 
-    				System.out.println("Solution is feasible after altering demands");
+    			} // else 
+//    				System.out.println("Solution is feasible after altering demands");
     		}
     		overallRecourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
     		

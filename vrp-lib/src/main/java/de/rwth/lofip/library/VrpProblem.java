@@ -210,7 +210,7 @@ public class VrpProblem implements Cloneable {
 	public String print() {
 		String s = description + "; Customers: ";
 		for (Customer c : this.customers)
-			s += c.getAsTupel();
+			s += c.toString();
 		s += "; Depots: ";
 		for (Depot d : this.getDepots())
 			s += d.toString();

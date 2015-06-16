@@ -52,8 +52,12 @@ public class RandomI1Solver implements SolverInterfaceGot {
 
 	protected List<Customer> randomlySelectSeedCustomers() {
 		numberOfSeedCustomers = vrpProblem.getMinimalNumberOfVehiclesWrtDemand();
-		if (numberOfSeedCustomers > remainingCustomers.size()-1)
+		if (numberOfSeedCustomers > remainingCustomers.size()) {
+			System.out.println("VrpProblem: " + vrpProblem.print());
+			System.out.println("vrpProblem.getMinimalNumberOfVehiclesWrtDemand(): " + vrpProblem.getMinimalNumberOfVehiclesWrtDemand());
+			System.out.println(printRemainingCustomers());
 			throw new RuntimeException("numberOfSeedCustomers > remainingCustomers.size()-1");
+		}
 		for (int m = 1; m <= numberOfSeedCustomers; m++) {
 			int rand = generateRandomNumber(remainingCustomers.size()-1,0);
 			seedCustomers.add(remainingCustomers.get(rand));
@@ -100,6 +104,15 @@ public class RandomI1Solver implements SolverInterfaceGot {
 		return "RandomI1Solver";
 	}
 	
+	//UTILITIES
 	
+	private String printRemainingCustomers() {
+		String s = "(";
+		for (Customer c : getRemainingCustomers())
+			s += "" + c.getCustomerNo() + " ";
+		s += ")";
+		return s;
+	}
+
 
 }

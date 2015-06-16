@@ -9,6 +9,7 @@ import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
+import de.rwth.lofip.library.util.RecourseCost;
 
 public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable {
 
@@ -121,12 +122,13 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
         return returnList;
     }
 
-    public double getExpectedRecourseCost() {
-    	throw new RuntimeException("getExpectedRecourseCost muss noch implementiert werden");
+    public RecourseCost getExpectedRecourseCost() {
+    	//RUNTIME_TODO: Recourse Cost könnte auch zwischengespeichert werden
+    	return new RecourseCost(getGots());
     }
     	
 	public double getSumOfDistanceAndExpectedRecourseCost() {
-		return getTotalDistanceWithCostFactor() + getExpectedRecourseCost();
+		return getTotalDistanceWithCostFactor() + getExpectedRecourseCost().getRecourseCost();
 	}
 
 	public void addGot(GroupOfTours got) {

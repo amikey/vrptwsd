@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import de.rwth.lofip.cli.RunAdaptiveMemorySearchWithSolomonInstances;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Depot;
@@ -14,6 +15,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 
 public class SetUpUtils {
 	
@@ -468,4 +470,13 @@ public class SetUpUtils {
 		tour.addCustomer(problem.getCustomerWithCustomerNo(44));
 		return tour;
 	}
+
+	public static SolutionGot getSomeSolutionFromRC104Problem() throws IOException {
+			List<VrpProblem> problems = ReadAndWriteUtils.readSolomonProblemRC104AsList();
+			List<SolutionGot> solutions = new LinkedList<SolutionGot>();
+			new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
+					problems, solutions, 2, 5, 5, 5, 5, 1, 1, 1);	
+			return solutions.get(0);		
+	}
+	
 }
