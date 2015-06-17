@@ -217,6 +217,46 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 			return true;
 		return false;
 	}
+	
+	public boolean shortensShorterTour() {
+		if (tour1IsShorterThanTour2()) {
+			if (numberOfCustomersRemovedFromTour1() > numberOfCustomersRemovedFromTour2())
+				return true;
+			else
+				return false;
+		} 
+		if (tour2IsShorterThanTour1()) {
+			if (numberOfCustomersRemovedFromTour2() > numberOfCustomersRemovedFromTour1())
+				return true;
+			else
+				return false;
+		}		
+		//no tour is shorter than the other
+		return false;
+	}
+	
+		private boolean tour1IsShorterThanTour2() {
+			return tour1.length() < tour2.length();
+		}
+		
+		private boolean tour2IsShorterThanTour1() {
+			return tour2.length() < tour1.length();
+		}		
+	
+		private int numberOfCustomersRemovedFromTour1() {
+			return positionEndOfSegmentTour1 - positionStartOfSegmentTour1;			
+		}
+	
+		private int numberOfCustomersRemovedFromTour2() {
+			return positionEndOfSegmentTour2 - positionStartOfSegmentTour2;
+		}
+
+	public int shorterTourResultsInNumberOfCustomers() {
+		if (tour1IsShorterThanTour2())
+			return tour1.getCustomerSize() - numberOfCustomersRemovedFromTour1() + numberOfCustomersRemovedFromTour2();
+		else
+			return tour2.getCustomerSize() - numberOfCustomersRemovedFromTour2() + numberOfCustomersRemovedFromTour1();
+	}
 
 
 }
