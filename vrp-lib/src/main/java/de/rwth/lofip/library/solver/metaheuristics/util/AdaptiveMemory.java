@@ -35,7 +35,7 @@ public class AdaptiveMemory {
 	
 	public void addTours(SolutionGot solution) {	
 		setVrpProblem(solution);
-		labelToursWithSolutionValue(solution);		
+		labelToursWithSolutionValueAndNumberOfTours(solution);		
 		addToursOfSolutionToTours(solution);
 		removeToursWithOneCustomer();
 		sortTours();
@@ -46,9 +46,11 @@ public class AdaptiveMemory {
 			vrpProblem = solution.getVrpProblem();
 		}
 	
-		private void labelToursWithSolutionValue(SolutionGot solution) {
-			for (Tour tour : solution.getTours())
-				tour.setSolutionValue(solution.getTotalDistanceWithCostFactor());		
+		private void labelToursWithSolutionValueAndNumberOfTours(SolutionGot solution) {
+			for (Tour tour : solution.getTours()) {
+				tour.setSolutionValue(solution.getTotalDistanceWithCostFactor());
+				tour.setSolutionNumberOfTours(solution.getNumberOfTours());
+			}
 		}
 		
 		private void addToursOfSolutionToTours(SolutionGot solution) {
@@ -65,19 +67,27 @@ public class AdaptiveMemory {
 		}
 		
 		private void sortTours() {
+			//DESIGN_TODO: Für stochastische Variante Version erstellen, die nur auf Kosten geht
 			Collections.sort(allToursInMemory, new Comparator<Tour>() {
 	            @Override
-	            public int compare(Tour o1,
-	                    Tour o2) {
-	                double v1 = (o1.getSolutionValue());
-	                double v2 = (o2.getSolutionValue());
-	                if(v1 == v2) {
-	                   return 0;
-	                }
-	                if(v1 < v2) {
+	            public int compare(Tour o1, Tour o2) {
+	                double v1NumberOfTours = o1.getSolutionNumberOfTours();
+	                double v1SolutionValue = (o1.getSolutionValue());
+	                double v2NumberOfTours = o2.getSolutionNumberOfTours();
+	                double v2SolutionValue = (o2.getSolutionValue());	                
+	                if(v1NumberOfTours < v2NumberOfTours) 
 	                   return -1; //return negative integer if first argument is less than second
-	                }
-	                return 1;
+	                
+	                if(v1NumberOfTours > v2NumberOfTours) 
+	                	return 1;
+	                if(v1NumberOfTours == v2NumberOfTours) {
+	                	if (v1SolutionValue < v2SolutionValue)
+	                		return -1;
+	                	if (v1SolutionValue > v2SolutionValue)
+	                		return 1;
+		                return 0;
+		            }
+					return 0;
 	            }
 	        });
 		}

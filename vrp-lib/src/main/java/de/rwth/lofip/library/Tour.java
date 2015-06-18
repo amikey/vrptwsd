@@ -39,6 +39,8 @@ public class Tour implements SolutionElement, Serializable {
 	//the label that the tour is labeled with for the adaptive memory
 	private double solutionValue;
 	private GroupOfTours gotThatTourBelongsTo;
+
+	private int solutionNumberOfTours;
 	
     /****************************************************************************
      * Constructors
@@ -661,6 +663,15 @@ public class Tour implements SolutionElement, Serializable {
 		return s;
 	}
 
+	public void setSolutionNumberOfTours(int numberOfTours) {
+		solutionValue = numberOfTours;
+	}
+	
+	public int getSolutionNumberOfTours() {
+		return solutionNumberOfTours; 
+	}
+
+	
 	
 
 

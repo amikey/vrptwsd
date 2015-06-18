@@ -10,6 +10,7 @@ import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.RecourseCost;
+import de.rwth.lofip.library.util.math.MathUtils;
 
 public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhoodWithTabooList {
 
@@ -31,6 +32,15 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		takeFirstXNumberOfMoves();
 		calculateRecourseCostForMoves();
 		sortMovesWrtToStochasticAspectsAndSetBestMove();
+	}
+	
+	@Override 
+	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {
+		//TODO: Hier kann das Akzeptanzkriterium noch dazu ge‰ndert werden, dass nur Kosten betrachtet werden
+		if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()) || //hier weiﬂ man nicht, ob die Anzahl an Fahrzeugen verringert wird 
+			(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
+				return true;
+		return false;
 	}
 
 	public void sortMovesWrtDeterministicCost() {

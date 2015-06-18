@@ -20,7 +20,7 @@ public abstract class AbstractNeighborhood {
 		return false;			
 	}
 	
-	private boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {
+	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {
 		//IMPORTANT_TODO: für die stochastische Variante müssen die Akzeptanzkriterien geändert werden.
 		//dabei sollte nicht so sehr die Tourenreduktion im Vordergrund stehen, sondern die Kosten
 		

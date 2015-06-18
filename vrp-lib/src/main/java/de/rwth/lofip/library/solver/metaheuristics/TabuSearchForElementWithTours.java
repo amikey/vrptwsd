@@ -70,8 +70,9 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
 	}
 	
-	private void findBestNonTabooMove() throws Exception {
+	private void findBestNonTabooMove() throws Exception {		
 		bestMove = crossNeighborhood.returnBestMove(iteration);
+		//DESIGN_TODO: Hier TourElimination Nachbarschaft aufrufen, wenn Cross keinen Move gefunden hat, der Tourenanzahl reduziert
 	}
 	
 	@SuppressWarnings("unused")
