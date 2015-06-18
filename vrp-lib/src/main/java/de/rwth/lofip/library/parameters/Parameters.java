@@ -78,5 +78,6 @@ public class Parameters {
 	public static int getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory() {
 		return maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
 	}
+	
 
 }
