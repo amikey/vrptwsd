@@ -664,7 +664,7 @@ public class Tour implements SolutionElement, Serializable {
 	}
 
 	public void setSolutionNumberOfTours(int numberOfTours) {
-		solutionValue = numberOfTours;
+		solutionNumberOfTours = numberOfTours;
 	}
 	
 	public int getSolutionNumberOfTours() {

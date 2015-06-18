@@ -234,7 +234,8 @@ public class ReadAndWriteUtils {
 				"seedAM " + seedAM + "\n "
 				, outputStream);
 		IOUtils.write("Time needed: " + timeNeeded + " min \n\n", outputStream);
-		IOUtils.write("Problem; InitialSolverValues; InitialSolverVehicleNumber; ", outputStream);
+		IOUtils.write("Problem; SolverObjectiveValues; SolverVehicleNumber; RecourseValue; #DifferentRecourseActions", outputStream);
+		
 		if (!solutions2.isEmpty()) 
 			IOUtils.write("LocalSearchValues; LocalSearchVehicleNumber; ", outputStream);
 		IOUtils.write("BestKnownValue; BestKnownVehicleNumber \n", outputStream);
@@ -245,6 +246,8 @@ public class ReadAndWriteUtils {
 		for (SolutionGot solution : solutions1) {			
 			IOUtils.write(solution.getVrpProblem().getDescription() + ";", outputStream);
 			IOUtils.write(String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";", outputStream);
+			IOUtils.write(String.format("%.3f",solution.getExpectedRecourseCost().getRecourseCost()) + ";", outputStream);
+			IOUtils.write(solution.getExpectedRecourseCost().getNumberOfDifferentRecourseActions() + ";", outputStream);
 			IOUtils.write(solution.getVehicleCount() + ";", outputStream);
 			IOUtils.write(solution.getUseOfCapacityInTours() + ";", outputStream);
 			IOUtils.write(solution.getAsTupel() + ";", outputStream);

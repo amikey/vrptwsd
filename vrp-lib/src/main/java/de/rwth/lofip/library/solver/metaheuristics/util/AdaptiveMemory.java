@@ -11,6 +11,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 
 public class AdaptiveMemory {
@@ -18,7 +19,7 @@ public class AdaptiveMemory {
 	//this set is sorted such that tours with lowest value are at the beginning (index 0)
 	//and tours with highest value are at the end (index lengthOfSet-1)
 	private List<Tour> allToursInMemory = new ArrayList<Tour>();
-	private int lengthOfList = 1000;
+	private int lengthOfList = Parameters.getMaximalNumberOfToursInAdaptiveMemory();
 	private VrpProblem vrpProblem;
 	
 	private List<Customer> unservedCustomers;

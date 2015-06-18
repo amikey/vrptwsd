@@ -9,7 +9,9 @@ import org.junit.Test;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
 
 public class RunAdaptiveMemorySearchWithSolomonInstances {
 
@@ -17,11 +19,11 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	private long timeNeeded;
 	
-	private int numberOfDifferentInitialSolutions = 20;
-	private int maximalNumberOfIterationsTabuSearch = 0;
-	private int maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
-	private int maximalNumberOfCallsToAdaptiveMemory = 0;
-	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
+	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
+	private int maximalNumberOfIterationsTabuSearch = Parameters.getMaximalNumberOfIterationsTabuSearch();
+	private int maximalNumberOfIterationsWithoutImprovementTabuSearch = Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch();;
+	private int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
+	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	
 	private int seedI1 = 14;
 	private int seedGI = 14;
@@ -133,9 +135,10 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	public void TestAdaptiveMemorySearchOnSolomonInstanceRC2XX() throws IOException {			
 		problems = ReadAndWriteUtils.readSolomonProblemRC2XX();	
 		processProblems();
+		postProcessProblemsWithTourMatchingAlgorithm();
 		printProblems();
 	}
-	
+
 	private void increaseParameters() {
 		seedI1++;
 		seedGI++;
@@ -214,5 +217,14 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		long endTime = System.nanoTime();
 		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
 	}	
+	
+	private void postProcessProblemsWithTourMatchingAlgorithm() {
+		for (int i = 0; i < solutions.size(); i++) {
+			SolutionGot solution = solutions.get(i);
+			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);
+			solutions.set(i, solution2);
+		}
+	}
+
 	
 }

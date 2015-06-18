@@ -39,8 +39,15 @@ public class TestTourMatching {
 		givenASolutionWithGots();
 		System.out.println("Solution vor Matching Tours: ");
 		solution.printSolutionAsTupel();
+		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
+		System.out.println("");
+		
+		
+		
 		whenMatchingTours();
 		solution.printSolutionAsTupel();
+		System.out.println("\n");
+		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
 		assertEquals(6, solution.getGots().size());		
 	}
 
