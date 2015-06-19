@@ -22,7 +22,7 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	private int positionStartOfSegmentTour2;
 	private int positionEndOfSegmentTour2;
 	private double costOfCompleteSolutionThatResultsFromMove;
-	//cost difference is a negative value if new solution does cost less than previous solution; otherwise positive: newCost - OldCost
+	//cost difference is a negative value if new solution does cost less than previous solution; otherwise positive (i.e. newCost - OldCost)
 	private double costDifferenceToPreviousSolution;
 	
 	private RecourseCost oldRecourseCostOfLocalGots;
@@ -92,56 +92,16 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		this.costDifferenceToPreviousSolution = costDifferenceToPreviousSolution;
 	}
 	
-	public void setOldRecourseCost(RecourseCost rc) {
+	public void setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(RecourseCost rc) {
 		this.oldRecourseCostOfLocalGots = rc;
 	}
 	
-	public void setNewRecourseCost(RecourseCost rc) {
+	public void setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(RecourseCost rc) {
 		this.newRecourseCostAfterMoveIsApplied = rc;
-	}
+	}	
 
-	public void print() {
-		System.out.println("Tour1: " + tour1.getId() + "; " + tour1.getTourAsTupel());
-		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
-		System.out.println("Tour2: " + tour2.getId()  + "; " + tour2.getTourAsTupel());;
-		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);	
-		System.out.println("CostDifference = " + costDifferenceToPreviousSolution);
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		AbstractNeighborhoodMove other = (AbstractNeighborhoodMove) obj;
-		if (Double.doubleToLongBits(costOfCompleteSolutionThatResultsFromMove) != Double
-				.doubleToLongBits(other.costOfCompleteSolutionThatResultsFromMove))
-			return false;
-		if (Double.doubleToLongBits(costDifferenceToPreviousSolution) != Double
-				.doubleToLongBits(other.costDifferenceToPreviousSolution))
-			return false; 
-		if (positionEndOfSegmentTour1 != other.positionEndOfSegmentTour1)
-			return false;
-		if (positionEndOfSegmentTour2 != other.positionEndOfSegmentTour2)
-			return false;
-		if (positionStartOfSegmentTour1 != other.positionStartOfSegmentTour1)
-			return false;
-		if (positionStartOfSegmentTour2 != other.positionStartOfSegmentTour2)
-			return false;
-		if (tour1 == null) {
-			if (other.tour1 != null)
-				return false;
-		} else if (!tour1.equals(other.tour1))
-			return false;
-		if (tour2 == null) {
-			if (other.tour2 != null)
-				return false;
-		} else if (!tour2.equals(other.tour2))
-			return false;
-		return true;
+	public double getDeterministicAndStochasticCostDifference() {
+		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions()); 
 	}
 
 	public boolean isInnerTourMove() {
@@ -156,29 +116,6 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 				&& positionStartOfSegmentTour1 == positionEndOfSegmentTour1)
 			return true;
 		return false;
-	}
-	
-	public AbstractNeighborhoodMove cloneWithCopyOfToursAndGotsAndCustomers() {
-		AbstractNeighborhoodMove newMove = new AbstractNeighborhoodMove(tour1, tour2, positionStartOfSegmentTour1, positionEndOfSegmentTour1, positionStartOfSegmentTour2, positionEndOfSegmentTour2, costOfCompleteSolutionThatResultsFromMove, costDifferenceToPreviousSolution);
-		//Achtung, Touren sind noch nicht geklont
-		
-		GroupOfTours got1 = tour1.getParentGot().cloneWithCopyOfTourAndCustomers();
-		Tour tour1InGot1 = got1.getTourThatIsEqualTo(tour1);
-		//Setze Pointer in newMove auf geklonte Tour  
-		newMove.setTour1(tour1InGot1);
-
-		if (isParentGotOfTour2IsSameAsParentGotOfTour1()) {
-			//no need to clone got because it's the same
-			Tour tour2InGot2 = got1.getTourThatIsEqualTo(tour2);
-			//Setze Pointer in newMove auf geklonte Tour  
-			newMove.setTour2(tour2InGot2);
-		} else { //parent gots are different			
-			GroupOfTours got2 = tour2.getParentGot().cloneWithCopyOfTourAndCustomers();
-			Tour tour2InGot2 = got2.getTourThatIsEqualTo(tour2);
-			//Setze Pointer in newMove auf geklonte Tour  
-			newMove.setTour2(tour2InGot2);
-		}
-		return newMove;
 	}
 
 	public boolean isParentGotOfTour2IsSameAsParentGotOfTour1() {
@@ -257,6 +194,81 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		else
 			return tour2.getCustomerSize() - numberOfCustomersRemovedFromTour2() + numberOfCustomersRemovedFromTour1();
 	}
+	
+	
+	//Utilities
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractNeighborhoodMove other = (AbstractNeighborhoodMove) obj;
+		if (Double.doubleToLongBits(costOfCompleteSolutionThatResultsFromMove) != Double
+				.doubleToLongBits(other.costOfCompleteSolutionThatResultsFromMove))
+			return false;
+		if (Double.doubleToLongBits(costDifferenceToPreviousSolution) != Double
+				.doubleToLongBits(other.costDifferenceToPreviousSolution))
+			return false; 
+		if (positionEndOfSegmentTour1 != other.positionEndOfSegmentTour1)
+			return false;
+		if (positionEndOfSegmentTour2 != other.positionEndOfSegmentTour2)
+			return false;
+		if (positionStartOfSegmentTour1 != other.positionStartOfSegmentTour1)
+			return false;
+		if (positionStartOfSegmentTour2 != other.positionStartOfSegmentTour2)
+			return false;
+		if (tour1 == null) {
+			if (other.tour1 != null)
+				return false;
+		} else if (!tour1.equals(other.tour1))
+			return false;
+		if (tour2 == null) {
+			if (other.tour2 != null)
+				return false;
+		} else if (!tour2.equals(other.tour2))
+			return false;
+		return true;
+	}
+	
+	public AbstractNeighborhoodMove cloneWithCopyOfToursAndGotsAndCustomers() {
+		AbstractNeighborhoodMove newMove = new AbstractNeighborhoodMove(tour1, tour2, positionStartOfSegmentTour1, positionEndOfSegmentTour1, positionStartOfSegmentTour2, positionEndOfSegmentTour2, costOfCompleteSolutionThatResultsFromMove, costDifferenceToPreviousSolution);
+		//Achtung, Touren sind noch nicht geklont
+		
+		GroupOfTours got1 = tour1.getParentGot().cloneWithCopyOfTourAndCustomers();
+		Tour tour1InGot1 = got1.getTourThatIsEqualTo(tour1);
+		//Setze Pointer in newMove auf geklonte Tour  
+		newMove.setTour1(tour1InGot1);
+
+		if (isParentGotOfTour2IsSameAsParentGotOfTour1()) {
+			//no need to clone got because it's the same
+			Tour tour2InGot2 = got1.getTourThatIsEqualTo(tour2);
+			//Setze Pointer in newMove auf geklonte Tour  
+			newMove.setTour2(tour2InGot2);
+		} else { //parent gots are different			
+			GroupOfTours got2 = tour2.getParentGot().cloneWithCopyOfTourAndCustomers();
+			Tour tour2InGot2 = got2.getTourThatIsEqualTo(tour2);
+			//Setze Pointer in newMove auf geklonte Tour  
+			newMove.setTour2(tour2InGot2);
+		}
+		return newMove;
+	}
+
+	public void print() {
+		System.out.println("Tour1: " + tour1.getId() + "; " + tour1.getTourAsTupel());
+		System.out.println("Positionen: " + positionStartOfSegmentTour1 + ", " + positionEndOfSegmentTour1);
+		System.out.println("Tour2: " + tour2.getId()  + "; " + tour2.getTourAsTupel());;
+		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);	
+		System.out.println("CostDifference = " + costDifferenceToPreviousSolution);
+	}
+
+	
+	
+
+
 
 
 }

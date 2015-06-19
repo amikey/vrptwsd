@@ -2,8 +2,13 @@ package de.rwth.lofip.library.parameters;
 
 public class Parameters {
 	
-	//Algorithm
+	//GroupOfTours
 	private static int MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 2;
+	
+	//CrossNeighborhood 
+	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
+	
+	//Tour Elimination
 	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 	
 	//Tour Elimination primäres Ziel?
@@ -24,6 +29,7 @@ public class Parameters {
 	
 	//Recourse
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions 
 	
 	//Simulation
 	private final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
@@ -41,6 +47,10 @@ public class Parameters {
 
 	public static int getMaximalNumberOfToursInGots() {
 		return MAXIMAL_NUMBER_OF_TOURS_IN_GOTS;
+	}
+
+	public static int getMaximalLengthOfSegmentInMove() {
+		return MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED;
 	}
 
 	public static void setNumberOfToursInGot(int numberOfToursInGot) {

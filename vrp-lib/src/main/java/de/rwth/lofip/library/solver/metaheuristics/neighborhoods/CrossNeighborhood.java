@@ -7,6 +7,7 @@ import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
@@ -120,17 +121,17 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	}
 	
 		boolean segmentInTour2CanBeIncreased() {			
-			return (startOfSegementToBeRemovedCanBeIncreasedInTour2() || endOfSegmentToBeRemovedCanBeIncreasedInTour2());
+			return (startOfSegmentToBeRemovedCanBeIncreasedInTour2() || endOfSegmentToBeRemovedCanBeIncreasedInTour2());
 		}
 								
-			private boolean startOfSegementToBeRemovedCanBeIncreasedInTour2() {
+			private boolean startOfSegmentToBeRemovedCanBeIncreasedInTour2() {
 				return positionStartOfSegmentTour2 < tour2.length();	
 			}
 			
 			boolean endOfSegmentToBeRemovedCanBeIncreasedInTour2() {
 				if (isCurrentSegmentLeadsToViolationOfTWorCapacityConstraint())
 					return false;
-				return positionEndOfSegmentTour2 < tour2.length();
+				return positionEndOfSegmentTour2 < Math.min(positionStartOfSegmentTour2 + Parameters.getMaximalLengthOfSegmentInMove(),tour2.length());
 			}
 	
 			private boolean isCurrentSegmentLeadsToViolationOfTWorCapacityConstraint() {
@@ -146,7 +147,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			}
 		
 			private boolean endOfSegmentToBeRemovedCanBeIncreasedInTour1() {
-				return positionEndOfSegmentTour1 < tour1.length();
+				return positionEndOfSegmentTour1 < Math.min(positionStartOfSegmentTour1 + Parameters.getMaximalLengthOfSegmentInMove(),tour1.length());
 			}
 		
 		boolean tour2CanBeIncreased() {
@@ -182,7 +183,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 		private void increaseSegmentInTour2() {
 			if (endOfSegmentToBeRemovedCanBeIncreasedInTour2())
 				tour2IncreaseEndOfSegmentToBeRemoved();
-			else if (startOfSegementToBeRemovedCanBeIncreasedInTour2())
+			else if (startOfSegmentToBeRemovedCanBeIncreasedInTour2())
 				increaseStartOfSegmentToBeRemovedInTour2();
 			else throw new RuntimeException("increaseSegmentInTour2 was called although cannot be executed");
 		}

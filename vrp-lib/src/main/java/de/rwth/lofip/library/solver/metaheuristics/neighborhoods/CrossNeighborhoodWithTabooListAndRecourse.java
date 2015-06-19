@@ -59,10 +59,10 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 
 	private void calculateRecourseCostForMoves() {
 		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {
-			move.setOldRecourseCost(calculateRecourseCostOfMove(move));
+			move.setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(calculateRecourseCostOfGotsThatAreAffectedByMove(move));
 			AbstractNeighborhoodMove copyOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
 			applyMoveToUnderlyingGots(copyOfMove);
-			move.setNewRecourseCost(calculateRecourseCostOfMove(copyOfMove));
+			move.setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(calculateRecourseCostOfGotsThatAreAffectedByMove(copyOfMove));
 		}		
 	}
 
@@ -75,7 +75,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		newNeighborhood.acctuallyApplyMove(copyOfMove);		
 	}
 
-	private RecourseCost calculateRecourseCostOfMove(
+	private RecourseCost calculateRecourseCostOfGotsThatAreAffectedByMove(
 			AbstractNeighborhoodMove copyOfMove) {
 		RecourseCost recourseCost = new RecourseCost(copyOfMove.getGots());		
 		return recourseCost;	
@@ -96,11 +96,10 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 
 	private void sortMovesWrtToStochasticAspect() {
-		throw new RuntimeException("implement");
+//		throw new RuntimeException("implement");
 		
-//		//IMPORTANT_TODO: hier zwischen Kosten und #RecourseActions alternieren, oder gucken wie Thomas das gemacht hat
-//		Comparator<AbstractNeighborhoodMove> byDeterministicAndStochasticCost = (e1,e2) -> Double.compare(e1.getDeterministicAndStochasticCostDifference(),e2.getDeterministicAndStochasticCostDifference());		
-//		Collections.sort(listOfNonTabooMoves, byDeterministicAndStochasticCost);
+		Comparator<AbstractNeighborhoodMove> byDeterministicAndStochasticCost = (e1,e2) -> Double.compare(e1.getDeterministicAndStochasticCostDifference(),e2.getDeterministicAndStochasticCostDifference());		
+		Collections.sort(listOfNonTabooMoves, byDeterministicAndStochasticCost);
 	}
 	
 	private void setBestNonTabooMoveToBestCalculatedMove() {
