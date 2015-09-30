@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import java.io.IOException;
+
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
@@ -26,7 +28,7 @@ public class AdaptiveMemoryTabuSearch {
 	@SuppressWarnings("unused")
 	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 	
-	public SolutionGot solve(VrpProblem vrpProblem) {
+	public SolutionGot solve(VrpProblem vrpProblem) throws IOException {
 		
 		System.out.println("STARTE INITIALISIERUNG AM");
 		
@@ -60,7 +62,7 @@ public class AdaptiveMemoryTabuSearch {
 		return bestOverallSolution;
 	}
 
-		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) {
+		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) throws IOException {
 			for (int i = 1; i <= numberOfDifferentInitialSolutions; i++) {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();

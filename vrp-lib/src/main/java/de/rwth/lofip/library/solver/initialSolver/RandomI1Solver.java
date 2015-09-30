@@ -75,6 +75,29 @@ public class RandomI1Solver implements SolverInterfaceGot {
 
 	protected void insertRemainingCustomersIntoTours() {
 		GreedyInsertion gi = new GreedyInsertion();
+//		System.out.println("Lösung: " + solution.getAsTupel());
+//		List<Long> listCustomers = new ArrayList<Long>();
+//		listCustomers.add((long) 16);
+//		listCustomers.add((long) 12);
+//		listCustomers.add((long) 14);
+//		listCustomers.add((long) 87);
+//		listCustomers.add((long) 97);
+//		
+//		boolean debugging = true;
+//		if (remainingCustomers.size() > listCustomers.size())
+//			debugging = false;
+//		else {
+//			for(int i = 0; i < remainingCustomers.size(); i++) {			
+//				System.out.print(remainingCustomers.get(i).getCustomerNo() + ";");
+//				if (remainingCustomers.get(i).getCustomerNo() != listCustomers.get(i))
+//					debugging = false;
+//			}
+//		}
+//		System.out.print("\n");
+//		
+//		if (debugging)
+//			System.out.println("DEBUGGING!");
+		
 		solution = gi.insertCustomers(solution, remainingCustomers);
 	}
 

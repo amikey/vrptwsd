@@ -1,12 +1,17 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsInstanceOf;
 
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
@@ -28,7 +33,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private int iterationsWithoutImprovement = 0;
 
 	@Override
-	public ElementWithTours improve(ElementWithTours solutionStart) {
+	public ElementWithTours improve(ElementWithTours solutionStart) throws IOException {
 		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
@@ -42,6 +47,8 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				findBestNonTabooMove();				
 				updateTabuList();								
 				applyBestNonTabooMove();								
+				
+				publishSolution();
 				
 				if (isNewSolutionIsNewBestOverallSolution()) { 					
 					tryToImproveNewBestSolutionWithIntensificationPhase();
@@ -62,6 +69,8 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			iteration++;
 		}		
 		System.out.println("Anzahl Iterationen Tabu Suche : " + iteration + "\n");
+		generateBlankLineForPublishingSolution();
+		publishSolutionAtEndOfTabuSearch();
 		return bestOverallSolution;
 	}
 
@@ -138,6 +147,27 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	public void setMaximalNumberOfIterationsWithoutImprovement(int i) {
 		maxNumberIterationsWithoutImprovement = i;
+	}
+	
+	// Utilities
+	
+	private void publishSolution() throws IOException {
+		if (Parameters.publishSolutionValueProgress())
+			IOUtils.write(iteration + ";" + String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";" + solution.getNumberOfTours() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
+	}
+	
+	private void publishSolutionAtEndOfTabuSearch() throws IOException {
+		if (Parameters.publishSolutionAtEndOfTabuSearch())
+			IOUtils.write("Lösung am Ende der TS: " + ";" 
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
+					+ bestOverallSolution.getNumberOfTours() + ";" 
+					+ solution.getUseOfCapacityInTours() + ";"	
+					+ solution.getAsTupel() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
+	}
+
+	private void generateBlankLineForPublishingSolution() throws IOException {
+		if (Parameters.publishSolutionValueProgress())
+			IOUtils.write("\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
 	}
 
 }

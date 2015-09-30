@@ -1,5 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.math.MathUtils;
 
@@ -28,34 +29,53 @@ public abstract class AbstractNeighborhood {
 		// zuerst werden moves bevorzugt, die die Anzahl der Fahrzeuge reduzieren
 		// dann werden solche Moves bevorzugt, die die Anzahl an Kunden in einer Tour am meisten reduzieren
 		// unter diesen moves wird der günstigste Move bevorzugt
-		if (bestNonTabooMove.reducesNumberOfVehicles()) {
-			if (!move.reducesNumberOfVehicles())
-				return false;
-			else // beide moves reduzieren Fahrzeuganzahl
-				return isMoveInducesLessCostThanBestNonTabooMove(move);
-		} else { // bestNonTabooMove reduziert Fahrzeuganzahl nicht
-			if (move.reducesNumberOfVehicles())
-				return true;
-			else { // beide moves reduzieren Fahrzeuganzahl nicht
-				if (bestNonTabooMove.shortensShorterTour()) {
-					if (!move.shortensShorterTour())
-						return false;
-					else { // beide moves reduzieren kürzere Tour
-						if (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() < move.shorterTourResultsInNumberOfCustomers())
+		if (Parameters.shallTourNumberBeMinimized()) {		
+			if (bestNonTabooMove.reducesNumberOfVehicles()) {
+				if (!move.reducesNumberOfVehicles())
+					return false;
+				else // beide moves reduzieren Fahrzeuganzahl
+					return isMoveInducesLessCostThanBestNonTabooMove(move);
+			} else { // bestNonTabooMove reduziert Fahrzeuganzahl nicht
+				if (move.reducesNumberOfVehicles())
+					return true;
+				else { // beide moves reduzieren Fahrzeuganzahl nicht
+					if (bestNonTabooMove.shortensShorterTour()) {
+						if (!move.shortensShorterTour())
 							return false;
-						if (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() > move.shorterTourResultsInNumberOfCustomers())
+						else { // beide moves reduzieren kürzere Tour
+							if (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() < move.shorterTourResultsInNumberOfCustomers())
+								return false;
+							if (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() > move.shorterTourResultsInNumberOfCustomers())
+								return true;
+							// case: (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() == move.shorterTourResultsInNumberOfCustomers())
+							return isMoveInducesLessCostThanBestNonTabooMove(move);
+						}	
+					} else // bestNonTabooMove reduziert kürzere Tour nicht
+						if (move.shortensShorterTour())
 							return true;
-						// case: (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() == move.shorterTourResultsInNumberOfCustomers())
-						return isMoveInducesLessCostThanBestNonTabooMove(move);
-					}	
-				} else // bestNonTabooMove reduziert kürzere Tour nicht
-					if (move.shortensShorterTour())
+						else 
+							return isMoveInducesLessCostThanBestNonTabooMove(move);
+							
+				}
+			} 
+		}else { // keine explizite Reduzierung der Tourenanzahl (bzw. weniger als oben)
+			if (bestNonTabooMove.reducesNumberOfVehicles())
+				if (!move.reducesNumberOfVehicles())
+					return false;
+				else // beide moves reduzieren Fahrzeuganzahl
+					if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()))
 						return true;
-					else 
-						return isMoveInducesLessCostThanBestNonTabooMove(move);
-						
-			}
-		}				
+					else // move reduziert Kosten nicht
+						return false;
+				else // bestNonTabooMove reduziert Fahrzeuganzahl nicht
+					if (move.reducesNumberOfVehicles())
+						return true;
+					else // beide moves reduzieren Fahrzeuganzahl nicht
+						if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()))
+							return true;
+						else // move reduziert Kosten nicht
+							return false;		
+		}
 	}
 	
 	private boolean isMoveInducesLessCostThanBestNonTabooMove(AbstractNeighborhoodMove move) {

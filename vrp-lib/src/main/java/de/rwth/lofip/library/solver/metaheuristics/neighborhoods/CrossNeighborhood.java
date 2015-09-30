@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
@@ -92,6 +94,10 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 //							positionStartOfSegmentTour2 == 3 && positionEndOfSegmentTour2 == 3 &&
 //							iteration == 89)
 //						System.out.println("DEBUGGING!");
+					//IMPORTANT_TODO: Check entfernen, braucht O(n) Zeit
+					
+					if (Parameters.isDebuggingMode())
+						assertEquals(isMoveFeasibleCheckNaiv(),isMoveFeasibleCheckWithRef());
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
@@ -315,6 +321,49 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			return tourCounter1 == tourCounter2;
 			//bei inner Tour moves wird immer aus tour 1 entfernt und in tour zwei eingefügt
 		}
+		
+	public boolean isMoveFeasibleCheckNaiv() {			
+			
+//			printNeighborhoodStep();
+			
+			Tour tour1clone;
+			Tour tour2clone;
+			if (tourCounter1 == tourCounter2) {			
+				//inner-tour move
+				tour1clone = new Tour(tour1);
+				tour2clone = tour1clone;
+			} else {
+				//move between two tours
+				tour1clone = new Tour(tour1);
+				tour2clone = new Tour(tour2);
+			}
+			
+			List<Customer> customers1 = tour1clone.removeCustomersBetween(positionStartOfSegmentTour1,positionEndOfSegmentTour1);		
+			List<Customer> customers2 = tour2clone.removeCustomersBetween(positionStartOfSegmentTour2, positionEndOfSegmentTour2);
+			
+			//check demand and tw feasibility
+			boolean isWasInsertionPossible = true;	
+			for (int i = 0 ; i < positionEndOfSegmentTour2 - positionStartOfSegmentTour2; i++) {
+				Customer customer = customers2.get(i);
+				if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour1clone, i+positionStartOfSegmentTour1)) {
+					tour1clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour1);
+				} else {
+					isWasInsertionPossible = false;
+					break;
+				}
+			}		
+			for (int i = 0; i < positionEndOfSegmentTour1 - positionStartOfSegmentTour1; i++) {
+				Customer customer = customers1.get(i);			
+				if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour2clone, i + positionStartOfSegmentTour2)) {
+					tour2clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour2);				
+				} else {
+					isWasInsertionPossible = false;
+					break;
+				}			
+			}
+			return isWasInsertionPossible;
+		}
+	
 		
 	
 		public double calculateCostUsingRefs() {					

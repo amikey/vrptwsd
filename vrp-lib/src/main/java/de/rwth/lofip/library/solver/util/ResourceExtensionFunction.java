@@ -52,6 +52,7 @@ public class ResourceExtensionFunction {
 		customersInThisRef.add(customer);
 	}
 	
+	//IMPORTANT_TODO: Korrigiere EDT (keine Duration)
 	public ResourceExtensionFunction(CustomerInTour customerInTour) {
 		super();
 		duration = customerInTour.getCustomer().getServiceTime();
@@ -140,6 +141,7 @@ public class ResourceExtensionFunction {
 		updateWithSubsequentRef(newRef);
 	}
 	
+	//IMPORTANT_TODO: Korrigiere EDT: D_\simga_1 statt D_\sigma_2
 	public void updateWithSubsequentRef(ResourceExtensionFunction newRef) {
 		//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
 		double timeBetweenOldSegmentAndNewSegment = new Edge(getLastCustomer(), newRef.getFirstCustomer()).getLength();

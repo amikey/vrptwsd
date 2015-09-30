@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -16,9 +18,16 @@ import org.apache.commons.io.IOUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class ReadAndWriteUtils {
+	
+	private static FileOutputStream outputStreamZielfunktionswerteverlauf = null;
+	private static FileOutputStream outputStreamSolutionAtEndOfTabuSearch = null;
+	
+	private static Map<String,FileOutputStream> mapOfOutputStreamsForSolutionsAtEndOfTabuSearch = new HashMap<String,FileOutputStream>(200);
 	
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
 	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();
@@ -65,6 +74,50 @@ public class ReadAndWriteUtils {
 		}
 		return problems;
 	}
+	
+	public static List<VrpProblem> readSolomonProblems200() throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		File dir = new File(getInputDirectoryForSolomon200Files());		
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "TXT" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();	
+			System.out.println(file.getName());
+			FileInputStream openInputStream = null;
+			try {
+				openInputStream = FileUtils.openInputStream(file);
+				List<String> lines = IOUtils.readLines(openInputStream);
+				VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+				problems.add(problem);
+			} finally {
+				IOUtils.closeQuietly(openInputStream);
+			}			
+		}
+		return problems;
+	}
+	
+	public static List<VrpProblem> readSolomonProblems200_1000() throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		File dir = new File(getInputDirectoryForSolomon200_1000Files());		
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "TXT" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();	
+			System.out.println(file.getName());
+			FileInputStream openInputStream = null;
+			try {
+				openInputStream = FileUtils.openInputStream(file);
+				List<String> lines = IOUtils.readLines(openInputStream);
+				VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+				problems.add(problem);
+			} finally {
+				IOUtils.closeQuietly(openInputStream);
+			}			
+		}
+		return problems;
+	}
 
 	private static String getInputDirectory() {
 		String s = System.getenv("USERPROFILE");
@@ -80,6 +133,20 @@ public class ReadAndWriteUtils {
 		return s;	
 	}
 	
+	private static String getInputDirectoryForSolomon200_1000Files() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\";		
+		System.out.println(s);
+		return s;	
+	}
+	
+	private static String getInputDirectoryForSolomon200Files() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\200\\";		
+		System.out.println(s);
+		return s;	
+	}
+	
 	public static String getOutputFile() {		
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
 		String s = System.getenv("USERPROFILE");
@@ -88,6 +155,30 @@ public class ReadAndWriteUtils {
 		return s;		
 	}
 	
+	public static FileOutputStream getOutputStreamForPublishingSolutionValueProgress() throws IOException {
+		if (outputStreamZielfunktionswerteverlauf == null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
+			String s = "\\Zielfunktionswerteverlauf\\output - " + sdf.format(Calendar.getInstance().getTime()) + ".txt";
+			outputStreamZielfunktionswerteverlauf = openOutputFile(s);
+		}
+		return outputStreamZielfunktionswerteverlauf;
+	}
+	
+	public static FileOutputStream getOutputStreamForPublishingSolutionAtEndOfTabuSearch(ElementWithTours solution) throws IOException {
+		if (mapOfOutputStreamsForSolutionsAtEndOfTabuSearch.get(((SolutionGot) solution).getVrpProblem().getDescription()) == null) { 
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
+			String s = Parameters.getOutputDirectory() + sdf.format(Calendar.getInstance().getTime()) + " - " + ((SolutionGot) solution).getVrpProblem().getDescription() + ".txt";
+			mapOfOutputStreamsForSolutionsAtEndOfTabuSearch.put(((SolutionGot) solution).getVrpProblem().getDescription(),openOutputFile(s));
+		}
+		return mapOfOutputStreamsForSolutionsAtEndOfTabuSearch.get(((SolutionGot) solution).getVrpProblem().getDescription());
+//		if (outputStreamSolutionAtEndOfTabuSearch == null) {
+//			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
+//			String s = "\\ZwischenergebnisseNachTabuSearchModifiedInstances\\" + sdf.format(Calendar.getInstance().getTime()) + " - " + ((SolutionGot) solution).getVrpProblem().getDescription() + ".txt";
+//			outputStreamSolutionAtEndOfTabuSearch = openOutputFile(s);
+//		}
+//		return outputStreamSolutionAtEndOfTabuSearch;
+	}	
+		
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
 		File dir = new File(getInputDirectory());		
@@ -155,6 +246,26 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("r2","rc2");
 	}
 	
+	public static List<VrpProblem> readSolomonProblemR201() throws IOException {
+		return readSolomonProblemX("r201","rc201");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemR205() throws IOException {
+		return readSolomonProblemX("r205","rc205");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemR208() throws IOException {
+		return readSolomonProblemX("r208","rc208");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemR209() throws IOException {
+		return readSolomonProblemX("r209","rc209");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemR210() throws IOException {
+		return readSolomonProblemX("r210","rc210");
+	}
+	
 	public static List<VrpProblem> readSolomonProblemRC1XX() throws IOException {
 		return readSolomonProblemX("rc1","X");
 	}
@@ -185,6 +296,10 @@ public class ReadAndWriteUtils {
 
 	public static List<VrpProblem> readSolomonProblemRC105AsList() throws IOException {
 		return readSolomonProblemX("rc105","X");
+	}
+	
+	public static List<VrpProblem> readSolomonProblemRC106AsList() throws IOException {
+		return readSolomonProblemX("rc106","X");
 	}
 	
 	public static List<VrpProblem> readSolomonProblemRC2XX() throws IOException {
@@ -260,8 +375,8 @@ public class ReadAndWriteUtils {
 					IOUtils.write(tour.getDemandOnTour() + ", ", outputStream);
 				IOUtils.write("; ", outputStream);
 			}
-			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(i).doubleValue()) + ";",outputStream);
-			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i).intValue() + ";",outputStream);
+			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(i % 56).doubleValue()) + ";",outputStream);
+			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i % 56).intValue() + ";",outputStream);
 			//print prozentuale abweichung
 			double deviationObjValue = (solution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(i).doubleValue()) / bestKnownSolutionValues.get(i).doubleValue() * 100;
 			averageDeviationObjValue += deviationObjValue;
@@ -470,7 +585,6 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
-
 	
 
 

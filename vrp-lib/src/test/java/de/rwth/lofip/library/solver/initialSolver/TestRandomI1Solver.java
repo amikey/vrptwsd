@@ -76,6 +76,7 @@ public class TestRandomI1Solver {
 			solutionsTemp.add(solution);			
 		}				
 	}	
+	
 
 
 	

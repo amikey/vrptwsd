@@ -25,9 +25,9 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	
-	private int seedI1 = 14;
-	private int seedGI = 14;
-	private int seedAM = 14;
+	private int seedI1 = 2000;
+	private int seedGI = 2000;
+	private int seedAM = 2000;
 	
 	private int numberOfExperiments = 100;
 	
@@ -46,10 +46,32 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		processProblems();
 		printProblemsModifiedSolomonInstances();
 	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnAllSolomon200Instances() throws IOException {
+		Parameters.setOutputDirectory("\\ErgebnisseSolomon200\\");
+		problems = ReadAndWriteUtils.readSolomonProblems200();
+		processProblems();
+		printProblemsModifiedSolomonInstances();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnAllSolomon200_1000Instances() throws IOException {
+		problems = ReadAndWriteUtils.readSolomonProblems200_1000();
+		processProblems();
+		printProblemsModifiedSolomonInstances();
+	}
 
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceC1XX() throws IOException {			
 		problems = ReadAndWriteUtils.readSolomonProblemC1XX();	
+		processProblems();
+		printProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceC101() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemC101();	
 		processProblems();
 		printProblems();
 	}
@@ -85,6 +107,41 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceR2XX() throws IOException {			
 		problems = ReadAndWriteUtils.readSolomonProblemR2XX();	
+		processProblems();
+		printProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceR201() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemR201();	
+		processProblems();
+		printProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceR208() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemR208();	
+		processProblems();
+		printProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceR205() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemR205();	
+		processProblems();
+		printProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceR209() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemR209();	
+		processProblems();
+		printProblems();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceR210() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemR210();	
 		processProblems();
 		printProblems();
 	}
@@ -130,6 +187,13 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		processProblems();
 		printProblems();
 	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnSolomonInstanceRC106() throws IOException {			
+		problems = ReadAndWriteUtils.readSolomonProblemRC106AsList();	
+		processProblems();
+		printProblems();
+	}
 
 	@Test
 	public void TestAdaptiveMemorySearchOnSolomonInstanceRC2XX() throws IOException {			
@@ -146,7 +210,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	}
 	
 	private void processProblems() throws IOException {
-		for (int i = 1; i < numberOfExperiments; i++) {
+		for (int i = 1; i <= numberOfExperiments; i++) {
 			increaseParameters();
 			solveProblemsWithAdaptiveMemorySolver();	
 		}		
@@ -182,7 +246,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
 			int seedI1,
 			int seedGI,
-			int seedAM) {
+			int seedAM) throws IOException {
 		
 		this.problems = vrpProblems;
 		this.solutions = solutionsTemp;
@@ -199,7 +263,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		return solutions;
 	}
 	
-	private void solveProblemsWithAdaptiveMemorySolver() {
+	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {
 		long startTime = System.nanoTime();
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());

@@ -90,12 +90,22 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	    	SimilarityUtils.setMaxDistance(customer, this.getCustomersInTours());
 	    	for (GroupOfTours got : gots)
 	    		if (got.isNewTourCanBeCreated())
-	    			if (got.getSimilarityValueToNewCustomer(customer) > simVal)
+	    			if (got.getSimilarityValueToNewCustomer(customer) >= simVal) {
+	    				//TODO: getSimilarityValueToNewCustomer(customer) funktioniert nicht richtig. Wenn man in der Zeile drüber das >= durch > 
+	    				//ersetzt, kommt es zu einer Fehlermeldung. 
+	    				//Wahrscheinlich ist das mit dem similarityValue aber auch eh nicht so wichtig.
+	    				simVal = got.getSimilarityValueToNewCustomer(customer);
 	    				returnGot = got;
+	    			}	    				
 	    	if (returnGot != null)
 	    		return returnGot;
-	    	else 
+	    	else {
+	    		System.out.println("isExistsGotWhereNewTourCanBeCreated(): " + isExistsGotWhereNewTourCanBeCreated());
+	    		System.out.println("Solution: " + getAsTupel());
+	    		System.out.println("Customer, der eingefügt werden soll: " + customer);
+	    		System.out.println("Similarity Value zwischen Customer, der eingefügt werden soll und bester Tour: " + simVal);
 	    		throw new RuntimeException("Es konnte kein Got gefunden werden in getGotWhereCreatingNewTourIsPossibleAndSimilarity...");
+	    	}
 	    }
 	
 	    private GroupOfTours createNewGotInSolution() {
@@ -233,7 +243,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }
 	
     public String getAsTupel() {    	    	  	
-        String s = "";
+        String s = "(";
         for (GroupOfTours got : gots)
         {
         	s += "(";
@@ -242,6 +252,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	        }
 	        s += ") ";
         }
+        s += ") ";
         return s;
     }
     
