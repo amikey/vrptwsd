@@ -1,5 +1,6 @@
 package de.rwth.lofip.cli;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,6 +55,43 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		processProblems();
 		printProblemsModifiedSolomonInstances();
 	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnAllGering400Instances() throws IOException {
+		Parameters.setOutputDirectory("\\ErgebnisseGehring400\\");
+		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring400Files());	
+		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+		processProblems();
+		printProblemsModifiedSolomonInstances();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnAllGering600Instances() throws IOException {
+		Parameters.setOutputDirectory("\\ErgebnisseGehring600\\");
+		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring600Files());	
+		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+		processProblems();
+		printProblemsModifiedSolomonInstances();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnAllGering800Instances() throws IOException {
+		Parameters.setOutputDirectory("\\ErgebnisseGehring800\\");
+		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring800Files());	
+		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+		processProblems();
+		printProblemsModifiedSolomonInstances();
+	}
+	
+	@Test
+	public void TestAdaptiveMemorySearchOnAllGering1000Instances() throws IOException {
+		Parameters.setOutputDirectory("\\ErgebnisseGehring1000\\");
+		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring1000Files());	
+		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+		processProblems();
+		printProblemsModifiedSolomonInstances();
+	}
+		
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllSolomon200_1000Instances() throws IOException {

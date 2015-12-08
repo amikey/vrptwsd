@@ -18,14 +18,14 @@ public class TestSolutionGot {
 		thenSolutionsShouldBeEqual();
 	}
 	
-	private void givenTwoIdenticalSolutionsInTermsOfTours() {
-		solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
-		solutionOther = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersOtherWayRound();
-	}
-
-	private void thenSolutionsShouldBeEqual() {
-		assertEquals(true, solution.equals(solutionOther));		
-	}
+		private void givenTwoIdenticalSolutionsInTermsOfTours() {
+			solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
+			solutionOther = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersOtherWayRound();
+		}
+	
+		private void thenSolutionsShouldBeEqual() {
+			assertEquals(true, solution.equals(solutionOther));		
+		}
 	
 	
 	@Test 
@@ -34,13 +34,34 @@ public class TestSolutionGot {
 		thenSolutionsShouldBeDifferent();
 	}
 
-	private void givenTwoDifferentSolutionsInTermsOfTours() {
-		solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
-		solutionOther = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();		
+		private void givenTwoDifferentSolutionsInTermsOfTours() {
+			solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
+			solutionOther = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();		
+		}
+	
+		private void thenSolutionsShouldBeDifferent() {
+			assertEquals(false, solution.equals(solutionOther));				
+		}
+	
+	@Test
+	public void testRecourseCostOfSolution(){
+		givenSolutionWithOneTourWithC1C3C2C4();
+		thenRecourseCostShouldBeOfCertainValue();		
 	}
 
-	private void thenSolutionsShouldBeDifferent() {
-		assertEquals(false, solution.equals(solutionOther));				
+		private void givenSolutionWithOneTourWithC1C3C2C4() {
+			solution = SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
+		}
+	
+		private void thenRecourseCostShouldBeOfCertainValue() {
+			assertEquals(0.0,solution.getExpectedRecourseCost().getRecourseCost(),0.0001); 
+		}
+		
+	@Test
+	public void printCostOfSomeTours() {
+		System.out.println(SetUpUtils.getTourWithCustomers1And2And3().getTotalDistanceWithCostFactor());
+		System.out.println(SetUpUtils.getTourWithCustomer4().getTotalDistanceWithCostFactor());
+		System.out.println(SetUpUtils.getTourWithCustomers1And2And3().getTotalDistanceWithCostFactor() + SetUpUtils.getTourWithCustomer4().getTotalDistanceWithCostFactor());
 	}
 
 }

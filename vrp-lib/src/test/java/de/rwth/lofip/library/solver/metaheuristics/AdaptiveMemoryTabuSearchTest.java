@@ -13,6 +13,7 @@ import de.rwth.lofip.cli.RunAdaptiveMemorySearchWithSolomonInstances;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
@@ -60,6 +61,8 @@ public class AdaptiveMemoryTabuSearchTest {
 	
 	@Test
 	public void testFeasibilityOfC101Solution() throws IOException {
+		
+		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
 		
 		problems = ReadAndWriteUtils.readSolomonProblemC101();	
 		

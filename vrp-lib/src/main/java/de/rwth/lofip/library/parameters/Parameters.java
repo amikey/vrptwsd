@@ -3,7 +3,7 @@ package de.rwth.lofip.library.parameters;
 public class Parameters {
 	
 	//Debugging Options
-	private static boolean debugging = false; //slow: processes asserts that need O(n) time for evaluation
+	private static boolean debugging = false; //if true slow: processes asserts that need O(n) time for evaluation
 	
 	//Print Options
 	private static boolean publishSolutionValueProgress = false;
@@ -124,6 +124,10 @@ public class Parameters {
 		if (directory == null)
 			throw new RuntimeException("Outputdirectory muss gesetzt werden in RunAdaptiveMemorySolver");
 		return directory;
+	}
+
+	public static void setPublishSolutionAtEndOfTabuSearch(boolean b) {
+		publishSolutionAtEndOfTabuSearch = b;
 	}
 	
 

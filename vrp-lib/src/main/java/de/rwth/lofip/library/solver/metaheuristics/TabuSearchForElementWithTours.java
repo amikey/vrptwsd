@@ -31,9 +31,15 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
 	private ElementWithTours bestOverallSolution;
 	private int iterationsWithoutImprovement = 0;
+	
+	private long timeNeeded;
+	private long startTime;
+	private long endTime;
 
 	@Override
 	public ElementWithTours improve(ElementWithTours solutionStart) throws IOException {
+		
+		startTime = System.nanoTime();
 		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
@@ -157,10 +163,15 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	private void publishSolutionAtEndOfTabuSearch() throws IOException {
+		endTime = System.nanoTime();
+		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
+		
 		if (Parameters.publishSolutionAtEndOfTabuSearch())
 			IOUtils.write("Lösung am Ende der TS: " + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
-					+ bestOverallSolution.getNumberOfTours() + ";" 
+					+ bestOverallSolution.getNumberOfTours() + ";"
+					// TODO: implement Ausgabe der stochastischen Kosten
+					+ timeNeeded + ";"
 					+ solution.getUseOfCapacityInTours() + ";"	
 					+ solution.getAsTupel() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
 	}

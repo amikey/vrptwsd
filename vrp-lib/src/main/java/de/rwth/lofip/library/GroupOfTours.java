@@ -210,8 +210,12 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 
 	    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
-	    			double recourseCost = -this.getTotalDistanceWithCostFactor() + gotClone.getTotalDistanceWithCostFactor();
+	    			double recourseCost = -this.getTotalDistanceWithCostFactor();
+	    			double costOfGotClone = gotClone.getTotalDistanceWithCostFactor(); 
+	    			recourseCost += costOfGotClone;
 	    			overallRecourseCost += recourseCost;
+	    			System.out.println("Cost of Solution " + this.getTotalDistanceWithCostFactor());
+	    			System.out.println("Recourse Cost: " + recourseCost);
 	    			
 	    			//calculate number of different recourse actions    		
 	    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {

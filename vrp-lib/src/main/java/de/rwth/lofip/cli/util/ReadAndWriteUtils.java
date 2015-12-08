@@ -34,7 +34,7 @@ public class ReadAndWriteUtils {
 	
 	public static List<VrpProblem> readSolomonProblems() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File(getInputDirectory());		
+		File dir = new File(getInputDirectoryForSolomon100());		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -77,7 +77,7 @@ public class ReadAndWriteUtils {
 	
 	public static List<VrpProblem> readSolomonProblems200() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File(getInputDirectoryForSolomon200Files());		
+		File dir = new File(getInputDirectoryForGehring200Files());		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "TXT" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -118,8 +118,29 @@ public class ReadAndWriteUtils {
 		}
 		return problems;
 	}
+	
+	public static List<VrpProblem> createListOfProblemsFromInputDirectory(File dir) throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "TXT" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();	
+			System.out.println(file.getName());
+			FileInputStream openInputStream = null;
+			try {
+				openInputStream = FileUtils.openInputStream(file);
+				List<String> lines = IOUtils.readLines(openInputStream);
+				VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+				problems.add(problem);
+			} finally {
+				IOUtils.closeQuietly(openInputStream);
+			}			
+		}
+		return problems;
+	}
 
-	private static String getInputDirectory() {
+	private static String getInputDirectoryForSolomon100() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Code\\vrp-lib\\original-solomon-problems\\";
 		System.out.println(s);
@@ -140,9 +161,37 @@ public class ReadAndWriteUtils {
 		return s;	
 	}
 	
-	private static String getInputDirectoryForSolomon200Files() {
+	private static String getInputDirectoryForGehring200Files() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\200\\";		
+		System.out.println(s);
+		return s;	
+	}
+	
+	public static String getInputDirectoryForGehring400Files() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\400\\";		
+		System.out.println(s);
+		return s;	
+	}
+	
+	public static String getInputDirectoryForGehring600Files() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\600\\";		
+		System.out.println(s);
+		return s;	
+	}
+	
+	public static String getInputDirectoryForGehring800Files() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\800\\";		
+		System.out.println(s);
+		return s;	
+	}
+	
+	public static String getInputDirectoryForGehring1000Files() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\1000\\";		
 		System.out.println(s);
 		return s;	
 	}
@@ -181,7 +230,7 @@ public class ReadAndWriteUtils {
 		
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
-		File dir = new File(getInputDirectory());		
+		File dir = new File(getInputDirectoryForSolomon100());		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
 		if (dir.listFiles() == null)
 			throw new RuntimeException("Directory enthält keine Files");
@@ -305,27 +354,8 @@ public class ReadAndWriteUtils {
 	public static List<VrpProblem> readSolomonProblemRC2XX() throws IOException {
 		return readSolomonProblemX("rc2","X");
 	}
-	
-	public static void printResultsToFile(String nameOfFile,
-			List<SolutionGot> solutions,
-			long timeNeeded, int numberOfDifferentInitialSolutions,
-			int maximalNumberOfIterationsTabuSearch, 
-			int maximalNumberOfIterationsWithoutImprovementTabuSearch,
-			int maximalNumberOfCallsToAdaptiveMemory,
-			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-			int seedI1, int seedGI,
-			int seedAM) throws IOException {
-		List<SolutionGot> dummySolutions = new LinkedList<SolutionGot>();
-		printResultsToFile(nameOfFile,solutions, dummySolutions, timeNeeded,
-				numberOfDifferentInitialSolutions, 
-				maximalNumberOfIterationsTabuSearch,
-				maximalNumberOfIterationsWithoutImprovementTabuSearch,
-				maximalNumberOfCallsToAdaptiveMemory,
-				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-				seedI1, seedGI, seedAM);		
-	}
 		
-	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1,List<SolutionGot> solutions2, long timeNeeded,
+	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1, long timeNeeded,
 											int initialNumberOfDifferentInitialSolutions, 
 											int initialNumberOfIterationsTabuSearch,
 											int maximalNumberOfIterationsWithoutImprovementTabuSearch,
@@ -350,9 +380,6 @@ public class ReadAndWriteUtils {
 				, outputStream);
 		IOUtils.write("Time needed: " + timeNeeded + " min \n\n", outputStream);
 		IOUtils.write("Problem; SolverObjectiveValues; SolverVehicleNumber; RecourseValue; #DifferentRecourseActions", outputStream);
-		
-		if (!solutions2.isEmpty()) 
-			IOUtils.write("LocalSearchValues; LocalSearchVehicleNumber; ", outputStream);
 		IOUtils.write("BestKnownValue; BestKnownVehicleNumber \n", outputStream);
 		
 		double averageDeviationObjValue = 0;
@@ -366,15 +393,7 @@ public class ReadAndWriteUtils {
 			IOUtils.write(solution.getVehicleCount() + ";", outputStream);
 			IOUtils.write(solution.getUseOfCapacityInTours() + ";", outputStream);
 			IOUtils.write(solution.getAsTupel() + ";", outputStream);
-			if (!solutions2.isEmpty()) {
-				IOUtils.write(String.format("%.3f",solutions2.get(i).getTotalDistanceWithCostFactor()) + ";", outputStream);
-				IOUtils.write(solutions2.get(i).getVehicleCount() + ";", outputStream);
-				IOUtils.write(solutions2.get(i).getAsTupel() + ";", outputStream);
-				IOUtils.write("Demands: ", outputStream);
-				for (Tour tour : solutions2.get(i).getTours())
-					IOUtils.write(tour.getDemandOnTour() + ", ", outputStream);
-				IOUtils.write("; ", outputStream);
-			}
+			
 			IOUtils.write(String.format("%.3f",bestKnownSolutionValues.get(i % 56).doubleValue()) + ";",outputStream);
 			IOUtils.write(bestKnownSolutionVehicleNumbers.get(i % 56).intValue() + ";",outputStream);
 			//print prozentuale abweichung
