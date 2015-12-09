@@ -17,6 +17,8 @@ public class ResourceExtensionFunction {
 	//Ende der REF durch den letzten Kunden gegeben.
 		
 	private static int seedId = 1;
+	// travelTime ist die Fahrzeit zwischen den Kunden ohne Wartezeiten
+	private double travelTime = 0;
 	private double duration = 0;
 	private double latestArrivalTime = Double.MAX_VALUE;
 	private double earliestDepartureTime = 0;
@@ -33,7 +35,8 @@ public class ResourceExtensionFunction {
 		customersInThisRef.clear();
 	}
 	
-	public ResourceExtensionFunction(double d, double e, double f, int i) {
+	public ResourceExtensionFunction(double t, double d, double e, double f, int i) {
+		travelTime = t;
 		duration = d;
 		latestArrivalTime = e;
 		earliestDepartureTime = f;
@@ -65,6 +68,7 @@ public class ResourceExtensionFunction {
 	//Copy Constructor
 	public ResourceExtensionFunction(ResourceExtensionFunction ref) {
 		super();
+		travelTime = ref.getTravelTime();
 		duration = ref.getDuration();
 		latestArrivalTime = ref.getLatestArrivalTime();
 		earliestDepartureTime = ref.getEarliestDepartureTime();
@@ -93,6 +97,14 @@ public class ResourceExtensionFunction {
 			updateWithSubsequentCustomer(c);
 	}
 
+	public double getTravelTime() {
+		return travelTime;
+	}
+	
+	private void setTravelTime(double travelTime2) {
+		travelTime = travelTime2;
+	}
+	
 	public double getDuration() {
 		return duration;
 	}
@@ -100,6 +112,7 @@ public class ResourceExtensionFunction {
 	public void setDuration(double duration) {
 		this.duration = duration;
 	}
+
 	
 	public double getLatestArrivalTime() {
 		return latestArrivalTime;
@@ -146,6 +159,11 @@ public class ResourceExtensionFunction {
 		//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
 		double timeBetweenOldSegmentAndNewSegment = new Edge(getLastCustomer(), newRef.getFirstCustomer()).getLength();
 		
+		//update travel time
+		double travelTimeOldSegment = travelTime;
+		double newTravelTime = travelTimeOldSegment + timeBetweenOldSegmentAndNewSegment + newRef.getTravelTime();
+		travelTime = newTravelTime;
+		
 		//update duration
 		double durationOldSegment = duration;
 		double newDuration = durationOldSegment + timeBetweenOldSegmentAndNewSegment + newRef.getDuration();  
@@ -187,6 +205,11 @@ public class ResourceExtensionFunction {
 		//calculate d_{roh_1,roh_2} (= timeBetweenOldSegmentAndNewCustomerInSegment)
 		double timeBetweenOldSegmentAndNewSegment = new Edge(newRef.getLastCustomer(), getFirstCustomer()).getLength();
 		
+		//update travel time
+		double travelTimeOldSegment = travelTime;
+		double newTravelTime = travelTimeOldSegment + timeBetweenOldSegmentAndNewSegment + newRef.getTravelTime();
+		travelTime = newTravelTime;
+		
 		//update duration
 		double durationOldSegment = duration;
 		double newDuration = durationOldSegment + timeBetweenOldSegmentAndNewSegment + newRef.getDuration();  
@@ -216,7 +239,7 @@ public class ResourceExtensionFunction {
 	}
 
 	public void print() {
-		System.out.print("Ref: (" + duration + "," + latestArrivalTime + "," + earliestDepartureTime + ")");
+		System.out.print("Ref: (" + travelTime + "," + duration + "," + latestArrivalTime + "," + earliestDepartureTime + ")");
 		System.out.print("; Customers: ");
 		for (Customer c : customersInThisRef)
 			c.print();
@@ -226,6 +249,7 @@ public class ResourceExtensionFunction {
 	@Override
 	public ResourceExtensionFunction clone() {
 		ResourceExtensionFunction ref = new ResourceExtensionFunction();
+		ref.setTravelTime(travelTime);
 		ref.setDuration(duration);
 		ref.setEarliestLeavingTime(earliestDepartureTime);
 		ref.setLatestArrivalTime(latestArrivalTime);
@@ -242,6 +266,8 @@ public class ResourceExtensionFunction {
 		return ref;
 	}
 	
+
+
 	private void setDepot(Depot depot2) {
 		this.depot = depot2;		
 	}
@@ -259,6 +285,8 @@ public class ResourceExtensionFunction {
 		final int prime = 31;
 		int result = 1;
 		long temp;
+		temp = Double.doubleToLongBits(travelTime);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(duration);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(earliestDepartureTime);
@@ -277,6 +305,9 @@ public class ResourceExtensionFunction {
 		if (getClass() != obj.getClass())
 			return false;
 		ResourceExtensionFunction other = (ResourceExtensionFunction) obj;
+		if (Double.doubleToLongBits(travelTime) != Double
+				.doubleToLongBits(other.travelTime))
+			return false;
 		if (Double.doubleToLongBits(duration) != Double
 				.doubleToLongBits(other.duration))
 			return false;
@@ -296,6 +327,7 @@ public class ResourceExtensionFunction {
 	}
 
 	public void reset() {
+		travelTime = 0;
 		duration = 0;
 		latestArrivalTime = Double.MAX_VALUE;
 		earliestDepartureTime = 0;

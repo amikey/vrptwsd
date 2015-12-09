@@ -142,56 +142,56 @@ public class ReadAndWriteUtils {
 
 	private static String getInputDirectoryForSolomon100() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\vrp-lib\\original-solomon-problems\\";
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\original-solomon-problems\\";
 		System.out.println(s);
 		return s;		
 	}
 	
 	private static String getInputDirectoryForModifiedSolomonFiles() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\vrp-lib\\modified-solomon-problems\\";
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\modified-solomon-problems\\";
 		System.out.println(s);
 		return s;	
 	}
 	
 	private static String getInputDirectoryForSolomon200_1000Files() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\";		
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\";		
 		System.out.println(s);
 		return s;	
 	}
 	
 	private static String getInputDirectoryForGehring200Files() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\200\\";		
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\200\\";		
 		System.out.println(s);
 		return s;	
 	}
 	
 	public static String getInputDirectoryForGehring400Files() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\400\\";		
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\400\\";		
 		System.out.println(s);
 		return s;	
 	}
 	
 	public static String getInputDirectoryForGehring600Files() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\600\\";		
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\600\\";		
 		System.out.println(s);
 		return s;	
 	}
 	
 	public static String getInputDirectoryForGehring800Files() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\800\\";		
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\800\\";		
 		System.out.println(s);
 		return s;	
 	}
 	
 	public static String getInputDirectoryForGehring1000Files() {
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\input\\gehringerHombergerInstanzen\\1000\\";		
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\1000\\";		
 		System.out.println(s);
 		return s;	
 	}
@@ -199,7 +199,7 @@ public class ReadAndWriteUtils {
 	public static String getOutputFile() {		
 		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
 		String s = System.getenv("USERPROFILE");
-		s += "\\Dropbox\\Uni\\Diss\\Code\\output\\output - " + sdf.format(Calendar.getInstance().getTime()) + ".txt";					
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\output - " + sdf.format(Calendar.getInstance().getTime()) + ".txt";					
 		System.out.println(s);
 		return s;		
 	}

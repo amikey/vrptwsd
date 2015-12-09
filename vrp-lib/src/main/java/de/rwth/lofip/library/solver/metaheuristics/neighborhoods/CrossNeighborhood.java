@@ -378,40 +378,48 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			//calculate cost for tour1
 			if (isSegmentRemovedFromTour1()) {
 				//remove edge between last customer before segment and first customer in segment from tour 1			
-				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength() * tour1.getCostFactor();
 				//remove edge between last customer in segment and first customer after segment from tour 1		
-				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
+				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength() * tour1.getCostFactor();
+				//remove edges from segment (might be important because of cost factor of tour)
+				costTour1 -= tour1.getDistanceForSegmentBetweenPositions(positionStartOfSegmentTour1,positionEndOfSegmentTour1) * tour1.getCostFactor();
 			} else
 				//remove edge between last customer before inserting position and first customer after inserting position
-				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+				costTour1 -= new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength() * tour1.getCostFactor();
 				
 			if (isSegmentRemovedFromTour2()) {
 				//add edge between last customer before segment from tour 1 and first customer in segment from tour 2				
-				costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1), tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
+				costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1), tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength() * tour1.getCostFactor();
 				//add edge between last customer in segment from tour 2 and first customer after inserting position
-				costTour1 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength(); 				
+				costTour1 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength() * tour1.getCostFactor();
+				//add edges from inserted segment (might be important because of cost factor of tour)
+				costTour1 += tour2.getDistanceForSegmentBetweenPositions(positionStartOfSegmentTour2,positionEndOfSegmentTour2) * tour1.getCostFactor();
 			} else
 				//add edge between last customer before segment and first customer after segment
-				costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength();
+				costTour1 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1-1),tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1)).getLength() * tour1.getCostFactor();
 								
 			//calculate cost for tour2
 			if (isSegmentRemovedFromTour2()) {
 				//remove edge between last customer before segment and first customer in segment from tour 2
-				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
+				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength() * tour2.getCostFactor();
 				//remove edge between last customer in segment and first customer after segment from tour 2
-				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
+				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength() * tour2.getCostFactor();
+				//add edges from inserted segment (might be important because of cost factor of tour)
+				costTour2 += tour2.getDistanceForSegmentBetweenPositions(positionStartOfSegmentTour2,positionEndOfSegmentTour2) * tour2.getCostFactor();
 			} else
 				//remove edge between last customer before inserting position and first customer after inserting position
-				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength();
+				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength() * tour2.getCostFactor();
 			
 			if (isSegmentRemovedFromTour1()) {
 				//add edge between last customer before segment from tour 2 and first customer in segment from tour 1
-				costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1), tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength();
+				costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1), tour1.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour1)).getLength() * tour2.getCostFactor();
 				//add edge between last customer in segment from tour 1 and first customer after inserting position
-				costTour2 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength(); 				
+				costTour2 += new Edge(tour1.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour1-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength() * tour2.getCostFactor();
+				//add edges from inserted segment from tour 1 (might be important because of cost factor of tour)
+				costTour2 += tour1.getDistanceForSegmentBetweenPositions(positionStartOfSegmentTour1,positionEndOfSegmentTour1) * tour2.getCostFactor();
 			} else 
 				//add edge between last customer before segment and first customer after segment
-				costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength();
+				costTour2 += new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength() * tour2.getCostFactor();
 			
 			costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
 			costDifferenceToPreviousSolution = costTour1 + costTour2;

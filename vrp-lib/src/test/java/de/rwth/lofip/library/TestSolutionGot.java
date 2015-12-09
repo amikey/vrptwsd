@@ -54,7 +54,7 @@ public class TestSolutionGot {
 		}
 	
 		private void thenRecourseCostShouldBeOfCertainValue() {
-			assertEquals(0.0,solution.getExpectedRecourseCost().getRecourseCost(),0.0001); 
+			assertEquals(24.44,solution.getExpectedRecourseCost().getRecourseCost(),0.0001); 
 		}
 		
 	@Test
@@ -62,6 +62,7 @@ public class TestSolutionGot {
 		System.out.println(SetUpUtils.getTourWithCustomers1And2And3().getTotalDistanceWithCostFactor());
 		System.out.println(SetUpUtils.getTourWithCustomer4().getTotalDistanceWithCostFactor());
 		System.out.println(SetUpUtils.getTourWithCustomers1And2And3().getTotalDistanceWithCostFactor() + SetUpUtils.getTourWithCustomer4().getTotalDistanceWithCostFactor());
+
 	}
 
 }

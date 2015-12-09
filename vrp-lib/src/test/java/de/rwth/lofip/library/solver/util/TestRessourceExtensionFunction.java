@@ -18,7 +18,7 @@ public class TestRessourceExtensionFunction {
 	@Test
 	public void testThatConcatenatingEmptyRefAndAnotherRefAreFeasible() {
 		ResourceExtensionFunction emptyRef = new ResourceExtensionFunction(); 
-		ResourceExtensionFunction anotherRef = new ResourceExtensionFunction(195.81138830084188, 345.0, 425.0,20);
+		ResourceExtensionFunction anotherRef = new ResourceExtensionFunction(0,195.81138830084188, 345.0, 425.0,20);
 		
 		assertEquals(true, TourUtils.isConcatenationOfRefsTWFeasible(emptyRef,anotherRef));
 	}

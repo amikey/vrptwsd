@@ -671,6 +671,18 @@ public class Tour implements SolutionElement, Serializable {
 		return solutionNumberOfTours; 
 	}
 
+	public double getCostFactor() {
+		return costFactor;
+	}
+	
+	private ResourceExtensionFunction getSegmentFromRefMatrixBetweenPositions(int i, int j) {
+		return getRefMatrix().get(j-1).get(i);
+	}
+
+	public double getDistanceForSegmentBetweenPositions(int i, int j) {
+		return getSegmentFromRefMatrixBetweenPositions(i, j).getTravelTime();
+	}
+
 	
 	
 
