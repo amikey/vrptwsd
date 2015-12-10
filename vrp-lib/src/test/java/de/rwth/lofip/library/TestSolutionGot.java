@@ -54,7 +54,7 @@ public class TestSolutionGot {
 		}
 	
 		private void thenRecourseCostShouldBeOfCertainValue() {
-			assertEquals(24.44,solution.getExpectedRecourseCost().getRecourseCost(),0.0001); 
+			assertEquals(24.446795,solution.getExpectedRecourseCost().getRecourseCost(),0.0001); 
 		}
 		
 	@Test

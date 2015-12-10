@@ -26,6 +26,8 @@ public class AdaptiveMemoryTabuSearchTest {
 	
 	@Test
 	public void testThatTwoRunsOfAMSearchProduceTheSameResults1() throws IOException {
+		
+		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
 	
 		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();	
 		

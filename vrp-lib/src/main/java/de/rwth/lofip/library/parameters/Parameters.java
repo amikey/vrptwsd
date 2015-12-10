@@ -7,7 +7,7 @@ public class Parameters {
 	
 	//Print Options
 	private static boolean publishSolutionValueProgress = false;
-	private static boolean publishSolutionAtEndOfTabuSearch = true;
+	private static boolean publishSolutionAtEndOfTabuSearch = false;
 	
 	//GroupOfTours
 	private static int MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;

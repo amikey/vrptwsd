@@ -137,7 +137,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			boolean endOfSegmentToBeRemovedCanBeIncreasedInTour2() {
 				if (isCurrentSegmentLeadsToViolationOfTWorCapacityConstraint())
 					return false;
-				return positionEndOfSegmentTour2 < Math.min(positionStartOfSegmentTour2 + Parameters.getMaximalLengthOfSegmentInMove(),tour2.length());
+				return positionEndOfSegmentTour2 < Math.min((positionStartOfSegmentTour2 + Parameters.getMaximalLengthOfSegmentInMove()),tour2.length());
 			}
 	
 			private boolean isCurrentSegmentLeadsToViolationOfTWorCapacityConstraint() {
@@ -404,8 +404,8 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength() * tour2.getCostFactor();
 				//remove edge between last customer in segment and first customer after segment from tour 2
 				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionEndOfSegmentTour2)).getLength() * tour2.getCostFactor();
-				//add edges from inserted segment (might be important because of cost factor of tour)
-				costTour2 += tour2.getDistanceForSegmentBetweenPositions(positionStartOfSegmentTour2,positionEndOfSegmentTour2) * tour2.getCostFactor();
+				//remove edges from inserted segment (might be important because of cost factor of tour)
+				costTour2 -= tour2.getDistanceForSegmentBetweenPositions(positionStartOfSegmentTour2,positionEndOfSegmentTour2) * tour2.getCostFactor();
 			} else
 				//remove edge between last customer before inserting position and first customer after inserting position
 				costTour2 -= new Edge(tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2-1),tour2.getCustomerAtPositionIncludingDepot(positionStartOfSegmentTour2)).getLength() * tour2.getCostFactor();
@@ -424,6 +424,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			costOfCompleteSolutionThatResultsFromMove = costSolution + costTour1 + costTour2;
 			costDifferenceToPreviousSolution = costTour1 + costTour2;
 
+			//return wird durchgeführt, damit Methode auch von Tests verwendet werden kann.
 			return costOfCompleteSolutionThatResultsFromMove;
 		}
 		
@@ -447,6 +448,9 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	//********************	
 		
 	public ElementWithTours acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {
+		if (!bestMove.isMoveFeasible())
+			throw new RuntimeException("Move that should be applied is not feasible");
+		
 		if (bestMove.isInnerTourMove()) {
 			Tour tour1 = bestMove.getTour1();
 			if (isInsertedBeforePositionWhereSegmentIsRemoved(bestMove)) {

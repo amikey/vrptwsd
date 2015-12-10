@@ -42,8 +42,6 @@ public class TestTourMatching {
 		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
 		System.out.println("");
 		
-		
-		
 		whenMatchingTours();
 		solution.printSolutionAsTupel();
 		System.out.println("\n");

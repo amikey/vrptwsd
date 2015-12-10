@@ -266,7 +266,17 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	}
 
 	
-	
+	public boolean isMoveFeasible() {
+		if (positionStartOfSegmentTour1 < 0)
+			return false;
+		if (positionEndOfSegmentTour1 > tour1.length())
+			return false;
+		if (positionStartOfSegmentTour2 < 0)
+			return false;
+		if (positionEndOfSegmentTour2 > tour2.length())
+			return false;
+		return true;
+	}
 
 
 

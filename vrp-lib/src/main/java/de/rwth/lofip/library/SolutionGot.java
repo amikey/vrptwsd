@@ -343,6 +343,13 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 		    return s;
 		}
 		
+		public String isExistsTourWithCostFactor2() {
+			String exists = "nein";
+			for (Tour t : getTours())
+				if (t.getCostFactor() == 2)
+					exists = "ja";
+			return exists;
+		}
 }
 
 
