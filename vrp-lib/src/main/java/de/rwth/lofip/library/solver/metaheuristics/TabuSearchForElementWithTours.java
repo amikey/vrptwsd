@@ -96,7 +96,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	private void applyBestNonTabooMove() {
-		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);
+		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 	
 	private boolean isNewSolutionIsNewBestOverallSolution() {
@@ -167,13 +167,18 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
 		
 		if (Parameters.publishSolutionAtEndOfTabuSearch())
-			IOUtils.write("Lösung am Ende der TS: " + ";" 
+			if (bestOverallSolution instanceof SolutionGot){
+				IOUtils.write("Lösung am Ende der TS: " + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					// TODO: implement Ausgabe der stochastischen Kosten
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ timeNeeded + ";"
-					+ solution.getUseOfCapacityInTours() + ";"	
-					+ solution.getAsTupel() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
+					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
+					+ bestOverallSolution.getAsTupel() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
+			} else {
+				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
+			}
 	}
 
 	private void generateBlankLineForPublishingSolution() throws IOException {

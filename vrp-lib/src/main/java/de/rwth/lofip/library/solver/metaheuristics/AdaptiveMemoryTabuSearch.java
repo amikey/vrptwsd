@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
@@ -31,7 +32,7 @@ public class AdaptiveMemoryTabuSearch {
 	public SolutionGot solve(VrpProblem vrpProblem) throws IOException {
 		
 		System.out.println("STARTE INITIALISIERUNG AM");
-		
+
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
 		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();
 		

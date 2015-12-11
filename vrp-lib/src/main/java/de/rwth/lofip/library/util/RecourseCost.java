@@ -36,17 +36,8 @@ public class RecourseCost {
 		return recourseCost;
 	}
 	
-	public void setRecourseCost(double recourseCost) {
-		this.recourseCost = recourseCost;
-	}
-	
 	public double getNumberOfDifferentRecourseActions() {
 		return numberOfDifferentRecourseActions;
-	}
-	
-	public void setNumberOfDifferentRecourseActions(
-			int numberOfDifferentRecourseActions) {
-		this.numberOfDifferentRecourseActions = numberOfDifferentRecourseActions;
 	}
 
 	public void addTourIndex(int i) {

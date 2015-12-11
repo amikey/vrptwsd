@@ -111,7 +111,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 					}
 				}
 			}
-			setBestNonTabooMove();
+			setBestNonTabooMoveHook();
 		}
 
 	public boolean isExistsNextCombinationOfSegments() {
@@ -447,11 +447,23 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 		
 	//********************	
 		
-	public ElementWithTours acctuallyApplyMove(AbstractNeighborhoodMove bestMove) {
+	public ElementWithTours acctuallyApplyMoveAndMaintainNeighborhood(AbstractNeighborhoodMove bestMove) {
+		actuallyApplyMove(bestMove);
+		resetNeighborhood();
+		elementWithTours.removeEmptyToursAndGots();
+		return elementWithTours;	
+	}
+	
+		private static boolean isInsertedBeforePositionWhereSegmentIsRemoved(AbstractNeighborhoodMove bestMove) {		
+			return bestMove.getStartPositionTour2() < bestMove.getStartPositionTour1();
+		}
+		
+	public static void actuallyApplyMove(AbstractNeighborhoodMove bestMove) {
 		if (!bestMove.isMoveFeasible())
 			throw new RuntimeException("Move that should be applied is not feasible");
 		
 		if (bestMove.isInnerTourMove()) {
+			//inner tour moves allways happen in tour 1
 			Tour tour1 = bestMove.getTour1();
 			if (isInsertedBeforePositionWhereSegmentIsRemoved(bestMove)) {
 				List<Customer> customers = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
@@ -467,24 +479,17 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			List<Customer> customers1 = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
 			List<Customer> customers2 = tour2.removeCustomersBetween(bestMove.getStartPositionTour2(),bestMove.getEndPositionTour2());		
 			tour1.insertCustomersAtPosition(customers2, bestMove.getStartPositionTour1());
-			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());
-			elementWithTours.removeEmptyToursAndGots();
+			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());			
 		}					
-		resetNeighborhood();
-		return elementWithTours;		
 	}
-	
-		private boolean isInsertedBeforePositionWhereSegmentIsRemoved(AbstractNeighborhoodMove bestMove) {		
-			return bestMove.getStartPositionTour2() < bestMove.getStartPositionTour1();
-		}
 		
 
 	
 	//Utilities
 
-	public ElementWithTours acctuallyApplyMove() {
+	public ElementWithTours actuallyApplyMoveAndMaintainNeighborhood() {
 		AbstractNeighborhoodMove move = this.getNeigborhoodMove();
-		return acctuallyApplyMove(move);		
+		return acctuallyApplyMoveAndMaintainNeighborhood(move);		
 	}
 
 	public void printNeighborhoodStep() {

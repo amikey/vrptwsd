@@ -86,6 +86,7 @@ public class SetUpUtils {
 	    vrpProblem.addCustomer(c4);
 	    vrpProblem.addDepot(depot);
 	    vrpProblem.setVehicles(vehicles);
+	    vrpProblem.setOriginalCapacity(vehicle.getCapacity());
 	    vrpProblem.setMaxTime(10000);
 	    
 	    solution = new SolutionGot(vrpProblem);
@@ -127,7 +128,7 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour = new Tour(depot, vehicle);
-        tour.setParentGot(new GroupOfTours());
+        tour.setParentGot(new GroupOfTours(null));
         tour.addCustomer(c1);
         tour.addCustomer(c2);
         tour.addCustomer(c3);
@@ -140,7 +141,7 @@ public class SetUpUtils {
 	setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour = new Tour(depot, vehicle);
-        tour.setParentGot(new GroupOfTours());
+        tour.setParentGot(new GroupOfTours(null));
         tour.addCustomer(c1);
         tour.addCustomer(c3);
         tour.addCustomer(c2);
@@ -153,7 +154,7 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour = new Tour(depot, vehicle);
-        tour.setParentGot(new GroupOfTours());
+        tour.setParentGot(new GroupOfTours(null));
         tour.addCustomer(c1);
         tour.addCustomer(c2);
         tour.addCustomer(c3);
@@ -164,28 +165,143 @@ public class SetUpUtils {
 	public static Tour getTourWithCustomer4() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         Tour tour = new Tour(depot, vehicle);
-        tour.setParentGot(new GroupOfTours());
+        tour.setParentGot(new GroupOfTours(null));
         tour.addCustomer(c4);        
         return tour;
+	}
+	
+	public static Tour getTourWithCustomer2And3() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c2);
+        tour.addCustomer(c3);
+        return tour;	
+	}
+	
+	public static Tour getTourWithCustomer3And2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c3);
+        tour.addCustomer(c2);
+        return tour;	
+	}
+	
+	public static Tour getTourWithCustomer1And4() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c1);
+        tour.addCustomer(c4);
+        return tour;	
+	}
+	
+	public static Tour getTourWithCustomer1And2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c1);
+        tour.addCustomer(c2);
+        return tour;	
+	}
+	
+	public static Tour getTourWithCustomer2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c2);        
+        return tour;
+	}
+
+	public static Tour getTourWithCustomer3() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c3);        
+        return tour;	
+	}
+	
+	public static Tour getTourWithCustomer1() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c1);        
+        return tour;	
+	}
+
+	public static Tour getTourWithCustomer1And2And4() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c1);
+        tour.addCustomer(c2);
+        tour.addCustomer(c4);
+        return tour;		
+    }
+	
+	private static Tour getTourWithCustomer3And4() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle); 
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c3);
+        tour.addCustomer(c4);
+        return tour;
+	}	
+	
+	public static Tour getEmptyTour() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+		return tour;
+	}
+	
+	public static Tour getTourWithCustomers1And3() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle); 
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c1);
+        tour.addCustomer(c3);
+        return tour;
+	}
+	
+	private static Tour getTourWithCustomersC1C3C2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
+		Tour tour = new Tour(depot, vehicle);
+		tour.setParentGot(new GroupOfTours(null));
+        tour.addCustomer(c1);
+        tour.addCustomer(c3);
+        tour.addCustomer(c2);
+        return tour;
+	}
+	
+	public static Tour getTourWithCustomer_42_44_fromRC101() throws IOException {
+		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC101();
+		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
+		GroupOfTours got = new GroupOfTours(null);
+		got.addTour(tour);
+		tour.addCustomer(problem.getCustomerWithCustomerNo(42));
+		tour.addCustomer(problem.getCustomerWithCustomerNo(44));
+		return tour;
 	}
 	
 	public static SolutionGot getSolutionWithThreeToursAndTwoCustomersEach() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
                   
         Tour tour1 = new Tour(depot, vehicle);
-        GroupOfTours got1 = new GroupOfTours();
+        GroupOfTours got1 = new GroupOfTours(solution);
         got1.addTour(tour1);
         tour1.addCustomer(c1);
         tour1.addCustomer(c2);                
         
         Tour tour2 = new Tour(depot, vehicle);
-        GroupOfTours got2 = new GroupOfTours();
+        GroupOfTours got2 = new GroupOfTours(solution);
         got2.addTour(tour2);
         tour2.addCustomer(c3);
         tour2.addCustomer(c4);        
         
         Tour tour3 = new Tour(depot, vehicle);
-        GroupOfTours got3 = new GroupOfTours();
+        GroupOfTours got3 = new GroupOfTours(solution);
         got3.addTour(tour3);
         tour3.addCustomer(c1);
         tour3.addCustomer(c2);        
@@ -202,17 +318,17 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
                   
         Tour tour1 = new Tour(depot, vehicle);
-        tour1.setParentGot(new GroupOfTours());
+        tour1.setParentGot(new GroupOfTours(solution));
         tour1.addCustomer(c1);
         tour1.addCustomer(c2);
-        GroupOfTours got1 = new GroupOfTours();
+        GroupOfTours got1 = new GroupOfTours(solution);
         got1.addTour(tour1);
         
         Tour tour2 = new Tour(depot, vehicle);
-        tour2.setParentGot(new GroupOfTours());
+        tour2.setParentGot(new GroupOfTours(solution));
         tour2.addCustomer(c3);
         tour2.addCustomer(c4);
-        GroupOfTours got2 = new GroupOfTours();
+        GroupOfTours got2 = new GroupOfTours(solution);
         got2.addTour(tour2);             
 	            
 	    //create solution
@@ -225,11 +341,11 @@ public class SetUpUtils {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour1 = getTourWithCustomers1And2And3();
-        GroupOfTours got1 = new GroupOfTours();
+        GroupOfTours got1 = new GroupOfTours(solution);
         got1.addTour(tour1);
         
         Tour tour2 = getTourWithCustomer4();
-        GroupOfTours got2 = new GroupOfTours();
+        GroupOfTours got2 = new GroupOfTours(solution);
         got2.addTour(tour2);             
                     
 	    //create solution
@@ -245,7 +361,7 @@ public class SetUpUtils {
 		tours.add(getTourWithCustomer4());
 		tours.add(getTourWithCustomers1And2And3());
 		
-		return createSolutionWithEachTourInOneGot(tours);     
+		return getSolutionWithEachTourInOneGot(tours);     
 	}
 	
 	public static SolutionGot getSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer() {
@@ -256,7 +372,7 @@ public class SetUpUtils {
 		tours.add(getTourWithCustomer2());
 		tours.add(getTourWithCustomer3And4());
 		
-		return createSolutionWithEachTourInOneGot(tours); 
+		return getSolutionWithEachTourInOneGot(tours); 
 	}
 	
 	public static SolutionGot getSolutionWithOneTourWithCustomersC1C2C3C4() {
@@ -265,7 +381,7 @@ public class SetUpUtils {
 		List<Tour> tours = new LinkedList<Tour>();
 		tours.add(getTourWithFourCustomers());
 		
-		return createSolutionWithEachTourInOneGot(tours); 
+		return getSolutionWithEachTourInOneGot(tours); 
 	}
 	
 	public static SolutionGot getSolutionWithOneTourWithCustomersC1C2C3() {
@@ -274,7 +390,7 @@ public class SetUpUtils {
 		List<Tour> tours = new LinkedList<Tour>();
 		tours.add(getTourWithCustomers1And2And3());
 		
-		return createSolutionWithEachTourInOneGot(tours);
+		return getSolutionWithEachTourInOneGot(tours);
 	}
 	
 	public static Object getSolutionWithOneTourWithCustomersC1C3C2() {
@@ -283,7 +399,7 @@ public class SetUpUtils {
 		List<Tour> tours = new LinkedList<Tour>();
 		tours.add(getTourWithCustomersC1C3C2());
 		
-		return createSolutionWithEachTourInOneGot(tours);
+		return getSolutionWithEachTourInOneGot(tours);
 	}
 
 	public static SolutionGot getSolutionWithOneTourWithCustomersC1C3C2C4() {
@@ -292,141 +408,36 @@ public class SetUpUtils {
 		List<Tour> tours = new LinkedList<Tour>();
 		tours.add(getTourWithFourCustomersC3BeforeC2());
 		
-		return createSolutionWithEachTourInOneGot(tours); 
+		return getSolutionWithEachTourInOneGot(tours); 
 	}
 
 
-	private static SolutionGot createSolutionWithEachTourInOneGot(
+	private static SolutionGot getSolutionWithEachTourInOneGot(
 			List<Tour> tours) {
 		for (Tour tour : tours) {
-			GroupOfTours got = new GroupOfTours();
+			GroupOfTours got = new GroupOfTours(solution);
 			got.addTour(tour);
 			solution.addGot(got);
 		}      	   
 	    return solution; 
 	}
 
-	public static SolutionGot SetUpSolutionWithOneTourWithCustomer2And3() {
+	public static SolutionGot GetSolutionWithOneTourWithCustomer2And3() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
 		List<Tour> tours = new LinkedList<Tour>();		
 		tours.add(getTourWithCustomer2And3());		
-		return createSolutionWithEachTourInOneGot(tours); 
-	}
-	
-	public static Tour getTourWithCustomer2And3() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c2);
-        tour.addCustomer(c3);
-        return tour;	
-	}
-	
-	public static Tour getTourWithCustomer3And2() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c3);
-        tour.addCustomer(c2);
-        return tour;	
-	}
-	
-	public static Tour getTourWithCustomer1And4() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c1);
-        tour.addCustomer(c4);
-        return tour;	
-	}
-	
-	public static Tour getTourWithCustomer1And2() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c1);
-        tour.addCustomer(c2);
-        return tour;	
-	}
-	
-	public static Tour getTourWithCustomer2() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c2);        
-        return tour;
-	}
-
-	public static Tour getTourWithCustomer3() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c3);        
-        return tour;	
-	}
-	
-	public static Tour getTourWithCustomer1() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c1);        
-        return tour;	
-	}
-
-	public static Tour getTourWithCustomer1And2And4() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c1);
-        tour.addCustomer(c2);
-        tour.addCustomer(c4);
-        return tour;		
-    }
-	
-	private static Tour getTourWithCustomer3And4() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle); 
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c3);
-        tour.addCustomer(c4);
-        return tour;
-	}	
-	
-	public static Tour getEmptyTour() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-		return tour;
-	}
-	
-	public static Tour getTourWithCustomers1And3() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle); 
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c1);
-        tour.addCustomer(c3);
-        return tour;
-	}
-	
-	private static Tour getTourWithCustomersC1C3C2() {
-		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();		
-		Tour tour = new Tour(depot, vehicle);
-		tour.setParentGot(new GroupOfTours());
-        tour.addCustomer(c1);
-        tour.addCustomer(c3);
-        tour.addCustomer(c2);
-        return tour;
+		return getSolutionWithEachTourInOneGot(tours); 
 	}
 
 	public static GroupOfTours getGotWithCustomer1And2() {
-		GroupOfTours got = new GroupOfTours();
+		GroupOfTours got = new GroupOfTours(getSomeRandomDummySolution());
 		got.addTour(getTourWithCustomer1And2());
 		return got;
 	}
 	
 	public static GroupOfTours getGotWithCustomer3And4() {
-		GroupOfTours got = new GroupOfTours();
+		GroupOfTours got = new GroupOfTours(getSomeRandomDummySolution());
 		got.addTour(getTourWithCustomer3And4());
 		return got;
 	}
@@ -436,7 +447,8 @@ public class SetUpUtils {
 		
 		//create first tour for got
 		Tour tour3 = new Tour(problem.getDepot(), problem.getVehicle());
-		GroupOfTours got2 = new GroupOfTours();
+		SolutionGot solution2 = new SolutionGot(problem);
+		GroupOfTours got2 = new GroupOfTours(solution);
 		got2.addTour(tour3);
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(39));
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(88));
@@ -444,7 +456,6 @@ public class SetUpUtils {
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(55));
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(68));
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(70));
-		SolutionGot solution2 = new SolutionGot(problem);
 		solution2.addGot(got2);
 				
 		//create tour two for got
@@ -461,22 +472,17 @@ public class SetUpUtils {
 		return got2;
 	}
 
-	public static Tour getTourWithCustomer_42_44_fromRC101() throws IOException {
-		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC101();
-		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
-		GroupOfTours got = new GroupOfTours();
-		got.addTour(tour);
-		tour.addCustomer(problem.getCustomerWithCustomerNo(42));
-		tour.addCustomer(problem.getCustomerWithCustomerNo(44));
-		return tour;
-	}
-
 	public static SolutionGot getSomeSolutionFromRC104Problem() throws IOException {
 			List<VrpProblem> problems = ReadAndWriteUtils.readSolomonProblemRC104AsList();
 			List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 			new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
 					problems, solutions, 2, 5, 5, 5, 5, 1, 1, 1);	
 			return solutions.get(0);		
+	}
+	
+	public static SolutionGot getSomeRandomDummySolution() {
+		return getSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer();
+		
 	}
 	
 }

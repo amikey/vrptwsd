@@ -12,7 +12,6 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	protected ElementWithTours solution;
 	protected AbstractNeighborhoodMove bestMove = null;
-	AbstractNeighborhoodMove bestMoveClone;
 	private CrossNeighborhood crossNeighborhood;
 	private int iteration = 1;
 			
@@ -26,8 +25,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 				findBestMove();							
 				isImprovement = isImprovement();								
 				if (isImprovement) {			
-					
-					bestMoveClone = bestMove.cloneWithCopyOfToursAndGotsAndCustomers();
+
 					applyBestMove();	
 					
 					assertEquals(true, iteration < 300);
@@ -68,7 +66,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}	
 
 	private void applyBestMove() {
-		solution = crossNeighborhood.acctuallyApplyMove(bestMove);		
+		solution = crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);		
 	}
 	
 	protected void assertEqualsHook() {

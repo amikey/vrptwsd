@@ -17,6 +17,7 @@ public class VrpProblem implements Cloneable {
 	private Set<Depot> depots; //implemented as a set to be able to model multi depot VRPs
 	private Set<Vehicle> vehicles;
 	private long maxTime = 0l; //closing time window of depot
+	private double originalCapacity;
 
 	public VrpProblem() {
 		customers = new HashSet<Customer>();
@@ -238,6 +239,14 @@ public class VrpProblem implements Cloneable {
 
 	public Vehicle getVehicle() {
 		return vehicles.iterator().next().clone();
+	}
+
+	public double getOriginalCapacity() {
+		return originalCapacity;
+	}
+
+	public void setOriginalCapacity(double vehicleCapacity) {
+		originalCapacity = vehicleCapacity;
 	}
     
 }

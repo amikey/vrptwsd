@@ -73,7 +73,7 @@ public class TestTourUtilsIsInsertionPossible {
 	
 	private void ThenFeasiblityChecksShouldWorkWhenCreatingTourWithCustomers57_55_54_53_56_58_60_59_68_69() {
 		tour = new Tour(problem.getDepot(),problem.getVehicles().iterator().next());
-		tour.setParentGot(new GroupOfTours());
+		tour.setParentGot(new GroupOfTours(null));
 		Customer customer = problem.getCustomerWithCustomerNo(57);
 		assertEquals(true, TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour, tour.length()));
 		tour.addCustomer(customer);

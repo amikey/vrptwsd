@@ -42,7 +42,7 @@ public class TourMatching {
 			for (int j = i+1; j < oldSolution.getNumberOfTours(); j++) {
 				//RUNTIME_TODO: hier könnte man gucken, ob es Got schon gibt, so dass Recourse Kosten nicht neu berechnet werden müssen.#
 				System.out.println("Berechne Recourse Kosten für Touren " + i + " (Demand: " + oldSolution.getTour(i).getUseOfCapacity() + ") und " + j + " (Demand: " + oldSolution.getTour(j).getUseOfCapacity());
-				GroupOfTours got = new GroupOfTours();
+				GroupOfTours got = new GroupOfTours(oldSolution);
 				got.addTour(oldSolution.getTour(i));
 				got.addTour(oldSolution.getTour(j));
 				RecourseCost rc = got.getExpectedRecourse();
@@ -70,6 +70,7 @@ public class TourMatching {
 			createGotForTour();
 			addGotToSolution();
 		}
+		maintainSolutionsForGots();
 	}
 
 	private void sortListOfRecourseCostsAccordingToWeightedCombinationOfRecourseCostAndNumberOfRecourseActions() {		
@@ -91,13 +92,18 @@ public class TourMatching {
 	
 	private void createGotWithTours(RecourseCost rc) {
 		//RUNTIME_TODO: das kann man auch mit toursThatAreUsedInRecourseCostAreAlreadyAssignedToGots zusammenlegen, auf Kosten der Code-Lesbarkeit
-		currentGot = new GroupOfTours();
+		currentGot = new GroupOfTours(oldSolution);
 		for (Integer i : rc.getIndizesOfTours())
 			currentGot.addTour(oldSolution.getTour(i));
 	}
 
 	private void addGotToSolution() {
 		newSolution.addGot(currentGot);
+	}
+	
+	private void maintainSolutionsForGots() {
+		for (GroupOfTours got : newSolution.getGots())
+			got.setSolution(newSolution);
 	}
 
 	private void addIndizesOfToursToListOfAlreadyUsedIndizes(RecourseCost rc) {
@@ -118,7 +124,7 @@ public class TourMatching {
 				indexOfTour = i;
 		if (indexOfTour == Integer.MAX_VALUE)
 			throw new RuntimeException("No Index for tour could be found that is not already assigned to a got");
-		currentGot = new GroupOfTours();
+		currentGot = new GroupOfTours(oldSolution);
 		currentGot.addTour(oldSolution.getTour(indexOfTour));
 	}
 	

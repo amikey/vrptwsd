@@ -22,12 +22,14 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	private List<AbstractNeighborhoodMove> listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
 
 	@Override
+	//here the moves have to be added to a list instead of just remembering the best move
 	public void setRespAddBestNonTabooMove(AbstractNeighborhoodMove move) {
 		listOfNonTabooMoves.add(move);
 	}
 	
 	@Override
-	protected void setBestNonTabooMove() {
+	//this is just an empty hook in CrossNeighborhood
+	protected void setBestNonTabooMoveHook() {
 		sortMovesWrtDeterministicCost();
 		takeFirstXNumberOfMoves();
 		calculateRecourseCostForMoves();
@@ -35,8 +37,10 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 	
 	@Override 
+	//dieser  Override ist dazu da, das Akzeptanzkriterium gegenüber der deterministischen Suche zu verändern
 	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {
-		//TODO: Hier kann das Akzeptanzkriterium noch dazu geändert werden, dass nur Kosten betrachtet werden
+		//IMPORTANT_TODO: für die stochastische Variante müssen die Akzeptanzkriterien geändert werden.
+		//dabei sollte nicht so sehr die Tourenreduktion im Vordergrund stehen, sondern die Kosten
 		if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()) || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
 			(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
 				return true;
@@ -48,6 +52,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		Collections.sort(listOfNonTabooMoves, byDeterministicCost);				
 	}
 	
+	//this exists only for testing
 	public void sortMovesWrtCostDifference() {
 		Comparator<AbstractNeighborhoodMove> byCostDifference = (e1,e2) -> Double.compare(e1.getCostDifferenceToPreviousSolution(),e2.getCostDifferenceToPreviousSolution());		
 		Collections.sort(listOfNonTabooMoves, byCostDifference);
@@ -67,12 +72,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	}
 
 	public static void applyMoveToUnderlyingGots(AbstractNeighborhoodMove copyOfMove) {
-		SolutionGot solution = new SolutionGot();
-		solution.addGot(copyOfMove.getTour1().getParentGot());
-		if (!copyOfMove.isParentGotOfTour2IsSameAsParentGotOfTour1())
-			solution.addGot(copyOfMove.getTour2().getParentGot());
-		CrossNeighborhood newNeighborhood = new CrossNeighborhood(solution);
-		newNeighborhood.acctuallyApplyMove(copyOfMove);		
+		CrossNeighborhood.actuallyApplyMove(copyOfMove);		
 	}
 
 	private RecourseCost calculateRecourseCostOfGotsThatAreAffectedByMove(

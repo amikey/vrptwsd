@@ -61,7 +61,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     		}
     	}
     	if (got == null) {
-    		got = new GroupOfTours();
+    		got = new GroupOfTours(this);
     		addGot(got);
     	}
     	got.addTour(tour);     	
@@ -109,7 +109,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	    }
 	
 	    private GroupOfTours createNewGotInSolution() {
-			GroupOfTours got = new GroupOfTours();
+			GroupOfTours got = new GroupOfTours(this);
 			this.addGot(got);
 			return got;
 		}

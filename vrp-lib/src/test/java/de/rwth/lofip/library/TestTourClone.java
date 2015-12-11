@@ -23,7 +23,7 @@ public class TestTourClone {
 	}
 
 	private void andCloningThatTourWithCopyOfCustomers() {
-		tour2 = tour1.cloneWithCopyOfCustomersAndVehicleAndSetParentGot(new GroupOfTours());
+		tour2 = tour1.cloneWithCopyOfCustomersAndVehicleAndSetParentGot(new GroupOfTours(null));
 	}
 
 	private void whenCustomersInClonedTourAreAltered() {

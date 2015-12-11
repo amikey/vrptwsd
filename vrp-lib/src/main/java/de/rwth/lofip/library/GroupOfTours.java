@@ -32,7 +32,13 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	RecourseCost expectedRecourseCost = null;
-    
+	
+	SolutionGot parentSolution = null;
+	
+	public GroupOfTours(SolutionGot solutionGot) {
+		parentSolution = solutionGot;
+	}
+
 	protected void resetExpectedRecourseCost() {
 		expectedRecourseCost = null;
 	}
@@ -54,6 +60,14 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	public int getNumberOfTours() {
 		return getTours().size();
 	}
+	
+	public SolutionGot getParentSolution() {
+		if (parentSolution == null)
+			throw new RuntimeException("ParentSolution in Got nicht gesetzt. "
+					+ "Vermutlich ist dies ein Problem beim Setup des Unit-Tests");
+		return parentSolution;
+	}
+
 
 	@Override
 	public double getTotalDistanceWithCostFactor() {
@@ -184,7 +198,9 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     		
     		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {
     			GroupOfTours gotClone = this.cloneWithCopyOfTourAndCustomers();
-    			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());    			
+    			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());
+    			    			
+    			SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);
     			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
     				numberOfInfeasibleScenarios++;
     				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
@@ -253,7 +269,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 
 	@Override
     public GroupOfTours clone() {
-    	GroupOfTours got = new GroupOfTours();   		    	                       
+    	GroupOfTours got = new GroupOfTours(getParentSolution());   		    	                       
         for (Tour t : tours)  {
         	Tour tour = new Tour(t);
         	got.addTour(tour);
@@ -263,8 +279,9 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
         return got;
     }
     
+	
 	public GroupOfTours cloneWithCopyOfTourAndCustomers() {
-		GroupOfTours got = new GroupOfTours();
+		GroupOfTours got = new GroupOfTours(parentSolution.clone());
 		for (Tour t : tours) {
 			Tour tour = t.cloneWithCopyOfCustomersAndVehicleAndSetParentGot(got);
 			got.addTour(tour);			
@@ -323,6 +340,10 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	        }
 	        s += ") ";              
         return s;
+	}
+
+	public void setSolution(SolutionGot newSolution) {
+		parentSolution = newSolution;
 	}
 
 

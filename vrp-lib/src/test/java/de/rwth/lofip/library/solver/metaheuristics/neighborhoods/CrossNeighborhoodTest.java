@@ -29,7 +29,7 @@ public class CrossNeighborhoodTest {
 	public void initialise() {
 		SetUpUtils.getSolutionWithThreeToursAndTwoCustomersEach();
 		solutionWithTwoToursAndTwoCustomersEach = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();
-		solutionWithOneTourWithCustomers2And3 = SetUpUtils.SetUpSolutionWithOneTourWithCustomer2And3();
+		solutionWithOneTourWithCustomers2And3 = SetUpUtils.GetSolutionWithOneTourWithCustomer2And3();
 		SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
 		solutionWithOneTourWithFourCustomers = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4();
 		solutionWithOneTourWithCustomers1And2And3 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3();
@@ -110,7 +110,7 @@ public class CrossNeighborhoodTest {
 		assertEquals(false,crossNeighborhood.segmentsToBeSwapedAreNotInNeighborhoodRefPositions());
 		assertEquals(true,crossNeighborhood.isMoveFeasibleCheckWithRef());
 		crossNeighborhood.printNeighborhoodStep();
-		crossNeighborhood.acctuallyApplyMove();
+		crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood();
 		solutionWithOneTourWithCustomers1And2And3.printSolutionAsTupel();
 		assertEquals(true, solutionWithOneTourWithCustomers1And2And3.equals(SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2()));
 	}	
@@ -151,7 +151,7 @@ public class CrossNeighborhoodTest {
 		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
 		cost = crossNeighborhood.calculateCostUsingRefs();	
 		
-		SolutionGot solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(crossNeighborhood.getNeigborhoodMove());
+		SolutionGot solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(crossNeighborhood.getNeigborhoodMove());
 		System.out.print(solution.getAsTupel());
 		
 		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(),cost,0.1);		
@@ -194,7 +194,7 @@ public class CrossNeighborhoodTest {
 		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(), bestMove.getCost(), 0.1);
 				
 		//now actually apply best move
-		solutionWithTwoToursAndTwoCustomersEach = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);
+		solutionWithTwoToursAndTwoCustomersEach = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
 		System.out.println(solutionWithTwoToursAndTwoCustomersEach.getAsTupel());
 		Tour tempTour;
 		Iterator<Tour> tourIterator = solutionWithTwoToursAndTwoCustomersEach.getTours().iterator();

@@ -37,7 +37,10 @@ public class Parameters {
 	
 	//Recourse
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
-	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions 		
+	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions
+	
+	//Plankapazität für deterministische Planung
+	private static double percentageOfCapacity = 1;
 
 	//Outputdirectory
 	private static String directory;
@@ -128,6 +131,14 @@ public class Parameters {
 
 	public static void setPublishSolutionAtEndOfTabuSearch(boolean b) {
 		publishSolutionAtEndOfTabuSearch = b;
+	}
+
+	public static double getPercentageOfCapacity() {
+		return percentageOfCapacity;
+	}
+
+	public static void setPercentageOfCapacity(double percentageOfCapacity) {
+		Parameters.percentageOfCapacity = percentageOfCapacity;
 	}
 	
 

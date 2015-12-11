@@ -11,6 +11,7 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 
 
 /**
@@ -91,6 +92,7 @@ public class VrpUtils {
 						vehicles.add(new Vehicle(i, vehicleCapacity));
 					}
 					vrpProblem.setVehicles(vehicles);
+					vrpProblem.setOriginalCapacity(vehicleCapacity);
 					state = ImportFileState.DEPOT;
 				}
 				break;
@@ -137,6 +139,24 @@ public class VrpUtils {
 		Set<Vehicle> vehicles = new HashSet<Vehicle>(1);
 		vehicles.add(tour.getVehicle());
 		vrpProblem.setVehicles(vehicles);
+		vrpProblem.setOriginalCapacity(tour.getVehicle().getCapacity());
+		return vrpProblem;
+	}
+	
+	/**
+	 * Change capacity of vehicles in original problem to capacity * percentage.
+	 * e.g if capacity of vehicles is 100 and percentage is 0,9 (=90%), then the
+	 * new capacity will be 90.
+	 */
+	public static VrpProblem decreaseCapacityOfVehiclesToPercentageOf(VrpProblem vrpProblem, double percentage) {
+		
+		Set<Vehicle> vehicleSet = new HashSet<Vehicle>();
+		for (Vehicle vehicle : vrpProblem.getVehicles()) {
+			double capacity = vehicle.getCapacity();
+			vehicle.setCapacity(capacity * percentage);
+			vehicleSet.add(vehicle);
+		}
+		vrpProblem.setVehicles(vehicleSet);
 		return vrpProblem;
 	}
 

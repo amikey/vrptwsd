@@ -17,9 +17,6 @@ public class LocalSearchForTesting extends LocalSearchForElementWithTours {
 			System.out.println(solution.getAsTupel());
 			System.out.println("solution.getTotalDistanceWithCostFactor(): " + solution.getTotalDistanceWithCostFactor());
 			System.out.println("bestMove.getCost(): " + bestMove.getCost());
-			System.out.println("bestMoveClone.getCost(): " + bestMoveClone.getCost());
-						
-			bestMoveClone.print();
 		}
 		assertEquals(solution.getTotalDistanceWithCostFactor(),bestMove.getCost(),0.001);
 	}

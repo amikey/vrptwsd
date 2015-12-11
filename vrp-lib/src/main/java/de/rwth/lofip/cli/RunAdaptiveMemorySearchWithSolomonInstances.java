@@ -16,7 +16,7 @@ import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
 
 public class RunAdaptiveMemorySearchWithSolomonInstances {
 
-	private List<VrpProblem> problems = new LinkedList<VrpProblem>();
+	protected List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	private long timeNeeded;
 	
@@ -256,14 +256,14 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		seedAM++;
 	}
 	
-	private void processProblems() throws IOException {
+	protected void processProblems() throws IOException {
 		for (int i = 1; i <= numberOfExperiments; i++) {
 			increaseParameters();
 			solveProblemsWithAdaptiveMemorySolver();	
 		}		
 	}
 	
-	private void printProblems() throws IOException {
+	protected void printProblems() throws IOException {
 		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
 				numberOfDifferentInitialSolutions, 
 				maximalNumberOfIterationsTabuSearch, 

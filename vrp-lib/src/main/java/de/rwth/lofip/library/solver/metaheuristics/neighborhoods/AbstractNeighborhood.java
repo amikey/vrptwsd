@@ -21,10 +21,7 @@ public abstract class AbstractNeighborhood {
 		return false;			
 	}
 	
-	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {
-		//IMPORTANT_TODO: für die stochastische Variante müssen die Akzeptanzkriterien geändert werden.
-		//dabei sollte nicht so sehr die Tourenreduktion im Vordergrund stehen, sondern die Kosten
-		
+	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {	
 		// hier werden moves hierarchisch geordnet:
 		// zuerst werden moves bevorzugt, die die Anzahl der Fahrzeuge reduzieren
 		// dann werden solche Moves bevorzugt, die die Anzahl an Kunden in einer Tour am meisten reduzieren
@@ -93,7 +90,7 @@ public abstract class AbstractNeighborhood {
 		bestNonTabooMove = move;
 	}
 
-	protected void setBestNonTabooMove() {
+	protected void setBestNonTabooMoveHook() {
 		//nothing to do here; hook is needed for Recourse calculation
 	}
 }

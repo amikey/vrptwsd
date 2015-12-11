@@ -9,7 +9,7 @@ import de.rwth.lofip.library.Tour;
 
 public class SimulationUtils {
 	
-	static int seed = 1;
+	private static int seed = 1;
 
 	public static void resetSeed() {
 		seed = 1;
@@ -36,8 +36,12 @@ public class SimulationUtils {
 			List<Customer> customers = tour.removeCustomersBetween(0, tour.getCustomerSize());
 			tour.insertCustomersAtPosition(customers, 0);			
 		}
-		return got;			
-			
+		return got;						
+	}
+
+	public static void setCapacityOfVehiclesToOriginalCapacity(GroupOfTours gotClone) {
+		for (Tour t : gotClone.getTours())
+			t.getVehicle().setCapacity(gotClone.getParentSolution().getVrpProblem().getOriginalCapacity());		
 	}
 	
 }

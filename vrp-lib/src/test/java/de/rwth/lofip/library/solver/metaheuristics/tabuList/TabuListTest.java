@@ -29,7 +29,7 @@ public class TabuListTest {
 	private void whenNextNeighborhoodMoveIsTried() throws Exception {
 		CrossNeighborhood crossNeighborhood = new CrossNeighborhood(solution);
 		AbstractNeighborhoodMove bestMove = crossNeighborhood.returnBestMove();	
-		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMove(bestMove);
+		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 
 	private void thenSolutionShouldConsistOfTourWithCustomersC1C2C3C4() {		

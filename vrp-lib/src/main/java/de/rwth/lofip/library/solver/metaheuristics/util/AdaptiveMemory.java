@@ -136,6 +136,8 @@ public class AdaptiveMemory {
 		}
 	
 		private void initialiseUnservedCustomers() {
+			if (vrpProblem == null)
+				throw new RuntimeException("BAM");
 			unservedCustomers = new ArrayList<Customer>(vrpProblem.getCustomers());
 		}
 		
