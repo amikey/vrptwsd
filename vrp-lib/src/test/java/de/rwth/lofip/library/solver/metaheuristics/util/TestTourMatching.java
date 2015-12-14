@@ -25,10 +25,10 @@ public class TestTourMatching {
 		usedIndizes.add(3);
 		tm.setListOfUsedIndizesForTesting(usedIndizes);
 		
-		RecourseCost rc = new RecourseCost(0, 0);
+		RecourseCost rc = new RecourseCost(0, 0, 0, 0);
 		rc.addTourIndex(1);
 		
-		RecourseCost rc2 = new RecourseCost(0, 0);
+		RecourseCost rc2 = new RecourseCost(0, 0, 0, 0);
 		
 		assertEquals(true, tm.toursThatAreUsedInRecourseCostAreAlreadyAssignedToGots(rc));		
 		assertEquals(false, tm.toursThatAreUsedInRecourseCostAreAlreadyAssignedToGots(rc2));

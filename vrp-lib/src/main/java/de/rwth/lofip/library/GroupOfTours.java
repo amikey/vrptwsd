@@ -16,6 +16,7 @@ import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.solver.util.SimpleTourUtils;
+import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.math.MathUtils;
@@ -189,79 +190,13 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
      ***************************************************************************/        
    
     public RecourseCost getExpectedRecourse() {    	
-    	if (expectedRecourseCost == null) {   		    		
-    		double overallRecourseCost = 0;
-    		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
-    		int numberOfDifferentRecourseActions = 0;
-    		SimulationUtils.resetSeed();
-    		int numberOfInfeasibleScenarios = 0;
-    		
-    		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {
-    			GroupOfTours gotClone = this.cloneWithCopyOfTourAndCustomers();
-    			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());
-    			    			
-    			SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);
-    			if (!ElementWithToursUtils.isElementDemandFeasible(gotClone)) {
-    				numberOfInfeasibleScenarios++;
-    				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
-    				
-    				//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
-//    				//first try recourse actions that have already been created
-//    				//RUNTIME_TODO: will ich hier wirklich sortieren?
-//    				Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
-//    				Collections.sort(listOfRecourseActions, gotByCostComparator);
-//    				if 
-    				
-    				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
-    				//create Solution from gotClone for processing with local search    	    				
-    				ls.improve(gotClone);
-    				assertEquals(true, gotClone.getNumberOfTours() <= 2);
-    				if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
-    					//got is still demand infeasible -> no feasible solution could be found for demand
-    					gotClone.addEmptyTour();
-    					ls.improve(gotClone);    					
-    				}
-    				//RUNTIME_TODO: remove assert
-    				assertEquals(true, gotClone.getNumberOfTours() <= 3);
-    				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
-
-	    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
-	    			double recourseCost = -this.getTotalDistanceWithCostFactor();
-	    			double costOfGotClone = gotClone.getTotalDistanceWithCostFactor(); 
-	    			recourseCost += costOfGotClone;
-	    			overallRecourseCost += recourseCost;
-	    			System.out.println("Cost of Solution " + this.getTotalDistanceWithCostFactor());
-	    			System.out.println("Recourse Cost: " + recourseCost);
-	    			
-	    			//calculate number of different recourse actions    		
-	    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
-	    				System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
-	    				gotClone.print();
-	    				numberOfDifferentRecourseActions++;
-	    				listOfRecourseActions.add(gotClone);
-	    			}
-    			} // else 
-//    				System.out.println("Solution is feasible after altering demands");
-    		}
-    		overallRecourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
-    		
-    		expectedRecourseCost = new RecourseCost(overallRecourseCost, numberOfDifferentRecourseActions);
+    	if (expectedRecourseCost == null) {  
+    		expectedRecourseCost = new RecourseCost(this);
     	}    	
 		return expectedRecourseCost;
     }
     
-    public boolean isGotAlreadyExistsInRecourseActions(GroupOfTours gotClone, List<GroupOfTours> list) {
-		boolean exists = false;
-		for (GroupOfTours got : list) {
-			if (got.equals(gotClone)) {
-				exists = true;
-				break;
-			}			
-		}
-		return exists;
-	}
-
-	private void addEmptyTour() {
+	public void addEmptyTour() {
     	Tour tour = SimpleTourUtils.getEmptyTourWithDoubleCostFactor(getFirstTour());
     	addTour(tour);
     	tour.setParentGot(this);

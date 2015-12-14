@@ -1,7 +1,5 @@
 package de.rwth.lofip.library.util;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 
 import org.junit.Test;
@@ -31,13 +29,18 @@ public class TestRecourseCost {
 
 	private void thenRecourseCostShouldNotBeEqualToZero() {
 		System.out.println(solution.getAsTupel());
-		if (solution.getExpectedRecourseCost().getRecourseCost() == 0.0)
-			throw new RuntimeException("Recourse Cost ist 0. Sollte nicht sein");
+		throw new RuntimeException("Test for exact value");
+//		if (solution.getExpectedRecourseCost().getRecourseCost() == 0.0)
+//			throw new RuntimeException("Recourse Cost ist 0. Sollte nicht sein");
 	}
 	
 	@Test
 	public void testeKennzahlen() {
 		throw new RuntimeException("Implementiere in Diss / Bericht aufgeführte Kennzahlen in Recourse");
+		
+		//teste numberOfAdditionalTours
+		
+		//teste  numberOfRouteFailures
 	}
 
 }
