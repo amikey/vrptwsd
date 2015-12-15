@@ -242,17 +242,16 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
         return s;
     }
 	
-    public String getAsTupel() {    	    	  	
-        String s = "(";
+    public String getAsTupel() {    
+    	String s = "";
         for (GroupOfTours got : gots)
         {
-        	s += "(";
+        	s += "( ";
 	        for (Tour t : got.getTours()) {
 	            s += t.getTourAsTupel();
 	        }
 	        s += ") ";
         }
-        s += ") ";
         return s;
     }
     
@@ -327,8 +326,8 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 		        }
 		        s += ") ";
 	        }
-	        s += "; total: ( " + vrpProblem.getTotalDemandOfAllCustomersOnTour() + ":" + getNumberOfTours()*getLastTour().getVehicle().getCapacity() + 
-	        		") -> " + vrpProblem.getTotalDemandOfAllCustomersOnTour()/(getNumberOfTours()*getLastTour().getVehicle().getCapacity());
+	        s += "; total: ( " + vrpProblem.getTotalDemandOfAllCustomers() + ":" + getNumberOfTours()*getLastTour().getVehicle().getCapacity() + 
+	        		") -> " + vrpProblem.getTotalDemandOfAllCustomers()/(getNumberOfTours()*getLastTour().getVehicle().getCapacity());
 	        return s;
 		}
 		

@@ -16,7 +16,7 @@ public class ResourceExtensionFunction {
 	//der Anfang der REF ist durch den ersten Kunden und das 
 	//Ende der REF durch den letzten Kunden gegeben.
 		
-	private static int seedId = 1;
+	private static int seedForId = 1;
 	// travelTime ist die Fahrzeit zwischen den Kunden ohne Wartezeiten
 	private double travelTime = 0;
 	private double duration = 0;
@@ -30,8 +30,8 @@ public class ResourceExtensionFunction {
 	private Depot depot;
 	
 	public ResourceExtensionFunction() {
-		id = seedId;
-		seedId++;
+		id = seedForId;
+		seedForId++;
 		customersInThisRef.clear();
 	}
 	
@@ -42,8 +42,8 @@ public class ResourceExtensionFunction {
 		earliestDepartureTime = f;
 		demand = i;
 		customersInThisRef.clear();
-		id = seedId;
-		seedId++;
+		id = seedForId;
+		seedForId++;
 	}
 	
 	public ResourceExtensionFunction(Customer customer) {

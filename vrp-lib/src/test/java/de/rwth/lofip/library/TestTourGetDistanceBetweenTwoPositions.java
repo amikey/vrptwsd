@@ -1,7 +1,9 @@
 package de.rwth.lofip.library;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestTourGetDistanceBetweenTwoPositions {

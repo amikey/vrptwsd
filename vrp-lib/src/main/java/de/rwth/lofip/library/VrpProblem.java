@@ -54,8 +54,7 @@ public class VrpProblem implements Cloneable {
 			if (c.getCustomerNo() == customerNo)
 				return c;
 		}
-		return null;
-
+		throw new RuntimeException("Customer with customerNr " + customerNo + " not found in VrpProblem");
 	}
 
 	public int getCustomerCount() {
@@ -69,13 +68,13 @@ public class VrpProblem implements Cloneable {
 		}
 	}
 	
-	public long getTotalDemandOfAllCustomersOnTour() {
-		long totalDemand = 0L;
-		if (getCustomers() != null) {
-			for (Customer c : getCustomers()) {
-				totalDemand += c.getDemand();
-			}
-		}
+	public long getTotalDemandOfAllCustomers() {
+		if (getCustomers() == null)
+			throw new RuntimeException("Keine Kunden in VrpProblem. Sollte nicht passieren");
+		long totalDemand = 0L;		
+		for (Customer c : getCustomers()) {
+			totalDemand += c.getDemand();
+		}		
 		return totalDemand;
 	}
 	
@@ -125,7 +124,7 @@ public class VrpProblem implements Cloneable {
 	}
 
 	public int getMinimalNumberOfVehiclesWrtDemand() {
-		return (int) Math.round((double) getTotalDemandOfAllCustomersOnTour() / vehicles.iterator().next().getCapacity());		
+		return (int) Math.ceil((double) getTotalDemandOfAllCustomers() / vehicles.iterator().next().getCapacity());		
 	}
 
 	public void setVehicleCapacity(double capacity) {
@@ -237,7 +236,7 @@ public class VrpProblem implements Cloneable {
 		return (number / customers.size());
 	}
 
-	public Vehicle getVehicle() {
+	public Vehicle getNewVehicle() {
 		return vehicles.iterator().next().clone();
 	}
 

@@ -46,28 +46,28 @@ public class Tour implements SolutionElement, Serializable {
      * Constructors
      ***************************************************************************/
     
-    /**
-     * The default constructor of a {@code Tour} assigns a random ID to the
-     * tour. Although this is obviously not guaranteed to be unique forever, it
-     * should be good enough to identify a tour for a while.
-     */
-    public Tour() {    	    
+    public Tour(Depot depot, Vehicle vehicle) {
+        createID();
+        this.depot = depot;
+        this.vehicle = vehicle;
+    }    
+	
+	public Tour(VrpProblem problem, GroupOfTours got) {
+		createID();
+		this.depot = problem.getDepot();
+	    this.vehicle = problem.getNewVehicle();
+		this.setParentGot(got);
+	}
+
+   public void createID() {    	    
         id = seedForId;
         seedForId++;
         this.idTour=(String)("T"+this.getId());
-    }
-
-    public Tour(Depot depot, Vehicle vehicle) {
-        this();
-        this.depot = depot;
-        this.vehicle = vehicle;
-    }
+	}
         
     //copy constructor
     public Tour(Tour tour1) {
-    	this();
-		this.depot = tour1.getDepot();
-		this.vehicle = tour1.getVehicle().clone();
+    	this(tour1.getDepot(), tour1.getVehicle().clone());
 		for (CustomerInTour cit : tour1.getCustomersInTour())
 			customers.add(new CustomerInTour(cit));
 		edges = tour1.getEdges();
@@ -107,7 +107,6 @@ public class Tour implements SolutionElement, Serializable {
 		this.refForSegment = refForSegment;
 		this.solutionValue = solutionValue;
 	}
-	
 	
 	public Tour cloneWithCopyOfCustomersAndVehicleAndSetParentGot(GroupOfTours got) {
 		//RUNTIME_TODO: Das hier ist bestimmt sehr langsam. Kann man das schneller machen?

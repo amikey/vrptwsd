@@ -13,7 +13,7 @@ public class Parameters {
 	private static int MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
 	
 	//CrossNeighborhood 
-	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 3;
+	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
 	
 	//Tour Elimination
 	private static boolean miminizeTours = true;
@@ -51,6 +51,24 @@ public class Parameters {
 	
 	
 	//Getter und Setter	
+	public static void setAllParametersToDefaultValues(){
+		debugging = false;
+		publishSolutionValueProgress = false;
+		publishSolutionAtEndOfTabuSearch = false;
+		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
+		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
+		miminizeTours = true;
+		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
+		numberOfDifferentInitialSolutions = 20;
+		maximalNumberOfCallsToAdaptiveMemory = 0;
+		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
+		maximalNumberOfToursInAdaptiveMemory = 1000;
+		maximalNumberOfIterationsTabuSearch = 0;
+		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
+		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+		percentageOfCapacity = 1;
+	}
+	
 	public static int getNumberOfDemandScenarioRuns() {	
 		return NUMBER_OF_DEMAND_SCENARIO_RUNS;
 	}

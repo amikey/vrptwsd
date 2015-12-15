@@ -21,7 +21,7 @@ public class CrossNeighborhoodCostCalculationTest {
 	@Test
 	public void testCostCalculationOfCrossNeighborhoodDoubleImprecision() throws IOException {
 		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();
-		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour = new Tour(problem.getDepot(), problem.getNewVehicle());
 		SolutionGot solution = new SolutionGot(problem);
 		GroupOfTours got = new GroupOfTours(solution);
 		got.addTour(tour);
@@ -63,7 +63,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		nm.print();
 		
 		//create tour that results from other tour when applying best move
-		Tour tour2 = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour2 = new Tour(problem.getDepot(), problem.getNewVehicle());
 		GroupOfTours got2 = new GroupOfTours(null);
 		got2.addTour(tour2);
 		tour2.addCustomer(problem.getCustomerWithCustomerNo(39));
@@ -85,7 +85,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();
 		
 		//create tour that is going to be optimized
-		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour = new Tour(problem.getDepot(), problem.getNewVehicle());
 		GroupOfTours got = new GroupOfTours(solution);
 		got.addTour(tour);
 		tour.addCustomer(problem.getCustomerWithCustomerNo(39));
@@ -120,7 +120,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		solution.addGot(got);
 		
 		//create tour two that is optimized
-		Tour tour2 = new Tour(problem.getDepot(), problem.getVehicle());		
+		Tour tour2 = new Tour(problem.getDepot(), problem.getNewVehicle());		
 		got.addTour(tour2);
 		tour2.addCustomer(problem.getCustomerWithCustomerNo(69));
 		tour2.addCustomer(problem.getCustomerWithCustomerNo(60));
@@ -136,7 +136,7 @@ public class CrossNeighborhoodCostCalculationTest {
 //		nm.print();
 		
 		//create solution that results from applying best move
-		Tour tour3 = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour3 = new Tour(problem.getDepot(), problem.getNewVehicle());
 		GroupOfTours got2 = new GroupOfTours(null);
 		got2.addTour(tour3);
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(39));
@@ -149,7 +149,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		solution2.addGot(got2);
 		
 		//create tour two that is optimized
-		Tour tour4 = new Tour(problem.getDepot(), problem.getVehicle());		
+		Tour tour4 = new Tour(problem.getDepot(), problem.getNewVehicle());		
 		got2.addTour(tour4);
 		tour4.addCustomer(problem.getCustomerWithCustomerNo(69));
 		tour4.addCustomer(problem.getCustomerWithCustomerNo(53));
@@ -188,7 +188,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();
 		
 		//create tour that is going to be optimized
-		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour = new Tour(problem.getDepot(), problem.getNewVehicle());
 		SolutionGot solution = new SolutionGot(problem);
 		GroupOfTours got = new GroupOfTours(solution);
 		got.addTour(tour);
@@ -202,7 +202,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		solution.addGot(got);
 				
 		//create tour two that is optimized
-		Tour tour2 = new Tour(problem.getDepot(), problem.getVehicle());		
+		Tour tour2 = new Tour(problem.getDepot(), problem.getNewVehicle());		
 		got.addTour(tour2);
 		tour2.addCustomer(problem.getCustomerWithCustomerNo(23));
 		tour2.addCustomer(problem.getCustomerWithCustomerNo(75));
@@ -212,7 +212,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		nm.print();
 		
 		//create tour that has been optimized hardcoded
-		Tour tour3 = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour3 = new Tour(problem.getDepot(), problem.getNewVehicle());
 		SolutionGot solution2 = new SolutionGot(problem);
 		GroupOfTours got2 = new GroupOfTours(solution2);
 		got2.addTour(tour3);
@@ -224,7 +224,7 @@ public class CrossNeighborhoodCostCalculationTest {
 		solution2.addGot(got2);
 						
 		//create tour two that has been optimized hardcoded
-		Tour tour4 = new Tour(problem.getDepot(), problem.getVehicle());		
+		Tour tour4 = new Tour(problem.getDepot(), problem.getNewVehicle());		
 		got2.addTour(tour4);
 		tour4.addCustomer(problem.getCustomerWithCustomerNo(23));
 		tour4.addCustomer(problem.getCustomerWithCustomerNo(24));

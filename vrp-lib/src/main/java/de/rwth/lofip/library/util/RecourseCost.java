@@ -132,12 +132,12 @@ public class RecourseCost {
 		return recourseCost;
 	}
 	
-	private double getNumberOfAdditionalTours() {
+	double getNumberOfAdditionalTours() {
 		return numberOfAdditionalTours;
 	}
 
 
-	private int getNumberOfRouteFailures() {
+	int getNumberOfRouteFailures() {
 		return numberOfRouteFailures;
 	}
 	

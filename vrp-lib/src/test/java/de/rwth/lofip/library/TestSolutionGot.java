@@ -9,7 +9,7 @@ import org.junit.Test;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.util.SetUpUtils;
-import de.rwth.lofip.library.util.testing.AdaptiveMemoryUtils;
+import de.rwth.lofip.testing.util.AdaptiveMemoryUtils;
 
 
 public class TestSolutionGot {

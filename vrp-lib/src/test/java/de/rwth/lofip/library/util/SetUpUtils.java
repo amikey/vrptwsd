@@ -277,7 +277,7 @@ public class SetUpUtils {
 	
 	public static Tour getTourWithCustomer_42_44_fromRC101() throws IOException {
 		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC101();
-		Tour tour = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour = new Tour(problem.getDepot(), problem.getNewVehicle());
 		GroupOfTours got = new GroupOfTours(null);
 		got.addTour(tour);
 		tour.addCustomer(problem.getCustomerWithCustomerNo(42));
@@ -446,7 +446,7 @@ public class SetUpUtils {
 		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();
 		
 		//create first tour for got
-		Tour tour3 = new Tour(problem.getDepot(), problem.getVehicle());
+		Tour tour3 = new Tour(problem.getDepot(), problem.getNewVehicle());
 		SolutionGot solution2 = new SolutionGot(problem);
 		GroupOfTours got2 = new GroupOfTours(solution);
 		got2.addTour(tour3);
@@ -459,7 +459,7 @@ public class SetUpUtils {
 		solution2.addGot(got2);
 				
 		//create tour two for got
-		Tour tour4 = new Tour(problem.getDepot(), problem.getVehicle());		
+		Tour tour4 = new Tour(problem.getDepot(), problem.getNewVehicle());		
 		got2.addTour(tour4);
 		tour4.addCustomer(problem.getCustomerWithCustomerNo(69));
 		tour4.addCustomer(problem.getCustomerWithCustomerNo(53));

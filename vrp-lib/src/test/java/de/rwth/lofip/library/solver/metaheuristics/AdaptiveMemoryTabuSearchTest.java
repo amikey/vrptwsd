@@ -16,6 +16,7 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
+import de.rwth.lofip.testing.util.AdaptiveMemoryUtils;
 
 public class AdaptiveMemoryTabuSearchTest {
 	
@@ -25,7 +26,20 @@ public class AdaptiveMemoryTabuSearchTest {
 	private List<SolutionGot> solutions3 = new LinkedList<SolutionGot>();
 	
 	@Test
-	public void testThatTwoRunsOfAMSearchProduceTheSameResults1() throws IOException {
+	public void testThatRunOfAMTSproducesTheSameSolutionEveryTime() throws IOException {
+		Parameters.setAllParametersToDefaultValues();
+		SolutionGot solution;
+		VrpProblem problem = ReadAndWriteUtils.readModifiedSolomonProblems().get(0);
+		Parameters.setNumberOfToursInGot(1);
+		AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
+		AdaptiveMemoryUtils.setParametersInAMTSforTesting(adaptiveMemoryTabuSearch);
+		solution = adaptiveMemoryTabuSearch.solve(problem);
+		System.out.println(solution.getAsTupel());
+		assertEquals("(((0 5 3 4 2 1 )) ((0 18 19 15 )) ((0 16 14 12 )) ((0 7 8 9 6 )) ((0 13 17 10 11 )) ) ", solution.getAsTupel());		
+	}
+	
+	@Test
+	public void testThatTwoRunsOfAMSearchProduceTheSameResultsAllowingPermutationOfTours() throws IOException {
 		
 		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
 	

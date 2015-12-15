@@ -1,4 +1,4 @@
-package de.rwth.lofip.library.util.testing;
+package de.rwth.lofip.testing.util;
 
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 

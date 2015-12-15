@@ -17,10 +17,10 @@ public class RandomI1Solver implements SolverInterfaceGot {
 	private static int seed = 0;
 	private Random rand = new Random(seed); 
 	
-	private int numberOfSeedCustomers;
+	private int numberOfSeedCustomers = 0;
 		
-	private VrpProblem vrpProblem;
-	protected SolutionGot solution;
+	private VrpProblem vrpProblem = null;
+	protected SolutionGot solution = null;
 	
 	protected List<Customer> remainingCustomers = new ArrayList<Customer>();
 	private List<Customer> seedCustomers = new ArrayList<Customer>();
@@ -41,17 +41,23 @@ public class RandomI1Solver implements SolverInterfaceGot {
 		randomlySelectSeedCustomers();
 		constructToursWithSeedCustomers();
 		insertRemainingCustomersIntoTours();
+		if (solution == null) 
+			throw new RuntimeException("solution ist null");
 		return solution;
 	}
 	
 	protected void initialiseSolverWith(VrpProblem problem) {
 		vrpProblem = problem;
 		solution = new SolutionGot(vrpProblem);
+		if (vrpProblem == null)
+			throw new RuntimeException("vrpProblem = null");
 		remainingCustomers.addAll(vrpProblem.getCustomers());
 	}
 
 	protected List<Customer> randomlySelectSeedCustomers() {
 		numberOfSeedCustomers = vrpProblem.getMinimalNumberOfVehiclesWrtDemand();
+		if (numberOfSeedCustomers == 0)
+			throw new RuntimeException("numberOfSeedCustomers ist 0; VrpProblem: " + vrpProblem.print());
 		if (numberOfSeedCustomers > remainingCustomers.size()) {
 			System.out.println("VrpProblem: " + vrpProblem.print());
 			System.out.println("vrpProblem.getMinimalNumberOfVehiclesWrtDemand(): " + vrpProblem.getMinimalNumberOfVehiclesWrtDemand());
