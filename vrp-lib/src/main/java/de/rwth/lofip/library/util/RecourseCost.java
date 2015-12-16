@@ -3,8 +3,14 @@ package de.rwth.lofip.library.util;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
@@ -21,6 +27,9 @@ public class RecourseCost {
 	int numberOfRouteFailures = 0;
 	//number of different recourse actions for several gots is the mean number of different recourse actions for all gots
 	double numberOfDifferentRecourseActions = 0;
+	//first entry: number of vehicles needed to serve these customers
+	//second entry: number of customers that are served by this number of vehicles
+	HashMap<Integer, Integer> toursNeededToServeNumberOfCustomers = new HashMap<Integer, Integer>();
 	
 	private List<Integer> tourIndizes = new ArrayList<Integer>();
 	
@@ -35,10 +44,30 @@ public class RecourseCost {
 	public RecourseCost(GroupOfTours got) {
 		double overallRecourseCost = 0;
 		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
-		SimulationUtils.resetSeed();
 		int numberOfInfeasibleScenarios = 0;
+		//this is needed to calculate which number of customers is served by which number of vehicles
+		//first entry: customerNo
+		//second entry: set of numbers of tours that customer is served by
+		HashMap<Long, HashSet<Integer>> customersServedByTours = new HashMap<Long, HashSet<Integer>>();
 		
-		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {
+		SimulationUtils.resetSeed();		
+		
+		//initialisiere customersServedByTours
+		for (int i = 0; i < got.getNumberOfTours(); i++) {
+			for (Customer c : got.getTour(i).getCustomers()) {
+				HashSet<Integer> tempHashSet = new HashSet<Integer>();
+				tempHashSet.add(i);
+				
+				System.out.println("tempHashSet nach initialisierung für Tour " + i + " und Kunde " + c.getCustomerNo() + ": (" );
+				for (int k : tempHashSet)
+					System.out.print(k + ", ");
+				System.out.println(")" );
+				
+				customersServedByTours.put(c.getCustomerNo(), tempHashSet);
+			}
+		}
+		
+		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {					
 			GroupOfTours gotClone = got.cloneWithCopyOfTourAndCustomers();
 			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());
 			    			
@@ -94,6 +123,27 @@ public class RecourseCost {
     				gotClone.print();
     				numberOfDifferentRecourseActions++;
     				listOfRecourseActions.add(gotClone);
+    				
+    				//update customersServedByTours
+    				for (int j = 0; j < gotClone.getNumberOfTours(); j++) {
+    					for (Customer c : gotClone.getTour(j).getCustomers()) {
+    						HashSet<Integer> tempHashSet = customersServedByTours.get(c.getCustomerNo());
+    						
+    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " bevor Tour " + j + " hinzugefügt wird: ");
+    						for (int k : tempHashSet)
+    							System.out.print(k + ", ");
+    						System.out.println(")" );
+    						
+    						tempHashSet.add(j);
+    						
+    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " nachdem Tour " + j + " hinzugefügt wird:" );
+    						for (int k : tempHashSet)
+    							System.out.print(k + ", ");
+    						System.out.println(")" );
+    						
+    						customersServedByTours.put(c.getCustomerNo(), tempHashSet);
+    					}
+    				}    				
     			}
 			} // else 
 //				System.out.println("Solution is feasible after altering demands");
@@ -101,6 +151,8 @@ public class RecourseCost {
 		overallRecourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
 		
 		recourseCost = overallRecourseCost;
+		
+		calculateNumberOfCustomersServedByNumberOfDifferentTours(customersServedByTours);
 	}
 		
     public boolean isGotAlreadyExistsInRecourseActions(GroupOfTours gotClone, List<GroupOfTours> list) {
@@ -113,31 +165,72 @@ public class RecourseCost {
 		}
 		return exists;
 	}
+    
+    private void calculateNumberOfCustomersServedByNumberOfDifferentTours(HashMap<Long, HashSet<Integer>> customersServedByTours) {
+		Iterator<Entry<Long, HashSet<Integer>>> it = customersServedByTours.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<Long, HashSet<Integer>> pair = it.next();
+	        // knowing the customer number is not necessary but we would get it this way:
+	        // Long currentCustomerNo = pair.getKey();
+	        int numberOfVehiclesThatTheCurrentCustomerIsServedBy = pair.getValue().size();
+	        int numberOfCustomersThatIsServedByThisNumberOfTours = getNumberOfCustomersThatIsServedByTheFollowingNumberOfVehicles(numberOfVehiclesThatTheCurrentCustomerIsServedBy);	      
+	        numberOfCustomersThatIsServedByThisNumberOfTours++;
+	        toursNeededToServeNumberOfCustomers.put(numberOfVehiclesThatTheCurrentCustomerIsServedBy, numberOfCustomersThatIsServedByThisNumberOfTours);
+	      
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+	}
+
+	private int getNumberOfCustomersThatIsServedByTheFollowingNumberOfVehicles(int numberOfVehiclesCustomerIsServedBy) {
+		int numberOfCustomersThatIsServedByThisValue;
+		try {
+        	numberOfCustomersThatIsServedByThisValue = toursNeededToServeNumberOfCustomers.get(numberOfVehiclesCustomerIsServedBy);
+        } catch (NullPointerException e) {
+        	numberOfCustomersThatIsServedByThisValue = 0;
+        }
+		return numberOfCustomersThatIsServedByThisValue;
+	}
 
 	public RecourseCost(List<GroupOfTours> gots) {		
-		double numberOfDifferentRecourseActionsTemp = 0;
 		for (GroupOfTours got : gots) {
 			recourseCost += got.getExpectedRecourse().getRecourseCost();
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
-			numberOfDifferentRecourseActionsTemp += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
-		}
-		numberOfDifferentRecourseActionsTemp = numberOfDifferentRecourseActionsTemp / gots.size();
-		numberOfDifferentRecourseActions =  numberOfDifferentRecourseActionsTemp;		
+			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
+			
+			calculateToursNeededToServeNumberOfCustomers(got);
+		}		
+		//IMPORTANT_TODO: implement calculation of customersServedByTours		
+		
 	}
 	
-	
-	
+	private void calculateToursNeededToServeNumberOfCustomers(GroupOfTours got) {
+		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<Integer, Integer> pair = it.next();
+	        int currentlyExaminedNumberOfVehicles = pair.getKey();
+	        int numberOfCustomersSoFarServedByThisNumberOfVehicles = getNumberOfCustomersThatIsServedByTheFollowingNumberOfVehicles(currentlyExaminedNumberOfVehicles);	        
+	        int numberOfCustomersNowServedByThisNumberOfVehicles = numberOfCustomersSoFarServedByThisNumberOfVehicles + pair.getValue();
+	        toursNeededToServeNumberOfCustomers.put(pair.getKey(), numberOfCustomersNowServedByThisNumberOfVehicles);
+	        
+	        it.remove(); // avoids a ConcurrentModificationException
+	    }
+	}
+
+	public HashMap<Integer, Integer> getNumberOfCustomersServedByNumberOfDifferentTours() {
+		return toursNeededToServeNumberOfCustomers;
+	}
+
 	public double getRecourseCost() {
 		return recourseCost;
 	}
 	
-	double getNumberOfAdditionalTours() {
+	public double getNumberOfAdditionalTours() {
 		return numberOfAdditionalTours;
 	}
 
 
-	int getNumberOfRouteFailures() {
+	public int getNumberOfRouteFailures() {
 		return numberOfRouteFailures;
 	}
 	

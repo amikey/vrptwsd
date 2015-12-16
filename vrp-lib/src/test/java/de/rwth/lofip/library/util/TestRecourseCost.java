@@ -1,11 +1,16 @@
 package de.rwth.lofip.library.util;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
+import de.rwth.lofip.library.Customer;
+import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
@@ -17,6 +22,7 @@ import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 public class TestRecourseCost {
 	
 	SolutionGot solution;
+	GroupOfTours got;
 	
 	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {
@@ -50,6 +56,7 @@ public class TestRecourseCost {
 	
 	private void thenNumberOfAdditionalToursShouldBeOfCertainValue() {
 		SimulationUtils.resetSeed();
+		//the following line is just there so that println in getExpectedRecourseCost() are printed before the following lines
 		RecourseCost rc = solution.getExpectedRecourseCost();
 		System.out.println();
 		System.out.println(solution.getAsTupelWithDemand());
@@ -60,6 +67,43 @@ public class TestRecourseCost {
 		System.out.println(solution.getExpectedRecourseCost().getNumberOfRouteFailures());
 		assertEquals(169.0,solution.getExpectedRecourseCost().getNumberOfAdditionalTours(),0.00001);
 		assertEquals(169,solution.getExpectedRecourseCost().getNumberOfRouteFailures());
+	}
+	
+	@Test
+	public void testConstructorOfRecourseActionWithOneGotWrtGetNumberOfCustomersServedByNumberOfDifferentTours() throws IOException {
+		Parameters.setAllParametersToDefaultValues();
+		Parameters.setNumberOfToursInGot(2);
+		givenSomeGot();
+		thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValue();
+	}
+	
+	private void givenSomeGot() throws IOException {
+		got = SetUpUtils.getSomeExampleGotFromRC103();
+	}
+	
+	private void thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValue() {
+		System.out.println(got.getAsTupel());
+		
+		for (Customer c : got.getCustomers()) {
+			c.setDemand(c.getDemand()*2);
+		}		
+		
+		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+		Entry<Integer, Integer> pair = it.next();
+		System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
+		assertEquals(true, 2 == pair.getKey());
+		assertEquals(true, 12 == pair.getValue());
+		
+		Entry<Integer, Integer> pair2 = it.next();
+		System.out.println("Anzahl Customer, die von " + pair2.getKey() + " Vehicles bedient werden: " + pair2.getValue());
+		assertEquals(true, 3 == pair2.getKey());
+		assertEquals(true, 1 == pair2.getValue());
+	}
+
+
+	@Test
+	public void testConstructorOfRecourseActionWithMultipleGotsWrtGetNumberOfCustomersServedByNumberOfDifferentTours() {
+		fail();
 	}
 
 }

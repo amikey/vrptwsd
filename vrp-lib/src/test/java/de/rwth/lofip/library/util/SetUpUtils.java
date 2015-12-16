@@ -443,12 +443,14 @@ public class SetUpUtils {
 	}
 
 	public static GroupOfTours getSomeExampleGotFromRC103() throws IOException {
-		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();
+		VrpProblem problem = ReadAndWriteUtils.readSolomonProblemRC103();			
 		
 		//create first tour for got
-		Tour tour3 = new Tour(problem.getDepot(), problem.getNewVehicle());
+		Vehicle vehicle = problem.getNewVehicle();
+		System.out.println(vehicle.getCapacity());
+		Tour tour3 = new Tour(problem.getDepot(), vehicle);
 		SolutionGot solution2 = new SolutionGot(problem);
-		GroupOfTours got2 = new GroupOfTours(solution);
+		GroupOfTours got2 = new GroupOfTours(solution2);
 		got2.addTour(tour3);
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(39));
 		tour3.addCustomer(problem.getCustomerWithCustomerNo(88));

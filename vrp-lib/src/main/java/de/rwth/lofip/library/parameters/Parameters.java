@@ -1,5 +1,7 @@
 package de.rwth.lofip.library.parameters;
 
+import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
+
 public class Parameters {
 	
 	//Debugging Options
@@ -67,6 +69,8 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		percentageOfCapacity = 1;
+		
+		SimulationUtils.resetSeed();
 	}
 	
 	public static int getNumberOfDemandScenarioRuns() {	

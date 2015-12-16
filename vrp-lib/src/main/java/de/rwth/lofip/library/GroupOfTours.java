@@ -216,6 +216,8 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
     
 	
 	public GroupOfTours cloneWithCopyOfTourAndCustomers() {
+		if (parentSolution == null)
+			throw new RuntimeException("ParentSolution in got, das geclont werden soll, ist null");
 		GroupOfTours got = new GroupOfTours(parentSolution.clone());
 		for (Tour t : tours) {
 			Tour tour = t.cloneWithCopyOfCustomersAndVehicleAndSetParentGot(got);

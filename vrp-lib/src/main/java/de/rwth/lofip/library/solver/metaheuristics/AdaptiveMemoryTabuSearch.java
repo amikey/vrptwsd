@@ -2,9 +2,13 @@ package de.rwth.lofip.library.solver.metaheuristics;
 
 import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
+
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
@@ -32,9 +36,11 @@ public class AdaptiveMemoryTabuSearch {
 	public SolutionGot solve(VrpProblem vrpProblem) throws IOException {
 		
 		System.out.println("STARTE INITIALISIERUNG AM");
+		
+		createHeaderForPublishingSolutionAtEndOfTabuSearch(vrpProblem);
 
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
-		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();
+		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();			
 		
 		int iteration = 1;		
 		while (!isStoppingCriterionMet()) {
@@ -62,6 +68,23 @@ public class AdaptiveMemoryTabuSearch {
 			throw new RuntimeException("Solution ist Null. Fehler!");
 		return bestOverallSolution;
 	}
+
+		private void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
+			if (Parameters.publishSolutionAtEndOfTabuSearch()) 				
+				IOUtils.write("" + ";" 
+					+ "Distanz" + ";" 
+					+ "Anzahl Touren" + ";"
+					+ "RecourseCost" +";"
+					+ "TotalCost" + ";"
+					+ "NumberOfRouteFailures" + ";"
+					+ "NumberOfAdditionalTours" + ";"
+					+ "NumberOfDifferentRecourseActions" + ";"
+					+ "timeNeeded" + ";"
+					+ "UseOfCapacityInTours" + "; ;"	
+					+ "SolutionAsTupel" + ";" 
+					+ "NumberOfCustomersThatAreServedByNumberOfVehicles beginning with one and increasing with each column" + "\n" 
+					, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(new SolutionGot(vrpProblem)));				
+		}	
 
 		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) throws IOException {
 			for (int i = 1; i <= numberOfDifferentInitialSolutions; i++) {

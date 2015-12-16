@@ -57,7 +57,7 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 	}
 	
 	@Test
-	public void ightyPercentOfCapacityOnAllSolomonInstances() throws IOException {	
+	public void EightyPercentOfCapacityOnAllSolomonInstances() throws IOException {	
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(0.8);
 		Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\Solomon100\\");

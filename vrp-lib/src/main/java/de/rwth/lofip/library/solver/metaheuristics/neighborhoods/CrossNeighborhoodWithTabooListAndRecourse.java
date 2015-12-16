@@ -41,6 +41,8 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {
 		//IMPORTANT_TODO: für die stochastische Variante müssen die Akzeptanzkriterien geändert werden.
 		//dabei sollte nicht so sehr die Tourenreduktion im Vordergrund stehen, sondern die Kosten
+		
+		//oben gesagtes ist hier schon teilweise umgesetz:
 		if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()) || //hier weiß man nicht, ob die Anzahl an Fahrzeugen verringert wird 
 			(move.reducesNumberOfVehicles() && !bestNonTabooMove.reducesNumberOfVehicles())) // so werden moves bevorzugt, die die Fahrzeuganzahl verringern
 				return true;

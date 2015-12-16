@@ -214,6 +214,8 @@ public class ReadAndWriteUtils {
 	}
 	
 	public static FileOutputStream getOutputStreamForPublishingSolutionAtEndOfTabuSearch(ElementWithTours solution) throws IOException {
+		if (solution == null)
+			throw new RuntimeException("solution ist null");
 		if (mapOfOutputStreamsForSolutionsAtEndOfTabuSearch.get(((SolutionGot) solution).getVrpProblem().getDescription()) == null) { 
 			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");		
 			String s = Parameters.getOutputDirectory() + sdf.format(Calendar.getInstance().getTime()) + " - " + ((SolutionGot) solution).getVrpProblem().getDescription() + ".txt";

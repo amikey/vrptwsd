@@ -1,6 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 import org.hamcrest.core.IsInstanceOf;
@@ -166,19 +168,42 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		endTime = System.nanoTime();
 		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
 		
-		if (Parameters.publishSolutionAtEndOfTabuSearch())
+		if (Parameters.publishSolutionAtEndOfTabuSearch())			
 			if (bestOverallSolution instanceof SolutionGot){
+				String s = createStringForCustomersServedByNumberOfVehicles();					
+		
 				IOUtils.write("Lösung am Ende der TS: " + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
 					+ bestOverallSolution.getNumberOfTours() + ";"
-					// TODO: implement Ausgabe der stochastischen Kosten
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
-					+ bestOverallSolution.getAsTupel() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
+					+ bestOverallSolution.getAsTupel() + ";"
+					+ s 
+					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
 			} else {
 				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
 			}
+		
+	}
+
+	private String createStringForCustomersServedByNumberOfVehicles() {
+		String s = "";
+	
+		Iterator<Entry<Integer, Integer>> it = ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+	    while (it.hasNext()) {
+	        Entry<Integer, Integer> pair = it.next();
+	        //the following line is totally not necessary and just for better readiness 
+	        int currentlyExaminedNumberOfVehicles = pair.getKey();
+	        int numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles = pair.getValue();
+	        s = s + numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles + ";";
+	    }
+	    
+	    return s;
 	}
 
 	private void generateBlankLineForPublishingSolution() throws IOException {
