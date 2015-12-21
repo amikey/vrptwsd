@@ -200,8 +200,6 @@ public class RecourseCost {
 			
 			calculateToursNeededToServeNumberOfCustomers(got);
 		}		
-		//IMPORTANT_TODO: implement calculation of customersServedByTours		
-		
 	}
 	
 	private void calculateToursNeededToServeNumberOfCustomers(GroupOfTours got) {

@@ -1,8 +1,10 @@
 package de.rwth.lofip.library.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import org.junit.Test;
@@ -23,6 +25,8 @@ public class TestRecourseCost {
 	
 	SolutionGot solution;
 	GroupOfTours got;
+	private GroupOfTours got2;
+	List<GroupOfTours> gots = new ArrayList<GroupOfTours>();
 	
 	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {
@@ -100,10 +104,73 @@ public class TestRecourseCost {
 		assertEquals(true, 1 == pair2.getValue());
 	}
 
-
 	@Test
-	public void testConstructorOfRecourseActionWithMultipleGotsWrtGetNumberOfCustomersServedByNumberOfDifferentTours() {
-		fail();
+	public void testConstructorOfRecourseActionWithMultipleGotsWrtGetNumberOfCustomersServedByNumberOfDifferentTours() throws IOException {
+		Parameters.setAllParametersToDefaultValues();
+		Parameters.setNumberOfToursInGot(2);
+		givenListOfTwoGots();
+		thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValueForTwoGots();
+	}
+
+	private void givenListOfTwoGots() throws IOException {
+		givenSomeGot();
+		AndGivenAnotherGot();
+		gots.add(got);
+		gots.add(got2);
+	}
+
+	private void AndGivenAnotherGot() throws IOException {
+		got2 = SetUpUtils.getGotWithCustomer1And2();
+		got2.addTour(SetUpUtils.getTourWithCustomer_42_44_fromRC101());
+	}
+	
+	private void thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValueForTwoGots() {
+		for (Customer c : got.getCustomers()) {
+			c.setDemand(c.getDemand()*2);
+		}		
+		
+		for (Customer c : got2.getLastTour().getCustomers()) {
+			c.setDemand(c.getDemand()*9);
+		}	
+		
+		printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(got);
+		printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(got2);
+		
+		//print gots in list
+//		for (GroupOfTours got : gots)
+//			got.print();
+		
+		RecourseCost rc = new RecourseCost(gots);
+		
+//		Iterator<Entry<Integer, Integer>> it = rc.getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+//		while (it.hasNext()) {
+//			Entry<Integer, Integer> pair = it.next();
+//			System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
+//		}
+		
+		Iterator<Entry<Integer, Integer>> it = rc.getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+		Entry<Integer, Integer> pair = it.next();
+		System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
+		assertEquals(true, 1 == pair.getKey());
+		assertEquals(true, 3 == pair.getValue());
+		
+		Entry<Integer, Integer> pair2 = it.next();
+		System.out.println("Anzahl Customer, die von " + pair2.getKey() + " Vehicles bedient werden: " + pair2.getValue());
+		assertEquals(true, 2 == pair2.getKey());
+		assertEquals(true, 13 == pair2.getValue());
+
+		Entry<Integer, Integer> pair3 = it.next();
+		System.out.println("Anzahl Customer, die von " + pair2.getKey() + " Vehicles bedient werden: " + pair3.getValue());
+		assertEquals(true, 3 == pair3.getKey());
+		assertEquals(true, 1 == pair3.getValue());
+	}
+
+	private void printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(GroupOfTours gotTemp) {
+		Iterator<Entry<Integer, Integer>> it = gotTemp.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<Integer, Integer> pair = it.next();
+			System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
+		}
 	}
 
 }

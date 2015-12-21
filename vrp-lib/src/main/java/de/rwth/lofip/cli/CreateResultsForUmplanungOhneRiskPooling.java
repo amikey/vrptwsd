@@ -42,6 +42,21 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 	}
 	
 	@Test
+	public void NinetyFivePercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
+		//Set Parameters for Scenario
+		Parameters.setPercentageOfCapacity(0.95);
+		Parameters.setNumberOfToursInGot(1);
+		
+		//Set Output parameters
+		Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\ModifiedSolomon\\");
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		
+		problems = ReadAndWriteUtils.readModifiedSolomonProblems();
+		reduceCapacityOfVehiclesInProblems();
+		processProblems();
+	}
+	
+	@Test
 	public void HundredPercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
