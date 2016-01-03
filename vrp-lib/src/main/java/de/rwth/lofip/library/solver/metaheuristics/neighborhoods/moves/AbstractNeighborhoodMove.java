@@ -280,6 +280,14 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions()); 
 	}
 
+	public RecourseCost getOldRecourseCost() {
+		return oldRecourseCostOfLocalGots;
+	}
+
+	public RecourseCost getNewRecourseCost() {
+		return newRecourseCostAfterMoveIsApplied;
+	}
+
 
 
 

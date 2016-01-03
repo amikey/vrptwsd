@@ -18,7 +18,7 @@ public class SetUpSolutionFromString {
 		SolutionGot solution = new SolutionGot(problem);
 		
 		string = StringUtils.normalizeSpace(StringUtils.trim(string));
-		System.out.println(string);
+//		System.out.println(string);
 //		String[] split = StringUtils.split(string);
 		String[] split= string.split(" ");
 		for (int i = 0; i < split.length; i++) {
