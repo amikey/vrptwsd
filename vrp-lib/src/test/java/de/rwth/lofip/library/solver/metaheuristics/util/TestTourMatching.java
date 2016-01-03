@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.SetUpUtils;
 
@@ -36,6 +37,9 @@ public class TestTourMatching {
 	
 	@Test 
 	public void testMatchToursToGots() throws IOException {
+		Parameters.setAllParametersToDefaultValues();
+		Parameters.setNumberOfToursInGot(2);
+		
 		givenASolutionWithGots();
 		System.out.println("Solution vor Matching Tours: ");
 		solution.printSolutionAsTupel();
@@ -46,7 +50,9 @@ public class TestTourMatching {
 		solution.printSolutionAsTupel();
 		System.out.println("\n");
 		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
-		assertEquals(6, solution.getGots().size());		
+		assertEquals(6, solution.getGots().size());
+		
+		Parameters.setAllParametersToDefaultValues();
 	}
 
 	private void givenASolutionWithGots() throws IOException {

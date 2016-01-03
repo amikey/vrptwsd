@@ -21,8 +21,6 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private long timeNeeded;
 	
 	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
-	private int maximalNumberOfIterationsTabuSearch = Parameters.getMaximalNumberOfIterationsTabuSearch();
-	private int maximalNumberOfIterationsWithoutImprovementTabuSearch = Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch();;
 	private int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	
@@ -266,8 +264,8 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	protected void printProblems() throws IOException {
 		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
 				numberOfDifferentInitialSolutions, 
-				maximalNumberOfIterationsTabuSearch, 
-				maximalNumberOfIterationsWithoutImprovementTabuSearch, 
+				Parameters.getMaximalNumberOfIterationsTabuSearch(), 
+				Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch(), 
 				maximalNumberOfCallsToAdaptiveMemory,
 				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
 				seedI1, seedGI, seedAM);
@@ -276,8 +274,8 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private void printProblemsModifiedSolomonInstances() throws IOException {
 		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch - ModifiedProblems",solutions, timeNeeded,
 				numberOfDifferentInitialSolutions, 
-				maximalNumberOfIterationsTabuSearch, 
-				maximalNumberOfIterationsWithoutImprovementTabuSearch, 
+				Parameters.getMaximalNumberOfIterationsTabuSearch(), 
+				Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch(),
 				maximalNumberOfCallsToAdaptiveMemory,
 				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
 				seedI1, seedGI, seedAM);
@@ -298,8 +296,8 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		this.problems = vrpProblems;
 		this.solutions = solutionsTemp;
 		this.numberOfDifferentInitialSolutions = numberOfDifferentInitialSolutions;
-		this.maximalNumberOfIterationsTabuSearch = maximalNumberOfIterationsTabuSearch;
-		this.maximalNumberOfIterationsWithoutImprovementTabuSearch = maximalNumberOfIterationsWithoutImprovementTabuSearch; 
+		Parameters.setNumberOfIterationsInTS(maximalNumberOfIterationsTabuSearch);
+		Parameters.setNumberOfImprovingIterationsInTS(maximalNumberOfIterationsWithoutImprovementTabuSearch); 
 		this.maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory;
 		this.maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
 		this.seedI1 = seedI1;
@@ -317,8 +315,6 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 						
 			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsTabuSearch(maximalNumberOfIterationsTabuSearch);
-			adaptiveMemoryTabuSearch.setMaximalNumberOfIterationsWithoutImprovementTabuSerach(maximalNumberOfIterationsWithoutImprovementTabuSearch);
 			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(maximalNumberOfCallsWithoutImprovementToAdaptiveMemory);

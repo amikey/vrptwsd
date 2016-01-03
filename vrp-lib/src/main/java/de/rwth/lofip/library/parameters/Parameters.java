@@ -162,6 +162,16 @@ public class Parameters {
 	public static void setPercentageOfCapacity(double percentageOfCapacity) {
 		Parameters.percentageOfCapacity = percentageOfCapacity;
 	}
+
+	public static void setNumberOfImprovingIterationsInTS(int i) {
+		maximalNumberOfIterationsWithoutImprovementTabuSearch = i;
+	}
+
+	public static void setNumberOfIterationsInTS(
+			int maximalNumberOfIterationsTabuSearch2) {
+		maximalNumberOfIterationsTabuSearch = maximalNumberOfIterationsTabuSearch2;
+		
+	}
 	
 
 }

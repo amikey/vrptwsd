@@ -20,8 +20,6 @@ public class AdaptiveMemoryTabuSearch {
 	@SuppressWarnings("unused")
 	private int maximalNumberOfCallsToAdaptiveMemory;
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
-	private int maximalNumberOfIterationsTabuSearch;
-	private int maximalNumberOfIterationsWithoutImprovementTabuSearch;
 	
 	private AdaptiveMemory adaptiveMemory = new AdaptiveMemory();
 	
@@ -48,8 +46,6 @@ public class AdaptiveMemoryTabuSearch {
 			
 			solution = constructInitialSolutionFromAdaptiveMemory();
 			TabuSearchForElementWithTours tabuSearch = new TabuSearchForElementWithTours();
-			tabuSearch.setMaximalNumberOfIterations(maximalNumberOfIterationsTabuSearch);
-			tabuSearch.setMaximalNumberOfIterationsWithoutImprovement(maximalNumberOfIterationsWithoutImprovementTabuSearch);
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
 			
@@ -92,8 +88,6 @@ public class AdaptiveMemoryTabuSearch {
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
 				TabuSearchForElementWithTours tabuSearch = new TabuSearchForElementWithTours();
-				tabuSearch.setMaximalNumberOfIterations(maximalNumberOfIterationsTabuSearch);
-				tabuSearch.setMaximalNumberOfIterationsWithoutImprovement(maximalNumberOfIterationsWithoutImprovementTabuSearch);
 				tabuSearch.improve(newSolution);
 				adaptiveMemory.addTours(newSolution);
 			}
@@ -143,15 +137,6 @@ public class AdaptiveMemoryTabuSearch {
 		private void setBestOverallSolutionToNewSolution() {
 			bestOverallSolution = solution.clone();	
 		}
-	
-	
-	public void setMaximalNumberOfIterationsTabuSearch(int i) {
-		maximalNumberOfIterationsTabuSearch = i;
-	}
-	
-	public void setMaximalNumberOfIterationsWithoutImprovementTabuSerach(int i) {	
-		maximalNumberOfIterationsWithoutImprovementTabuSearch = i;
-	}
 
 	public void setNumberOfInitialSolutions(
 			int numberOfDifferentInitialSolutions2) {

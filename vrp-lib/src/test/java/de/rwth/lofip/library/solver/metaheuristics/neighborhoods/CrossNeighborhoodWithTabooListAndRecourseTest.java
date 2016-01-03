@@ -8,6 +8,8 @@ import org.junit.Test;
 
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.SetUpUtils;
 
@@ -33,17 +35,24 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		throw new RuntimeException("Implement test for CalculateRecourseCostForMoves()");
 		
 		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionFromRC104Problem();
+		solutionRC104.printSolutionAsTupel();
 		
-		GroupOfTours got1 = solutionRC104.getGots().get(0);
-		GroupOfTours got2 = solutionRC104.getGots().get(1);
+		Parameters.setNumberOfImprovingIterationsInTS(1);
+		SolutionGot solutionRC104NachTS = (SolutionGot) new TabuSearchForElementWithTours().improve(solutionRC104);
+		solutionRC104NachTS.printSolutionAsTupel();
 		
-		//dieser Move generiert eine Tour mit Kunden 1, 2, 3 und eine Tour mit Kunden 4
-		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, 100, 15);
-		
-		CrossNeighborhoodWithTabooListAndRecourse neighborhood = new CrossNeighborhoodWithTabooListAndRecourse(SetUpUtils.getSomeRandomDummySolution());
-		neighborhood.setRespAddBestNonTabooMove(move);
-		neighborhood.calculateRecourseCostForMoves();
-		System.out.println(neighborhood.getFirstMoveInMoveList().getDeterministicAndStochasticCostDifference());
+//		GroupOfTours got1 = solutionRC104.getGots().get(0);
+//		GroupOfTours got2 = solutionRC104.getGots().get(1);
+//		
+//		//todo : ist dieser move überhaupt feasible? Ist das wichtig?
+//		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, 100, 15);
+//		
+//		CrossNeighborhoodWithTabooListAndRecourse neighborhood = new CrossNeighborhoodWithTabooListAndRecourse(SetUpUtils.getSomeRandomDummySolution());
+//		neighborhood.setRespAddBestNonTabooMove(move);
+//		neighborhood.calculateRecourseCostForMoves();
+//		System.out.println(neighborhood.getFirstMoveInMoveList().getDeterministicAndStochasticCostDifference());
+//		
+		Parameters.setAllParametersToDefaultValues();
 	}
 	
 	@Test 

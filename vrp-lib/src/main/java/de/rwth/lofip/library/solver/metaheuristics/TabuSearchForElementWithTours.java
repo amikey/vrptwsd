@@ -37,6 +37,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private long timeNeeded;
 	private long startTime;
 	private long endTime;
+	
+	public TabuSearchForElementWithTours() {
+		maximalNumberOfIterations = Parameters.getMaximalNumberOfIterationsTabuSearch();
+		maxNumberIterationsWithoutImprovement = Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch();
+	}
 
 	@Override
 	public ElementWithTours improve(ElementWithTours solutionStart) throws IOException {
@@ -151,10 +156,6 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	public void setMaximalNumberOfIterations(int i) {
 		maximalNumberOfIterations = i;
-	}
-	
-	public void setMaximalNumberOfIterationsWithoutImprovement(int i) {
-		maxNumberIterationsWithoutImprovement = i;
 	}
 	
 	// Utilities
