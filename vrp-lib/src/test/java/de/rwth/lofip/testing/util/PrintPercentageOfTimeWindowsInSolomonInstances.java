@@ -15,7 +15,7 @@ public class PrintPercentageOfTimeWindowsInSolomonInstances {
 	
 	@Test
 	public void percentageOfTimeWindowsInSolomonInstances() throws IOException {
-		problems = ReadAndWriteUtils.readSolomonProblems();
+		problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 		
 		for (VrpProblem problem : problems)
 			System.out.println(problem.getDescription() + " & " + problem.getPercentageWithTW() + " & " + problem.getTotalDemandOfAllCustomers() + " \\" + "\\");
@@ -23,7 +23,7 @@ public class PrintPercentageOfTimeWindowsInSolomonInstances {
 	
 	@Test
 	public void demandInSolomonInstances() throws IOException {
-		problems = ReadAndWriteUtils.readSolomonProblems();
+		problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 		
 		for (VrpProblem problem : problems)
 			System.out.println(problem.getDescription() + " & " + problem.getTotalDemandOfAllCustomers() + " \\" + "\\");

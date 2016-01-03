@@ -21,7 +21,7 @@ public class SimulationUtils {
 		
 		for (Customer c : got.getCustomers()) {
 			//IMPORTANT_TODO: hier wirklich mit 1/3 multiplizieren?
-			double sd = deviation * 1/3 * c.getDemand();
+			double sd = deviation * c.getDemand();
 			int demand;        	
 		    double val = randomDemandGeneration.nextGaussian() * sd + c.getDemand();
 		    demand = (int) Math.round(val);

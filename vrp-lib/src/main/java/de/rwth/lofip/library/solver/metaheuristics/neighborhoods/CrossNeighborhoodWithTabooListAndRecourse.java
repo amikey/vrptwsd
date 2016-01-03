@@ -64,7 +64,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		listOfNonTabooMoves = listOfNonTabooMoves.subList(0, Math.min(listOfNonTabooMoves.size(),Parameters.getNumberOfMovesThatStochasticCostIsCalculatedFor()));		
 	}
 
-	private void calculateRecourseCostForMoves() {
+	void calculateRecourseCostForMoves() {
 		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {
 			move.setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(calculateRecourseCostOfGotsThatAreAffectedByMove(move));
 			AbstractNeighborhoodMove copyOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
@@ -113,6 +113,11 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	
 	public List<AbstractNeighborhoodMove> getListOfNonTabooMoves() {
 		return listOfNonTabooMoves;
+	}
+
+	//this exists only for testing
+	public AbstractNeighborhoodMove getFirstMoveInMoveList() {
+		return listOfNonTabooMoves.get(0);
 	}
 
 

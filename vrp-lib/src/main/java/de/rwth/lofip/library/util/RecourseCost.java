@@ -57,12 +57,12 @@ public class RecourseCost {
 			for (Customer c : got.getTour(i).getCustomers()) {
 				HashSet<Integer> tempHashSet = new HashSet<Integer>();
 				tempHashSet.add(i);
-				
-				System.out.println("tempHashSet nach initialisierung für Tour " + i + " und Kunde " + c.getCustomerNo() + ": (" );
-				for (int k : tempHashSet)
-					System.out.print(k + ", ");
-				System.out.println(")" );
-				
+//				
+//				System.out.println("tempHashSet nach initialisierung für Tour " + i + " und Kunde " + c.getCustomerNo() + ": (" );
+//				for (int k : tempHashSet)
+//					System.out.print(k + ", ");
+//				System.out.println(")" );
+//				
 				customersServedByTours.put(c.getCustomerNo(), tempHashSet);
 			}
 		}
@@ -129,17 +129,17 @@ public class RecourseCost {
     					for (Customer c : gotClone.getTour(j).getCustomers()) {
     						HashSet<Integer> tempHashSet = customersServedByTours.get(c.getCustomerNo());
     						
-    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " bevor Tour " + j + " hinzugefügt wird: ");
-    						for (int k : tempHashSet)
-    							System.out.print(k + ", ");
-    						System.out.println(")" );
+//    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " bevor Tour " + j + " hinzugefügt wird: ");
+//    						for (int k : tempHashSet)
+//    							System.out.print(k + ", ");
+//    						System.out.println(")" );
     						
     						tempHashSet.add(j);
     						
-    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " nachdem Tour " + j + " hinzugefügt wird:" );
-    						for (int k : tempHashSet)
-    							System.out.print(k + ", ");
-    						System.out.println(")" );
+//    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " nachdem Tour " + j + " hinzugefügt wird:" );
+//    						for (int k : tempHashSet)
+//    							System.out.print(k + ", ");
+//    						System.out.println(")" );
     						
     						customersServedByTours.put(c.getCustomerNo(), tempHashSet);
     					}

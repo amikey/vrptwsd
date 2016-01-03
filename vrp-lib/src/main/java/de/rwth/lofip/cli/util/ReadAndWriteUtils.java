@@ -32,7 +32,41 @@ public class ReadAndWriteUtils {
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
 	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();
 	
-	public static List<VrpProblem> readSolomonProblems() throws IOException {
+	
+	
+	public static List<VrpProblem> readEigeneModifiedSolomonProblems() throws IOException {
+		return readSolomonProblems(getInputDirectoryForEigeneModifiedSolomonProblems());
+	}
+	
+	private static String getInputDirectoryForEigeneModifiedSolomonProblems() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\eigene-modfied-solomon-problems\\";	
+		System.out.println(s);
+		return s;	
+	}
+
+	public static List<VrpProblem> readSolomonProblems(String inputDir) throws IOException {
+		List<VrpProblem> problems = new LinkedList<VrpProblem>();
+		File dir = new File(inputDir);		
+		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);
+		if (dir.listFiles() == null)
+			throw new RuntimeException("Directory enthält keine Files");
+		while (files.hasNext()) {
+			File file = files.next();			
+			FileInputStream openInputStream = null;
+			try {
+				openInputStream = FileUtils.openInputStream(file);
+				List<String> lines = IOUtils.readLines(openInputStream);
+				VrpProblem problem = VrpUtils.createProblemFromStringList(lines);
+				problems.add(problem);
+			} finally {
+				IOUtils.closeQuietly(openInputStream);
+			}			
+		}
+		return problems;
+	}
+	
+	public static List<VrpProblem> readOriginalSolomonProblems() throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
 		File dir = new File(getInputDirectoryForSolomon100());		
 		Iterator<File> files = FileUtils.iterateFiles(dir,new String[] { "txt" }, false);

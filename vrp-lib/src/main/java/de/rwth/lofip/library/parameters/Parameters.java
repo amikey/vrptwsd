@@ -49,7 +49,7 @@ public class Parameters {
 	
 	//Simulation
 	private final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
-	private final static double FLUCTUATION_OF_DEMAND_IN_PERCENTAGE = 0.45;
+	private final static double RELATIVE_STANDARD_DEVIATION = 0.15;
 	
 	
 	//Getter und Setter	
@@ -78,7 +78,7 @@ public class Parameters {
 	}
 
 	public static double getFluctuationOfDemandInPercentage() { 
-		return FLUCTUATION_OF_DEMAND_IN_PERCENTAGE;
+		return RELATIVE_STANDARD_DEVIATION;
 	}
 
 	public static int getMaximalNumberOfToursInGots() {

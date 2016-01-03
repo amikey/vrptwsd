@@ -16,6 +16,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
+import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class SetUpUtils {
 	
@@ -475,11 +476,15 @@ public class SetUpUtils {
 	}
 
 	public static SolutionGot getSomeSolutionFromRC104Problem() throws IOException {
-			List<VrpProblem> problems = ReadAndWriteUtils.readSolomonProblemRC104AsList();
-			List<SolutionGot> solutions = new LinkedList<SolutionGot>();
-			new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-					problems, solutions, 2, 5, 5, 5, 5, 1, 1, 1);	
-			return solutions.get(0);		
+		SolutionGot solutionRC104 = SetUpSolutionFromString.SetUpSolution("( ( 66 82 11 15 9 12 14 47 78 88 98 ) ) ( ( 60 6 7 79 8 46 4 45 3 1 100 ) ) ( ( 73 17 16 53 13 58 ) ) ( ( 99 55 ) ) ( ( 61 68 69 10 87 86 52 64 56 91 ) ) ( ( 70 2 5 40 39 41 71 96 ) ) ( ( 92 95 62 33 32 30 26 29 31 34 50 ) ) ( ( 23 75 97 59 74 ) ) ( ( 90 65 83 57 20 49 18 48 21 25 77 ) ) ( ( 81 54 42 44 43 38 36 35 37 72 93 94 ) ) ( ( 63 76 89 28 27 ) ) ( ( 80 67 84 85 51 19 22 24 ) )" 
+				, ReadAndWriteUtils.readSolomonProblemRC104AsList().get(0));
+		return solutionRC104;
+//		
+//			List<VrpProblem> problems = ReadAndWriteUtils.readSolomonProblemRC104AsList();
+//			List<SolutionGot> solutions = new LinkedList<SolutionGot>();
+//			new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
+//					problems, solutions, 2, 5, 5, 5, 5, 1, 1, 1);	
+//			return solutions.get(0);		
 	}
 	
 	public static SolutionGot getSomeRandomDummySolution() {

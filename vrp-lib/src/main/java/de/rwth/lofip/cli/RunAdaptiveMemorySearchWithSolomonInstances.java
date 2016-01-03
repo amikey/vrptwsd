@@ -38,7 +38,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 //		System.setOut(out);
 		Parameters.setOutputDirectory("\\ErgebnisseSolomon100\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		problems = ReadAndWriteUtils.readSolomonProblems();
+		problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 		processProblems();
 		printProblems();
 	}

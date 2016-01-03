@@ -23,7 +23,7 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	private int positionEndOfSegmentTour2;
 	private double costOfCompleteSolutionThatResultsFromMove;
 	//cost difference is a negative value if new solution does cost less than previous solution; otherwise positive (i.e. newCost - OldCost)
-	private double costDifferenceToPreviousSolution;
+	protected double costDifferenceToPreviousSolution;
 	
 	private RecourseCost oldRecourseCostOfLocalGots;
 	private RecourseCost newRecourseCostAfterMoveIsApplied;
@@ -90,18 +90,6 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 
 	public void setCostDifferenceToPreviousSolution(double costDifferenceToPreviousSolution) {
 		this.costDifferenceToPreviousSolution = costDifferenceToPreviousSolution;
-	}
-	
-	public void setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(RecourseCost rc) {
-		this.oldRecourseCostOfLocalGots = rc;
-	}
-	
-	public void setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(RecourseCost rc) {
-		this.newRecourseCostAfterMoveIsApplied = rc;
-	}	
-
-	public double getDeterministicAndStochasticCostDifference() {
-		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions()); 
 	}
 
 	public boolean isInnerTourMove() {
@@ -276,6 +264,20 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		if (positionEndOfSegmentTour2 > tour2.length())
 			return false;
 		return true;
+	}
+	
+	//Stuff that is needed for AMTS with Recourse
+	
+	public void setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(RecourseCost rc) {
+		this.oldRecourseCostOfLocalGots = rc;
+	}
+	
+	public void setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(RecourseCost rc) {
+		this.newRecourseCostAfterMoveIsApplied = rc;
+	}	
+
+	public double getDeterministicAndStochasticCostDifference() {
+		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions()); 
 	}
 
 
