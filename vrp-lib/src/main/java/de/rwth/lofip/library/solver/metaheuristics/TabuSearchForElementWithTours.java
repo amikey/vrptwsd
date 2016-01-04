@@ -28,7 +28,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private int maxNumberIterationsWithoutImprovement;
 	
 	private int iteration = 1;
-	private ElementWithTours solution;
+	protected ElementWithTours solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
 	private ElementWithTours bestOverallSolution;
@@ -50,7 +50,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
-		crossNeighborhood = new CrossNeighborhoodWithTabooList(solution);
+		crossNeighborhood = getCrossNeighborhood(); 
 		
 		System.out.println("Starting Tabu Search");		
 		while (!isStoppingCriterionMet()) {
@@ -85,6 +85,10 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		generateBlankLineForPublishingSolution();
 		publishSolutionAtEndOfTabuSearch();
 		return bestOverallSolution;
+	}
+
+	protected CrossNeighborhoodWithTabooList getCrossNeighborhood() {
+		return new CrossNeighborhoodWithTabooList(solution);
 	}
 
 	private boolean isStoppingCriterionMet() {
@@ -140,6 +144,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		}
 	}
 	
+	//this exists only for testing
 	public void tryToImproveNewBestSolutionWithIntensificationPhase(
 			SolutionGot solution2) {
 		solution = solution2;

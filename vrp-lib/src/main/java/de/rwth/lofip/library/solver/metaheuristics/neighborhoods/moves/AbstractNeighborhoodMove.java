@@ -277,15 +277,32 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	}	
 
 	public double getDeterministicAndStochasticCostDifference() {
-		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions()); 
+		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getRecourseCost() - oldRecourseCostOfLocalGots.getRecourseCost()); 
 	}
-
+	
+	//dies hier wird verwendet, um deterministische Kosten, stochastische Kosten und Tourenanzahl auf eine Zahl zu bringen
+	public double getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions() {
+		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions());
+	}
+		
 	public RecourseCost getOldRecourseCost() {
 		return oldRecourseCostOfLocalGots;
 	}
 
 	public RecourseCost getNewRecourseCost() {
 		return newRecourseCostAfterMoveIsApplied;
+	}
+
+	public double getOldCost() {
+		return costOfCompleteSolutionThatResultsFromMove - costDifferenceToPreviousSolution + getOldRecourseCost().getRecourseCost();
+	}
+	
+	public double getNewCost() {
+		return getCost()  + getNewRecourseCost().getRecourseCost();
+	}
+
+	public void setCostOfCompleteSolutionThatResultsFromMove(double cost) {
+		costOfCompleteSolutionThatResultsFromMove = cost;		
 	}
 
 

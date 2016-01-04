@@ -57,7 +57,6 @@ public class TestSortingUsingJava8 {
 		neighborhood.setRespAddBestNonTabooMove(new AbstractNeighborhoodMove(100, -1000));
 		neighborhood.setRespAddBestNonTabooMove(new AbstractNeighborhoodMove(800, -300));
 	
-		
 		neighborhood.sortMovesWrtCostDifference();
 		
 		System.out.println(neighborhood.getListOfNonTabooMoves().get(0).getCostDifferenceToPreviousSolution());

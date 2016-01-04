@@ -51,16 +51,14 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 	}
 	
 	@Test
-	public void testCalculateRecourseCostForMoves() throws IOException {
-//		throw new RuntimeException("Implement test for CalculateRecourseCostForMoves()");
-		
+	public void testCalculateRecourseCostForMoves() throws IOException {		
 		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionFromRC104Problem();
 		
 		GroupOfTours got1 = solutionRC104.getGots().get(0);
 		GroupOfTours got2 = solutionRC104.getGots().get(1);
 		
 		//todo : ist dieser move überhaupt feasible? Ist das wichtig?
-		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, 100, 15);
+		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, Double.MAX_VALUE, Double.MAX_VALUE);
 		
 		CrossNeighborhoodWithTabooListAndRecourse neighborhood = new CrossNeighborhoodWithTabooListAndRecourse(SetUpUtils.getSomeRandomDummySolution());
 		neighborhood.setRespAddBestNonTabooMove(move);
@@ -68,24 +66,18 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		neighborhood.calculateRecourseCostForMoves();
 		
 		//manually calculate old Recourse Cost
-		got2.getExpectedRecourse();
-		got1.getExpectedRecourse().print();
-		got2.getExpectedRecourse().print();
 		double oldRecourseCost = got1.getExpectedRecourse().getRecourseCost() + got2.getExpectedRecourse().getRecourseCost();
 		
 		neighborhood.acctuallyApplyMoveAndMaintainNeighborhood(move);
 		
 		//manually calculate new Recourse Cost
-		got2.getExpectedRecourse();
-		got1.getExpectedRecourse().print();
-		got2.getExpectedRecourse().print();
 		double newRecourseCost = got1.getExpectedRecourse().getRecourseCost() + got2.getExpectedRecourse().getRecourseCost();
 	
 		System.out.println(oldRecourseCost);
 		System.out.println(newRecourseCost);
 		
 		assertEquals(oldRecourseCost,neighborhood.getFirstMoveInMoveList().getOldRecourseCost().getRecourseCost(),0.0001);
-		assertEquals(newRecourseCost,neighborhood.getFirstMoveInMoveList().getNewRecourseCost().getRecourseCost(),0.0001);		
+		assertEquals(newRecourseCost,neighborhood.getFirstMoveInMoveList().getNewRecourseCost().getRecourseCost(),0.0001);	
 	}
 	
 	@Test 

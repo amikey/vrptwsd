@@ -598,11 +598,11 @@ public class Tour implements SolutionElement, Serializable {
     
     public String getTourAsTupel()
     {
-    	String s = ("(0 ");
+    	String s = ("( ");
         for (Customer c : this.getCustomers()) {
             s += (c.getCustomerNo() + " ");
         }
-        s += ")";
+        s += ") ";
 //        s += "); Demand: " + getDemandOnTour();
         return s;
     }
