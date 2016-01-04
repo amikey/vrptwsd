@@ -7,7 +7,6 @@ import java.util.List;
 
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.RecourseCost;
 
 public class TourMatching {
@@ -20,10 +19,10 @@ public class TourMatching {
 	
 	GroupOfTours currentGot;
 	
+	//this rematches tours to gots such that recourse cost are minimized (but only with a greedy procedure)
 	public SolutionGot matchToursToGots (SolutionGot solution) {
 		initialiseFields(solution);    
 		calculateRecourseCostsBetweenTours();
-		System.out.println("Calculated Recourse Costs between Tours");
 		findCostMinimalMatchingForToursWithGreedy();
 		return newSolution;
 	}
@@ -83,6 +82,7 @@ public class TourMatching {
 		return size >= oldSolution.getNumberOfTours()-1;
 	}
 
+	//public so that TourMatching can be tested
 	public boolean toursThatAreUsedInRecourseCostAreAlreadyAssignedToGots(RecourseCost rc) {
 		for (Integer i : rc.getIndizesOfTours()) 
 			if (listOfUsedIndizes.contains(i))
@@ -128,8 +128,8 @@ public class TourMatching {
 		currentGot.addTour(oldSolution.getTour(indexOfTour));
 	}
 	
+	// Test Utilities
 	
-	//Utilities
 	public void setListOfUsedIndizesForTesting(List<Integer> usedIndizes) {
 		listOfUsedIndizes = usedIndizes;
 	}

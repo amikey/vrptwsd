@@ -21,15 +21,19 @@ public class AdaptiveMemoryTabuSearch {
 	private int maximalNumberOfCallsToAdaptiveMemory;
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
 	
-	private AdaptiveMemory adaptiveMemory = new AdaptiveMemory();
+	private AdaptiveMemory adaptiveMemory = getAM();
 	
-	private SolutionGot solution = null;
-	private SolutionGot bestOverallSolution;
+	protected SolutionGot solution = null;
+	protected SolutionGot bestOverallSolution;
 	@SuppressWarnings("unused")
 	private int callsToAdaptiveMemory = 0;
 	private int numberOfAMCallsWithoutImprovement = 0;
 	@SuppressWarnings("unused")
 	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
+	
+	protected AdaptiveMemory getAM() {
+		return new AdaptiveMemory();
+	}
 	
 	public SolutionGot solve(VrpProblem vrpProblem) throws IOException {
 		
@@ -45,7 +49,7 @@ public class AdaptiveMemoryTabuSearch {
 			System.out.println("AM CALL Nr. " + iteration);
 			
 			solution = constructInitialSolutionFromAdaptiveMemory();
-			TabuSearchForElementWithTours tabuSearch = new TabuSearchForElementWithTours();
+			TabuSearchForElementWithTours tabuSearch = getTS(); 
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
 			
@@ -55,6 +59,7 @@ public class AdaptiveMemoryTabuSearch {
 			if (isNewSolutionIsNewBestOverallSolution()) {
 				setBestOverallSolutionToNewSolution();
 				numberOfAMCallsWithoutImprovement = 0;
+				numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 			} else
 				numberOfAMCallsWithoutImprovement++;
 			
@@ -64,6 +69,10 @@ public class AdaptiveMemoryTabuSearch {
 			throw new RuntimeException("Solution ist Null. Fehler!");
 		return bestOverallSolution;
 	}
+
+		protected TabuSearchForElementWithTours getTS() {
+			return new TabuSearchForElementWithTours();		 
+		}
 
 		private void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
 			if (Parameters.publishSolutionAtEndOfTabuSearch()) 				
@@ -87,7 +96,7 @@ public class AdaptiveMemoryTabuSearch {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
-				TabuSearchForElementWithTours tabuSearch = new TabuSearchForElementWithTours();
+				TabuSearchForElementWithTours tabuSearch = getTS();
 				tabuSearch.improve(newSolution);
 				adaptiveMemory.addTours(newSolution);
 			}
@@ -120,15 +129,13 @@ public class AdaptiveMemoryTabuSearch {
 			numberOfTimesSameBestOverallSolutionHasBeenFound++;
 		}
 	
-		private boolean isNewSolutionIsNewBestOverallSolution() {
+		protected boolean isNewSolutionIsNewBestOverallSolution() {
 //			assertEquals(false, solution.equals(bestOverallSolution));
 			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(),bestOverallSolution.getTotalDistanceWithCostFactor())
 				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
-					numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 					return true;
 			}
 			if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours()) {				
-				numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 				return true;
 			}
 			return false;
