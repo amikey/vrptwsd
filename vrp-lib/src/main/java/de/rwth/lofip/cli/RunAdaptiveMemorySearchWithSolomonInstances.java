@@ -17,18 +17,18 @@ import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
 public class RunAdaptiveMemorySearchWithSolomonInstances {
 
 	protected List<VrpProblem> problems = new LinkedList<VrpProblem>();
-	private List<SolutionGot> solutions = new LinkedList<SolutionGot>();
-	private long timeNeeded;
+	protected List<SolutionGot> solutions = new LinkedList<SolutionGot>();
+	protected long timeNeeded;
 	
-	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
-	private int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
-	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
+	protected int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
+	protected int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
+	protected int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	
-	private int seedI1 = 3000;
-	private int seedGI = 3000;
-	private int seedAM = 3000;
+	protected int seedI1 = 3000;
+	protected int seedGI = 3000;
+	protected int seedAM = 3000;
 	
-	private int numberOfExperiments = 100;
+	protected int numberOfExperiments = 100;
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
@@ -248,7 +248,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		printProblems();
 	}
 
-	private void increaseParameters() {
+	protected void increaseParameters() {
 		seedI1++;
 		seedGI++;
 		seedAM++;
