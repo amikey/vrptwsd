@@ -18,14 +18,14 @@ public class AdaptiveMemory {
 	
 	//this set is sorted such that tours with lowest value are at the beginning (index 0)
 	//and tours with highest value are at the end (index lengthOfSet-1)
-	private List<Tour> allToursInMemory = new ArrayList<Tour>();
+	protected List<Tour> allToursInMemory = new ArrayList<Tour>();
 	private int lengthOfList = Parameters.getMaximalNumberOfToursInAdaptiveMemory();
 	private VrpProblem vrpProblem;
 	
 	private List<Customer> unservedCustomers;
 	private List<Tour> toursThatContainOnlyUnservedCustomers;
 	private Tour currentNewTour;
-	private SolutionGot currentNewSolution;
+	protected SolutionGot currentNewSolution;
 	
 	private static int seed = 0;
 	private Random randomGenerator = new Random(seed); 
@@ -36,7 +36,7 @@ public class AdaptiveMemory {
 	
 	public void addTours(SolutionGot solution) {	
 		setVrpProblem(solution);
-		labelToursWithSolutionValueAndNumberOfTours(solution);		
+		labelToursWithSolutionValueAndNumberOfTours(solution);
 		addToursOfSolutionToTours(solution);
 		removeToursWithOneCustomer();
 		sortTours();
@@ -47,7 +47,7 @@ public class AdaptiveMemory {
 			vrpProblem = solution.getVrpProblem();
 		}
 	
-		private void labelToursWithSolutionValueAndNumberOfTours(SolutionGot solution) {
+		protected void labelToursWithSolutionValueAndNumberOfTours(SolutionGot solution) {
 			for (Tour tour : solution.getTours()) {
 				tour.setSolutionValue(solution.getTotalDistanceWithCostFactor());
 				tour.setSolutionNumberOfTours(solution.getNumberOfTours());
@@ -66,8 +66,8 @@ public class AdaptiveMemory {
 					tourIterator.remove();
 			}		
 		}
-		
-		private void sortTours() {
+				
+		protected void sortTours() {
 			if (Parameters.shallTourNumberBeMinimized()) {
 				//DESIGN_TODO: Für stochastische Variante Version erstellen, die nur auf Kosten geht
 				Collections.sort(allToursInMemory, new Comparator<Tour>() {
@@ -128,6 +128,7 @@ public class AdaptiveMemory {
 			removeAllToursThatContainAlreadyServedCustomers();		
 		}
 		constructSolutionWithCustomersThatRemainUnserved();
+		rematchToursAccordingToRecourseCost();
 		return currentNewSolution;
 	}	
 
@@ -136,8 +137,7 @@ public class AdaptiveMemory {
 		}
 	
 		private void initialiseUnservedCustomers() {
-			if (vrpProblem == null)
-				throw new RuntimeException("BAM");
+			if (vrpProblem == null) throw new RuntimeException("vprProblem in AM ist null");
 			unservedCustomers = new ArrayList<Customer>(vrpProblem.getCustomers());
 		}
 		
@@ -188,9 +188,14 @@ public class AdaptiveMemory {
 			//DESIGN_TODO: hier werden alle Kunden eingefügt, anders als im Paper, in dem nur Kunden in die bestehenden Touren eingefügt und keine neuen Touren eröffnet werden.
 			gi.insertCustomers(currentNewSolution, unservedCustomers);
 		}
+		
+		protected void rematchToursAccordingToRecourseCost() {
+			//nothingg to do here; hook exists for recourse version
+		}
 
 		
 		//****************
+		
 		public static void setSeedTo(int i) {
 			seed = i;
 		}

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.core.IsInstanceOf;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
@@ -31,7 +30,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	protected ElementWithTours solution;
 	private AbstractNeighborhoodMove bestMove;
 	private CrossNeighborhoodWithTabooList crossNeighborhood;
-	private ElementWithTours bestOverallSolution;
+	protected ElementWithTours bestOverallSolution;
 	private int iterationsWithoutImprovement = 0;
 	
 	private long timeNeeded;
@@ -101,16 +100,15 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		//DESIGN_TODO: Hier TourElimination Nachbarschaft aufrufen, wenn Cross keinen Move gefunden hat, der Tourenanzahl reduziert
 	}
 	
-	@SuppressWarnings("unused")
-	private void printBestMove() {
-		bestMove.print();
+	private void updateTabuList() {
+		crossNeighborhood.updateTabuList(iteration);
 	}
 	
 	private void applyBestNonTabooMove() {
 		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 	
-	private boolean isNewSolutionIsNewBestOverallSolution() {
+	protected boolean isNewSolutionIsNewBestOverallSolution() {
 //		assertEquals(false, solution.equals(bestOverallSolution));
 		if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(), bestOverallSolution.getTotalDistanceWithCostFactor())
 			&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
@@ -144,26 +142,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		}
 	}
 	
-	//this exists only for testing
-	public void tryToImproveNewBestSolutionWithIntensificationPhase(
-			SolutionGot solution2) {
-		solution = solution2;
-		tryToImproveNewBestSolutionWithIntensificationPhase();
-	}
-	
 	private void setBestOverallSolutionToNewSolution() {
 		bestOverallSolution = solution.clone();	
 	}
-	
-	private void updateTabuList() {
-		crossNeighborhood.updateTabuList(iteration);
-	}
-	
-	public void setMaximalNumberOfIterations(int i) {
-		maximalNumberOfIterations = i;
-	}
-	
-	// Utilities
+
+	// Print Utilities
 	
 	private void publishSolution() throws IOException {
 		if (Parameters.publishSolutionValueProgress())
@@ -216,5 +199,17 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		if (Parameters.publishSolutionValueProgress())
 			IOUtils.write("\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
 	}
+	
+	@SuppressWarnings("unused") 
+	private void printBestMove() {
+		bestMove.print();
+	}
 
+	//Test Utilities
+	
+	//this exists only for testing
+	public void tryToImproveNewBestSolutionWithIntensificationPhase(SolutionGot solution2) {
+		solution = solution2;
+		tryToImproveNewBestSolutionWithIntensificationPhase();
+	}
 }

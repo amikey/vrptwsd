@@ -1,4 +1,6 @@
 *.class
+*.csv
+*.xlsx
 
 # Package Files #
 *.jar

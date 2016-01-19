@@ -15,6 +15,8 @@ public interface ElementWithTours {
 	public void removeEmptyToursAndGots();
 	
 	public List<Tour> getTours();
+	
+	public double getTotalDistanceWithCostFactorAndRecourse();
 
 	public String getAsTupel();
 
@@ -23,4 +25,5 @@ public interface ElementWithTours {
 	public String getAsTupelWithDemand();
 
 	public String getUseOfCapacityInTours();
+	
 }

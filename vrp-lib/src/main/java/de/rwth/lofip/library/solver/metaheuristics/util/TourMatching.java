@@ -20,10 +20,10 @@ public class TourMatching {
 	
 	GroupOfTours currentGot;
 	
+	//this rematches tours to gots such that recourse cost are minimized (bur only with a greedy procedure)
 	public SolutionGot matchToursToGots (SolutionGot solution) {
 		initialiseFields(solution);    
 		calculateRecourseCostsBetweenTours();
-		System.out.println("Calculated Recourse Costs between Tours");
 		findCostMinimalMatchingForToursWithGreedy();
 		return newSolution;
 	}
@@ -83,6 +83,7 @@ public class TourMatching {
 		return size >= oldSolution.getNumberOfTours()-1;
 	}
 
+	//public so that tourMatching can be tested
 	public boolean toursThatAreUsedInRecourseCostAreAlreadyAssignedToGots(RecourseCost rc) {
 		for (Integer i : rc.getIndizesOfTours()) 
 			if (listOfUsedIndizes.contains(i))
@@ -129,7 +130,7 @@ public class TourMatching {
 	}
 	
 	
-	//Utilities
+	// Test Utilities
 	public void setListOfUsedIndizesForTesting(List<Integer> usedIndizes) {
 		listOfUsedIndizes = usedIndizes;
 	}

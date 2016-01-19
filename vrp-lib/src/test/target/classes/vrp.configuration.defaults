@@ -1,0 +1,6 @@
+approximateEquality = 0.9999
+baseDirectory = 
+outputDirectory = 
+maximumIterations = 15000
+maximumImprovementIterations = 5000
+deviationFactor = 0.1

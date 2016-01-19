@@ -39,6 +39,13 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
         }
         return distance;
     }
+    
+    public double getTotalDistanceWithCostFactorAndRecourse() {
+    	double cost = 0;
+    	for (GroupOfTours got : getGots()) 
+    		cost += got.getTotalDistanceWithCostFactor() + got.getExpectedRecourse().getRecourseCost();
+    	return cost;
+    }
 
     public int getVehicleCount() {
         return getTours().size();

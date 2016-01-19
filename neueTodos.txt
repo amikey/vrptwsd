@@ -1,0 +1,5 @@
+- Cross Neighborhood so ändern, dass nur die beiden "nächsten" Touren zum Tauschen betrachtet werden.
+
+- Cross Neighborhood so ändern, dass zuerst nur neue Touren kombiniert werden.
+
+- Bei der Generierung des Demands tatsächlich mit 1/3 multiplizieren? (Klasse Simulation Utils)
