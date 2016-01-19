@@ -28,7 +28,7 @@ public class AdaptiveMemory {
 	protected SolutionGot currentNewSolution;
 	
 	private static int seed = 0;
-	private Random randomGenerator = new Random(seed); 
+	private Random randomGenerator = new Random(seed);
 	
 	public AdaptiveMemory() {
 		seed++;
@@ -54,10 +54,6 @@ public class AdaptiveMemory {
 			}
 		}
 		
-		private void addToursOfSolutionToTours(SolutionGot solution) {
-			allToursInMemory.addAll(solution.getTours());
-		}
-		
 		private void removeToursWithOneCustomer() {
 			Iterator<Tour> tourIterator = allToursInMemory.iterator();
 			while (tourIterator.hasNext()) {
@@ -66,7 +62,11 @@ public class AdaptiveMemory {
 					tourIterator.remove();
 			}		
 		}
-				
+		
+		private void addToursOfSolutionToTours(SolutionGot solution) {
+			allToursInMemory.addAll(solution.getTours());
+		}
+
 		protected void sortTours() {
 			if (Parameters.shallTourNumberBeMinimized()) {
 				//DESIGN_TODO: Für stochastische Variante Version erstellen, die nur auf Kosten geht
@@ -137,7 +137,7 @@ public class AdaptiveMemory {
 		}
 	
 		private void initialiseUnservedCustomers() {
-			if (vrpProblem == null) throw new RuntimeException("vprProblem in AM ist null");
+			if (vrpProblem == null)	throw new RuntimeException("vrpProblem in AM ist null.");
 			unservedCustomers = new ArrayList<Customer>(vrpProblem.getCustomers());
 		}
 		
@@ -192,7 +192,6 @@ public class AdaptiveMemory {
 		protected void rematchToursAccordingToRecourseCost() {
 			//nothingg to do here; hook exists for recourse version
 		}
-
 		
 		//****************
 		

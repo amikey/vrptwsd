@@ -49,7 +49,7 @@ public class AdaptiveMemoryTabuSearch {
 			System.out.println("AM CALL Nr. " + iteration);
 			
 			solution = constructInitialSolutionFromAdaptiveMemory();
-			TabuSearchForElementWithTours tabuSearch = getTabuSearch();
+			TabuSearchForElementWithTours tabuSearch = getTS(); 
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
 			
@@ -70,8 +70,8 @@ public class AdaptiveMemoryTabuSearch {
 		return bestOverallSolution;
 	}
 
-		private TabuSearchForElementWithTours getTabuSearch() {
-			return new TabuSearchForElementWithTours();
+		protected TabuSearchForElementWithTours getTS() {
+			return new TabuSearchForElementWithTours();		 
 		}
 
 		private void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
@@ -96,7 +96,7 @@ public class AdaptiveMemoryTabuSearch {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
-				TabuSearchForElementWithTours tabuSearch = getTabuSearch();
+				TabuSearchForElementWithTours tabuSearch = getTS();
 				tabuSearch.improve(newSolution);
 				adaptiveMemory.addTours(newSolution);
 			}

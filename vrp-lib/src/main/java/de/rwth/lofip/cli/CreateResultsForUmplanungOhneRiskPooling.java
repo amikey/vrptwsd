@@ -242,7 +242,7 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 		processProblems();
 	}
 	
-//-------------------------------------
+	//-------------------------------------
 
 	private void reduceCapacityOfVehiclesInProblems() {
 		for (VrpProblem problem : problems)

@@ -49,7 +49,7 @@ public class Parameters {
 	
 	//Simulation
 	private final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
-	private final static double RELATIVE_STANDARD_DEVIATION = 0.15;
+	private static double RELATIVE_STANDARD_DEVIATION = 0.15;
 	
 	
 	//Getter und Setter	
@@ -171,6 +171,10 @@ public class Parameters {
 			int maximalNumberOfIterationsTabuSearch2) {
 		maximalNumberOfIterationsTabuSearch = maximalNumberOfIterationsTabuSearch2;
 		
+	}
+
+	public static void setRelativeStandardDeviationTo(double d) {
+		RELATIVE_STANDARD_DEVIATION = d;
 	}
 	
 

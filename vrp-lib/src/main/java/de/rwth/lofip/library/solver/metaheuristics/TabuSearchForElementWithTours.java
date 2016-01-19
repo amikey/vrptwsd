@@ -141,7 +141,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			}	
 		}
 	}
-	
+
 	private void setBestOverallSolutionToNewSolution() {
 		bestOverallSolution = solution.clone();	
 	}
@@ -200,12 +200,13 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			IOUtils.write("\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
 	}
 	
-	@SuppressWarnings("unused") 
+
+	@SuppressWarnings("unused")
 	private void printBestMove() {
 		bestMove.print();
 	}
-
-	//Test Utilities
+	
+	// Test Utilities
 	
 	//this exists only for testing
 	public void tryToImproveNewBestSolutionWithIntensificationPhase(SolutionGot solution2) {
