@@ -29,6 +29,7 @@ public class AdaptiveMemory {
 	
 	private static int seed = 0;
 	private Random randomGenerator = new Random(seed);
+	private List<SolutionGot> previouslyConstrucedSolutions = new ArrayList<SolutionGot>();
 	
 	public AdaptiveMemory() {
 		seed++;
@@ -129,6 +130,8 @@ public class AdaptiveMemory {
 		}
 		constructSolutionWithCustomersThatRemainUnserved();
 		rematchToursAccordingToRecourseCost();
+		isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution();
+		updatePreviouslyConstructedSolutions();
 		return currentNewSolution;
 	}	
 
@@ -193,6 +196,21 @@ public class AdaptiveMemory {
 			//nothingg to do here; hook exists for recourse version
 		}
 		
+		private void isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution() {
+			boolean equivalent = false;
+			for (SolutionGot solution : previouslyConstrucedSolutions )
+				if (currentNewSolution.equals(solution)) {
+					equivalent = true;
+					break;
+				}
+			if (equivalent)
+				System.out.println("AM constructed equivalent Solution");
+		}
+		
+		private void updatePreviouslyConstructedSolutions() {
+			previouslyConstrucedSolutions.add(currentNewSolution);
+		}
+
 		//****************
 		
 		public static void setSeedTo(int i) {
