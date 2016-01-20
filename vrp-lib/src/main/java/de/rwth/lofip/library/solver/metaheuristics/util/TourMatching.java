@@ -82,7 +82,6 @@ public class TourMatching {
 		return size >= oldSolution.getNumberOfTours()-1;
 	}
 
-
 	//public so that TourMatching can be tested
 	public boolean toursThatAreUsedInRecourseCostAreAlreadyAssignedToGots(RecourseCost rc) {
 		for (Integer i : rc.getIndizesOfTours()) 

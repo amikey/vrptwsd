@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import de.rwth.lofip.library.Customer;
@@ -25,10 +24,9 @@ public class RecourseCost {
 	double recourseCost = 0;
 	double numberOfAdditionalTours = 0;
 	int numberOfRouteFailures = 0;
-	//number of different recourse actions for several gots is the mean number of different recourse actions for all gots
+	//numberDifferentRecourseActions is always total number
 	double numberOfDifferentRecourseActions = 0;
-	//first entry: number of vehicles needed to serve these customers
-	//second entry: number of customers that are served by this number of vehicles
+	//first entry: number of vehicles needed to serve these customers //second entry: number of customers that are served by this number of vehicles
 	HashMap<Integer, Integer> toursNeededToServeNumberOfCustomers = new HashMap<Integer, Integer>();
 	
 	private List<Integer> tourIndizes = new ArrayList<Integer>();
@@ -46,27 +44,13 @@ public class RecourseCost {
 		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
 		int numberOfInfeasibleScenarios = 0;
 		//this is needed to calculate which number of customers is served by which number of vehicles
-		//first entry: customerNo
-		//second entry: set of numbers of tours that customer is served by
+		//first entry: customerNo; second entry: set of numbers of tours that customer is served by
 		HashMap<Long, HashSet<Integer>> customersServedByTours = new HashMap<Long, HashSet<Integer>>();
 		
 		SimulationUtils.resetSeed();		
+		initialiseCustomersServedByTours(customersServedByTours, got);		
 		
-		//initialisiere customersServedByTours
-		for (int i = 0; i < got.getNumberOfTours(); i++) {
-			for (Customer c : got.getTour(i).getCustomers()) {
-				HashSet<Integer> tempHashSet = new HashSet<Integer>();
-				tempHashSet.add(i);
-//				
-//				System.out.println("tempHashSet nach initialisierung für Tour " + i + " und Kunde " + c.getCustomerNo() + ": (" );
-//				for (int k : tempHashSet)
-//					System.out.print(k + ", ");
-//				System.out.println(")" );
-//				
-				customersServedByTours.put(c.getCustomerNo(), tempHashSet);
-			}
-		}
-		
+		//run scenarios
 		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {					
 			GroupOfTours gotClone = got.cloneWithCopyOfTourAndCustomers();
 			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());
@@ -76,86 +60,99 @@ public class RecourseCost {
 				numberOfInfeasibleScenarios++;
 				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
 				
-				//calculateNumberOfRouteFailures
-				for (Tour tour : gotClone.getTours())
-					if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(tour))
-						numberOfRouteFailures++;
-				
-				//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
-//				//first try recourse actions that have already been created
-//				//RUNTIME_TODO: will ich hier wirklich sortieren?
-//				Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
-//				Collections.sort(listOfRecourseActions, gotByCostComparator);
-//				if 
-				
-				//first make solution feasible again
-				LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
-				//create Solution from gotClone for processing with local search    	    				
-				ls.improve(gotClone);
-				assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
-				if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
-					//got is still demand infeasible -> no feasible solution could be found for demand
-					gotClone.addEmptyTour();
-					ls.improve(gotClone);    					
-				}
-				
-				//asserts for code validation; es könnte auch der pathologische Fall auftreten, dass vier Touren benötigt werden, um alle Kunden bedienen zu können; das wird unten überprüft
-				//RUNTIME_TODO: remove assert
-				assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots()+1);
-				assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
-
-				//calculate recourseCost
-    			//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
-    			double recourseCostTemp = -got.getTotalDistanceWithCostFactor();
-    			double costOfGotClone = gotClone.getTotalDistanceWithCostFactor(); 
-    			recourseCostTemp += costOfGotClone;
-    			overallRecourseCost += recourseCostTemp;
-    			System.out.println("Cost of Solution " + got.getTotalDistanceWithCostFactor());
-    			System.out.println("Recourse Cost: " + recourseCostTemp);
-    			
-    			//calculate additional number of tours
-    			if (gotClone.getNumberOfTours() >= Parameters.getMaximalNumberOfToursInGots())
-    				numberOfAdditionalTours += (gotClone.getNumberOfTours() - Parameters.getMaximalNumberOfToursInGots());
-    			
-    			//calculate number of different recourse actions    		
-    			if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
-    				System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
-    				gotClone.print();
-    				numberOfDifferentRecourseActions++;
-    				listOfRecourseActions.add(gotClone);
-    				
-    				//update customersServedByTours
-    				for (int j = 0; j < gotClone.getNumberOfTours(); j++) {
-    					for (Customer c : gotClone.getTour(j).getCustomers()) {
-    						HashSet<Integer> tempHashSet = customersServedByTours.get(c.getCustomerNo());
-    						
-//    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " bevor Tour " + j + " hinzugefügt wird: ");
-//    						for (int k : tempHashSet)
-//    							System.out.print(k + ", ");
-//    						System.out.println(")" );
-    						
-    						tempHashSet.add(j);
-    						
-//    						System.out.println("tempHashSet für Kunde " + c.getCustomerNo() + " nachdem Tour " + j + " hinzugefügt wird:" );
-//    						for (int k : tempHashSet)
-//    							System.out.print(k + ", ");
-//    						System.out.println(")" );
-    						
-    						customersServedByTours.put(c.getCustomerNo(), tempHashSet);
-    					}
-    				}    				
-    			}
-			} // else 
-//				System.out.println("Solution is feasible after altering demands");
+				calculateNumberOfRouteFailures(gotClone);
+				makeSolutionFeasibleAgain(gotClone);					
+				assertThatSolutionIsFeasible(gotClone);
+				overallRecourseCost = calculateRecourseCostOfFeasibleSolution(overallRecourseCost, got, gotClone);
+				calculateAdditionalNumberOfTours(gotClone);
+				calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(listOfRecourseActions, gotClone, customersServedByTours);				
+			} 		
 		}
-		overallRecourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
-		
-		recourseCost = overallRecourseCost;
-		
+		recourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();	
 		calculateNumberOfCustomersServedByNumberOfDifferentTours(customersServedByTours);
 	}
+
+	private void initialiseCustomersServedByTours(HashMap<Long, HashSet<Integer>> customersServedByTours, GroupOfTours got) {
+    			for (int i = 0; i < got.getNumberOfTours(); i++) {
+    				for (Customer c : got.getTour(i).getCustomers()) {
+    					HashSet<Integer> tempHashSet = new HashSet<Integer>();
+    					tempHashSet.add(i);
+    					customersServedByTours.put(c.getCustomerNo(), tempHashSet);
+    				}
+    			}
+	}
+	
+	private void calculateNumberOfRouteFailures(GroupOfTours gotClone) {
+    	//calculateNumberOfRouteFailures
+		for (Tour tour : gotClone.getTours())
+			if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(tour))
+				numberOfRouteFailures++;		
+	}
+	
+	private void makeSolutionFeasibleAgain(GroupOfTours gotClone) {
+		//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
+//		//first try recourse actions that have already been created
+//		//RUNTIME_TODO: will ich hier wirklich sortieren?
+//		Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
+//		Collections.sort(listOfRecourseActions, gotByCostComparator);
+//		if 
 		
-    public boolean isGotAlreadyExistsInRecourseActions(GroupOfTours gotClone, List<GroupOfTours> list) {
+		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
+		//create Solution from gotClone for processing with local search    	    				
+		ls.improve(gotClone);
+		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
+		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
+			//got is still demand infeasible -> no feasible solution could be found for demand
+			gotClone.addEmptyTour();
+			ls.improve(gotClone);    					
+		}
+	}
+		
+	private void assertThatSolutionIsFeasible(GroupOfTours gotClone) {
+		//asserts for code validation; es könnte auch der pathologische Fall auftreten, dass vier Touren benötigt werden, um alle Kunden bedienen zu können; das wird unten überprüft
+		//RUNTIME_TODO: remove assert
+		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots()+1);
+		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
+	}
+	
+	private double calculateRecourseCostOfFeasibleSolution(double overallRecourseCost, GroupOfTours got, GroupOfTours gotClone) {
+		//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
+		double recourseCostTemp = -got.getTotalDistanceWithCostFactor();
+		double costOfGotClone = gotClone.getTotalDistanceWithCostFactor(); 
+		recourseCostTemp += costOfGotClone;
+		overallRecourseCost += recourseCostTemp;
+		return overallRecourseCost;		
+	}
+	
+	private void calculateAdditionalNumberOfTours(GroupOfTours gotClone) {
+		if (gotClone.getNumberOfTours() >= Parameters.getMaximalNumberOfToursInGots())
+			numberOfAdditionalTours += (gotClone.getNumberOfTours() - Parameters.getMaximalNumberOfToursInGots());
+	}
+	
+	private void calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(
+			ArrayList<GroupOfTours> listOfRecourseActions, GroupOfTours gotClone, HashMap<Long, HashSet<Integer>> customersServedByTours) {  		
+		if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
+			System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
+			gotClone.print();
+			numberOfDifferentRecourseActions++;
+			listOfRecourseActions.add(gotClone);
+			
+			updateCustomersServedByTours(customersServedByTours, gotClone, listOfRecourseActions);
+		}
+	}
+
+	private void updateCustomersServedByTours(
+			HashMap<Long, HashSet<Integer>> customersServedByTours,GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
+		for (int j = 0; j < gotClone.getNumberOfTours(); j++) {
+			for (Customer c : gotClone.getTour(j).getCustomers()) {
+				HashSet<Integer> tempHashSet = customersServedByTours.get(c.getCustomerNo());
+				tempHashSet.add(j);
+				customersServedByTours.put(c.getCustomerNo(), tempHashSet);
+			}
+		}    				
+	}
+
+	public boolean isGotAlreadyExistsInRecourseActions(GroupOfTours gotClone, List<GroupOfTours> list) {
 		boolean exists = false;
 		for (GroupOfTours got : list) {
 			if (got.equals(gotClone)) {
@@ -244,13 +241,12 @@ public class RecourseCost {
 		return tourIndizes;
 	}
 	
-	public double getCombinationOfCostAndNumberRecourseActions() {
+	public double getConvexCombinationOfCostAndNumberRecourseActions() {
 		//DESIGN_TODO: Hier muss ich mir noch genauer überlegen, wie ich die Kombination aus recourseCost und #Aushilfsaktionen machen möchte
 		return recourseCost + (recourseCost / Parameters.getNumberOfDemandScenarioRuns() * numberOfDifferentRecourseActions); 
 	}
 	
-	
-	// Utilities
+	// Print Utilities
 	
 	public void print() {
 		System.out.println("Cost: " + recourseCost + "; NumberOfDifferentRecourseActions: " + numberOfDifferentRecourseActions);
