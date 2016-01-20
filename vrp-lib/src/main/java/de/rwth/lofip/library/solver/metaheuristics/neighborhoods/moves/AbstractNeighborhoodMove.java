@@ -282,7 +282,7 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	
 	//dies hier wird verwendet, um deterministische Kosten, stochastische Kosten und Tourenanzahl auf eine Zahl zu bringen
 	public double getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions() {
-		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getCombinationOfCostAndNumberRecourseActions());
+		return costDifferenceToPreviousSolution + (newRecourseCostAfterMoveIsApplied.getConvexCombinationOfCostAndNumberRecourseActions() - oldRecourseCostOfLocalGots.getConvexCombinationOfCostAndNumberRecourseActions());
 	}
 		
 	public RecourseCost getOldRecourseCost() {

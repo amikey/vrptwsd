@@ -52,7 +52,7 @@ public class TourMatching {
 	}
 
 	private void findCostMinimalMatchingForToursWithGreedy() {				
-		sortListOfRecourseCostsAccordingToWeightedCombinationOfRecourseCostAndNumberOfRecourseActions(); 
+		sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions(); 
 		for (int i = 0; i < listOfRecourseCosts.size(); i++) {
 			if (allToursAreAlreadyAssignedToGotsOrThereIsOnlyOneTourLeftThatIsNotAssignedYet())
 				break;
@@ -72,8 +72,8 @@ public class TourMatching {
 		maintainSolutionsForGots();
 	}
 
-	private void sortListOfRecourseCostsAccordingToWeightedCombinationOfRecourseCostAndNumberOfRecourseActions() {		
-			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getCombinationOfCostAndNumberRecourseActions(),e2.getCombinationOfCostAndNumberRecourseActions());		
+	private void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
+			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getConvexCombinationOfCostAndNumberRecourseActions(),e2.getConvexCombinationOfCostAndNumberRecourseActions());		
 			Collections.sort(listOfRecourseCosts, byCombinationOfCostAndNumberRecourseActions);						
 	}
 	
