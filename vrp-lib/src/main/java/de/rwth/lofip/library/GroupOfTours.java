@@ -283,75 +283,11 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 		parentSolution = newSolution;
 	}
 
+	public Customer getCustomerWithNo(long customerNo) {
+		for (Customer c : getCustomers()) 
+			if (c.getCustomerNo() == customerNo)
+				return c;
+		throw new RuntimeException("Customer not found in getCustomerWithNo");
+	}
 
-
-
-	
-
-	
-
-	
-    
-  
-//    @Override
-//    public double getExpectedRecourseCost() {
-//    	
-//    	//create solution
-//    	//to do so, first create vrpProblem
-//    	VrpProblem vrpProblem = new VrpProblem();
-//    	vrpProblem.setCustomers(customers);
-//    	
-//    	Set<Depot> depotSet = new HashSet<Depot>();
-//    	depotSet.add(depot);
-//    	vrpProblem.setDepots(depotSet);
-//    	
-//    	Set<Vehicle> vehicleSet = new HashSet<Vehicle>();
-//    	vehicleSet.addAll(vehicles);
-//    	vrpProblem.setVehicles(vehicleSet);
-//    	
-//    	//now create solution
-//    	Solution solution = new Solution(vrpProblem);
-//    	solution.setTours(tours);
-//    	
-//    	// Process DemandScenarios
-//    	AverageValuesForMultipleDemandScenariosOnOneSolomonInstance avg = new AverageValuesForMultipleDemandScenariosOnOneSolomonInstance();		
-//    	
-//    	for (int i = 1; i <= NUMBER_OF_DEMAND_SCENARIO_RUNS; i++)
-//    	{
-//    		DemandScenario demandScenario = DemandScenarioUtils.createScenarioFromVrpProblem(vrpProblem, FLUCTUATION_OF_DEMAND_IN_PERCENTAGE);
-//    		KeyPerformanceIndicators keyPerformanceIndicators = new KeyPerformanceIndicators(demandScenario);
-//    		//now process demandScenario
-//    		Solution temporarySolution = solution.cloneCompletelySeperateCopy();
-//        	
-//	    		for (Event e : demandScenario.getEvents())
-//	    		{				            
-//	    			VrpProblem oldVrpProblem = temporarySolution.getVrpProblem().clone();
-//	    			System.out.println("Processing Event for Customer " + e.getCustomerNo() + " at time " + e.getPointInTime());		            		
-//	    			List<RepairedSolution> solutionList = new RepairSolution().repair(temporarySolution, e);	        			
-//	    			temporarySolution = solutionList.get(0).getNewSolution();
-//	    			solutionList.get(0).getOldSolution().setVrpProblem(oldVrpProblem);
-//	    			keyPerformanceIndicators.addRepairedSolution(solutionList.get(0));
-//	    		}  
-//	    		avg.addDemandScenario(keyPerformanceIndicators);
-//	    		System.out.println("L�sung vor Demand Scenario: " + solution.getSolutionAsTupel());
-//	    	    System.out.println("L�sung nach Demand Scenario: " + temporarySolution.getSolutionAsTupel());
-//    	}
-//    	return avg.getMeanValueOfAdditionalDistanceTotalDistancePerScenario(); 	
-//    }
-      
-//    private List<RepairedSolution> repair(Solution temporarySolution, Event e)
-//    {
-//    	Solution oldSolution = temporarySolution.clone();
-//    	new RepairSolution().updateVrpProblemAttachedToSolution(temporarySolution, e);
-//    	if (temporarySolution.isSolutionFeasibleWrtDemand() == false)
-//    	{
-//    		//find tour
-//    		Tour tour;
-//    		for (Tour t: temporarySolution.getTours())
-//    			for (Customer c : t.getCustomers())
-//    				if (c.getCustomerNo() == e.getCustomerNo())
-//    					tour = 
-//    	}
-//    }
-//    
 }

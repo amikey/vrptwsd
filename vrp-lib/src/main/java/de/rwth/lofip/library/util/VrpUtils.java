@@ -119,6 +119,7 @@ public class VrpUtils {
 				customer.setxCoordinate(Double.parseDouble(split[1]));
 				customer.setyCoordinate(Double.parseDouble(split[2]));
 				customer.setDemand(Long.parseLong(split[3]));
+				customer.setOriginalDemand(Long.parseLong(split[3]));
 				customer.setTimeWindowOpen(Long.parseLong(split[4]));
 				customer.setTimeWindowClose(Long.parseLong(split[5]));
 				customer.setServiceTime(Long.parseLong(split[6]));

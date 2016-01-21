@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestSimulationUtils {
@@ -17,6 +18,8 @@ public class TestSimulationUtils {
 		givenOneGot();
 		whenDemandForCustomersIsSetWithDeviation();
 		thenDemandForCustomersShouldBeWithinSpecifiedRange();
+		
+		Parameters.setAllParametersToDefaultValues();
 	}
 
 	private void givenOneGot() {
@@ -24,7 +27,9 @@ public class TestSimulationUtils {
 	}
 
 	private void whenDemandForCustomersIsSetWithDeviation() {
-		SimulationUtils.setDemandForCustomersWithDeviation(got1, 0.2);
+		Parameters.setFluctuationOfDemandTo(0.2);
+		SimulationUtils.generateDemandsForNextScenario();
+		SimulationUtils.setDemandForCustomersWithDeviation(got1);
 	}
 
 	private void thenDemandForCustomersShouldBeWithinSpecifiedRange() {

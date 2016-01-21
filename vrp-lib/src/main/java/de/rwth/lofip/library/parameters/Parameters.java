@@ -74,6 +74,11 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		percentageOfCapacity = 1;
+		RELATIVE_STANDARD_DEVIATION = 0.15;
+		
+		seedI1 = 3000;
+		seedGI = 3000;
+		seedAM = 3000;
 		
 		SimulationUtils.resetSeed();
 	}
@@ -192,6 +197,10 @@ public class Parameters {
 
 	public static int getSeedAM() {
 		return seedAM;
+	}
+
+	public static void setFluctuationOfDemandTo(double d) {
+		RELATIVE_STANDARD_DEVIATION = d;
 	}
 
 

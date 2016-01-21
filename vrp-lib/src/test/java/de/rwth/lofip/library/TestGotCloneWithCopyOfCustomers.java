@@ -29,6 +29,7 @@ public class TestGotCloneWithCopyOfCustomers {
 
 	private void whenCustomersInClonedGotAreAltered() {
 		got1.getFirstTour().getCustomerAtPosition(1).getCustomer().setDemand(100000);
+		got1.getFirstTour().getCustomerAtPosition(1).getCustomer().setOriginalDemand(100000);
 	}
 
 	private void ThenCustomersInOriginalGotAndClonedGotShouldBeDifferent() {

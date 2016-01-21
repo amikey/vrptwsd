@@ -9,6 +9,7 @@ public class Customer extends AbstractPointInSpace implements Cloneable{
 
 	protected long customerNo;
 	private List<CustomerWithCost> similarCustomers = new ArrayList<CustomerWithCost>();
+	private long originalDemand;
 	
 	public Customer() {
 		super();
@@ -38,6 +39,14 @@ public class Customer extends AbstractPointInSpace implements Cloneable{
 	public void setCustomerNo(long customerNo) {
 		this.customerNo = customerNo;
 		this.setId();
+	}
+	
+	public long getOriginalDemand() {
+		return originalDemand;
+	}
+	
+	public void setOriginalDemand(long demand) {
+		originalDemand = demand;
 	}
 	
 	public List<CustomerWithCost> getSimilarCustomers() {
@@ -98,6 +107,7 @@ public class Customer extends AbstractPointInSpace implements Cloneable{
 		Customer c = new Customer(this.getxCoordinate(), this.getyCoordinate());
 		c.setCustomerNo(customerNo);
 		c.setDemand(demand);
+		c.setOriginalDemand(originalDemand);
 		c.setServiceTime(serviceTime);
 		c.setTimeWindowOpen(timeWindowOpen);
 		c.setTimeWindowClose(timeWindowClose);

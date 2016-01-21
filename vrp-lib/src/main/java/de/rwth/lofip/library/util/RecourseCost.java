@@ -3,6 +3,8 @@ package de.rwth.lofip.library.util;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -53,7 +55,8 @@ public class RecourseCost {
 		//run scenarios
 		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {					
 			GroupOfTours gotClone = got.cloneWithCopyOfTourAndCustomers();
-			SimulationUtils.setDemandForCustomersWithDeviation(gotClone, Parameters.getFluctuationOfDemandInPercentage());
+			SimulationUtils.generateDemandsForNextScenario();
+			SimulationUtils.setDemandForCustomersWithDeviation(gotClone);
 			    			
 			SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);
 			if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {
@@ -61,7 +64,7 @@ public class RecourseCost {
 				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
 				
 				calculateNumberOfRouteFailures(gotClone);
-				makeSolutionFeasibleAgain(gotClone);					
+				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);					
 				assertThatSolutionIsFeasible(gotClone);
 				overallRecourseCost = calculateRecourseCostOfFeasibleSolution(overallRecourseCost, got, gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
@@ -89,13 +92,8 @@ public class RecourseCost {
 				numberOfRouteFailures++;		
 	}
 	
-	private void makeSolutionFeasibleAgain(GroupOfTours gotClone) {
-		//IMPORTANT_TODO: Hier zuerst die Lösungen auf feasibility überprüfen, die schon entstanden sind
-//		//first try recourse actions that have already been created
-//		//RUNTIME_TODO: will ich hier wirklich sortieren?
-//		Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
-//		Collections.sort(listOfRecourseActions, gotByCostComparator);
-//		if 
+	private void makeSolutionFeasibleAgain(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
+//		tryToReuseAlreadySeenRecourseAction(gotClone, listOfRecourseActions);
 		
 		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
 		//create Solution from gotClone for processing with local search    	    				
@@ -108,6 +106,17 @@ public class RecourseCost {
 		}
 	}
 		
+	private void tryToReuseAlreadySeenRecourseAction(GroupOfTours gotClone,
+			ArrayList<GroupOfTours> listOfRecourseActions) {
+		Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
+		Collections.sort(listOfRecourseActions, gotByCostComparator);
+		for (GroupOfTours gotTemp : listOfRecourseActions) {
+			SimulationUtils.setDemandForCustomersWithDeviation(gotTemp);
+//			if (Parameters.isDebugging())
+//				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
+		}
+	}
+
 	private void assertThatSolutionIsFeasible(GroupOfTours gotClone) {
 		//asserts for code validation; es könnte auch der pathologische Fall auftreten, dass vier Touren benötigt werden, um alle Kunden bedienen zu können; das wird unten überprüft
 		//RUNTIME_TODO: remove assert

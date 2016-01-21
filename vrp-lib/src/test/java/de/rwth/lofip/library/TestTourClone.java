@@ -28,6 +28,7 @@ public class TestTourClone {
 
 	private void whenCustomersInClonedTourAreAltered() {
 		tour2.getCustomerAtPosition(1).getCustomer().setDemand(100000);
+		tour2.getCustomerAtPosition(1).getCustomer().setOriginalDemand(100000);
 	}
 
 	private void ThenCustomersInOriginalTourAndClonedTourShouldBeDifferent() {

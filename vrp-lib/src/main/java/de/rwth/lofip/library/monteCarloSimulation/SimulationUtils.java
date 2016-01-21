@@ -1,11 +1,15 @@
 package de.rwth.lofip.library.monteCarloSimulation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.parameters.Parameters;
 
 public class SimulationUtils {
 	
@@ -15,12 +19,19 @@ public class SimulationUtils {
 		seed = 1;
 	}
 	
-	public static GroupOfTours setDemandForCustomersWithDeviation(GroupOfTours got, double deviation) {
+	public static void generateDemandsForNextScenario() {
 		seed++;
+	}
+	
+	public static GroupOfTours setDemandForCustomersWithDeviation(GroupOfTours got) {
+		double deviation = Parameters.getFluctuationOfDemandInPercentage();
 		Random randomDemandGeneration = new Random(seed);
 		
-		for (Customer c : got.getCustomers()) {
-			//IMPORTANT_TODO: hier wirklich mit 1/3 multiplizieren?
+		List<Customer> customerList = new ArrayList<Customer>();
+		customerList.addAll(got.getCustomers());
+		sortListWrtToCustomerNo(customerList);
+		
+		for (Customer c : customerList) {
 			double sd = deviation * c.getDemand();
 			int demand;        	
 		    double val = randomDemandGeneration.nextGaussian() * sd + c.getDemand();
@@ -39,7 +50,12 @@ public class SimulationUtils {
 		}
 		return got;						
 	}
-
+	
+	private static void sortListWrtToCustomerNo(List<Customer> customerList) {
+		Comparator<Customer> customerByNoComparator = (e1,e2) -> Double.compare(e1.getCustomerNo(), e2.getCustomerNo());
+		Collections.sort(customerList, customerByNoComparator);
+	}
+	
 	public static void setCapacityOfVehiclesToOriginalCapacity(GroupOfTours gotClone) {
 		for (Tour t : gotClone.getTours())
 			t.getVehicle().setCapacity(gotClone.getParentSolution().getVrpProblem().getOriginalCapacity());		

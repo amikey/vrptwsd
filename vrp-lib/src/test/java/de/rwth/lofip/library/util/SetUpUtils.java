@@ -34,6 +34,7 @@ public class SetUpUtils {
 	    c1.setxCoordinate(10);
 	    c1.setyCoordinate(80);        
 	    c1.setDemand(20);
+	    c1.setOriginalDemand(20);
 	    c1.setTimeWindowOpen(278);
 	    c1.setTimeWindowClose(345);
 	    c1.setServiceTime(90);
@@ -43,6 +44,7 @@ public class SetUpUtils {
 	    c2.setxCoordinate(20);
 	    c2.setyCoordinate(85);
 	    c2.setDemand(20);
+	    c2.setOriginalDemand(20);
 	    c2.setTimeWindowOpen(475);
 	    c2.setTimeWindowClose(528);
 	    c2.setServiceTime(90);
@@ -52,6 +54,7 @@ public class SetUpUtils {
 	    c3.setxCoordinate(25);
 	    c3.setyCoordinate(85);
 	    c3.setDemand(20);
+	    c3.setOriginalDemand(20);
 	    c3.setTimeWindowOpen(425);
 	    c3.setTimeWindowClose(721);
 	    c3.setServiceTime(90);
@@ -61,6 +64,7 @@ public class SetUpUtils {
 	    c4.setxCoordinate(35);
 	    c4.setyCoordinate(70);
 	    c4.setDemand(20);
+	    c4.setOriginalDemand(20);
 	    c4.setTimeWindowOpen(873);
 	    c4.setTimeWindowClose(921);
 	    c4.setServiceTime(90);
