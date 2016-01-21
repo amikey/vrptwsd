@@ -24,9 +24,9 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	protected int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
 	protected int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	
-	protected int seedI1 = 3000;
-	protected int seedGI = 3000;
-	protected int seedAM = 3000;
+	protected int seedI1 = Parameters.getSeedI1();
+	protected int seedGI = Parameters.getSeedGI();
+	protected int seedAM = Parameters.getSeedAM();
 	
 	protected int numberOfExperiments = 100;
 	

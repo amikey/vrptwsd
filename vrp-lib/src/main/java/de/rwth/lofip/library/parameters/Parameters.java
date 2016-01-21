@@ -50,6 +50,11 @@ public class Parameters {
 	//Simulation
 	private final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
 	private static double RELATIVE_STANDARD_DEVIATION = 0.15;
+
+	//Seeds
+	private static int seedI1 = 3000;
+	private static int seedGI = 3000;
+	private static int seedAM = 3000;
 	
 	
 	//Getter und Setter	
@@ -176,6 +181,20 @@ public class Parameters {
 	public static void setRelativeStandardDeviationTo(double d) {
 		RELATIVE_STANDARD_DEVIATION = d;
 	}
+
+	public static int getSeedI1() {
+		return seedI1;
+	}
+
+	public static int getSeedGI() {
+		return seedGI;
+	}
+
+	public static int getSeedAM() {
+		return seedAM;
+	}
+
+
 	
 
 }
