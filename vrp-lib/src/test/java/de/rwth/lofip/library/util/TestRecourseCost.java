@@ -1,15 +1,15 @@
 package de.rwth.lofip.library.util;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
@@ -17,8 +17,6 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
-import de.rwth.lofip.testing.util.AdaptiveMemoryUtils;
 import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class TestRecourseCost {
@@ -31,6 +29,7 @@ public class TestRecourseCost {
 	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+//		Parameters.setTestingMode(true);
 		givenSolutionForModifiedC101Problem();
 		thenRecourseCostShouldBeOfCertainValue();
 	}
@@ -54,6 +53,7 @@ public class TestRecourseCost {
 	@Test
 	public void testNumberOfAdditionalToursAndNumberOfRouteFailuresInRecourseCost() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+//		Parameters.setTestingMode(true);
 		givenSolutionForModifiedC101Problem();
 		thenNumberOfAdditionalToursShouldBeOfCertainValue();
 	}
@@ -76,6 +76,7 @@ public class TestRecourseCost {
 	@Test
 	public void testConstructorOfRecourseActionWithOneGotWrtGetNumberOfCustomersServedByNumberOfDifferentTours() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+//		Parameters.setTestingMode(true);
 		Parameters.setNumberOfToursInGot(2);
 		givenSomeGot();
 		thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValue();
@@ -117,6 +118,7 @@ public class TestRecourseCost {
 	@Test
 	public void testConstructorOfRecourseActionWithMultipleGotsWrtGetNumberOfCustomersServedByNumberOfDifferentTours() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+//		Parameters.setTestingMode(true);
 		Parameters.setNumberOfToursInGot(2);
 		givenListOfTwoGots();
 		thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValueForTwoGots();
@@ -142,6 +144,7 @@ public class TestRecourseCost {
 		
 		for (Customer c : got2.getLastTour().getCustomers()) {
 			c.setDemand(c.getDemand()*9);
+			c.setOriginalDemand(c.getOriginalDemand() * 9);
 		}	
 		
 		printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(got);
@@ -177,6 +180,8 @@ public class TestRecourseCost {
 	}
 
 	private void printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(GroupOfTours gotTemp) {
+		GotUtils.printCustomerWithDemandAndOriginalDemand(gotTemp);
+		
 		Iterator<Entry<Integer, Integer>> it = gotTemp.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<Integer, Integer> pair = it.next();

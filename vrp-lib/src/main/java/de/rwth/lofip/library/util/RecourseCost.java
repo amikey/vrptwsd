@@ -93,7 +93,7 @@ public class RecourseCost {
 	}
 	
 	private void makeSolutionFeasibleAgain(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
-//		tryToReuseAlreadySeenRecourseAction(gotClone, listOfRecourseActions);
+		tryToReuseAlreadySeenRecourseAction(gotClone, listOfRecourseActions);
 		
 		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
 		//create Solution from gotClone for processing with local search    	    				
@@ -112,8 +112,8 @@ public class RecourseCost {
 		Collections.sort(listOfRecourseActions, gotByCostComparator);
 		for (GroupOfTours gotTemp : listOfRecourseActions) {
 			SimulationUtils.setDemandForCustomersWithDeviation(gotTemp);
-//			if (Parameters.isDebugging())
-//				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
+//			if (Parameters.isTestingMode())
+				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
 		}
 	}
 

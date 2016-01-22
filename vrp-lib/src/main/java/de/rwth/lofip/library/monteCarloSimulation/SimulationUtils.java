@@ -6,10 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.Assert.*;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.util.GotUtils;
 
 public class SimulationUtils {
 	
@@ -32,9 +34,10 @@ public class SimulationUtils {
 		sortListWrtToCustomerNo(customerList);
 		
 		for (Customer c : customerList) {
-			double sd = deviation * c.getDemand();
+			long customerDemand = c.getOriginalDemand();					
+			double sd = deviation * customerDemand;
 			int demand;        	
-		    double val = randomDemandGeneration.nextGaussian() * sd + c.getDemand();
+		    double val = randomDemandGeneration.nextGaussian() * sd + customerDemand;
 		    demand = (int) Math.round(val);
 		    if (demand > got.getFirstTour().getVehicle().getCapacity())
 			    demand = (int) got.getFirstTour().getVehicle().getCapacity();

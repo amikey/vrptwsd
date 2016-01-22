@@ -96,7 +96,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 //						System.out.println("DEBUGGING!");
 					//IMPORTANT_TODO: Check entfernen, braucht O(n) Zeit
 					
-					if (Parameters.isDebuggingMode())
+					if (Parameters.isTestingMode())
 						assertEquals(isMoveFeasibleCheckNaiv(),isMoveFeasibleCheckWithRef());
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();

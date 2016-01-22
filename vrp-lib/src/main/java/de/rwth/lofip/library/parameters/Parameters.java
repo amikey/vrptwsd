@@ -5,7 +5,7 @@ import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 public class Parameters {
 	
 	//Debugging Options
-	private static boolean debugging = false; //if true slow: processes asserts that need O(n) time for evaluation
+	private static boolean testing = false; //if true slow: processes asserts that need O(n) time for evaluation
 	
 	//Print Options
 	private static boolean publishSolutionValueProgress = false;
@@ -59,7 +59,7 @@ public class Parameters {
 	
 	//Getter und Setter	
 	public static void setAllParametersToDefaultValues(){
-		debugging = false;
+		testing = false;
 		publishSolutionValueProgress = false;
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
@@ -147,8 +147,8 @@ public class Parameters {
 		return miminizeTours;
 	}
 
-	public static boolean isDebuggingMode() {
-		return debugging;
+	public static boolean isTestingMode() {
+		return testing;
 	}
 
 	public static void setOutputDirectory(String string) {
@@ -201,6 +201,10 @@ public class Parameters {
 
 	public static void setFluctuationOfDemandTo(double d) {
 		RELATIVE_STANDARD_DEVIATION = d;
+	}
+
+	public static void setTestingMode(boolean b) {
+		testing = true;
 	}
 
 

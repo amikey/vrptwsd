@@ -38,6 +38,7 @@ public class TestTourMatching {
 	@Test 
 	public void testMatchToursToGots() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+//		Parameters.setTestingMode(true);
 		Parameters.setNumberOfToursInGot(2);
 		
 		givenASolutionWithGots();

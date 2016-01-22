@@ -415,8 +415,7 @@ public class SetUpUtils {
 	}
 
 
-	private static SolutionGot getSolutionWithEachTourInOneGot(
-			List<Tour> tours) {
+	private static SolutionGot getSolutionWithEachTourInOneGot(List<Tour> tours) {
 		for (Tour tour : tours) {
 			GroupOfTours got = new GroupOfTours(solution);
 			got.addTour(tour);
@@ -434,12 +433,14 @@ public class SetUpUtils {
 	}
 
 	public static GroupOfTours getGotWithCustomer1And2() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
 		GroupOfTours got = new GroupOfTours(getSomeRandomDummySolution());
 		got.addTour(getTourWithCustomer1And2());
 		return got;
 	}
 	
 	public static GroupOfTours getGotWithCustomer3And4() {
+		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
 		GroupOfTours got = new GroupOfTours(getSomeRandomDummySolution());
 		got.addTour(getTourWithCustomer3And4());
 		return got;

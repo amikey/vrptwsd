@@ -28,6 +28,7 @@ public class AdaptiveMemoryTabuSearchTest {
 	@Test
 	public void testThatRunOfAMTSproducesTheSameSolutionEveryTime() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+//		Parameters.setTestingMode(true);
 		SolutionGot solution;
 		VrpProblem problem = ReadAndWriteUtils.readModifiedSolomonProblems().get(0);
 		Parameters.setNumberOfToursInGot(1);
