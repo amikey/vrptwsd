@@ -61,6 +61,7 @@ public class TestRecourseCost {
 	private void thenNumberOfAdditionalToursShouldBeOfCertainValue() {
 		SimulationUtils.resetSeed();
 		//the following line is just there so that println in getExpectedRecourseCost() are printed before the following lines
+		@SuppressWarnings("unused")
 		RecourseCost rc = solution.getExpectedRecourseCost();
 		System.out.println();
 		System.out.println(solution.getAsTupelWithDemand());

@@ -186,6 +186,12 @@ public class Parameters {
 	public static void setRelativeStandardDeviationTo(double d) {
 		RELATIVE_STANDARD_DEVIATION = d;
 	}
+	
+	public static void setSeeds(int i) {
+		seedI1 = i;
+		seedGI = i;
+		seedAM = i;
+	}
 
 	public static int getSeedI1() {
 		return seedI1;

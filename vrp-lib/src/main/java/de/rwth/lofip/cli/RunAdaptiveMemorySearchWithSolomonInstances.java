@@ -247,18 +247,18 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		postProcessProblemsWithTourMatchingAlgorithm();
 		printProblems();
 	}
-
-	protected void increaseParameters() {
-		seedI1++;
-		seedGI++;
-		seedAM++;
-	}
 	
 	protected void processProblems() throws IOException {
 		for (int i = 1; i <= numberOfExperiments; i++) {
 			increaseParameters();
 			solveProblemsWithAdaptiveMemorySolver();	
 		}		
+	}
+	
+	protected void increaseParameters() {
+		seedI1++;
+		seedGI++;
+		seedAM++;
 	}
 	
 	protected void printProblems() throws IOException {

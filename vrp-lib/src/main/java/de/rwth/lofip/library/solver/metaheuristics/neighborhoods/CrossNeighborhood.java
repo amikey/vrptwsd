@@ -88,6 +88,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			while (isExistsNextCombinationOfSegments()) {
 				generateNextCombinationOfSegments();
 				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
+					
 //					FOR DEBUGGING:
 //					if (tour1.getId() == 35 && tour2.getId() == 35 &&
 //							positionStartOfSegmentTour1 == 4 && positionEndOfSegmentTour1 == 5 &&
@@ -101,6 +102,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
+//						assertEquals(true, move.isMoveValidWrtPositions());
 						if (isMoveNewBestMove(move)) {							
 							// bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
 							bestMoveThatMightBeTaboo = move;
@@ -111,6 +113,8 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 					}
 				}
 			}
+//			if (iteration == 26)
+//				System.out.println("DEBUGGING");
 			setBestNonTabooMoveHook();
 		}
 
@@ -459,7 +463,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 		}
 		
 	public static void actuallyApplyMove(AbstractNeighborhoodMove bestMove) {
-		if (!bestMove.isMoveFeasible())
+		if (!bestMove.isMoveValidWrtPositions())
 			throw new RuntimeException("Move that should be applied is not feasible");
 		
 		if (bestMove.isInnerTourMove()) {
@@ -487,6 +491,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	
 	//Utilities
 
+	//this exists only for testing
 	public ElementWithTours actuallyApplyMoveAndMaintainNeighborhood() {
 		AbstractNeighborhoodMove move = this.getNeigborhoodMove();
 		return acctuallyApplyMoveAndMaintainNeighborhood(move);		

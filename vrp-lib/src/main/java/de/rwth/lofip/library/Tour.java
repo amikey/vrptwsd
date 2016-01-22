@@ -682,6 +682,10 @@ public class Tour implements SolutionElement, Serializable {
 		return getSegmentFromRefMatrixBetweenPositions(i, j).getTravelTime();
 	}
 
+	public boolean isNewTourForRecourseAction() {
+		return getCostFactor() == 2.0;
+	}
+
 	
 	
 

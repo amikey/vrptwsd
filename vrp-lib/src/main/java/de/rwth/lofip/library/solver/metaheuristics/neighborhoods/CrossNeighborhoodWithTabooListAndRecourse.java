@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
@@ -24,6 +26,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	@Override
 	//here the moves have to be added to a list instead of just remembering the best move
 	public void setRespAddBestNonTabooMove(AbstractNeighborhoodMove move) {
+		assertEquals(true, move.isMoveValidWrtPositions());
 		listOfNonTabooMoves.add(move);
 	}
 	
@@ -53,10 +56,14 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 
 	public void calculateRecourseCostForMoves() {
 		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {
-			move.setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(calculateRecourseCostOfGotsThatAreAffectedByMove(move));
+			RecourseCost oldRecourseCost = calculateRecourseCostOfGotsThatAreAffectedByMove(move);
+			move.setRecourseCostForGotsThatAreAffectedByMoveForOldSolutionBeforeMoveIsApplied(oldRecourseCost);
+			
 			AbstractNeighborhoodMove copyOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
 			applyMoveToUnderlyingGots(copyOfMove);
-			move.setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(calculateRecourseCostOfGotsThatAreAffectedByMove(copyOfMove));
+			
+			RecourseCost newRecourseCost = calculateRecourseCostOfGotsThatAreAffectedByMove(copyOfMove);
+			move.setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(newRecourseCost);
 		}		
 	}
 
@@ -64,9 +71,8 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		CrossNeighborhood.actuallyApplyMove(copyOfMove);		
 	}
 
-	private RecourseCost calculateRecourseCostOfGotsThatAreAffectedByMove(
-			AbstractNeighborhoodMove copyOfMove) {
-		RecourseCost recourseCost = new RecourseCost(copyOfMove.getGots());		
+	private RecourseCost calculateRecourseCostOfGotsThatAreAffectedByMove(AbstractNeighborhoodMove move) {
+		RecourseCost recourseCost = new RecourseCost(move.getGots());		
 		return recourseCost;	
 	}
 

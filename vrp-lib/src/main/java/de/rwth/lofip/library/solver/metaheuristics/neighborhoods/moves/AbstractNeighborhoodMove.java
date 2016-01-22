@@ -9,6 +9,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodMoveInterface;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.RecourseCost;
+import de.rwth.lofip.library.util.SetUpUtils;
 
 public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Serializable {
 	
@@ -43,9 +44,14 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		this.costOfCompleteSolutionThatResultsFromMove = cost;
 	}
 
+	//This exists only for testing
 	public AbstractNeighborhoodMove(double cost, double difference) {
 		this.costOfCompleteSolutionThatResultsFromMove = cost;
 		this.costDifferenceToPreviousSolution = difference;
+		this.tour1 = SetUpUtils.getEmptyTour();
+		this.tour1.setCostFactor(2);
+		this.tour2 = SetUpUtils.getEmptyTour();
+		this.tour2.setCostFactor(2);
 	}
 
 	public double getCost() {
@@ -107,7 +113,8 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	}
 
 	public boolean isParentGotOfTour2IsSameAsParentGotOfTour1() {
-		return tour1.getParentGot().cloneWithCopyOfTourAndCustomers().equals(tour2.getParentGot().cloneWithCopyOfTourAndCustomers());
+		return tour1.getParentGot().equals(tour2.getParentGot());
+//		return tour1.getParentGot().cloneWithCopyOfTourAndCustomers().equals(tour2.getParentGot().cloneWithCopyOfTourAndCustomers());
 	}
 
 	public boolean isSwapsTwoSegments() {
@@ -254,15 +261,31 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	}
 
 	
-	public boolean isMoveFeasible() {
-		if (positionStartOfSegmentTour1 < 0)
+	public boolean isMoveValidWrtPositions() {
+		if (positionStartOfSegmentTour1 < 0) {
+			System.out.println("positionStartOfSegmentTour1 < 0");
 			return false;
-		if (positionEndOfSegmentTour1 > tour1.length())
+		}
+		if (positionEndOfSegmentTour1 > tour1.length()) {
+			System.out.println("positionEndOfSegmentTour1 > tour1.length()");		
 			return false;
-		if (positionStartOfSegmentTour2 < 0)
+		}
+		if (positionStartOfSegmentTour2 < 0) {
+			System.out.println("positionStartOfSegmentTour2 < 0");
 			return false;
-		if (positionEndOfSegmentTour2 > tour2.length())
+		}
+		if (positionEndOfSegmentTour2 > tour2.length()) {
+			System.out.println("positionEndOfSegmentTour2 > tour2.length()");
 			return false;
+		}
+		if (tour1.isTourEmpty() && !(tour1.isNewTourForRecourseAction())) {
+			System.out.println("Tour1 is empty");
+			return false;
+		}
+		if (tour2.isTourEmpty() && !(tour2.isNewTourForRecourseAction())) {
+			System.out.println("Tour2 is empty");
+			return false;
+		}
 		return true;
 	}
 	

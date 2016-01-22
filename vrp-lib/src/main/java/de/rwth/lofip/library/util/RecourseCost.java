@@ -61,7 +61,7 @@ public class RecourseCost {
 			SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);
 			if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {
 				numberOfInfeasibleScenarios++;
-				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
+//				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
 				
 				calculateNumberOfRouteFailures(gotClone);
 				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);					
@@ -141,8 +141,8 @@ public class RecourseCost {
 	private void calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(
 			ArrayList<GroupOfTours> listOfRecourseActions, GroupOfTours gotClone, HashMap<Long, HashSet<Integer>> customersServedByTours) {  		
 		if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
-			System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
-			gotClone.print();
+//			System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
+//			gotClone.print();
 			numberOfDifferentRecourseActions++;
 			listOfRecourseActions.add(gotClone);
 			
