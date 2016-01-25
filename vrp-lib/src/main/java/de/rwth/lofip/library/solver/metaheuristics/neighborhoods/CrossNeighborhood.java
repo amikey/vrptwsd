@@ -463,7 +463,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	public ElementWithTours acctuallyApplyMoveAndMaintainNeighborhood(AbstractNeighborhoodMove bestMove) {
 		actuallyApplyMove(bestMove);
 		resetNeighborhood();
-		elementWithTours.removeEmptyToursAndGots();
+		elementWithTours.removeEmptyGots();
 		return elementWithTours;	
 	}
 	

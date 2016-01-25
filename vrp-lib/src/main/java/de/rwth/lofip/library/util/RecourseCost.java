@@ -64,7 +64,7 @@ public class RecourseCost {
 //				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
 				
 				calculateNumberOfRouteFailures(gotClone);
-				//RUNTIME_TODO: entfernen
+				//RUNTIME_TODO: entfernen, braucht O(n) zeit
 				assertThatGotContainsNoEmptyTours(gotClone);
 				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);
 				//RUNTIME_TODO: entfernen
@@ -79,13 +79,13 @@ public class RecourseCost {
 	}
 
 	private void initialiseCustomersServedByTours(HashMap<Long, HashSet<Integer>> customersServedByTours, GroupOfTours got) {
-    			for (int i = 0; i < got.getNumberOfTours(); i++) {
-    				for (Customer c : got.getTour(i).getCustomers()) {
-    					HashSet<Integer> tempHashSet = new HashSet<Integer>();
-    					tempHashSet.add(i);
-    					customersServedByTours.put(c.getCustomerNo(), tempHashSet);
-    				}
-    			}
+		for (int i = 0; i < got.getNumberOfTours(); i++) {
+			for (Customer c : got.getTour(i).getCustomers()) {
+				HashSet<Integer> tempHashSet = new HashSet<Integer>();
+				tempHashSet.add(i);
+				customersServedByTours.put(c.getCustomerNo(), tempHashSet);
+			}
+		}
 	}
 	
 	private void calculateNumberOfRouteFailures(GroupOfTours gotClone) {
