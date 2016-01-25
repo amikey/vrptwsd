@@ -132,6 +132,14 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     	gots.removeAll(emptyGots);
     }
     
+    public void removeEmptyGots() {
+    	Set<GroupOfTours> emptyGots = new HashSet<GroupOfTours>();
+    	for (GroupOfTours got : gots) 
+    		if(!got.isHasTours())
+    	        emptyGots.add(got);    	        	  		   
+    	gots.removeAll(emptyGots);
+    }
+    
     public List<CustomerInTour> getCustomersInTours() {
         List<CustomerInTour> returnList = new ArrayList<CustomerInTour>();
         for (Tour t : getTours()) {
@@ -356,6 +364,17 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 				if (t.getCostFactor() == 2)
 					exists = "ja";
 			return exists;
+		}
+		
+		public boolean isHasEmptyToursThatAreNotForRecourse() {
+			boolean hasEmptyTours = false;
+			for (GroupOfTours got : gots)
+				if (got.isHasEmptyToursThatAreNotForRecourse())
+					hasEmptyTours = true;
+	    	for (GroupOfTours got : gots) 
+	    		if(!got.isHasTours())
+	    	        hasEmptyTours = true;
+	    	return hasEmptyTours;
 		}
 }
 

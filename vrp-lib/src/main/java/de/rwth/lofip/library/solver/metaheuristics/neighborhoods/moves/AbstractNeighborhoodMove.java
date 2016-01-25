@@ -138,8 +138,7 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 			list.add(tour1.getParentGot());
 			list.add(tour2.getParentGot());
 		}
-		return list;
-			
+		return list;			
 	}
 
 	public boolean makesInfeasibleToursFeasible() {

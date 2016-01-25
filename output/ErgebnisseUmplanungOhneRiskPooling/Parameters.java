@@ -5,7 +5,7 @@ import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 public class Parameters {
 	
 	//Debugging Options
-	private static boolean testing = false; //if true slow: processes asserts that need O(n) time for evaluation
+	private static boolean debugging = false; //if true slow: processes asserts that need O(n) time for evaluation
 	
 	//Print Options
 	private static boolean publishSolutionValueProgress = false;
@@ -40,8 +40,6 @@ public class Parameters {
 	//Recourse
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions
-	private static double costFactorForAdditionalTourInRecourse = 2.0;
-	
 	
 	//Plankapazität für deterministische Planung
 	private static double percentageOfCapacity = 1;
@@ -57,12 +55,11 @@ public class Parameters {
 	private static int seedI1 = 3000;
 	private static int seedGI = 3000;
 	private static int seedAM = 3000;
-
 	
 	
 	//Getter und Setter	
 	public static void setAllParametersToDefaultValues(){
-		testing = false;
+		debugging = false;
 		publishSolutionValueProgress = false;
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
@@ -76,13 +73,7 @@ public class Parameters {
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
-		costFactorForAdditionalTourInRecourse = 2.0;
 		percentageOfCapacity = 1;
-		RELATIVE_STANDARD_DEVIATION = 0.15;
-		
-		seedI1 = 3000;
-		seedGI = 3000;
-		seedAM = 3000;
 		
 		SimulationUtils.resetSeed();
 	}
@@ -151,8 +142,8 @@ public class Parameters {
 		return miminizeTours;
 	}
 
-	public static boolean isTestingMode() {
-		return testing;
+	public static boolean isDebuggingMode() {
+		return debugging;
 	}
 
 	public static void setOutputDirectory(String string) {
@@ -190,12 +181,6 @@ public class Parameters {
 	public static void setRelativeStandardDeviationTo(double d) {
 		RELATIVE_STANDARD_DEVIATION = d;
 	}
-	
-	public static void setSeeds(int i) {
-		seedI1 = i;
-		seedGI = i;
-		seedAM = i;
-	}
 
 	public static int getSeedI1() {
 		return seedI1;
@@ -207,22 +192,6 @@ public class Parameters {
 
 	public static int getSeedAM() {
 		return seedAM;
-	}
-
-	public static void setFluctuationOfDemandTo(double d) {
-		RELATIVE_STANDARD_DEVIATION = d;
-	}
-
-	public static void setTestingMode(boolean b) {
-		testing = true;
-	}
-
-	public static void setMaximalNumberOfToursInAdaptiveMemory(int i) {
-		maximalNumberOfToursInAdaptiveMemory = i;
-	}
-
-	public static double getCostFactorForAdditionalToursInRecourse() {
-		return costFactorForAdditionalTourInRecourse;
 	}
 
 

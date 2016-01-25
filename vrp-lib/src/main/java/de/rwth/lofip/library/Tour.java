@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import de.rwth.lofip.library.interfaces.SolutionElement;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.util.CustomerInTour;
 
@@ -213,6 +214,13 @@ public class Tour implements SolutionElement, Serializable {
                
     public boolean isTourEmpty() {
     	if (customers.size() == 0)
+    		return true;
+    	else
+    		return false;
+    }
+    
+    public boolean isTourEmptyAndNotForRecourse() {
+    	if (customers.size() == 0 && costFactor != Parameters.getCostFactorForAdditionalToursInRecourse())
     		return true;
     	else
     		return false;

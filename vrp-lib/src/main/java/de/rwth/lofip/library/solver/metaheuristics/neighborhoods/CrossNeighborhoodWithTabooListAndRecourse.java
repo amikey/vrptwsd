@@ -61,7 +61,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 			
 			AbstractNeighborhoodMove copyOfMove = move.cloneWithCopyOfToursAndGotsAndCustomers();
 			applyMoveToUnderlyingGots(copyOfMove);
-			
+						
 			RecourseCost newRecourseCost = calculateRecourseCostOfGotsThatAreAffectedByMove(copyOfMove);
 			move.setRecourseCostForGotsThatAreAffectedByMoveForSolutionAfterMoveIsApplied(newRecourseCost);
 		}		

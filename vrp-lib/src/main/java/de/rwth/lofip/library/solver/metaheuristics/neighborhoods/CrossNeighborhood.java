@@ -7,6 +7,8 @@ import java.util.List;
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
+import de.rwth.lofip.library.GroupOfTours;
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
@@ -51,6 +53,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	}
 	
 	public void resetNeighborhood() {
+//		elementWithTours.removeEmptyToursAndGots();
 		firstNeighborhoodStep = true;
 		tourCounter1 = 0;
 		tourCounter2 = 0;
@@ -73,7 +76,9 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	}
 	
 	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
-		resetNeighborhood();		
+		resetNeighborhood();
+		//RUNTIME_TODO: entfernen
+		assertThatSolutionContainsNoEmptyTours();
 		generateMovesUsingRefs(iteration);
 		if (bestNonTabooMove == null) {
 			if (bestMoveThatMightBeTaboo == null)
@@ -83,7 +88,11 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 		}			
 		return bestNonTabooMove;
 	}
-		
+	
+		private void assertThatSolutionContainsNoEmptyTours() {
+			assertEquals(false, elementWithTours.isHasEmptyToursThatAreNotForRecourse());	
+		}
+
 		private void generateMovesUsingRefs(int iteration) {
 			while (isExistsNextCombinationOfSegments()) {
 				generateNextCombinationOfSegments();
@@ -483,7 +492,11 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			List<Customer> customers1 = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
 			List<Customer> customers2 = tour2.removeCustomersBetween(bestMove.getStartPositionTour2(),bestMove.getEndPositionTour2());		
 			tour1.insertCustomersAtPosition(customers2, bestMove.getStartPositionTour1());
-			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());			
+			tour2.insertCustomersAtPosition(customers1, bestMove.getStartPositionTour2());
+			
+			//remove empty tours
+			for(GroupOfTours got : bestMove.getGots())
+				got.removeEmptyToursAndGots();
 		}					
 	}
 		

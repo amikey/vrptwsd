@@ -64,7 +64,10 @@ public class RecourseCost {
 //				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
 				
 				calculateNumberOfRouteFailures(gotClone);
-				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);					
+				//RUNTIME_TODO: entfernen
+				assertThatGotContainsNoEmptyTours(gotClone);
+				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);
+				//RUNTIME_TODO: entfernen
 				assertThatSolutionIsFeasible(gotClone);
 				overallRecourseCost = calculateRecourseCostOfFeasibleSolution(overallRecourseCost, got, gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
@@ -90,6 +93,15 @@ public class RecourseCost {
 		for (Tour tour : gotClone.getTours())
 			if (!TourUtils.isTourFeasibleWrtDemandCheckWithRef(tour))
 				numberOfRouteFailures++;		
+	}
+	
+	private void assertThatGotContainsNoEmptyTours(GroupOfTours got) {
+		assertEquals(false, got.isHasEmptyToursThatAreNotForRecourse());
+//		for (Tour t : got.getTours())
+//			if (t.isTourEmpty()) {
+//				got.print();
+//				assertEquals(false, t.isTourEmpty());
+//			}
 	}
 	
 	private void makeSolutionFeasibleAgain(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {

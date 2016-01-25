@@ -2,6 +2,7 @@ package de.rwth.lofip.library.interfaces;
 
 import java.util.List;
 
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 
 public interface ElementWithTours {
@@ -25,4 +26,8 @@ public interface ElementWithTours {
 	public String getAsTupelWithDemand();
 
 	public String getUseOfCapacityInTours();
+
+	public boolean isHasEmptyToursThatAreNotForRecourse();
+
+	public void removeEmptyGots();
 }

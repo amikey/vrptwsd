@@ -290,4 +290,19 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 		throw new RuntimeException("Customer not found in getCustomerWithNo");
 	}
 
+	public boolean isHasEmptyToursThatAreNotForRecourse() {
+		boolean hasEmptyTours = false;
+		for (Tour t : getTours())
+			if (t.isTourEmptyAndNotForRecourse()) {
+				hasEmptyTours = true;
+				break;
+			}
+		return hasEmptyTours;
+	}
+	
+	//DESIGN_TODO: Oberklasse ElementWithTours für Solution und GroupOfTours löschen und jeweils separat behandeln.
+	public void removeEmptyGots() {
+		//nothing to do here
+	}
+
 }
