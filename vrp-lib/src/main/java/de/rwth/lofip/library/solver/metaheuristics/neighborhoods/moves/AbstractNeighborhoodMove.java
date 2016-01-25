@@ -258,6 +258,12 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		System.out.println("Positionen: " + positionStartOfSegmentTour2 + ", " + positionEndOfSegmentTour2);	
 		System.out.println("CostDifference = " + costDifferenceToPreviousSolution);
 	}
+	
+	public void printInOneLine() {
+		System.out.println("( " + tour1.getTourAsTupel() + " " + tour2.getTourAsTupel() + " )" +
+								"(" + positionStartOfSegmentTour1 + "," + positionEndOfSegmentTour1 + ") " +
+								"(" + positionStartOfSegmentTour2 + "," + positionEndOfSegmentTour2 + ") ");
+	}
 
 	
 	public boolean isMoveValidWrtPositions() {

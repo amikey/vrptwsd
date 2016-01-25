@@ -53,7 +53,6 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 	}
 	
 	public void resetNeighborhood() {
-//		elementWithTours.removeEmptyToursAndGots();
 		firstNeighborhoodStep = true;
 		tourCounter1 = 0;
 		tourCounter2 = 0;
@@ -68,8 +67,13 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 		bestNonTabooMove = null;
 		//bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
 		bestMoveThatMightBeTaboo = null;
+		ResetListOfNonTabooMovesHook();
 	}
 		
+	protected void ResetListOfNonTabooMovesHook() {
+		//nothing to do here; hook exists for stochastic version
+	}
+
 	public AbstractNeighborhoodMove returnBestMove() throws Exception {
 		int iteration = Integer.MAX_VALUE;
 		return returnBestMove(iteration);
@@ -111,7 +115,8 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
-//						assertEquals(true, move.isMoveValidWrtPositions());
+						//RUNTIME_TODO: entfernen, teuer
+						assertEquals(true, move.isMoveValidWrtPositions());
 						if (isMoveNewBestMove(move)) {							
 							// bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
 							bestMoveThatMightBeTaboo = move;

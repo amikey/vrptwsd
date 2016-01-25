@@ -15,30 +15,46 @@ import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhoodWithTabooList {
-
-	public CrossNeighborhoodWithTabooListAndRecourse(ElementWithTours solution) {
-		super(solution);
-	}
 	
 	private List<SolutionGot> listOfParetoOptimalSolutions = new ArrayList<SolutionGot>();
 	private List<AbstractNeighborhoodMove> listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
+	
+	public CrossNeighborhoodWithTabooListAndRecourse(ElementWithTours solution) {
+		super(solution);
+	}
 
+	@Override
+	protected void ResetListOfNonTabooMovesHook() {
+		listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
+	}
+	
 	@Override
 	//here the moves have to be added to a list instead of just remembering the best move
 	public void setRespAddBestNonTabooMove(AbstractNeighborhoodMove move) {
-		assertEquals(true, move.isMoveValidWrtPositions());
+//		move.printInOneLine();
 		listOfNonTabooMoves.add(move);
 	}
 	
 	@Override
 	//this is just an empty hook in CrossNeighborhood
 	protected void setBestNonTabooMoveHook() {
+		//RUNTIME_TODO: entfernen, teuer
+//		printAllMoves();
+		
 		sortMovesWrtDeterministicCost();
 		takeFirstXNumberOfMoves();
 		calculateRecourseCostForMoves();
 		sortMovesWrtToStochasticAspectsAndSetBestMove();
 	}
 	
+	private void printAllMoves() {
+		System.out.println();
+		System.out.println("Liste der Moves:");
+		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {
+			move.printInOneLine();
+		}
+	}
+
 	public void sortMovesWrtDeterministicCost() {
 		Comparator<AbstractNeighborhoodMove> byDeterministicCost = (e1,e2) -> Double.compare(e1.getCost(),e2.getCost());		
 		Collections.sort(listOfNonTabooMoves, byDeterministicCost);				
