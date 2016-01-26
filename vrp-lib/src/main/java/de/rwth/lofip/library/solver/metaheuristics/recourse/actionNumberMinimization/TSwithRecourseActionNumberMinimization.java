@@ -2,13 +2,14 @@ package de.rwth.lofip.library.solver.metaheuristics.recourse.actionNumberMinimiz
 
 import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
+import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseActions;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class TSwithRecourseActionNumberMinimization extends TabuSearchForElementWithTours {
 		
 	@Override
 	protected CrossNeighborhoodWithTabooList getCrossNeighborhood() {
-		return new CrossNeighborhoodWithTabooListAndRecourse(solution);
+		return new CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseActions(solution);
 	}
 	
 	@Override

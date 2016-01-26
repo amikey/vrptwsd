@@ -17,7 +17,7 @@ import de.rwth.lofip.library.util.math.MathUtils;
 public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhoodWithTabooList {
 	
 	private List<SolutionGot> listOfParetoOptimalSolutions = new ArrayList<SolutionGot>();
-	private List<AbstractNeighborhoodMove> listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
+	protected List<AbstractNeighborhoodMove> listOfNonTabooMoves = new ArrayList<AbstractNeighborhoodMove>();
 	
 	public CrossNeighborhoodWithTabooListAndRecourse(ElementWithTours solution) {
 		super(solution);
@@ -92,7 +92,7 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 //		}		
 	}
 
-	private void sortMovesWrtToStochasticAspect() {
+	protected void sortMovesWrtToStochasticAspect() {
 		Comparator<AbstractNeighborhoodMove> byDeterministicAndStochasticCost = (e1,e2) -> Double.compare(e1.getDeterministicAndStochasticCostDifference(),e2.getDeterministicAndStochasticCostDifference());		
 		Collections.sort(listOfNonTabooMoves, byDeterministicAndStochasticCost);
 	}

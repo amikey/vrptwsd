@@ -45,7 +45,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	@Override
 	public ElementWithTours improve(ElementWithTours solutionStart) throws IOException {
 		
-		startTime = System.nanoTime();
+		startTime = System.currentTimeMillis();
 		
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
@@ -154,8 +154,8 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	private void publishSolutionAtEndOfTabuSearch() throws IOException {
-		endTime = System.nanoTime();
-		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
+		endTime = System.currentTimeMillis();
+		timeNeeded = (endTime - startTime);
 		
 		if (Parameters.publishSolutionAtEndOfTabuSearch())			
 			if (bestOverallSolution instanceof SolutionGot){
@@ -166,6 +166,8 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"

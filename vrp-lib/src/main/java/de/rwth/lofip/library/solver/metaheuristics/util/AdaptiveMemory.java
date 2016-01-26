@@ -193,7 +193,7 @@ public class AdaptiveMemory {
 		}
 		
 		protected void rematchToursAccordingToRecourseCost() {
-			//nothingg to do here; hook exists for recourse version
+			//nothing to do here; hook exists for recourse version
 		}
 		
 		private void isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution() {
