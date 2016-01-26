@@ -8,7 +8,7 @@ public class AdaptiveMemoryUtils {
 	public static void setParametersInAMTSforTesting(AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch) {
 		AdaptiveMemoryTabuSearch.setSeeds(1, 1, 1);
 		Parameters.setNumberOfIterationsInTS(10);
-		Parameters.setNumberOfImprovingIterationsInTS(10);
+		Parameters.setNumberOfNonImprovingIterationsInTS(10);
 		adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(10);
 		adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(10);
 		adaptiveMemoryTabuSearch.setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(10);

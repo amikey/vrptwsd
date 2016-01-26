@@ -92,7 +92,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
 	private boolean isStoppingCriterionMet() {
 //		return iteration >= maximalNumberOfIterations;
-		return iterationsWithoutImprovement >= maxNumberIterationsWithoutImprovement;
+		return iterationsWithoutImprovement > maxNumberIterationsWithoutImprovement;
 	}
 	
 	private void findBestNonTabooMove() throws Exception {		

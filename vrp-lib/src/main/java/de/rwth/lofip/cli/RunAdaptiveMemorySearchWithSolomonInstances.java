@@ -297,7 +297,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		this.solutions = solutionsTemp;
 		this.numberOfDifferentInitialSolutions = numberOfDifferentInitialSolutions;
 		Parameters.setNumberOfIterationsInTS(maximalNumberOfIterationsTabuSearch);
-		Parameters.setNumberOfImprovingIterationsInTS(maximalNumberOfIterationsWithoutImprovementTabuSearch); 
+		Parameters.setNumberOfNonImprovingIterationsInTS(maximalNumberOfIterationsWithoutImprovementTabuSearch); 
 		this.maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory;
 		this.maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
 		this.seedI1 = seedI1;

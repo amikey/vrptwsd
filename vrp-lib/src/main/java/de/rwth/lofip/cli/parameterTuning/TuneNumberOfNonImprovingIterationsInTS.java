@@ -8,18 +8,18 @@ import de.rwth.lofip.cli.RunAdaptiveMemorySearchWithSolomonInstances;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.parameters.Parameters;
 
-public class ParameterTuning extends RunAdaptiveMemorySearchWithSolomonInstances {
+public class TuneNumberOfNonImprovingIterationsInTS extends RunAdaptiveMemorySearchWithSolomonInstances {
 	
 	@Test
-	public void TestLenthOfListInAMWithLenth100() throws IOException {
-		Parameters.setAllParametersToDefaultValues();
+	public void TestNumberOfNonImprovingIterationsInTS0() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setNumberOfToursInGot(1);
-		Parameters.setMaximalNumberOfToursInAdaptiveMemory(100);
+		Parameters.setNumberOfNonImprovingIterationsInTS(0);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\ParameterTuning\\AM100\\");
+		Parameters.setOutputDirectory("\\ParameterTuning\\TS0\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		
 		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
@@ -27,15 +27,15 @@ public class ParameterTuning extends RunAdaptiveMemorySearchWithSolomonInstances
 	}
 	
 	@Test
-	public void TestLenthOfListInAMWithLenth200() throws IOException {
-		Parameters.setAllParametersToDefaultValues();
+	public void TestNumberOfNonImprovingIterationsInTS20() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setNumberOfToursInGot(1);
-		Parameters.setMaximalNumberOfToursInAdaptiveMemory(200);
+		Parameters.setNumberOfNonImprovingIterationsInTS(20);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\ParameterTuning\\AM200\\");
+		Parameters.setOutputDirectory("\\ParameterTuning\\TS20\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		
 		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
@@ -43,35 +43,35 @@ public class ParameterTuning extends RunAdaptiveMemorySearchWithSolomonInstances
 	}
 	
 	@Test
-	public void TestLenthOfListInAMWithLenth500() throws IOException {
-		Parameters.setAllParametersToDefaultValues();
+	public void TestNumberOfNonImprovingIterationsInTS100() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setNumberOfToursInGot(1);
-		Parameters.setMaximalNumberOfToursInAdaptiveMemory(500);
+		Parameters.setNumberOfNonImprovingIterationsInTS(100);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\ParameterTuning\\AM500\\");
+		Parameters.setOutputDirectory("\\ParameterTuning\\TS100\\");
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		
+		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
+		processProblems();
+	}
+	
+	@Test
+	public void TestNumberOfNonImprovingIterationsInTS200() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		//Set Parameters for Scenario
+		Parameters.setPercentageOfCapacity(1);
+		Parameters.setNumberOfToursInGot(1);
+		Parameters.setNumberOfNonImprovingIterationsInTS(200);
+		
+		//Set Output parameters
+		Parameters.setOutputDirectory("\\ParameterTuning\\TS200\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		
 		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
 		processProblems();
 	}
 
-	@Test
-	public void TestLenthOfListInAMWithLenth1000() throws IOException {
-		Parameters.setAllParametersToDefaultValues();
-		//Set Parameters for Scenario
-		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
-		Parameters.setMaximalNumberOfToursInAdaptiveMemory(1000);
-		
-		//Set Output parameters
-		Parameters.setOutputDirectory("\\ParameterTuning\\AM1000\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		
-		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
-		processProblems();
-	}
-	
 }

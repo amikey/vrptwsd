@@ -76,8 +76,8 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		System.out.println(oldRecourseCost);
 		System.out.println(newRecourseCost);
 		
-		assertEquals(oldRecourseCost,neighborhood.getFirstMoveInMoveList().getOldRecourseCost().getRecourseCost(),0.0001);
-		assertEquals(newRecourseCost,neighborhood.getFirstMoveInMoveList().getNewRecourseCost().getRecourseCost(),0.0001);	
+		assertEquals(oldRecourseCost,move.getOldRecourseCost().getRecourseCost(),0.0001);
+		assertEquals(newRecourseCost,move.getNewRecourseCost().getRecourseCost(),0.0001);	
 	}
 	
 	@Test 

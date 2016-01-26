@@ -118,14 +118,16 @@ public class RecourseCost {
 		}
 	}
 		
-	private void tryToReuseAlreadySeenRecourseAction(GroupOfTours gotClone,
-			ArrayList<GroupOfTours> listOfRecourseActions) {
+	private void tryToReuseAlreadySeenRecourseAction(GroupOfTours gotClone,	ArrayList<GroupOfTours> listOfRecourseActions) {
 		Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
 		Collections.sort(listOfRecourseActions, gotByCostComparator);
 		for (GroupOfTours gotTemp : listOfRecourseActions) {
 			SimulationUtils.setDemandForCustomersWithDeviation(gotTemp);
 //			if (Parameters.isTestingMode())
+			//RUNTIME_TODO: entfernen
 				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
+//			gotClone = gotTemp;
+//			break;
 		}
 	}
 

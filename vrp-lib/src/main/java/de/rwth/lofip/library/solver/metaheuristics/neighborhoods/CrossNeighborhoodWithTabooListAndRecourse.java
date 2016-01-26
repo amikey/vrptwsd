@@ -137,10 +137,4 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 		return listOfNonTabooMoves;
 	}
 
-	//this exists only for testing
-	public AbstractNeighborhoodMove getFirstMoveInMoveList() {
-		return listOfNonTabooMoves.get(0);
-	}
-
-
 }

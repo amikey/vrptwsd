@@ -87,6 +87,32 @@ public class Parameters {
 		SimulationUtils.resetSeed();
 	}
 	
+	public static void setAllParametersToNewBestValuesAfterParameterTesting(){
+		testing = false;
+		publishSolutionValueProgress = false;
+		publishSolutionAtEndOfTabuSearch = false;
+		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
+		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
+		miminizeTours = true;
+		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
+		numberOfDifferentInitialSolutions = 20;
+		maximalNumberOfCallsToAdaptiveMemory = 0;
+		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
+		maximalNumberOfToursInAdaptiveMemory = 200;
+		maximalNumberOfIterationsTabuSearch = 0;
+		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
+		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+		costFactorForAdditionalTourInRecourse = 2.0;
+		percentageOfCapacity = 1;
+		RELATIVE_STANDARD_DEVIATION = 0.15;
+		
+		seedI1 = 3000;
+		seedGI = 3000;
+		seedAM = 3000;
+		
+		SimulationUtils.resetSeed();
+	}
+	
 	public static int getNumberOfDemandScenarioRuns() {	
 		return NUMBER_OF_DEMAND_SCENARIO_RUNS;
 	}
@@ -177,7 +203,7 @@ public class Parameters {
 		Parameters.percentageOfCapacity = percentageOfCapacity;
 	}
 
-	public static void setNumberOfImprovingIterationsInTS(int i) {
+	public static void setNumberOfNonImprovingIterationsInTS(int i) {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = i;
 	}
 
