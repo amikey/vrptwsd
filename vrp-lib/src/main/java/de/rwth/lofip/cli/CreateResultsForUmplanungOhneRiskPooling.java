@@ -244,7 +244,7 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 	
 	//-------------------------------------
 
-	private void reduceCapacityOfVehiclesInProblems() {
+	protected void reduceCapacityOfVehiclesInProblems() {
 		for (VrpProblem problem : problems)
 			VrpUtils.decreaseCapacityOfVehiclesToPercentageOf(problem, Parameters.getPercentageOfCapacity());
 	}

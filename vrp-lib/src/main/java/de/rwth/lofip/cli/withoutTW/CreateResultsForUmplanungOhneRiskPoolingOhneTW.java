@@ -1,97 +1,104 @@
-package de.rwth.lofip.cli;
+package de.rwth.lofip.cli.withoutTW;
 
 import java.io.IOException;
 
-import org.junit.Test;
+import java.util.List;
 
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
+import de.rwth.lofip.cli.CreateResultsForUmplanungOhneRiskPooling;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
+import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.util.VrpUtils;
 
-public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySearchWithSolomonInstances{
-	
-	// Ein Got für alle Touren
+public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResultsForUmplanungOhneRiskPooling {
 	
 	//--- Eigene Modified Solomon Instances
 	
 		@Test
 		public void HundredPercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\HundredPercent\\EigeneModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\EigeneModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void NinetyFivePercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\NinetyFivePercent\\EigeneModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\EigeneModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void NinetyPercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\NinetyPercent\\EigeneModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\EigeneModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void EightyFivePercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\EightyFivePercent\\EigeneModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\EigeneModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void EightyPercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\EightyPercent\\EigeneModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyPercent\\EigeneModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
@@ -100,80 +107,85 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 		@Test
 		public void EightyPercentOfCapacityOnAllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EigthyPercent\\OriginalSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EigthyPercent\\OriginalSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void EightyFivePercentOfCapacityOnAllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\OriginalSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\OriginalSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void NinetyPercentOfCapacityOnAllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\OriginalSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\OriginalSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void NinetyFivePercentOfCapacityOnAllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\OriginalSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\OriginalSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void HundredPercentOfCapacityOnAllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\OriginalSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\OriginalSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 			
@@ -182,89 +194,104 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 		@Test
 		public void EightyPercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EightyPercent\\ModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyPercent\\ModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void EightyFivePercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\ModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\ModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void NinetyPercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\ModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\ModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}		
 			
 		@Test
 		public void NinetyFivePercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\ModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\ModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
 		
 		@Test
 		public void HundredPercentOfCapacityOnAllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Scenario
-			Parameters.setAllParametersToDefaultValues();
+			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setNumberOfToursInGot(1);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\ModifiedSolomon\\");
+			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\ModifiedSolomon\\");
 			Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 			
 			problems = ReadAndWriteUtils.readModifiedSolomonProblems();
 			reduceCapacityOfVehiclesInProblems();
+			deleteTimeWindows();
 			processProblems();
 		}
-			
 		
-	//-------------------------------------
+	//------------
 
-		protected void reduceCapacityOfVehiclesInProblems() {
-			for (VrpProblem problem : problems)
-				VrpUtils.decreaseCapacityOfVehiclesToPercentageOf(problem, Parameters.getPercentageOfCapacity());
+		private void deleteTimeWindows() {
+			for (VrpProblem problem : problems) 
+				for (Customer c : problem.getCustomers()) {
+					c.setTimeWindowOpen(0);
+					//RUNTIME_TODO: delete
+					assertEquals(true, problem.getMaxTime() >= c.getTimeWindowClose());
+					c.setTimeWindowClose(problem.getMaxTime());
+				}
 		}
-
+		
+		//for testing
+		public List<VrpProblem> deleteTimeWindwos(List<VrpProblem> problems2) {
+			problems = problems2;
+			deleteTimeWindows();
+			return problems;
+		}
 }
