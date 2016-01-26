@@ -79,10 +79,5 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		assertEquals(oldRecourseCost,move.getOldRecourseCost().getRecourseCost(),0.0001);
 		assertEquals(newRecourseCost,move.getNewRecourseCost().getRecourseCost(),0.0001);	
 	}
-	
-	@Test 
-	public void testSortMovesWrtToStochasticAspect() {
-		throw new RuntimeException("Impelement test for SortMovesWrtToStochasticAspect()");
-	}
 
 }

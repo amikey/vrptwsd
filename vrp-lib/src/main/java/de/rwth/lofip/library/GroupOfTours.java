@@ -302,7 +302,7 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	
 	//DESIGN_TODO: Oberklasse ElementWithTours für Solution und GroupOfTours löschen und jeweils separat behandeln.
 	public void removeEmptyGots() {
-		//nothing to do here
+		//nothing to do here; exists only for Solution
 	}
 
 }

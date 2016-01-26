@@ -41,6 +41,7 @@ public class Parameters {
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions
 	private static double costFactorForAdditionalTourInRecourse = 2.0;
+	private static boolean recourseActionNumberMinimization;
 	
 	
 	//Plankapazität für deterministische Planung
@@ -57,7 +58,6 @@ public class Parameters {
 	private static int seedI1 = 3000;
 	private static int seedGI = 3000;
 	private static int seedAM = 3000;
-
 	
 	
 	//Getter und Setter	
@@ -77,6 +77,7 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
+		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.15;
 		
@@ -103,6 +104,7 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
+		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.15;
 		
@@ -249,6 +251,14 @@ public class Parameters {
 
 	public static double getCostFactorForAdditionalToursInRecourse() {
 		return costFactorForAdditionalTourInRecourse;
+	}
+
+	public static boolean isRecourseActionNumberMinimization() {
+		return recourseActionNumberMinimization;
+	}
+	
+	public static void setRecourseActionNumberMinimization(boolean b) {
+		recourseActionNumberMinimization = b;
 	}
 
 

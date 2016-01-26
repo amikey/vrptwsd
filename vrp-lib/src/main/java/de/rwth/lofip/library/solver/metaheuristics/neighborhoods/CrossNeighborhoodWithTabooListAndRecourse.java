@@ -38,32 +38,15 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	@Override
 	//this is just an empty hook in CrossNeighborhood
 	protected void setBestNonTabooMoveHook() {
-		//RUNTIME_TODO: entfernen, teuer
-//		printAllMoves();
-		
 		sortMovesWrtDeterministicCost();
 		takeFirstXNumberOfMoves();
 		calculateRecourseCostForMoves();
 		sortMovesWrtToStochasticAspectsAndSetBestMove();
 	}
 	
-	private void printAllMoves() {
-		System.out.println();
-		System.out.println("Liste der Moves:");
-		for (AbstractNeighborhoodMove move : listOfNonTabooMoves) {
-			move.printInOneLine();
-		}
-	}
-
 	public void sortMovesWrtDeterministicCost() {
 		Comparator<AbstractNeighborhoodMove> byDeterministicCost = (e1,e2) -> Double.compare(e1.getCost(),e2.getCost());		
 		Collections.sort(listOfNonTabooMoves, byDeterministicCost);				
-	}
-	
-	//this exists only for testing
-	public void sortMovesWrtCostDifference() {
-		Comparator<AbstractNeighborhoodMove> byCostDifference = (e1,e2) -> Double.compare(e1.getCostDifferenceToPreviousSolution(),e2.getCostDifferenceToPreviousSolution());		
-		Collections.sort(listOfNonTabooMoves, byCostDifference);
 	}
 
 	public void takeFirstXNumberOfMoves() {
@@ -135,6 +118,12 @@ public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhood
 	
 	public List<AbstractNeighborhoodMove> getListOfNonTabooMoves() {
 		return listOfNonTabooMoves;
+	}
+	
+	//this exists only for testing
+	public void sortMovesWrtCostDifference() {
+		Comparator<AbstractNeighborhoodMove> byCostDifference = (e1,e2) -> Double.compare(e1.getCostDifferenceToPreviousSolution(),e2.getCostDifferenceToPreviousSolution());		
+		Collections.sort(listOfNonTabooMoves, byCostDifference);
 	}
 
 }

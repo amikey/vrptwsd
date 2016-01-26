@@ -105,19 +105,19 @@ public class RecourseCost {
 	}
 	
 	private void makeSolutionFeasibleAgain(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
-		tryToReuseAlreadySeenRecourseAction(gotClone, listOfRecourseActions);
-		
-		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
-		//create Solution from gotClone for processing with local search    	    				
-		ls.improve(gotClone);
-		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
-		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
-			//got is still demand infeasible -> no feasible solution could be found for demand
-			gotClone.addEmptyTour();
-			ls.improve(gotClone);    					
-		}
+		if (Parameters.isRecourseActionNumberMinimization())
+			makeSolutionFeasibleAgainWithRecourseMinimization(gotClone, listOfRecourseActions);
+		else
+			makeSolutionFeasibleAgainWithCostMinimization(gotClone);	
 	}
 		
+	private void makeSolutionFeasibleAgainWithRecourseMinimization(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
+		tryToReuseAlreadySeenRecourseAction(gotClone, listOfRecourseActions);
+		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone))
+			//in this case no previous Recourse Actions could be used
+			makeSolutionFeasibleAgainWithCostMinimization(gotClone);
+	}
+	
 	private void tryToReuseAlreadySeenRecourseAction(GroupOfTours gotClone,	ArrayList<GroupOfTours> listOfRecourseActions) {
 		Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
 		Collections.sort(listOfRecourseActions, gotByCostComparator);
@@ -126,8 +126,20 @@ public class RecourseCost {
 //			if (Parameters.isTestingMode())
 			//RUNTIME_TODO: entfernen
 				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
-//			gotClone = gotTemp;
-//			break;
+			gotClone = gotTemp;
+			break;
+		}
+	}
+
+	private void makeSolutionFeasibleAgainWithCostMinimization(GroupOfTours gotClone) {
+		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
+		//create Solution from gotClone for processing with local search    	    				
+		ls.improve(gotClone);
+		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
+		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
+			//got is still demand infeasible -> no feasible solution could be found for demand
+			gotClone.addEmptyTour();
+			ls.improve(gotClone);    					
 		}
 	}
 

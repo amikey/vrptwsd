@@ -18,6 +18,8 @@ public interface ElementWithTours {
 	public List<Tour> getTours();
 	
 	public double getTotalDistanceWithCostFactorAndRecourse();
+	
+	public double getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse();
 
 	public String getAsTupel();
 

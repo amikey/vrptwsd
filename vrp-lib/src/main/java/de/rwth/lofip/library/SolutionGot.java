@@ -33,6 +33,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }
 
     public double getTotalDistanceWithCostFactor() {
+    	//RUNTIME_TODO: diesen Wert könnte man auch zwischenspeichern
         double distance = 0;
         for (Tour t : this.getTours()) {
             distance += t.getTotalDistanceWithCostFactor();
@@ -41,9 +42,19 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }
     
     public double getTotalDistanceWithCostFactorAndRecourse() {
+    	//RUNTIME_TODO: diesen Wert könnte man auch zwischenspeichern
     	double cost = 0;
     	for (GroupOfTours got : getGots()) {
     		cost += got.getTotalDistanceWithCostFactor() + got.getExpectedRecourse().getRecourseCost();
+    	}
+		return cost;
+    }
+    
+    public double getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() {
+    	//RUNTIME_TODO: diesen Wert könnte man auch zwischenspeichern
+       	double cost = 0;
+    	for (GroupOfTours got : getGots()) {
+    		cost += got.getTotalDistanceWithCostFactor() + got.getExpectedRecourse().getConvexCombinationOfCostAndNumberRecourseActions();
     	}
 		return cost;
     }
@@ -153,10 +164,6 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     	return new RecourseCost(getGots());
     }
     	
-	public double getSumOfDistanceAndExpectedRecourseCost() {
-		return getTotalDistanceWithCostFactor() + getExpectedRecourseCost().getRecourseCost();
-	}
-
 	public void addGot(GroupOfTours got) {
 		gots.add(got);
 	}
@@ -247,7 +254,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 
     public String getSolutionAsString() {
         String s = String.format("%.3f %.3f %.3f %d\n", getTotalDistanceWithCostFactor(),
-                getExpectedRecourseCost(), getSumOfDistanceAndExpectedRecourseCost(), getVehicleCount());
+                getExpectedRecourseCost(), getTotalDistanceWithCostFactorAndRecourse(), getVehicleCount());
         for (Tour t : getTours()) {
             s += ("0 ");
             for (Customer c : t.getCustomers()) {
