@@ -58,6 +58,10 @@ public class Parameters {
 	private static int seedI1 = 3000;
 	private static int seedGI = 3000;
 	private static int seedAM = 3000;
+
+	private static long startingTime;
+	private static long endTime;
+	private static boolean isRunningTimeSet = false;
 	
 	
 	//Getter und Setter	
@@ -261,6 +265,26 @@ public class Parameters {
 		recourseActionNumberMinimization = b;
 	}
 
+	public static void setMaximalNumberOfCustomersConsideredInSegment(int i) {
+		 MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = i;
+	}
+
+	public static void setRunningTimeInHours(int i) {
+		startingTime = System.currentTimeMillis();
+		endTime = startingTime + (i * 60 * 60 * 1000);
+		isRunningTimeSet = true;
+	}
+
+	public static boolean isRunningTimeReached() {
+		if (!isRunningTimeSet)
+			return false;
+		else 
+			return ( System.currentTimeMillis() >= endTime);
+	}
+
+	public static void setPublishSolutionValueProgress(boolean b) {
+		publishSolutionValueProgress = b;
+	}
 
 	
 

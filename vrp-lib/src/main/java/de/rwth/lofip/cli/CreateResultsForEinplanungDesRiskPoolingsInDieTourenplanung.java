@@ -70,8 +70,10 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	@Override
 	protected void processProblems() throws IOException {
 		for (int i = 1; i <= numberOfExperiments; i++) {
+			if (!Parameters.isRunningTimeReached()) {
 				increaseParameters();
-				solveProblemsWithAdaptiveMemoryWithRecourseSolver();	
+				solveProblemsWithAdaptiveMemoryWithRecourseSolver();
+			}
 		}		
 	}
 

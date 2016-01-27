@@ -250,8 +250,10 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	
 	protected void processProblems() throws IOException {
 		for (int i = 1; i <= numberOfExperiments; i++) {
-			increaseParameters();
-			solveProblemsWithAdaptiveMemorySolver();	
+			if (!Parameters.isRunningTimeReached()) {
+				increaseParameters();
+				solveProblemsWithAdaptiveMemorySolver();
+			}
 		}		
 	}
 	

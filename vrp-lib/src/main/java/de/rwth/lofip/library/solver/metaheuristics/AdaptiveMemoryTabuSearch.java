@@ -94,10 +94,14 @@ public class AdaptiveMemoryTabuSearch {
 		}	
 
 		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) throws IOException {
+
 			for (int i = 1; i <= numberOfDifferentInitialSolutions; i++) {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
+				//TODO: Ausgabe entfernen
+				System.out.println(newSolution.getAsTupel());
+				System.out.println(newSolution.getTotalDistanceWithCostFactor());
 				TabuSearchForElementWithTours tabuSearch = getTS();
 				tabuSearch.improve(newSolution);
 				adaptiveMemory.addTours(newSolution);
@@ -105,6 +109,8 @@ public class AdaptiveMemoryTabuSearch {
 		}
 		
 		private boolean isStoppingCriterionMet() {
+			if (Parameters.isRunningTimeReached())
+				return true;
 			if (numberOfAMCallsWithoutImprovement >= maximalNumberOfCallsWithoutImprovementToAdaptiveMemory)
 				return true;
 //			if (callsToAdaptiveMemory >= maximalNumberOfCallsToAdaptiveMemory)

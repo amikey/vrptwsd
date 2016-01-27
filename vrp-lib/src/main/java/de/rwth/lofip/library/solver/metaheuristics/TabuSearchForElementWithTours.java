@@ -91,7 +91,8 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 
 	private boolean isStoppingCriterionMet() {
-//		return iteration >= maximalNumberOfIterations;
+		if (Parameters.isRunningTimeReached())
+			return true;
 		return iterationsWithoutImprovement > maxNumberIterationsWithoutImprovement;
 	}
 	
@@ -149,8 +150,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	// Print Utilities
 	
 	private void publishSolution() throws IOException {
-		if (Parameters.publishSolutionValueProgress())
-			IOUtils.write(iteration + ";" + String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";" + solution.getNumberOfTours() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
+		if (Parameters.publishSolutionValueProgress()) {
+			System.out.println(iteration + " " + solution.getAsTupel());
+			System.out.println(solution.getTotalDistanceWithCostFactor());
+//			IOUtils.write(iteration + ";" + String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";" + solution.getNumberOfTours() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
+		}
 	}
 	
 	private void publishSolutionAtEndOfTabuSearch() throws IOException {
