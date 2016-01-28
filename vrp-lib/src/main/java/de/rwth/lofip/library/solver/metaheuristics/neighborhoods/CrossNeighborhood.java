@@ -110,14 +110,16 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 //						System.out.println("DEBUGGING!");
 					//IMPORTANT_TODO: Check entfernen, braucht O(n) Zeit
 					
+					//for testing
 					if (Parameters.isTestingMode())
 						assertEquals(isMoveFeasibleCheckNaiv(),isMoveFeasibleCheckWithRef());
-					//RUNTIME_TODO: durch check with ref ersetzen
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
-						//RUNTIME_TODO: entfernen, teuer
-						assertEquals(true, move.isMoveValidWrtPositions());
+						//for testing
+						if (Parameters.isTestingMode())
+							assertEquals(true, move.isMoveValidWrtPositions());
+						
 						if (isMoveNewBestMove(move)) {							
 							// bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
 							bestMoveThatMightBeTaboo = move;
@@ -343,12 +345,12 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 		
 	public boolean isMoveFeasibleCheckNaiv() {			
 			
-//			printNeighborhoodStep();
+			printNeighborhoodStep();
 			
 			Tour tour1clone;
 			Tour tour2clone;
-			if (tourCounter1 == tourCounter2) {			
-				//inner-tour move
+			
+			if (isInnerTourMove()) {							
 				tour1clone = new Tour(tour1);
 				tour2clone = tour1clone;
 			} else {
@@ -362,7 +364,10 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 			
 			//check demand and tw feasibility
 			boolean isWasInsertionPossible = true;	
-			for (int i = 0 ; i < positionEndOfSegmentTour2 - positionStartOfSegmentTour2; i++) {
+			
+			//first insert customers from tour 2 in tour 1
+			int numberOfCustomersThatWasRemovedFromTour2 = positionEndOfSegmentTour2 - positionStartOfSegmentTour2; 
+			for (int i = 0 ; i < numberOfCustomersThatWasRemovedFromTour2; i++) {
 				Customer customer = customers2.get(i);
 				if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour1clone, i+positionStartOfSegmentTour1)) {
 					tour1clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour1);
@@ -371,20 +376,49 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 					break;
 				}
 			}		
-			for (int i = 0; i < positionEndOfSegmentTour1 - positionStartOfSegmentTour1; i++) {
-				Customer customer = customers1.get(i);			
-				if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour2clone, i + positionStartOfSegmentTour2)) {
-					tour2clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour2);				
-				} else {
-					isWasInsertionPossible = false;
-					break;
-				}			
-			}
+			
+			//then insert customers from tour 1 in tour 2
+			int numberOfCustomersThatWasRemovedFromTour1 = positionEndOfSegmentTour1 - positionStartOfSegmentTour1; 
+			if (!isInnerTourMove()) 
+				for (int i = 0; i < numberOfCustomersThatWasRemovedFromTour1; i++) {
+					Customer customer = customers1.get(i);			
+					if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour2clone, i + positionStartOfSegmentTour2)) {
+						tour2clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour2);				
+					} else {
+						isWasInsertionPossible = false;
+						break;
+					}			
+				}
+			
+			if (isInnerTourMove())
+				for (int i = 0; i < numberOfCustomersThatWasRemovedFromTour1; i++) {
+					Customer customer = customers1.get(i);			
+					if (isInsertingPositionAfterRemovedSegment()) {
+						if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour2clone, i + positionStartOfSegmentTour2 - numberOfCustomersThatWasRemovedFromTour1)) {
+							tour2clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour2);				
+						} else {
+							isWasInsertionPossible = false;
+							break;
+						}
+					} else {
+						if (TourUtils.isInsertionPossibleWrtDemandAndTWinLinearTime(customer, tour2clone, i + positionStartOfSegmentTour2)) {
+							tour2clone.insertCustomerAtPosition(customer, i + positionStartOfSegmentTour2);				
+						} else {
+							isWasInsertionPossible = false;
+							break;
+						}
+					}
+				}
+				
 			return isWasInsertionPossible;
 		}
 	
 		
 	
+		private boolean isInsertingPositionAfterRemovedSegment() {
+			return !(positionStartOfSegmentTour2 < positionStartOfSegmentTour1);
+		}
+
 		public double calculateCostUsingRefs() {					
 			
 			double costSolution = elementWithTours.getTotalDistanceWithCostFactor();

@@ -20,8 +20,8 @@ public class TabuSearchWithRecourseTest {
 	@Test
 	public void TestTabuSearchWithRecourse() throws IOException {
 		//Set Parameters for Algorithm
-		Parameters.setAllParametersToDefaultValues();
-		Parameters.setNumberOfNonImprovingIterationsInTS(5);
+		Parameters.setAllParametersToMinimalTestingValues();
+//		Parameters.setNumberOfNonImprovingIterationsInTS(5);
 		Parameters.setNumberOfToursInGot(2);
 		Parameters.setRelativeStandardDeviationTo(0.15);
 		Parameters.setSeeds(3001);
