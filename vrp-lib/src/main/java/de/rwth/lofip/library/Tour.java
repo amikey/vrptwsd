@@ -590,7 +590,7 @@ public class Tour implements SolutionElement, Serializable {
         }       
     }
     
-	private void recalculateTotalDistance() {
+	public void recalculateTotalDistance() {
         tourDistance = 0;
         for (Edge v : edges) {
             tourDistance += v.getLength();

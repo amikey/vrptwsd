@@ -97,10 +97,10 @@ public class Parameters {
 		publishSolutionValueProgress = false;
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
-		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
+		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
 		miminizeTours = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfDifferentInitialSolutions = 20;
+		numberOfDifferentInitialSolutions = 100;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 200;
@@ -284,6 +284,14 @@ public class Parameters {
 
 	public static void setPublishSolutionValueProgress(boolean b) {
 		publishSolutionValueProgress = b;
+	}
+
+	public static void setNumberOfInitialSolutions(int i) {
+		numberOfDifferentInitialSolutions = i;
+	}
+
+	public static void setNumberOfNonImprovingAMCalls(int i) {
+		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = i;
 	}
 
 	

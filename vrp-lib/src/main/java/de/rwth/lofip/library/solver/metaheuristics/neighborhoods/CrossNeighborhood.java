@@ -112,6 +112,7 @@ public class CrossNeighborhood extends AbstractNeighborhood implements Neighborh
 					
 					if (Parameters.isTestingMode())
 						assertEquals(isMoveFeasibleCheckNaiv(),isMoveFeasibleCheckWithRef());
+					//RUNTIME_TODO: durch check with ref ersetzen
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();

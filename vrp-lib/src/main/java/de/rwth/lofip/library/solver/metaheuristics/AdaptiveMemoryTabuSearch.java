@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
