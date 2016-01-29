@@ -44,16 +44,6 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		this.costOfCompleteSolutionThatResultsFromMove = cost;
 	}
 
-	//This exists only for testing
-	public AbstractNeighborhoodMove(double cost, double difference) {
-		this.costOfCompleteSolutionThatResultsFromMove = cost;
-		this.costDifferenceToPreviousSolution = difference;
-		this.tour1 = SetUpUtils.getEmptyTour();
-		this.tour1.setCostFactor(2);
-		this.tour2 = SetUpUtils.getEmptyTour();
-		this.tour2.setCostFactor(2);
-	}
-
 	public double getCost() {
 		return costOfCompleteSolutionThatResultsFromMove;
 	}
@@ -331,6 +321,18 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 
 	public void setCostOfCompleteSolutionThatResultsFromMove(double cost) {
 		costOfCompleteSolutionThatResultsFromMove = cost;		
+	}
+	
+	// Utilities
+	
+	//This exists only for testing
+	public AbstractNeighborhoodMove(double cost, double difference) {
+		this.costOfCompleteSolutionThatResultsFromMove = cost;
+		this.costDifferenceToPreviousSolution = difference;
+		this.tour1 = SetUpUtils.getEmptyTour();
+		this.tour1.setCostFactor(2);
+		this.tour2 = SetUpUtils.getEmptyTour();
+		this.tour2.setCostFactor(2);
 	}
 
 
