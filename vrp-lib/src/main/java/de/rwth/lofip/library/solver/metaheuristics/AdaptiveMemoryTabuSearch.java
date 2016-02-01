@@ -181,6 +181,12 @@ public class AdaptiveMemoryTabuSearch {
 		RandomI1Solver.setSeedTo(seedI1);
 	}
 
+	public static void setNewRandomWithSeeds(int seedAM, int seedGI, int seedI1) {
+		AdaptiveMemory.resetRandomElementWithSeed(seedAM);
+		GreedyInsertion.resetRandomElementWithSeed(seedGI);
+		RandomI1Solver.resetRandomElementWithSeed(seedI1);
+	}
+
 
 
 }

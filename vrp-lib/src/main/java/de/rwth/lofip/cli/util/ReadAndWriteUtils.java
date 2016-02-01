@@ -177,35 +177,35 @@ public class ReadAndWriteUtils {
 	private static String getInputDirectoryForSolomon100() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\original-solomon-problems\\";
-		System.out.println(s);
+//		System.out.println(s);
 		return s;		
 	}
 	
 	private static String getInputDirectoryForModifiedSolomonFiles() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\modified-solomon-problems\\";
-		System.out.println(s);
+//		System.out.println(s);
 		return s;	
 	}
 	
 	private static String getInputDirectoryForSolomon200_1000Files() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\";		
-		System.out.println(s);
+//		System.out.println(s);
 		return s;	
 	}
 	
 	private static String getInputDirectoryForGehring200Files() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\200\\";		
-		System.out.println(s);
+//		System.out.println(s);
 		return s;	
 	}
 	
 	public static String getInputDirectoryForGehring400Files() {
 		String s = System.getenv("USERPROFILE");
 		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\gehringerHombergerInstanzen\\400\\";		
-		System.out.println(s);
+//		System.out.println(s);
 		return s;	
 	}
 	

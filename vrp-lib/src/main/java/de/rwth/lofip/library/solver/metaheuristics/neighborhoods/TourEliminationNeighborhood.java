@@ -14,6 +14,9 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 	
 	public TourEliminationNeighborhood(ElementWithTours solution) {
 		this.elementWithTours = solution;
+		bestNonTabooMove = null;
+		//bestMoveThatMightBeTaboo existiert nur, um unterscheiden zu können, ob es keine zulässingen Moves gibt, oder ob alle Moves tabu sind.
+		bestMoveThatMightBeTaboo = null;		
 	}
 
 	@Override
@@ -24,6 +27,11 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 					SolutionGot solutionClone = (SolutionGot) elementWithTours.clone();
 					List<Customer> customers = solutionClone.deleteTour(i);
 					new GreedyInsertion().insertCustomers(solutionClone, customers);
+						if (customers.get(0).getCustomerNo() == 17) {
+							System.out.println("DEBUGGING!");
+							solutionClone.printSolutionAsTupel();
+							solutionClone.printSolutionCost();
+						}
 					TourEliminationNeighborhoodMove move = new TourEliminationNeighborhoodMove((SolutionGot) elementWithTours, solutionClone);
 					if (isMoveNewBestMove(move))
 	//					if (!isMoveTaboo(move, iteration))
@@ -31,6 +39,9 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 				}
 			}
 		}
+		if (bestNonTabooMove == null)
+			// no move possible because there is no tour that has at most Parameters.getMaximalNumberOfCustomersForDeletion customers => no move found
+			throw new RuntimeException("no TourEliminationMove found because every tour has more Customers than Parameters.getMaximalNumberOfCustomersForDeletion(). Should not happen.");
 		return bestNonTabooMove;
 	}
 	

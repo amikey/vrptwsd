@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.TourEliminationNeighborhoodMove;
 import de.rwth.lofip.library.util.SetUpUtils;
@@ -12,33 +14,39 @@ import de.rwth.lofip.library.util.SetUpUtils;
 public class TourEliminationNeighborhoodTest {
 	
 	private SolutionGot solution;
+	int j = 30; 
 
 	@Test
-	public void testTourEliminationNeighborhood() throws Exception {
-		whenGivenSolution();
-		thenPerformingTourEliminationNeighborhoodShouldNotThrowAnyErrors();
+	public void testTourEliminationNeighborhood() throws Exception {		
+//		for (j = 1; j < 20; j++) {
+			whenGivenSolution();
+			thenPerformingTourEliminationNeighborhoodShouldNotThrowAnyErrors();
+			System.out.println();
+//		}
 	}
 
 	private void whenGivenSolution() throws IOException {
-		solution = SetUpUtils.getSomeSolutionForC101Problem();
+		for (int i = 0; i < 10; i++)
+			solution = SetUpUtils.getSomeSolutionForC101Problem();
 	}
 		
 	private void thenPerformingTourEliminationNeighborhoodShouldNotThrowAnyErrors() throws Exception {
+		Parameters.setAllParametersToMinimalTestingValues();
+		Parameters.setMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood(7);
 		solution.printSolutionAsTupel();
+		solution.printSolutionCost();
 		
 //		CrossNeighborhood cn = new CrossNeighborhood(solution);
 //		AbstractNeighborhoodMove moveCN = cn.returnBestMove();
 //		cn.acctuallyApplyMoveAndMaintainNeighborhood(moveCN);
 //		solution.printSolutionAsTupel();
-//		
+//		solution.printSolutionCost();
+
 		TourEliminationNeighborhood ten = new TourEliminationNeighborhood(solution);
 		TourEliminationNeighborhoodMove move = (TourEliminationNeighborhoodMove) ten.returnBestMove();
 		ten.actuallyApplyMove(move);
 		solution.printSolutionAsTupel();
-		
-		
-	}
-	
-	
+		solution.printSolutionCost();
+	}	
 
 }

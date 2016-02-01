@@ -26,10 +26,10 @@ public class TestRessourceExtensionFunction {
 	@Test 
 	public void testThatGIWithRefsProducesSameResultsAsWithLinearTimeTWCheck() throws IOException {
 		List<VrpProblem> problems = ReadAndWriteUtils.readSolomonProblemC202();
-		AdaptiveMemoryTabuSearch.setSeeds(0, 0, 0);
+		AdaptiveMemoryTabuSearch.setNewRandomWithSeeds(0, 0, 0);
 		SolutionGot solutionLinearTime = new RandomI1Solver().solve(problems.get(0));
 		
-		AdaptiveMemoryTabuSearch.setSeeds(0, 0, 0);
+		AdaptiveMemoryTabuSearch.setNewRandomWithSeeds(0, 0, 0);
 		SolutionGot solutionRef = new RandomI1SolverWithLinearTimeChecks().solve(problems.get(0));
 		
 		assertEquals(true, solutionLinearTime.equals(solutionRef)); 

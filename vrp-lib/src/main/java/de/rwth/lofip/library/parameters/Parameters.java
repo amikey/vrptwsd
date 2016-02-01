@@ -19,8 +19,8 @@ public class Parameters {
 	
 	//Tour Elimination
 	private static boolean miminizeTours = true;
-	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 2;
-	private static int numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
+	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 3;
+	private static int numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 20;
 	
 	//Tour Elimination primäres Ziel?
 	// wo werden Touren minimiert:
@@ -73,7 +73,7 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
 		miminizeTours = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
+		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 10;
 		numberOfDifferentInitialSolutions = 20;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
@@ -101,7 +101,7 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
 		miminizeTours = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
+		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 10;
 		numberOfDifferentInitialSolutions = 1;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
@@ -130,7 +130,7 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
 		miminizeTours = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
+		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 10;
 		numberOfDifferentInitialSolutions = 100;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
@@ -172,10 +172,6 @@ public class Parameters {
 
 	public static int getNumberOfMovesThatStochasticCostIsCalculatedFor() {
 		return NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR;
-	}
-
-	public static int getMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood() {
-		return MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD;
 	}
 
 	public static int getMaximalNumberOfToursInAdaptiveMemory() {
@@ -327,6 +323,15 @@ public class Parameters {
 
 	public static int getNumberOfInsertionTries() {
 		return numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour;
+	}
+
+	public static int getMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood() {
+		return MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD;
+	}
+	
+	public static void setMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood(int i) {
+		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = i;
+		
 	}
 
 	

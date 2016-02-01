@@ -43,12 +43,12 @@ public class TestRandomI1Solver {
 	public void testThatTwoRunsOfRandomI1SolverProduceTheSameResults() throws IOException {		
 		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();		
 		
-		RandomI1Solver.setSeedTo(1);
-		GreedyInsertion.setSeedTo(1);
+		RandomI1Solver.resetRandomElementWithSeed(1);
+		GreedyInsertion.resetRandomElementWithSeed(1);
 		solveProblemsWithRandomI1Solver(solutions);
 		
-		RandomI1Solver.setSeedTo(1);
-		GreedyInsertion.setSeedTo(1);
+		RandomI1Solver.resetRandomElementWithSeed(1);
+		GreedyInsertion.resetRandomElementWithSeed(1);
 		solveProblemsWithRandomI1Solver(solutions2);
 		
 		for (int i = 0; i < solutions.size(); i++) {

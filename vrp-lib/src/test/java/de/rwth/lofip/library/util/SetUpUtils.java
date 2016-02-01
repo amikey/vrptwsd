@@ -15,6 +15,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
+import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class SetUpUtils {

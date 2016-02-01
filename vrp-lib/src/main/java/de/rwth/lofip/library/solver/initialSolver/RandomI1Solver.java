@@ -15,7 +15,7 @@ import de.rwth.lofip.library.util.VrpUtils;
 public class RandomI1Solver implements SolverInterfaceGot {
 	
 	private static int seed = 0;
-	private Random rand = new Random(seed); 
+	private static Random rand = new Random(seed); 
 	
 	private int numberOfSeedCustomers = 0;
 		
@@ -24,11 +24,6 @@ public class RandomI1Solver implements SolverInterfaceGot {
 	
 	protected List<Customer> remainingCustomers = new ArrayList<Customer>();
 	private List<Customer> seedCustomers = new ArrayList<Customer>();
-
-	public RandomI1Solver() {
-		seed++;
-		rand = new Random(seed); 
-	}
 	
 	public SolutionGot solve(Tour tour) {
 		VrpProblem problem = VrpUtils.constructVrpProblemFromTour(tour);
@@ -124,6 +119,10 @@ public class RandomI1Solver implements SolverInterfaceGot {
 
 	public static void setSeedTo(int i) {
 		seed = i;
+	}
+	
+	public static void resetRandomElementWithSeed(int i) {
+		rand = new Random(i);  
 	}
 
 	@Override

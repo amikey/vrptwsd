@@ -30,11 +30,7 @@ import de.rwth.lofip.library.util.math.MathUtils;
 public class GreedyInsertion {
 	
 	private static int seed = 0;
-	private Random random = new Random(seed); 
-	
-	public GreedyInsertion() {
-		seed++;
-	}
+	private static Random random = new Random(seed); 
 
     public SolutionGot insertCustomers(SolutionGot solution,
             List<Customer> customers) {
@@ -185,6 +181,10 @@ public class GreedyInsertion {
 
 	public static void setSeedTo(int i) {
 		seed = i;	
+	}
+
+	public static void resetRandomElementWithSeed(int i) {
+		random = new Random(i);  		
 	}
 
 }

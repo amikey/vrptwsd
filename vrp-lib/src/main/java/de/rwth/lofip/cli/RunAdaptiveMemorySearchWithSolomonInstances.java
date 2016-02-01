@@ -251,16 +251,16 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	protected void processProblems() throws IOException {
 		for (int i = 1; i <= numberOfExperiments; i++) {
 			if (!Parameters.isRunningTimeReached()) {
-				increaseParameters();
+//				increaseParameters();
 				solveProblemsWithAdaptiveMemorySolver();
 			}
 		}		
 	}
 	
 	protected void increaseParameters() {
-		seedI1++;
-		seedGI++;
-		seedAM++;
+		seedI1+=200;
+		seedGI+=400;
+		seedAM+=300;
 	}
 	
 	protected void printProblems() throws IOException {
@@ -302,9 +302,11 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		Parameters.setNumberOfNonImprovingIterationsInTS(maximalNumberOfIterationsWithoutImprovementTabuSearch); 
 		this.maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory;
 		this.maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
-		this.seedI1 = seedI1;
-		this.seedGI = seedGI;
-		this.seedAM = seedAM;
+//		this.seedI1 = seedI1;
+//		this.seedGI = seedGI;
+//		this.seedAM = seedAM;
+		
+		AdaptiveMemoryTabuSearch.setNewRandomWithSeeds(seedAM, seedGI, seedI1);
 		
 		solveProblemsWithAdaptiveMemorySolver();
 		return solutions;
@@ -315,7 +317,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());
 						
-			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
+//			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
 			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);

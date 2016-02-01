@@ -28,12 +28,8 @@ public class AdaptiveMemory {
 	protected SolutionGot currentNewSolution;
 	
 	private static int seed = 0;
-	private Random randomGenerator = new Random(seed);
+	private static Random randomGenerator = new Random(seed);
 	private List<SolutionGot> previouslyConstrucedSolutions = new ArrayList<SolutionGot>();
-	
-	public AdaptiveMemory() {
-		seed++;
-	}
 	
 	public void addTours(SolutionGot solution) {	
 		setVrpProblem(solution);
@@ -215,6 +211,10 @@ public class AdaptiveMemory {
 		
 		public static void setSeedTo(int i) {
 			seed = i;
+		}
+
+		public static void resetRandomElementWithSeed(int i) {
+			randomGenerator = new Random(i); 
 		}
 	
 }
