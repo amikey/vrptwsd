@@ -18,11 +18,10 @@ import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
-public class CrossNeighborhood extends AbstractNeighborhood implements NeighborhoodInterface {
+public class CrossNeighborhood extends AbstractNeighborhood {
 	
 	private Tour tour1;
 	private Tour tour2;
-	private ElementWithTours elementWithTours;
 	
 	private int tourCounter1 = 0;
 	private int tourCounter2 = 0;

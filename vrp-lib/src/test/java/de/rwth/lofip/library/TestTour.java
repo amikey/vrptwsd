@@ -201,7 +201,7 @@ public class TestTour {
 	
 	@Test
 	public void testThatWhenCreatingTourRefsAreOk() {
-		SolutionGot solutionWithOneTourWithCustomers2And3 = SetUpUtils.GetSolutionWithOneTourWithCustomer2And3();
+		SolutionGot solutionWithOneTourWithCustomers2And3 = SetUpUtils.getSolutionWithOneTourWithCustomer2And3();
 		assertEquals(false,solutionWithOneTourWithCustomers2And3.getGots().get(0).getFirstTour().getRefsFromBeginning().isEmpty());
 	}
 	

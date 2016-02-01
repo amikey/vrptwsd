@@ -24,8 +24,8 @@ public class TestSolutionGot {
 	}
 	
 		private void givenTwoIdenticalSolutionsInTermsOfTours() {
-			solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
-			solutionOther = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersOtherWayRound();
+			solution = SetUpUtils.getSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
+			solutionOther = SetUpUtils.getSolutionWithTwoToursWithOneAndThreeCustomersOtherWayRound();
 		}
 	
 		private void thenSolutionsShouldBeEqual() {
@@ -40,7 +40,7 @@ public class TestSolutionGot {
 	}
 
 		private void givenTwoDifferentSolutionsInTermsOfTours() {
-			solution = SetUpUtils.SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
+			solution = SetUpUtils.getSolutionWithTwoToursWithOneAndThreeCustomersRespectively();
 			solutionOther = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();		
 		}
 	

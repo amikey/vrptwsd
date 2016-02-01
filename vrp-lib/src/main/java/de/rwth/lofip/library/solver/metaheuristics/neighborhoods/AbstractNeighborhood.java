@@ -1,10 +1,14 @@
 package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.math.MathUtils;
 
-public abstract class AbstractNeighborhood {
+public abstract class AbstractNeighborhood implements NeighborhoodInterface {
+	
+	protected ElementWithTours elementWithTours;
 	
 	protected AbstractNeighborhoodMove bestMoveThatMightBeTaboo = null;
 	protected AbstractNeighborhoodMove bestNonTabooMove = null;

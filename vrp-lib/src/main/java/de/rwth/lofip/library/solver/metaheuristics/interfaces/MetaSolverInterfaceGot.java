@@ -3,6 +3,7 @@ package de.rwth.lofip.library.solver.metaheuristics.interfaces;
 import java.io.IOException;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
+import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.TourEliminationNeighborhood;
 
 /**
  * A {@code MetaSolver} is a solver which takes an existing {@link Solution} and
@@ -13,7 +14,8 @@ import de.rwth.lofip.library.interfaces.ElementWithTours;
  */
 public interface MetaSolverInterfaceGot {
 
-	public ElementWithTours improve(ElementWithTours solution) throws IOException;	
+	public ElementWithTours improve(ElementWithTours solution) throws IOException;
+	
 
 //	/**
 //	 * This method is needed to be able to externally cancel a metaheuristic.

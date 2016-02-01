@@ -22,7 +22,7 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	private int positionEndOfSegmentTour1;
 	private int positionStartOfSegmentTour2;
 	private int positionEndOfSegmentTour2;
-	private double costOfCompleteSolutionThatResultsFromMove;
+	protected double costOfCompleteSolutionThatResultsFromMove;
 	//cost difference is a negative value if new solution does cost less than previous solution; otherwise positive (i.e. newCost - OldCost)
 	protected double costDifferenceToPreviousSolution;
 	

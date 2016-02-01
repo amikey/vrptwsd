@@ -19,8 +19,7 @@ public class Parameters {
 	
 	//Tour Elimination
 	private static boolean miminizeTours = true;
-	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 2;
-	private static int numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
+	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 	
 	//Tour Elimination primäres Ziel?
 	// wo werden Touren minimiert:
@@ -56,13 +55,10 @@ public class Parameters {
 	private static double RELATIVE_STANDARD_DEVIATION = 0.15;
 
 	//Seeds
-	private static int seedI1 = 100;
+	private static int seedI1 = 3000;
 	private static int seedGI = 3000;
 	private static int seedAM = 3000;
-
-	private static long startingTime;
-	private static long endTime;
-	private static boolean isRunningTimeSet = false;	
+	
 	
 	//Getter und Setter	
 	public static void setAllParametersToDefaultValues(){
@@ -73,7 +69,6 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
 		miminizeTours = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
 		numberOfDifferentInitialSolutions = 20;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
@@ -93,45 +88,15 @@ public class Parameters {
 		SimulationUtils.resetSeed();
 	}
 	
-	public static void setAllParametersToMinimalTestingValues() {
-		testing = false;
-		publishSolutionValueProgress = false;
-		publishSolutionAtEndOfTabuSearch = false;
-		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
-		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
-		miminizeTours = true;
-		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
-		numberOfDifferentInitialSolutions = 1;
-		maximalNumberOfCallsToAdaptiveMemory = 0;
-		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
-		maximalNumberOfToursInAdaptiveMemory = 200;
-		maximalNumberOfIterationsTabuSearch = 0;
-		maximalNumberOfIterationsWithoutImprovementTabuSearch = 0;
-		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
-		costFactorForAdditionalTourInRecourse = 2.0;
-		recourseActionNumberMinimization = false;
-		percentageOfCapacity = 1;
-		RELATIVE_STANDARD_DEVIATION = 0.15;
-		
-		seedI1 = 3000;
-		seedGI = 3000;
-		seedAM = 3000;
-		
-		SimulationUtils.resetSeed();
-	}
-
-	
 	public static void setAllParametersToNewBestValuesAfterParameterTesting(){
 		testing = false;
 		publishSolutionValueProgress = false;
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
-		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
+		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
 		miminizeTours = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
-		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 200;
-		numberOfDifferentInitialSolutions = 100;
+		numberOfDifferentInitialSolutions = 20;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 200;
@@ -300,36 +265,7 @@ public class Parameters {
 		 MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = i;
 	}
 
-	public static void setRunningTimeInHours(int i) {
-		startingTime = System.currentTimeMillis();
-		endTime = startingTime + (i * 60 * 60 * 1000);
-		isRunningTimeSet = true;
-	}
 
-	public static boolean isRunningTimeReached() {
-		if (!isRunningTimeSet)
-			return false;
-		else 
-			return ( System.currentTimeMillis() >= endTime);
-	}
-
-	public static void setPublishSolutionValueProgress(boolean b) {
-		publishSolutionValueProgress = b;
-	}
-
-	public static void setNumberOfInitialSolutions(int i) {
-		numberOfDifferentInitialSolutions = i;
-	}
-
-	public static void setNumberOfNonImprovingAMCalls(int i) {
-		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = i;
-	}
-
-	public static int getNumberOfInsertionTries() {
-		return numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour;
-	}
-
-	
 	
 
 }

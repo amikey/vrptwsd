@@ -17,6 +17,7 @@ import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
+import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.TourEliminationNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.math.MathUtils;
 
@@ -26,10 +27,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private int maximalNumberOfIterations;
 	private int maxNumberIterationsWithoutImprovement;
 	
-	private int iteration = 1;
+	protected int iteration = 1;
 	protected ElementWithTours solution;
-	private AbstractNeighborhoodMove bestMove;
-	private CrossNeighborhoodWithTabooList crossNeighborhood;
+	protected AbstractNeighborhoodMove bestMove;
+	protected CrossNeighborhoodWithTabooList crossNeighborhood;
+	protected TourEliminationNeighborhood tourEliminationNeighborhood;
 	protected ElementWithTours bestOverallSolution;
 	private int iterationsWithoutImprovement = 0;
 	
@@ -50,6 +52,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		solution = solutionStart;
 		bestOverallSolution = solutionStart.clone();
 		crossNeighborhood = getCrossNeighborhood(); 
+		tourEliminationNeighborhood = getTourEliminationNeighborhood();
 		
 		System.out.println("Starting Tabu Search");		
 		while (!isStoppingCriterionMet()) {
@@ -86,6 +89,10 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		return bestOverallSolution;
 	}
 
+	protected TourEliminationNeighborhood getTourEliminationNeighborhood() {
+		return null;
+	}
+
 	protected CrossNeighborhoodWithTabooList getCrossNeighborhood() {
 		return new CrossNeighborhoodWithTabooList(solution);
 	}
@@ -96,7 +103,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		return iterationsWithoutImprovement > maxNumberIterationsWithoutImprovement;
 	}
 	
-	private void findBestNonTabooMove() throws Exception {		
+	protected void findBestNonTabooMove() throws Exception {		
 		bestMove = crossNeighborhood.returnBestMove(iteration);
 		//DESIGN_TODO: Hier TourElimination Nachbarschaft aufrufen, wenn Cross keinen Move gefunden hat, der Tourenanzahl reduziert
 	}
@@ -105,7 +112,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		crossNeighborhood.updateTabuList(iteration);
 	}
 	
-	private void applyBestNonTabooMove() {
+	protected void applyBestNonTabooMove() {
 		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 	

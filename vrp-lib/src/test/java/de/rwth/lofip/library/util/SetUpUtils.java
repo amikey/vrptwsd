@@ -14,6 +14,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class SetUpUtils {
@@ -340,7 +341,7 @@ public class SetUpUtils {
 	    return solution;      
 	}
 	
-	public static SolutionGot SetUpSolutionWithTwoToursWithOneAndThreeCustomersRespectively() {
+	public static SolutionGot getSolutionWithTwoToursWithOneAndThreeCustomersRespectively() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
         Tour tour1 = getTourWithCustomers1And2And3();
@@ -357,7 +358,7 @@ public class SetUpUtils {
 	    return solution;      
 	}
 	
-	public static SolutionGot SetUpSolutionWithTwoToursWithOneAndThreeCustomersOtherWayRound() {
+	public static SolutionGot getSolutionWithTwoToursWithOneAndThreeCustomersOtherWayRound() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
 		List<Tour> tours = new LinkedList<Tour>();
@@ -424,7 +425,7 @@ public class SetUpUtils {
 	    return solution; 
 	}
 
-	public static SolutionGot GetSolutionWithOneTourWithCustomer2And3() {
+	public static SolutionGot getSolutionWithOneTourWithCustomer2And3() {
 		setCustomersAndDepotAndVehiclesAndVrpProblemAndSolution();
         
 		List<Tour> tours = new LinkedList<Tour>();		
@@ -486,8 +487,13 @@ public class SetUpUtils {
 	}
 	
 	public static SolutionGot getSomeRandomDummySolution() {
-		return getSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer();
-		
+		return getSolutionWithThreeToursWithTwoCustomersAndTwoTimesOneCustomer();		
+	}
+	
+	public static SolutionGot getSomeSolutionForC101Problem() throws IOException {
+		List<VrpProblem> problems = ReadAndWriteUtils.readSolomonProblemC101();
+		RandomI1Solver i1 = new RandomI1Solver(); 
+		return i1.solve(problems.get(0));
 	}
 	
 }

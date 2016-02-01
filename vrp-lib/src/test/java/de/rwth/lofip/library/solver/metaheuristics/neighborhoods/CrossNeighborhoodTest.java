@@ -29,7 +29,7 @@ public class CrossNeighborhoodTest {
 	public void initialise() {
 		SetUpUtils.getSolutionWithThreeToursAndTwoCustomersEach();
 		solutionWithTwoToursAndTwoCustomersEach = SetUpUtils.getSolutionWithTwoToursAndTwoCustomersEach();
-		solutionWithOneTourWithCustomers2And3 = SetUpUtils.GetSolutionWithOneTourWithCustomer2And3();
+		solutionWithOneTourWithCustomers2And3 = SetUpUtils.getSolutionWithOneTourWithCustomer2And3();
 		SetUpUtils.getSolutionWithOneTourWithCustomersC1C3C2C4();
 		solutionWithOneTourWithFourCustomers = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4();
 		solutionWithOneTourWithCustomers1And2And3 = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3();
