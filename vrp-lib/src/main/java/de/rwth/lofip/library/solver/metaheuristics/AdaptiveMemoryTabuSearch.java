@@ -54,6 +54,8 @@ public class AdaptiveMemoryTabuSearch {
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
 			
+//			storeNewSolutionInListOfBestSolutions(solution.clone());
+			
 			if (isBestOverallSolutionFoundAgain())
 				increaseNumberOfTimesBestOverallSolutionHasBeenFound();
 			
@@ -68,6 +70,9 @@ public class AdaptiveMemoryTabuSearch {
 		}
 		if (solution == null  || bestOverallSolution == null)
 			throw new RuntimeException("Solution ist Null. Fehler!");
+		
+//		publishSolutionAtEndOfAMSearch();
+		
 		return bestOverallSolution;
 	}
 
