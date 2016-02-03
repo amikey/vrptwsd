@@ -1,11 +1,11 @@
 package de.rwth.lofip.cli.withoutTW;
 
-import java.io.IOException;
+import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 import de.rwth.lofip.cli.CreateResultsForUmplanungOhneRiskPooling;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;

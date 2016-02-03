@@ -5,14 +5,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.RecourseCost;
-import de.rwth.lofip.library.util.math.MathUtils;
 
 public class CrossNeighborhoodWithTabooListAndRecourse extends CrossNeighborhoodWithTabooList {
 	

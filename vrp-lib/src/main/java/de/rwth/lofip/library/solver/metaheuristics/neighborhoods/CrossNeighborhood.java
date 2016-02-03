@@ -8,15 +8,12 @@ import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.GroupOfTours;
-import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodInterface;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.ResourceExtensionFunction;
 import de.rwth.lofip.library.solver.util.TourUtils;
-import de.rwth.lofip.library.util.math.MathUtils;
 
 public class CrossNeighborhood extends AbstractNeighborhood {
 	
@@ -499,10 +496,10 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 		
 	//********************	
 		
-	public ElementWithTours acctuallyApplyMoveAndMaintainNeighborhood(AbstractNeighborhoodMove bestMove) {
+	public ElementWithTours actuallyApplyMoveAndMaintainNeighborhood(AbstractNeighborhoodMove bestMove) {
 		actuallyApplyMove(bestMove);
-		resetNeighborhood();
 		elementWithTours.removeEmptyGots();
+		resetNeighborhood();
 		return elementWithTours;	
 	}
 	
@@ -536,7 +533,7 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 			//remove empty tours
 			for(GroupOfTours got : bestMove.getGots())
 				got.removeEmptyToursAndGots();
-		}					
+		}		
 	}
 		
 
@@ -546,7 +543,7 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 	//this exists only for testing
 	public ElementWithTours actuallyApplyMoveAndMaintainNeighborhood() {
 		AbstractNeighborhoodMove move = this.getNeigborhoodMove();
-		return acctuallyApplyMoveAndMaintainNeighborhood(move);		
+		return actuallyApplyMoveAndMaintainNeighborhood(move);		
 	}
 
 	public void printNeighborhoodStep() {

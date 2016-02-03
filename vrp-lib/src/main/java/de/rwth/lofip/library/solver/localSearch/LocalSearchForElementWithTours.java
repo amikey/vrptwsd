@@ -66,7 +66,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}	
 
 	private void applyBestMove() {
-		solution = crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);		
+		solution = crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(bestMove);		
 	}
 	
 	protected void assertEqualsHook() {

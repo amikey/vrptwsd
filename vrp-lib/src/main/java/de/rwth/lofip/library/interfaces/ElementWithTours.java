@@ -2,7 +2,6 @@ package de.rwth.lofip.library.interfaces;
 
 import java.util.List;
 
-import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 
 public interface ElementWithTours {

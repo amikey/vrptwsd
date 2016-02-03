@@ -6,12 +6,10 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.SetUpUtils;
-import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class TabuSearchTest {
 	

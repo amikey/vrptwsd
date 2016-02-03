@@ -3,7 +3,6 @@ package de.rwth.lofip.library.solver.metaheuristics.interfaces;
 import java.io.IOException;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
-import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.TourEliminationNeighborhood;
 
 /**
  * A {@code MetaSolver} is a solver which takes an existing {@link Solution} and

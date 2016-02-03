@@ -1,8 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 import org.apache.commons.io.IOUtils;
 
@@ -60,14 +58,18 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
 				
-				if (iteration == 46)
+				if (iteration == 2)
+					System.out.println("DEBUGGING");
+				
+
+				if (iteration == 2)
 					System.out.println("DEBUGGING");
 				
 				findBestNonTabooMove();				
 				updateTabuList();								
 				applyBestNonTabooMove();								
 				
-				publishSolution();
+				publishSolution(solution);
 				
 				if (isNewSolutionIsNewBestOverallSolution()) { 					
 					tryToImproveNewBestSolutionWithIntensificationPhase();
@@ -88,6 +90,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			iteration++;
 		}		
 		System.out.println("Anzahl Iterationen Tabu Suche : " + iteration + "\n");
+		publishSolution(bestOverallSolution);
 		generateBlankLineForPublishingSolution();
 		publishSolutionAtEndOfTabuSearch();
 		return bestOverallSolution;
@@ -117,7 +120,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 	
 	protected void applyBestNonTabooMove() {
-		solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
+		solution = (SolutionGot) crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 	
 	protected boolean isNewSolutionIsNewBestOverallSolution() {
@@ -163,10 +166,10 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
 	// Print Utilities
 	
-	private void publishSolution() throws IOException {
+	private void publishSolution(ElementWithTours solution2) throws IOException {
 		if (Parameters.publishSolutionValueProgress()) {
-			System.out.println(iteration + " " + solution.getAsTupel());
-			System.out.println(solution.getTotalDistanceWithCostFactor());
+			System.out.println(iteration + " " + solution2.getAsTupel());
+			System.out.println(solution2.getTotalDistanceWithCostFactor() + "; " + solution2.getNumberOfTours());
 //			IOUtils.write(iteration + ";" + String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ";" + solution.getNumberOfTours() + "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
 		}
 	}
@@ -218,6 +221,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		tryToImproveNewBestSolutionWithIntensificationPhase();
 	}
 
+	//this exists only for testing
 	public int getNumberOfIterations() {
 		return iteration;
 	}

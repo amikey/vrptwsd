@@ -30,7 +30,7 @@ public class Parameters {
 	// - In Sortieralgorithmus in Adaptive Memory 
 	
 	//AdaptiveMemory
-	private static int numberOfDifferentInitialSolutions = 20;
+	private static int numberOfDifferentInitialSolutionsInAM = 20;
 	private static int maximalNumberOfCallsToAdaptiveMemory = 0; // 0 -> wird nicht verwendet
 	private static int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 	private static int maximalNumberOfToursInAdaptiveMemory = 1000;
@@ -39,6 +39,7 @@ public class Parameters {
 	// + parameter dafür wie lange Moves Tabu sind
 	private static int maximalNumberOfIterationsTabuSearch = 0; // 0 -> wird nicht verwendet
 	private static int maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
+	private static int lengthOfTabuList = 1000000;
 	
 	//Recourse
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
@@ -77,12 +78,13 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
-		numberOfDifferentInitialSolutions = 20;
+		numberOfDifferentInitialSolutionsInAM = 20;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 1000;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
+		lengthOfTabuList = 1000000;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
@@ -106,12 +108,13 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
-		numberOfDifferentInitialSolutions = 1;
+		numberOfDifferentInitialSolutionsInAM = 1;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
 		maximalNumberOfToursInAdaptiveMemory = 200;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 0;
+		lengthOfTabuList = 1000000;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
@@ -136,12 +139,13 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
-		numberOfDifferentInitialSolutions = 100;
+		numberOfDifferentInitialSolutionsInAM = 100;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 200;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
+		lengthOfTabuList = 1000000;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
@@ -184,7 +188,7 @@ public class Parameters {
 	}
 
 	public static int getNumberOfDifferentInitialSolutionsInAM() {
-		return numberOfDifferentInitialSolutions;
+		return numberOfDifferentInitialSolutionsInAM;
 	}
 
 	public static int getMaximalNumberOfIterationsTabuSearch() {
@@ -319,7 +323,7 @@ public class Parameters {
 	}
 
 	public static void setNumberOfInitialSolutions(int i) {
-		numberOfDifferentInitialSolutions = i;
+		numberOfDifferentInitialSolutionsInAM = i;
 	}
 
 	public static void setNumberOfNonImprovingAMCalls(int i) {
@@ -356,8 +360,11 @@ public class Parameters {
 	}
 
 	public static void setPublishSolutionAtEndOfAMTSSearch(boolean b) {
-		isPublishSolutionAtEndOfAMTSSearch = b;
-		
+		isPublishSolutionAtEndOfAMTSSearch = b;		
+	}
+
+	public static int getLengthOfTabuList() {
+		return lengthOfTabuList;
 	}
 
 	

@@ -6,9 +6,8 @@ import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
-import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.TourEliminationNeighborhoodMove;
+import de.rwth.lofip.library.solver.util.TabuList;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TourEliminationNeighborhoodTest {
@@ -42,7 +41,7 @@ public class TourEliminationNeighborhoodTest {
 //		solution.printSolutionAsTupel();
 //		solution.printSolutionCost();
 
-		TourEliminationNeighborhood ten = new TourEliminationNeighborhood(solution);
+		TourEliminationNeighborhood ten = new TourEliminationNeighborhood(solution, new TabuList());
 		TourEliminationNeighborhoodMove move = (TourEliminationNeighborhoodMove) ten.returnBestMove(100);
 		ten.actuallyApplyMove(move);
 		solution.printSolutionAsTupel();

@@ -9,7 +9,6 @@ import org.junit.Test;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.util.SetUpUtils;
 

@@ -1,7 +1,5 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 
 import org.junit.Test;
@@ -33,7 +31,7 @@ public class TabuSearchWithTourEliminationTest {
 	}
 	
 	private void ThenTSSWithTourEliminationShouldNotThrowAnyErrors() throws IOException {
-		TabuSearchForElementWithTours tabuSearch = new TSWithTourEliminationNeighborhood();
+		TabuSearchForElementWithTours tabuSearch = new TSWithTourElimination();
 		tabuSearch.improve(solution);
 	}
 	

@@ -2,15 +2,20 @@ package de.rwth.lofip.library.solver.metaheuristics.neighborhoods;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
-import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.TourEliminationNeighborhoodMove;
 import de.rwth.lofip.library.solver.util.TabuList;
 
 public class CrossNeighborhoodWithTabooList extends CrossNeighborhood {
 	
-	TabuList tabuList = new TabuList();
+	TabuList tabuList;
 		
 	public CrossNeighborhoodWithTabooList(ElementWithTours solution) {
 		super(solution);
+		tabuList = new TabuList();
+	}
+
+	public CrossNeighborhoodWithTabooList(ElementWithTours solution, TabuList tabuList2) {
+		super(solution);
+		tabuList = tabuList2;
 	}
 
 	@Override
@@ -22,7 +27,4 @@ public class CrossNeighborhoodWithTabooList extends CrossNeighborhood {
 		tabuList.addSolutionToTabuList(bestNonTabooMove.getCost(), iteration);
 	}
 
-	public void updateTabuListWithTourEliminationNeighborhoodMove(AbstractNeighborhoodMove bestMove, int iteration) {
-		tabuList.addSolutionToTabuList(bestMove.getCost(), iteration);
-	}
 }

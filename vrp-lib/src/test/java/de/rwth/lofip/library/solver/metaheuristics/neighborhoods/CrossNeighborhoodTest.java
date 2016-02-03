@@ -151,7 +151,7 @@ public class CrossNeighborhoodTest {
 		assertEquals(true, crossNeighborhood.isMoveFeasibleCheckWithRef());
 		cost = crossNeighborhood.calculateCostUsingRefs();	
 		
-		SolutionGot solution = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(crossNeighborhood.getNeigborhoodMove());
+		SolutionGot solution = (SolutionGot) crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(crossNeighborhood.getNeigborhoodMove());
 		System.out.print(solution.getAsTupel());
 		
 		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(),cost,0.1);		
@@ -194,7 +194,7 @@ public class CrossNeighborhoodTest {
 		assertEquals(SetUpUtils.getTourWithFourCustomers().getTotalDistanceWithCostFactor(), bestMove.getCost(), 0.1);
 				
 		//now actually apply best move
-		solutionWithTwoToursAndTwoCustomersEach = (SolutionGot) crossNeighborhood.acctuallyApplyMoveAndMaintainNeighborhood(bestMove);
+		solutionWithTwoToursAndTwoCustomersEach = (SolutionGot) crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(bestMove);
 		System.out.println(solutionWithTwoToursAndTwoCustomersEach.getAsTupel());
 		Tour tempTour;
 		Iterator<Tour> tourIterator = solutionWithTwoToursAndTwoCustomersEach.getTours().iterator();

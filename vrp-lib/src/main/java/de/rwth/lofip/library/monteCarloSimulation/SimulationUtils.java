@@ -6,12 +6,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.Assert.*;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.util.GotUtils;
 
 public class SimulationUtils {
 	

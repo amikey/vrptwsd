@@ -1,9 +1,11 @@
 package de.rwth.lofip.library.solver.util;
 
+import de.rwth.lofip.library.parameters.Parameters;
+
 
 public class TabuList {
 	
-	private int lengthOfList = 1000000;
+	private int lengthOfList = Parameters.getLengthOfTabuList();
 	private int[] tabuList = new int[lengthOfList]; // array ist automatisch mit 0 initialisiert, da ints mit 0 initialisiert werden
 
 	public void addSolutionToTabuList(double objectiveValue, int iteration) {

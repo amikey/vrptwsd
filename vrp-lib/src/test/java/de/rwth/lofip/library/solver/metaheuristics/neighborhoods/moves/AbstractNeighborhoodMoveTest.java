@@ -77,7 +77,7 @@ public class AbstractNeighborhoodMoveTest {
 		//manually calculate old Recourse Cost
 		double oldRecourseCost = got1.getExpectedRecourse().getRecourseCost() + got2.getExpectedRecourse().getRecourseCost();
 		
-		neighborhood.acctuallyApplyMoveAndMaintainNeighborhood(move);
+		neighborhood.actuallyApplyMoveAndMaintainNeighborhood(move);
 		
 		//manually calculate new deterministic cost
 		double newDeterministicCost = got1.getTotalDistanceWithCostFactor() + got2.getTotalDistanceWithCostFactor();

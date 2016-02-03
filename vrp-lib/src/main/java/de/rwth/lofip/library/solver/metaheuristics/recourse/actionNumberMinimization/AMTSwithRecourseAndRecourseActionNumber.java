@@ -2,8 +2,6 @@ package de.rwth.lofip.library.solver.metaheuristics.recourse.actionNumberMinimiz
 
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
-import de.rwth.lofip.library.solver.metaheuristics.recourse.AdaptiveMemoryWithRecourse;
-import de.rwth.lofip.library.solver.metaheuristics.recourse.TabuSearchWithRecourse;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 import de.rwth.lofip.library.util.math.MathUtils;
 

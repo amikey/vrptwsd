@@ -1,7 +1,5 @@
 package de.rwth.lofip.library;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,13 +8,9 @@ import java.util.Set;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
-import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
-import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.solver.util.SimpleTourUtils;
-import de.rwth.lofip.library.solver.util.TourUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.math.MathUtils;

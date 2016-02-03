@@ -2,18 +2,13 @@ package de.rwth.lofip.library.solver.metaheuristics;
 
 import java.io.IOException;
 
-import org.apache.commons.io.IOUtils;
-
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
-import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
-import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class AdaptiveMemoryTabuSearch {
@@ -86,7 +81,6 @@ public class AdaptiveMemoryTabuSearch {
 		}
 
 		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) throws IOException {
-
 			for (int i = 0; i < numberOfDifferentInitialSolutions; i++) {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();

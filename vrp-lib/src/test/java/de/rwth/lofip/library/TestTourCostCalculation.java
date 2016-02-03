@@ -1,13 +1,13 @@
 package de.rwth.lofip.library;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
-import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class TestTourCostCalculation {

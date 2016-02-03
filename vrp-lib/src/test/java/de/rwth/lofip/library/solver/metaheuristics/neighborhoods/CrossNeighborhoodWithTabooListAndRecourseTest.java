@@ -10,7 +10,6 @@ import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.parameters.Parameters;
-import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
 import de.rwth.lofip.library.util.SetUpUtils;
 import de.rwth.lofip.testing.util.SetUpSolutionFromString;
@@ -26,7 +25,7 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 2, 2, 0, 1, 100, 15);
 		
 		CrossNeighborhoodWithTabooListAndRecourse neighborhood = new CrossNeighborhoodWithTabooListAndRecourse(SetUpUtils.getSomeRandomDummySolution());
-		neighborhood.acctuallyApplyMoveAndMaintainNeighborhood(move);
+		neighborhood.actuallyApplyMoveAndMaintainNeighborhood(move);
 		
 		assertEquals(true, got1.getFirstTour().equals(SetUpUtils.getTourWithCustomers1And2And3()));
 		assertEquals(true, got2.getFirstTour().equals(SetUpUtils.getTourWithCustomer4()));
@@ -42,7 +41,7 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		AbstractNeighborhoodMove move = new AbstractNeighborhoodMove(got1.getFirstTour(), got2.getFirstTour(), 3, 4, 1, 1, 100, 15);
 		CrossNeighborhoodWithTabooListAndRecourse neighborhood = new CrossNeighborhoodWithTabooListAndRecourse(SetUpUtils.getSomeRandomDummySolution());
 		
-		neighborhood.acctuallyApplyMoveAndMaintainNeighborhood(move);
+		neighborhood.actuallyApplyMoveAndMaintainNeighborhood(move);
 				
 		SolutionGot solutionToCompareAgainst = SetUpSolutionFromString.SetUpSolution("( ( 73 17 16 13 58 ) )", ReadAndWriteUtils.readSolomonProblemRC104AsList().get(0));
 		assertEquals(true, got1.getFirstTour().equals(solutionToCompareAgainst.getLastTour()));
@@ -69,7 +68,7 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 		//manually calculate old Recourse Cost
 		double oldRecourseCost = got1.getExpectedRecourse().getRecourseCost() + got2.getExpectedRecourse().getRecourseCost();
 		
-		neighborhood.acctuallyApplyMoveAndMaintainNeighborhood(move);
+		neighborhood.actuallyApplyMoveAndMaintainNeighborhood(move);
 		
 		//manually calculate new Recourse Cost
 		double newRecourseCost = got1.getExpectedRecourse().getRecourseCost() + got2.getExpectedRecourse().getRecourseCost();
