@@ -28,6 +28,7 @@ public class AdaptiveMemoryTabuSearch {
 	private long endTime;
 	private long timeNeeded;
 	private long startTime;
+	private int iteration;
 	
 	protected AdaptiveMemory getAM() {
 		return new AdaptiveMemory();
@@ -43,15 +44,23 @@ public class AdaptiveMemoryTabuSearch {
 		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
-		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();			
+		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();
 		
-		int iteration = 1;		
+		publishSolution(bestOverallSolution);
+		
+		iteration = 1;		
 		while (!isStoppingCriterionMet()) {
 			System.out.println("AM CALL Nr. " + iteration);
 			
 			solution = constructInitialSolutionFromAdaptiveMemory();
+			
+			publishSolution(solution);
+			
 			TabuSearchForElementWithTours tabuSearch = getTS(); 
-			tabuSearch.improve(solution);
+			solution = (SolutionGot) tabuSearch.improve(solution);
+			
+			publishSolution(solution);
+			
 			storeNewToursInAdaptiveMemory(solution);
 			
 			if (isBestOverallSolutionFoundAgain())
@@ -64,15 +73,23 @@ public class AdaptiveMemoryTabuSearch {
 			} else
 				numberOfAMCallsWithoutImprovement++;
 			
+			publishSolution(bestOverallSolution);
+			
 			iteration++;
 		}
 		if (bestOverallSolution == null)
 			throw new RuntimeException("bestOverallSolution ist Null. Fehler!");
 		
+		publishSolution(bestOverallSolution);
 		publishSolutionAtEndOfAMTSSearch();
 		
 		return bestOverallSolution;
 	}
+
+		private void publishSolution(SolutionGot solution2) {
+			System.out.println(iteration + " " + solution2.getAsTupel());
+			System.out.println(solution2.getTotalDistanceWithCostFactor() + "; " + solution2.getNumberOfTours());
+		}
 
 		protected TabuSearchForElementWithTours getTS() {
 			return new TabuSearchForElementWithTours();		 

@@ -26,13 +26,12 @@ public class ReadAndWriteUtils {
 	
 	private static FileOutputStream outputStreamZielfunktionswerteverlauf = null;
 	private static FileOutputStream outputStreamSolutionAtEndOfTabuSearch = null;
+	private static FileOutputStream outputStreamForPublishingSolutionAtEndOfAMTSSearch = null;
 	
 	private static Map<String,FileOutputStream> mapOfOutputStreamsForSolutionsAtEndOfTabuSearch = new HashMap<String,FileOutputStream>(200);
 	
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
-	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();
-	
-	
+	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();	
 	
 	public static List<VrpProblem> readEigeneModifiedSolomonProblems() throws IOException {
 		return readSolomonProblems(getInputDirectoryForEigeneModifiedSolomonProblems());
@@ -265,9 +264,12 @@ public class ReadAndWriteUtils {
 	}	
 	
 	public static FileOutputStream getOutputStreamForPublishingSolutionAtEndOfAMTSSearch() throws IOException {
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
-		String s = Parameters.getOutputDirectory() + sdf.format(Calendar.getInstance().getTime()) + " - Ergebnisse";
-		return openOutputFile(s);
+		if (outputStreamForPublishingSolutionAtEndOfAMTSSearch == null) { 		
+			SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
+			String s = Parameters.getOutputDirectory() + sdf.format(Calendar.getInstance().getTime()) + " - Ergebnisse";
+			outputStreamForPublishingSolutionAtEndOfAMTSSearch = openOutputFile(s);
+		}
+		return outputStreamForPublishingSolutionAtEndOfAMTSSearch;
 	}
 		
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {

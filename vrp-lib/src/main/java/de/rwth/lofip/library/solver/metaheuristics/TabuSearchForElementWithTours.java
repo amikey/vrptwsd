@@ -49,7 +49,13 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		startTime = System.currentTimeMillis();
 		
 		solution = solutionStart;
+		
+		publishSolution(solution);
+		
 		bestOverallSolution = solutionStart.clone();
+		
+		publishSolution(bestOverallSolution);
+		
 		crossNeighborhood = getCrossNeighborhood(); 
 		tourEliminationNeighborhood = getTourEliminationNeighborhood();
 		
@@ -57,14 +63,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		while (!isStoppingCriterionMet()) {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
-				
-				if (iteration == 2)
-					System.out.println("DEBUGGING");
-				
 
-				if (iteration == 2)
-					System.out.println("DEBUGGING");
-				
 				findBestNonTabooMove();				
 				updateTabuList();								
 				applyBestNonTabooMove();								

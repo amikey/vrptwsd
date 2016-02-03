@@ -12,8 +12,10 @@
 //	@Test
 //	public void TestPublishSolutionsAtEndOfAMTSSearch() throws IOException {
 //		Parameters.setAllParametersToMinimalTestingValues();
+//		Parameters.setPublishSolutionValueProgress(true);
 //		//Set Parameters for Scenario
 //		Parameters.setNumberOfNonImprovingIterationsInTS(0);
+//		Parameters.setNumberOfNonImprovingAMCalls(1);
 //		Parameters.setPercentageOfCapacity(1);
 //		Parameters.setNumberOfToursInGot(1);		
 //		Parameters.setRunningTimeInHours(6);
@@ -23,7 +25,9 @@
 //		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 //		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 //		
-//		problems = ReadAndWriteUtils.readModifiedSolomonProblems().subList(0, 0);		
+//		setNumberOfExperimentsTo(1);
+//		
+//		problems = ReadAndWriteUtils.readModifiedSolomonProblems().subList(0, 1);		
 //		processProblems();
 //	}
 //

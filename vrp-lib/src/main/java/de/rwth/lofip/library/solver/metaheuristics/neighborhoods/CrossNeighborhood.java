@@ -78,7 +78,8 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
 		resetNeighborhood();
 		//RUNTIME_TODO: entfernen
-		assertThatSolutionContainsNoEmptyTours();
+		if (Parameters.isTestingMode())
+			assertThatSolutionContainsNoEmptyTours();
 		generateMovesUsingRefs(iteration);
 		if (bestNonTabooMove == null) {
 			if (bestMoveThatMightBeTaboo == null)

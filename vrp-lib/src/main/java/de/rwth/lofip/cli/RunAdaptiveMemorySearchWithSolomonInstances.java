@@ -276,6 +276,10 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 			solutions.set(i, solution2);
 		}
 	}
+	
+	protected void setNumberOfExperimentsTo(int i) {
+		numberOfExperiments = i;
+	}
 
 
 	// not used any more
