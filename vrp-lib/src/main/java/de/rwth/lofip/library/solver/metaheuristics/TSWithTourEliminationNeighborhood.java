@@ -17,9 +17,12 @@ public class TSWithTourEliminationNeighborhood extends TabuSearchForElementWithT
 			//try tourEliminationNeighborhood but only if at least Parameters.getNumberOfIterationsWithoutTE iterations without TE were run
 			if (numberOfIterationsWithoutTourElimination > Parameters.getMinimumNumberOfIterationsWithoutTourElemination()) {
 				numberOfIterationsWithoutTourElimination = 0;
-				AbstractNeighborhoodMove tourEliminationMove = tourEliminationNeighborhood.returnBestMove();
-				if (isTourEliminationMoveBetterThanCrossNeighborhoodMove(tourEliminationMove))
-					bestMove = tourEliminationMove;
+				System.out.println("Tour Elimination Neighborhood wird aufgerufen!");
+				AbstractNeighborhoodMove tourEliminationMove = tourEliminationNeighborhood.returnBestMove(iteration);
+				if (isTourEliminationMoveBetterThanCrossNeighborhoodMove(tourEliminationMove)) {
+					bestMove = tourEliminationMove;	
+					System.out.println("JUHUU; TOUR ELIMINATION NEIGHBORHOOD WAR ERFOLGREICH!");
+				}					
 			} else
 				numberOfIterationsWithoutTourElimination++;
 		} else 
@@ -35,6 +38,14 @@ public class TSWithTourEliminationNeighborhood extends TabuSearchForElementWithT
 		if (tourEliminationMove.getCost() < bestMove.getCost())
 			return true;
 		return false;
+	}
+	
+	@Override 
+	protected void updateTabuList() {
+		if (bestMove instanceof TourEliminationNeighborhoodMove)
+			crossNeighborhood.updateTabuListWithTourEliminationNeighborhoodMove(bestMove, iteration);
+		else
+			crossNeighborhood.updateTabuList(iteration);
 	}
 
 	@Override

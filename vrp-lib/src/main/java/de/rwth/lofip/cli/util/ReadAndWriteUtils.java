@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,10 +18,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.library.SolutionGot;
-import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class ReadAndWriteUtils {
@@ -263,6 +265,12 @@ public class ReadAndWriteUtils {
 //		}
 //		return outputStreamSolutionAtEndOfTabuSearch;
 	}	
+	
+	public static FileOutputStream getOutputStreamForPublishingSolutionAtEndOfAMTSSearch() throws IOException {
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss");
+		String s = Parameters.getOutputDirectory() + sdf.format(Calendar.getInstance().getTime()) + " - Ergebnisse";
+		return openOutputFile(s);
+	}
 		
 	public static List<VrpProblem> readSolomonProblemX(String contain, String notContain) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
@@ -391,6 +399,85 @@ public class ReadAndWriteUtils {
 		return readSolomonProblemX("rc2","X");
 	}
 		
+	public static void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
+		if (Parameters.publishSolutionAtEndOfTabuSearch()) 				
+			IOUtils.write("" + ";" 
+				+ "Distanz" + ";" 
+				+ "Anzahl Touren" + ";"
+				+ "RecourseCost" +";"
+				+ "Distanz+RecourseCost" + ";"
+				+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
+				+ "Distanz+Convexkombination" + ";"
+				+ "NumberOfRouteFailures" + ";"
+				+ "NumberOfAdditionalTours" + ";"
+				+ "NumberOfDifferentRecourseActions" + ";"
+				+ "timeNeeded in ms" + ";"
+				+ "UseOfCapacityInTours" + "; ;"	
+				+ "SolutionAsTupel" + ";" 
+				+ "NumberOfCustomersThatAreServedByNumberOfVehicles beginning with one and increasing with each column" + "\n" 
+				, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(new SolutionGot(vrpProblem)));				
+	}	
+	
+	public static void createHeaderForPublishingSolutionAtEndOfAMTSSearch() throws IOException {				
+		if (Parameters.publishSolutionAtEndOfAMTSSearch()) 				
+			IOUtils.write("" + ";" 
+				+ "Distanz" + ";" 
+				+ "Anzahl Touren" + ";"
+				+ "RecourseCost" +";"
+				+ "Distanz+RecourseCost" + ";"
+				+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
+				+ "Distanz+Convexkombination" + ";"
+				+ "NumberOfRouteFailures" + ";"
+				+ "NumberOfAdditionalTours" + ";"
+				+ "NumberOfDifferentRecourseActions" + ";"
+				+ "timeNeeded in ms" + ";"
+				+ "UseOfCapacityInTours" + "; ;"	
+				+ "BestKnownValue" +";" 
+				+ "BestKnownVehicleNumber" + ";"
+				+ "SolutionAsTupel" + ";" 
+				+ "NumberOfCustomersThatAreServedByNumberOfVehicles beginning with one and increasing with each column" + "\n" 
+				, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfAMTSSearch());				
+	}	
+	
+	public static void publishSolutionAtEndOfAMTSSearch(SolutionGot bestOverallSolution, long timeNeeded) throws IOException {
+		if (Parameters.publishSolutionAtEndOfAMTSSearch())			
+			if (bestOverallSolution instanceof SolutionGot){
+				
+				setUpBestKnownSolutionValues();
+				setUpBestKnownSolutionVehicleNumbers();
+				
+				//berechne prozentuale abweichung					
+				double deviationObjValue = (bestOverallSolution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) / bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue() * 100;
+				double deviationVehicleNumber = ( (double) bestOverallSolution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue()) / (double) bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue() * 100;
+				
+				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
+		
+				IOUtils.write("Lösung am Ende der TS: " + ";" 
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
+					+ bestOverallSolution.getNumberOfTours() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
+					+ timeNeeded + ";"
+					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
+					
+					+ String.format("%.3f",bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) + ";"
+					+ bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue() + ";"
+					+ String.format("%.3f",deviationObjValue) + ";"
+					+ String.format("%.3f",deviationVehicleNumber) + ";" 
+					
+					+ bestOverallSolution.getAsTupel() + ";"
+					+ s 
+					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfAMTSSearch());
+			} else {
+				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
+			}
+	}
+	
 	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1, long timeNeeded,
 											int initialNumberOfDifferentInitialSolutions, 
 											int initialNumberOfIterationsTabuSearch,
@@ -526,6 +613,65 @@ public class ReadAndWriteUtils {
 			}
 		}
 		return distance / numberOfSolutions;
+	}
+	
+	private static int getNumberOfVrpProblemInBestKnownSolutionValues(VrpProblem problem) {
+		if (problem.getDescription().charAt(0) == "C".charAt(0)) {
+			if (problem.getDescription().charAt(1) == "1".charAt(0)) {
+				//C1 Problems
+				int number = (int) problem.getDescription().charAt(3);
+				number--;
+				return number;
+			} else {
+				//C2 Problems
+				int number = (int) problem.getDescription().charAt(3);
+				number+=8;
+				return number;
+			}				
+		}
+		if (problem.getDescription().charAt(0) == "R".charAt(0)) {
+			if (problem.getDescription().charAt(1) != "C".charAt(0)) {
+				//R - Problems
+				if (problem.getDescription().charAt(1) == "1".charAt(0)) {
+//					//R1 Problems
+					if (problem.getDescription().charAt(2) == "1".charAt(0)) {
+						//110-112
+						int number = (int) problem.getDescription().charAt(3);
+						number+=26;
+						return number;
+					} else {
+						int number = (int) problem.getDescription().charAt(3);
+						number+=16;
+						return number;
+					}
+				} else {
+//					//R2 Problems
+					if (problem.getDescription().charAt(2) == "1".charAt(0)) {
+						int number = (int) problem.getDescription().charAt(3);
+						number+=38;
+						return number;
+					} else {
+						int number = (int) problem.getDescription().charAt(3);
+						number+=28;
+						return number;
+					}
+				}
+			} else {
+				//RC Problems 
+				if (problem.getDescription().charAt(2) == "1".charAt(0)) {
+					//RC1 Problems
+					int number = (int) problem.getDescription().charAt(4);
+					number+=39;
+					return number;
+				} else {
+					//RC2 Problems
+					int number = (int) problem.getDescription().charAt(4);
+					number+=47;
+					return number;
+				}
+			}
+		}
+		throw new RuntimeException("Problem nicht gefunden. sollte nicht passieren.");
 	}
 
 	private static void setUpBestKnownSolutionValues() {

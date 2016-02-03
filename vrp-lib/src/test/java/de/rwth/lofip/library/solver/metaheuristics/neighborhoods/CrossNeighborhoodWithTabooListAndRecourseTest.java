@@ -34,7 +34,7 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 	
 	@Test
 	public void testApplyMoveToUnderlyingGots2() throws IOException {
-		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionFromRC104Problem();
+		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionForRC104Problem();
 		
 		GroupOfTours got1 = solutionRC104.getGots().get(2);
 		GroupOfTours got2 = solutionRC104.getGots().get(3);
@@ -53,7 +53,7 @@ public class CrossNeighborhoodWithTabooListAndRecourseTest {
 	@Test
 	public void testCalculateRecourseCostForMoves() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
-		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionFromRC104Problem();
+		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionForRC104Problem();
 		
 		GroupOfTours got1 = solutionRC104.getGots().get(0);
 		GroupOfTours got2 = solutionRC104.getGots().get(1);

@@ -19,6 +19,7 @@ import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfac
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.TourEliminationNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
+import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
@@ -58,6 +59,9 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		while (!isStoppingCriterionMet()) {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
+				
+				if (iteration == 46)
+					System.out.println("DEBUGGING");
 				
 				findBestNonTabooMove();				
 				updateTabuList();								
@@ -108,7 +112,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		//DESIGN_TODO: Hier TourElimination Nachbarschaft aufrufen, wenn Cross keinen Move gefunden hat, der Tourenanzahl reduziert
 	}
 	
-	private void updateTabuList() {
+	protected void updateTabuList() {
 		crossNeighborhood.updateTabuList(iteration);
 	}
 	
@@ -118,7 +122,10 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	protected boolean isNewSolutionIsNewBestOverallSolution() {
 //		assertEquals(false, solution.equals(bestOverallSolution));
-		if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(), bestOverallSolution.getTotalDistanceWithCostFactor())
+		double costOldSolution = solution.getTotalDistanceWithCostFactor();
+		double costBestOverallSolution = bestOverallSolution.getTotalDistanceWithCostFactor();
+		
+		if (MathUtils.lessThan(costOldSolution, costBestOverallSolution)
 			&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
 			return true;
 		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
@@ -170,7 +177,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		
 		if (Parameters.publishSolutionAtEndOfTabuSearch())			
 			if (bestOverallSolution instanceof SolutionGot){
-				String s = createStringForCustomersServedByNumberOfVehicles();					
+				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
 		
 				IOUtils.write("Lösung am Ende der TS: " + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
@@ -190,22 +197,6 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			} else {
 				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
 			}
-		
-	}
-
-	private String createStringForCustomersServedByNumberOfVehicles() {
-		String s = "";
-	
-		Iterator<Entry<Integer, Integer>> it = ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
-	    while (it.hasNext()) {
-	        Entry<Integer, Integer> pair = it.next();
-	        //the following line is totally not necessary and just for better readiness 
-	        int currentlyExaminedNumberOfVehicles = pair.getKey();
-	        int numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles = pair.getValue();
-	        s = s + numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles + ";";
-	    }
-	    
-	    return s;
 	}
 
 	private void generateBlankLineForPublishingSolution() throws IOException {
@@ -225,5 +216,9 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	public void tryToImproveNewBestSolutionWithIntensificationPhase(SolutionGot solution2) {
 		solution = solution2;
 		tryToImproveNewBestSolutionWithIntensificationPhase();
+	}
+
+	public int getNumberOfIterations() {
+		return iteration;
 	}
 }

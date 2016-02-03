@@ -10,6 +10,7 @@ public class Parameters {
 	//Print Options
 	private static boolean publishSolutionValueProgress = false;
 	private static boolean publishSolutionAtEndOfTabuSearch = false;
+	private static boolean isPublishSolutionAtEndOfAMTSSearch = false;
 	
 	//GroupOfTours
 	private static int MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
@@ -328,6 +329,10 @@ public class Parameters {
 	public static int getNumberOfInsertionTries() {
 		return numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour;
 	}
+	
+	public static void setNumberOfInsertionTries(int i) {
+		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = i;
+	}
 
 	public static int getMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood() {
 		return MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD;
@@ -340,6 +345,19 @@ public class Parameters {
 
 	public static int getMinimumNumberOfIterationsWithoutTourElemination() {
 		return minimumNumberOfIterationsWithoutTourElimination;
+	}
+
+	public static void setMinimumNumberOfIterationsWithoutTourElemination(int i) {
+		minimumNumberOfIterationsWithoutTourElimination = i;
+	}
+	
+	public static boolean publishSolutionAtEndOfAMTSSearch() {
+		return isPublishSolutionAtEndOfAMTSSearch;
+	}
+
+	public static void setPublishSolutionAtEndOfAMTSSearch(boolean b) {
+		isPublishSolutionAtEndOfAMTSSearch = b;
+		
 	}
 
 	

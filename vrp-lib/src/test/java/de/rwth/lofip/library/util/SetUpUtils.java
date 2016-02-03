@@ -480,11 +480,16 @@ public class SetUpUtils {
 		return got2;
 	}
 
-	public static SolutionGot getSomeSolutionFromRC104Problem() throws IOException {
+	public static SolutionGot getSomeSolutionForRC104Problem() throws IOException {
 		SolutionGot solutionRC104 = SetUpSolutionFromString.SetUpSolution("( ( 66 82 11 15 9 12 14 47 78 88 98 ) ) ( ( 60 6 7 79 8 46 4 45 3 1 100 ) ) ( ( 73 17 16 53 13 58 ) ) ( ( 99 55 ) ) ( ( 61 68 69 10 87 86 52 64 56 91 ) ) ( ( 70 2 5 40 39 41 71 96 ) ) ( ( 92 95 62 33 32 30 26 29 31 34 50 ) ) ( ( 23 75 97 59 74 ) ) ( ( 90 65 83 57 20 49 18 48 21 25 77 ) ) ( ( 81 54 42 44 43 38 36 35 37 72 93 94 ) ) ( ( 63 76 89 28 27 ) ) ( ( 80 67 84 85 51 19 22 24 ) )" 
 				, ReadAndWriteUtils.readSolomonProblemRC104AsList().get(0));
 		solutionRC104.printSolutionAsTupel();
 		return solutionRC104;
+	}
+	
+	public static SolutionGot getSomeSolutionForR101Problem() throws IOException {
+		return SetUpSolutionFromString.SetUpSolution("( ( 72 23 67 55 24 80 ) ) ( ( 2 40 56 4 25 ) ) ( ( 36 47 7 8 46 48 ) ) ( ( 33 71 78 3 54 ) ) ( ( 27 31 18 84 96 60 93 ) ) ( ( 63 30 51 10 32 70 ) ) ( ( 59 5 44 86 37 17 100 ) ) ( ( 39 79 34 35 77 ) ) ( ( 65 90 50 ) ) ( ( 21 73 57 43 91 ) ) ( ( 45 38 74 ) ) ( ( 28 12 76 81 66 1 ) ) ( ( 52 99 6 13 ) ) ( ( 95 98 16 85 89 ) ) ( ( 14 15 22 68 58 ) ) ( ( 75 41 26 ) ) ( ( 83 82 49 ) ) ( ( 92 42 87 97 ) ) ( ( 69 19 20 ) ) ( ( 64 ) ) ( ( 62 9 ) ) ( ( 11 ) ) ( ( 29 53 ) ) ( ( 61 94 ) ) ( ( 88 ) )"
+			, ReadAndWriteUtils.readSolomonProblemR1XX().get(0));
 	}
 	
 	public static SolutionGot getSomeRandomDummySolution() {

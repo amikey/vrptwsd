@@ -19,22 +19,16 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 		bestMoveThatMightBeTaboo = null;		
 	}
 
-	@Override
-	public AbstractNeighborhoodMove returnBestMove() {
+	public AbstractNeighborhoodMove returnBestMove(int iteration) {
 		for (int i = 0; i < elementWithTours.getNumberOfTours(); i++) {
 			if (elementWithTours.getTour(i).getCustomerSize() <= Parameters.getMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood()) {
 				for (int j = 0; j  < Parameters.getNumberOfInsertionTries(); j++) {
 					SolutionGot solutionClone = (SolutionGot) elementWithTours.clone();
 					List<Customer> customers = solutionClone.deleteTour(i);
 					new GreedyInsertion().insertCustomers(solutionClone, customers);
-						if (customers.get(0).getCustomerNo() == 17) {
-							System.out.println("DEBUGGING!");
-							solutionClone.printSolutionAsTupel();
-							solutionClone.printSolutionCost();
-						}
 					TourEliminationNeighborhoodMove move = new TourEliminationNeighborhoodMove((SolutionGot) elementWithTours, solutionClone);
 					if (isMoveNewBestMove(move))
-	//					if (!isMoveTaboo(move, iteration))
+						if (!isMoveTaboo(move, iteration))
 							setRespAddBestNonTabooMove(move);
 				}
 			}

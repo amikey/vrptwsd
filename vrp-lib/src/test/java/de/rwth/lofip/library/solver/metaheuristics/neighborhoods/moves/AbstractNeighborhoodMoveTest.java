@@ -59,7 +59,7 @@ public class AbstractNeighborhoodMoveTest {
 	
 	@Test
 	public void testGetDeterministicAndStochasticCostDifference() throws IOException {
-		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionFromRC104Problem();
+		SolutionGot solutionRC104 = SetUpUtils.getSomeSolutionForRC104Problem();
 		
 		GroupOfTours got1 = solutionRC104.getGots().get(0);
 		GroupOfTours got2 = solutionRC104.getGots().get(1);

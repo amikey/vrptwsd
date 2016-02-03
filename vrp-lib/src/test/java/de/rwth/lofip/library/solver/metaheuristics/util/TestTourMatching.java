@@ -57,7 +57,7 @@ public class TestTourMatching {
 	}
 
 	private void givenASolutionWithGots() throws IOException {
-		solution = SetUpUtils.getSomeSolutionFromRC104Problem();		
+		solution = SetUpUtils.getSomeSolutionForRC104Problem();		
 	}
 	
 	private void whenMatchingTours() {

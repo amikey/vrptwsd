@@ -43,7 +43,7 @@ public class TourEliminationNeighborhoodTest {
 //		solution.printSolutionCost();
 
 		TourEliminationNeighborhood ten = new TourEliminationNeighborhood(solution);
-		TourEliminationNeighborhoodMove move = (TourEliminationNeighborhoodMove) ten.returnBestMove();
+		TourEliminationNeighborhoodMove move = (TourEliminationNeighborhoodMove) ten.returnBestMove(100);
 		ten.actuallyApplyMove(move);
 		solution.printSolutionAsTupel();
 		solution.printSolutionCost();

@@ -13,11 +13,12 @@ import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
+import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class AdaptiveMemoryTabuSearch {
 	
-	private int numberOfDifferentInitialSolutions;
+	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
 	@SuppressWarnings("unused")
 	private int maximalNumberOfCallsToAdaptiveMemory;
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
@@ -31,6 +32,9 @@ public class AdaptiveMemoryTabuSearch {
 	private int numberOfAMCallsWithoutImprovement = 0;
 	@SuppressWarnings("unused")
 	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
+	private long endTime;
+	private long timeNeeded;
+	private long startTime;
 	
 	protected AdaptiveMemory getAM() {
 		return new AdaptiveMemory();
@@ -38,9 +42,12 @@ public class AdaptiveMemoryTabuSearch {
 	
 	public SolutionGot solve(VrpProblem vrpProblem) throws IOException {
 		
+		startTime = System.currentTimeMillis();
+		
 		System.out.println("STARTE INITIALISIERUNG AM");
 		
-		createHeaderForPublishingSolutionAtEndOfTabuSearch(vrpProblem);
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfTabuSearch(vrpProblem);
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
 		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();			
@@ -53,8 +60,6 @@ public class AdaptiveMemoryTabuSearch {
 			TabuSearchForElementWithTours tabuSearch = getTS(); 
 			tabuSearch.improve(solution);
 			storeNewToursInAdaptiveMemory(solution);
-			
-//			storeNewSolutionInListOfBestSolutions(solution.clone());
 			
 			if (isBestOverallSolutionFoundAgain())
 				increaseNumberOfTimesBestOverallSolutionHasBeenFound();
@@ -71,7 +76,7 @@ public class AdaptiveMemoryTabuSearch {
 		if (solution == null  || bestOverallSolution == null)
 			throw new RuntimeException("Solution ist Null. Fehler!");
 		
-//		publishSolutionAtEndOfAMSearch();
+		publishSolutionAtEndOfAMTSSearch();
 		
 		return bestOverallSolution;
 	}
@@ -80,28 +85,9 @@ public class AdaptiveMemoryTabuSearch {
 			return new TabuSearchForElementWithTours();		 
 		}
 
-		private void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
-			if (Parameters.publishSolutionAtEndOfTabuSearch()) 				
-				IOUtils.write("" + ";" 
-					+ "Distanz" + ";" 
-					+ "Anzahl Touren" + ";"
-					+ "RecourseCost" +";"
-					+ "Distanz+RecourseCost" + ";"
-					+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
-					+ "Distanz+Convexkombination" + ";"
-					+ "NumberOfRouteFailures" + ";"
-					+ "NumberOfAdditionalTours" + ";"
-					+ "NumberOfDifferentRecourseActions" + ";"
-					+ "timeNeeded in ms" + ";"
-					+ "UseOfCapacityInTours" + "; ;"	
-					+ "SolutionAsTupel" + ";" 
-					+ "NumberOfCustomersThatAreServedByNumberOfVehicles beginning with one and increasing with each column" + "\n" 
-					, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(new SolutionGot(vrpProblem)));				
-		}	
-
 		private void initialiseAdaptiveMemoryWithInitialSolutions(VrpProblem vrpProblem) throws IOException {
 
-			for (int i = 1; i <= numberOfDifferentInitialSolutions; i++) {
+			for (int i = 0; i < numberOfDifferentInitialSolutions; i++) {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				SolutionGot newSolution = initialSolver.solve(vrpProblem);
@@ -191,7 +177,12 @@ public class AdaptiveMemoryTabuSearch {
 		GreedyInsertion.resetRandomElementWithSeed(seedGI);
 		RandomI1Solver.resetRandomElementWithSeed(seedI1);
 	}
-
+	
+	private void publishSolutionAtEndOfAMTSSearch() throws IOException {
+		endTime = System.currentTimeMillis();
+		timeNeeded = endTime - startTime;
+		ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(bestOverallSolution, timeNeeded);
+	}
 
 
 }
