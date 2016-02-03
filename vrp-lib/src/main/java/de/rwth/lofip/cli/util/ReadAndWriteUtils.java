@@ -452,7 +452,7 @@ public class ReadAndWriteUtils {
 				
 				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
 		
-				IOUtils.write("Lösung am Ende der TS: " + ";" 
+				IOUtils.write(bestOverallSolution.getVrpProblem().getDescription() + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"

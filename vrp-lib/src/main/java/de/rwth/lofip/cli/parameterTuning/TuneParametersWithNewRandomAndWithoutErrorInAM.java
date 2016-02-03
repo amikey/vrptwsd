@@ -8,22 +8,22 @@ import de.rwth.lofip.cli.RunAdaptiveMemorySearchWithSolomonInstances;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.parameters.Parameters;
 
-public class TuneParametersAfterTestingTS20 extends RunAdaptiveMemorySearchWithSolomonInstances {
+public class TuneParametersWithNewRandomAndWithoutErrorInAM extends RunAdaptiveMemorySearchWithSolomonInstances {
 
 	@Test
-	public void TestNumberOfNonImprovingIterationsInTS20() throws IOException {
+	public void TestPublishSolutionsAtEndOfAMTSSearch() throws IOException {
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
-		Parameters.setNumberOfNonImprovingIterationsInTS(20);
+		Parameters.setNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\ParameterTuning\\NachTuningMitTS20\\");
+		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
-		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
+		problems = ReadAndWriteUtils.readOriginalSolomonProblems();		
 		processProblems();
 	}
 	

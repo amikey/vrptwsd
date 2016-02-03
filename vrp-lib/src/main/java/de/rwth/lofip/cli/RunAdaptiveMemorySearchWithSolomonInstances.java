@@ -249,16 +249,9 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		}		
 	}
 	
-	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(List<VrpProblem> vrpProblems, List<SolutionGot> solutionsTemp) throws IOException {
-		this.problems = vrpProblems;
-		this.solutions = solutionsTemp;
-		
-		solveProblemsWithAdaptiveMemorySolver();
-		return solutions;
-	}
-	
 	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {
 		long startTime = System.nanoTime();
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
@@ -268,6 +261,14 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		long endTime = System.nanoTime();
 		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
 	}	
+	
+	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(List<VrpProblem> vrpProblems, List<SolutionGot> solutionsTemp) throws IOException {
+		this.problems = vrpProblems;
+		this.solutions = solutionsTemp;
+		
+		solveProblemsWithAdaptiveMemorySolver();
+		return solutions;
+	}
 	
 	private void postProcessProblemsWithTourMatchingAlgorithm() {
 		for (int i = 0; i < solutions.size(); i++) {

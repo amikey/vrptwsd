@@ -41,7 +41,6 @@ public class AdaptiveMemoryTabuSearch {
 		System.out.println("STARTE INITIALISIERUNG AM");
 		
 		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfTabuSearch(vrpProblem);
-		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
 		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();

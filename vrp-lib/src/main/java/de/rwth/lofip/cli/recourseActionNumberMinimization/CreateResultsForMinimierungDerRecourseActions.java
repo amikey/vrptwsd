@@ -83,6 +83,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 
 	private void solveProblemsWithAdaptiveMemoryWithRecourseSolver() throws IOException {
 		long startTime = System.nanoTime();
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());
 						
