@@ -14,9 +14,7 @@ import de.rwth.lofip.library.util.math.MathUtils;
 public class AdaptiveMemoryTabuSearch {
 	
 	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
-	@SuppressWarnings("unused")
-	private int maximalNumberOfCallsToAdaptiveMemory;
-	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
+	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	
 	private AdaptiveMemory adaptiveMemory = getAM();
 	
@@ -138,28 +136,6 @@ public class AdaptiveMemoryTabuSearch {
 		private void setBestOverallSolutionToNewSolution() {
 			bestOverallSolution = solution.clone();	
 		}
-
-	public void setMaximalNumberOfCallsToAdaptiveMemory(
-			int maximalNumberOfCallsToAdaptiveMemory2) {
-		maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory2;
-	}
-
-	public void setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(
-			int i) {
-		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = i;
-	}
-	
-	public void resetSeeds() {
-		AdaptiveMemory.setSeedTo(0);
-		GreedyInsertion.setSeedTo(0);
-		RandomI1Solver.setSeedTo(0);
-	}
-
-	public static void setSeeds(int seedI1, int seedGI, int seedAM) {
-		AdaptiveMemory.setSeedTo(seedAM);
-		GreedyInsertion.setSeedTo(seedGI);
-		RandomI1Solver.setSeedTo(seedI1);
-	}
 
 	public static void setNewRandomWithSeeds(int seedAM, int seedGI, int seedI1) {
 		AdaptiveMemory.resetRandomElementWithSeed(seedAM);

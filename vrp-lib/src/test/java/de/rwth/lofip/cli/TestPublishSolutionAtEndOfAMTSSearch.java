@@ -23,7 +23,7 @@
 //		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 //		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 //		
-//		problems = ReadAndWriteUtils.readSolomonProblemC101();		
+//		problems = ReadAndWriteUtils.readModifiedSolomonProblems().subList(0, 0);		
 //		processProblems();
 //	}
 //

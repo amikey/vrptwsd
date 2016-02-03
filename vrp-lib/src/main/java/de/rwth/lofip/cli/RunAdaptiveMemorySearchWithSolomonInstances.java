@@ -20,14 +20,6 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	protected List<SolutionGot> solutions = new LinkedList<SolutionGot>();
 	protected long timeNeeded;
 	
-	protected int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
-	protected int maximalNumberOfCallsToAdaptiveMemory = Parameters.getMaximalNumberOfCallsToAdaptiveMemory();
-	protected int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
-	
-	protected int seedI1 = Parameters.getSeedI1();
-	protected int seedGI = Parameters.getSeedGI();
-	protected int seedAM = Parameters.getSeedAM();
-	
 	protected int numberOfExperiments = 100;
 	
 	@Test
@@ -257,38 +249,9 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		}		
 	}
 	
-	protected void increaseParameters() {
-		seedI1+=200;
-		seedGI+=400;
-		seedAM+=300;
-	}
-	
-	protected void printProblems() throws IOException {
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,
-				numberOfDifferentInitialSolutions, 
-				Parameters.getMaximalNumberOfIterationsTabuSearch(), 
-				Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch(), 
-				maximalNumberOfCallsToAdaptiveMemory,
-				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-				seedI1, seedGI, seedAM);
-	}
-	
-	private void printProblemsModifiedSolomonInstances() throws IOException {
-		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch - ModifiedProblems",solutions, timeNeeded,
-				numberOfDifferentInitialSolutions, 
-				Parameters.getMaximalNumberOfIterationsTabuSearch(), 
-				Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch(),
-				maximalNumberOfCallsToAdaptiveMemory,
-				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-				seedI1, seedGI, seedAM);
-	}
-	
 	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(List<VrpProblem> vrpProblems, List<SolutionGot> solutionsTemp) throws IOException {
-		
 		this.problems = vrpProblems;
 		this.solutions = solutionsTemp;
-		
-		AdaptiveMemoryTabuSearch.setNewRandomWithSeeds(seedAM, seedGI, seedI1);
 		
 		solveProblemsWithAdaptiveMemorySolver();
 		return solutions;
@@ -297,12 +260,8 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {
 		long startTime = System.nanoTime();
 		for (VrpProblem problem : problems) {
-			System.out.println("SOLVING PROBLEM " + problem.getDescription());
-						
-//			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
+			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
-			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(maximalNumberOfCallsWithoutImprovementToAdaptiveMemory);
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
 			solutions.add(solution);			
 		}
@@ -318,5 +277,24 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		}
 	}
 
+
+	// not used any more
+	
+	protected void printProblems() throws IOException {
+//		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch",solutions, timeNeeded,				
+//				Parameters.getMaximalNumberOfIterationsTabuSearch(), 
+//				Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch(), 
+//				seedI1, seedGI, seedAM);
+	}
+	
+	private void printProblemsModifiedSolomonInstances() throws IOException {
+//		ReadAndWriteUtils.printResultsToFile("AdaptiveMemorySearch - ModifiedProblems",solutions, timeNeeded,
+//				numberOfDifferentInitialSolutions, 
+//				Parameters.getMaximalNumberOfIterationsTabuSearch(), 
+//				Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch(),
+//				maximalNumberOfCallsToAdaptiveMemory,
+//				maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
+//				seedI1, seedGI, seedAM);
+	}
 	
 }

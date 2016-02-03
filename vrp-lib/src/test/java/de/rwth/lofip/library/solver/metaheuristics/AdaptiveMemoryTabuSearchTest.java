@@ -41,11 +41,15 @@ public class AdaptiveMemoryTabuSearchTest {
 		Parameters.setAllParametersToMinimalTestingValues();
 		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();	
 		
+		Parameters.resetSeedsAndRandomElements();
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions);
+		
+		Parameters.resetSeedsAndRandomElements();
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions2);
 		
 		Parameters.setNumberOfNonImprovingAMCalls(1);
 		
+		Parameters.resetSeedsAndRandomElements();
 		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions3);
 				
 		for (int i = 0; i < solutions.size(); i++) {
