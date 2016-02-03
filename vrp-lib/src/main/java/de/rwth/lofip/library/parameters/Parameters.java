@@ -1,6 +1,9 @@
 package de.rwth.lofip.library.parameters;
 
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
+import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
+import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
+import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
 
 public class Parameters {
 	
@@ -365,6 +368,12 @@ public class Parameters {
 
 	public static int getLengthOfTabuList() {
 		return lengthOfTabuList;
+	}
+
+	public static void resetSeedsAndRandomElements() {
+		GreedyInsertion.resetRandomElementWithSeed(1);
+		RandomI1Solver.resetRandomElementWithSeed(1);
+		AdaptiveMemory.resetRandomElementWithSeed(1);
 	}
 
 	

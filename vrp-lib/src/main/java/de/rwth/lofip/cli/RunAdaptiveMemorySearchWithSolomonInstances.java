@@ -283,28 +283,10 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 				seedI1, seedGI, seedAM);
 	}
 	
-	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(
-			List<VrpProblem> vrpProblems,
-			List<SolutionGot> solutionsTemp, 
-			int numberOfDifferentInitialSolutions,
-			int maximalNumberOfIterationsTabuSearch,
-			int maximalNumberOfIterationsWithoutImprovementTabuSearch,
-			int maximalNumberOfCallsToAdaptiveMemory,
-			int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory,
-			int seedI1,
-			int seedGI,
-			int seedAM) throws IOException {
+	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(List<VrpProblem> vrpProblems, List<SolutionGot> solutionsTemp) throws IOException {
 		
 		this.problems = vrpProblems;
 		this.solutions = solutionsTemp;
-		this.numberOfDifferentInitialSolutions = numberOfDifferentInitialSolutions;
-		Parameters.setNumberOfIterationsInTS(maximalNumberOfIterationsTabuSearch);
-		Parameters.setNumberOfNonImprovingIterationsInTS(maximalNumberOfIterationsWithoutImprovementTabuSearch); 
-		this.maximalNumberOfCallsToAdaptiveMemory = maximalNumberOfCallsToAdaptiveMemory;
-		this.maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = maximalNumberOfCallsWithoutImprovementToAdaptiveMemory;
-//		this.seedI1 = seedI1;
-//		this.seedGI = seedGI;
-//		this.seedAM = seedAM;
 		
 		AdaptiveMemoryTabuSearch.setNewRandomWithSeeds(seedAM, seedGI, seedI1);
 		
@@ -319,7 +301,6 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 						
 //			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
 			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(maximalNumberOfCallsWithoutImprovementToAdaptiveMemory);
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);

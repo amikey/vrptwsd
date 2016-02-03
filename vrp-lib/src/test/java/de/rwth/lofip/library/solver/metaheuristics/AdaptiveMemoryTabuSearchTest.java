@@ -16,7 +16,6 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
-import de.rwth.lofip.testing.util.AdaptiveMemoryUtils;
 
 public class AdaptiveMemoryTabuSearchTest {
 	
@@ -27,33 +26,27 @@ public class AdaptiveMemoryTabuSearchTest {
 	
 	@Test
 	public void testThatRunOfAMTSproducesTheSameSolutionEveryTime() throws IOException {
-		Parameters.setAllParametersToDefaultValues();
-//		Parameters.setTestingMode(true);
+		Parameters.setAllParametersToMinimalTestingValues();
+		Parameters.resetSeedsAndRandomElements();
 		SolutionGot solution;
 		VrpProblem problem = ReadAndWriteUtils.readModifiedSolomonProblems().get(0);
-		Parameters.setNumberOfToursInGot(1);
 		AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
-		AdaptiveMemoryUtils.setParametersInAMTSforTesting(adaptiveMemoryTabuSearch);
 		solution = adaptiveMemoryTabuSearch.solve(problem);
 		System.out.println(solution.getAsTupel());
-		assertEquals("(((0 5 3 4 2 1 )) ((0 18 19 15 )) ((0 16 14 12 )) ((0 7 8 9 6 )) ((0 13 17 10 11 )) ) ", solution.getAsTupel());		
+		assertEquals("( ( 8 6 2 ) ) ( ( 5 3 7 11 12 ) ) ( ( 16 9 4 1 ) ) ( ( 13 17 19 10 ) ) ( ( 18 15 14 ) ) ", solution.getAsTupel());		
 	}
 	
 	@Test
 	public void testThatTwoRunsOfAMSearchProduceTheSameResultsAllowingPermutationOfTours() throws IOException {
-		
-		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
-	
+		Parameters.setAllParametersToMinimalTestingValues();
 		problems = ReadAndWriteUtils.readSolomonProblemRC101AsList();	
 		
-		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions, 1, 5, 5, 2, 2, 1, 1, 1);	
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions);
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions2);
 		
-		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions2, 1, 5, 5, 2, 2, 1, 1, 1);
+		Parameters.setNumberOfNonImprovingAMCalls(1);
 		
-		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions3, 1, 5, 5, 3, 3, 1, 1, 1);
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions3);
 				
 		for (int i = 0; i < solutions.size(); i++) {
 			solutions.get(i).printSolutionCost();
@@ -78,15 +71,10 @@ public class AdaptiveMemoryTabuSearchTest {
 	
 	@Test
 	public void testFeasibilityOfC101Solution() throws IOException {
-		
-		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
-		
-		problems = ReadAndWriteUtils.readSolomonProblemC101();	
-		
+		Parameters.setAllParametersToMinimalTestingValues();
+		problems = ReadAndWriteUtils.readSolomonProblemC101();		
 		solutions = new ArrayList<SolutionGot>();
-		
-		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(
-				problems, solutions, 1, 0, 5, 0, 5, 1, 1, 1);
+		new RunAdaptiveMemorySearchWithSolomonInstances().solveProblemsWithAdaptiveMemorySolver(problems, solutions);
 		
 		SolutionGot solutionC101 = solutions.get(0);
 		

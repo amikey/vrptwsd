@@ -14,7 +14,7 @@ public class TabuSearchWithTourEliminationTest {
 
 	@Test
 	public void testTSWithTourEliminationOnSomeSolutionForR101() throws IOException {
-		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setAllParametersToMinimalTestingValues();
 		Parameters.setNumberOfNonImprovingIterationsInTS(20);
 		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
 		Parameters.setNumberOfInsertionTries(1);

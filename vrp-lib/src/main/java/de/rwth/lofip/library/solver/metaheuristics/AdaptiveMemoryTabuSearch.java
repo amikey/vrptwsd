@@ -68,8 +68,8 @@ public class AdaptiveMemoryTabuSearch {
 			
 			iteration++;
 		}
-		if (solution == null  || bestOverallSolution == null)
-			throw new RuntimeException("Solution ist Null. Fehler!");
+		if (bestOverallSolution == null)
+			throw new RuntimeException("bestOverallSolution ist Null. Fehler!");
 		
 		publishSolutionAtEndOfAMTSSearch();
 		
@@ -138,11 +138,6 @@ public class AdaptiveMemoryTabuSearch {
 		private void setBestOverallSolutionToNewSolution() {
 			bestOverallSolution = solution.clone();	
 		}
-
-	public void setNumberOfInitialSolutions(
-			int numberOfDifferentInitialSolutions2) {
-		numberOfDifferentInitialSolutions = numberOfDifferentInitialSolutions2;
-	}
 
 	public void setMaximalNumberOfCallsToAdaptiveMemory(
 			int maximalNumberOfCallsToAdaptiveMemory2) {
