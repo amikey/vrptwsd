@@ -18,7 +18,6 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 
 	protected List<VrpProblem> problems = new LinkedList<VrpProblem>();
 	protected List<SolutionGot> solutions = new LinkedList<SolutionGot>();
-	protected long timeNeeded;
 	
 	protected int numberOfExperiments = 100;
 	
@@ -249,17 +248,14 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		}		
 	}
 	
-	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {
-		long startTime = System.nanoTime();
+	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {		
 		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 		for (VrpProblem problem : problems) {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
 			solutions.add(solution);			
-		}
-		long endTime = System.nanoTime();
-		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
+		}		
 	}	
 	
 	public List<SolutionGot> solveProblemsWithAdaptiveMemorySolver(List<VrpProblem> vrpProblems, List<SolutionGot> solutionsTemp) throws IOException {

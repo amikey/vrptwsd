@@ -1,5 +1,6 @@
 package de.rwth.lofip.library.solver.metaheuristics.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,6 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.IOUtils;
+
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
@@ -114,7 +118,7 @@ public class AdaptiveMemory {
 		}
 
 	
-	public SolutionGot constructSolutionFromTours() {
+	public SolutionGot constructSolutionFromTours() throws IOException {
 		initialiseCurrentNewSolution();
 		initialiseUnservedCustomers();		
 		initialiseToursThatContainOnlyUnservedCustomers();
@@ -192,15 +196,18 @@ public class AdaptiveMemory {
 			//nothing to do here; hook exists for recourse version
 		}
 		
-		private void isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution() {
+		//RUNTIME_TODO: entfernen
+		private void isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution() throws IOException {
 			boolean equivalent = false;
 			for (SolutionGot solution : previouslyConstrucedSolutions )
 				if (currentNewSolution.equals(solution)) {
 					equivalent = true;
 					break;
 				}
-			if (equivalent)
+			if (equivalent) {
 				System.out.println("AM constructed equivalent Solution");
+				IOUtils.write("AM constructed equivalent Solution \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(currentNewSolution));
+			}
 		}
 		
 		private void updatePreviouslyConstructedSolutions() {

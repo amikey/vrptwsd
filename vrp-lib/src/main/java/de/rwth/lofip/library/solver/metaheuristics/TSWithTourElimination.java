@@ -1,5 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
+import org.apache.commons.io.IOUtils;
+
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
@@ -23,7 +26,8 @@ public class TSWithTourElimination extends TabuSearchForElementWithTours {
 				System.out.println("Tour Elimination Neighborhood wird aufgerufen!");
 				AbstractNeighborhoodMove tourEliminationMove = tourEliminationNeighborhood.returnBestMove(iteration);
 				if (isTourEliminationMoveBetterThanCrossNeighborhoodMove(tourEliminationMove)) {
-					bestMove = tourEliminationMove;	
+					bestMove = tourEliminationMove;
+					IOUtils.write("JUHUU; TOUR ELIMINATION NEIGHBORHOOD WAR ERFOLGREICH! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));									
 					System.out.println("JUHUU; TOUR ELIMINATION NEIGHBORHOOD WAR ERFOLGREICH!");
 				}					
 			} else

@@ -616,61 +616,231 @@ public class ReadAndWriteUtils {
 	}
 	
 	private static int getNumberOfVrpProblemInBestKnownSolutionValues(VrpProblem problem) {
-		if (problem.getDescription().charAt(0) == "C".charAt(0)) {
-			if (problem.getDescription().charAt(1) == "1".charAt(0)) {
-				//C1 Problems
-				int number = (int) problem.getDescription().charAt(3);
-				number--;
-				return number;
-			} else {
-				//C2 Problems
-				int number = (int) problem.getDescription().charAt(3);
-				number+=8;
-				return number;
-			}				
-		}
-		if (problem.getDescription().charAt(0) == "R".charAt(0)) {
-			if (problem.getDescription().charAt(1) != "C".charAt(0)) {
-				//R - Problems
-				if (problem.getDescription().charAt(1) == "1".charAt(0)) {
-//					//R1 Problems
-					if (problem.getDescription().charAt(2) == "1".charAt(0)) {
-						//110-112
-						int number = (int) problem.getDescription().charAt(3);
-						number+=26;
-						return number;
-					} else {
-						int number = (int) problem.getDescription().charAt(3);
-						number+=16;
-						return number;
-					}
-				} else {
-//					//R2 Problems
-					if (problem.getDescription().charAt(2) == "1".charAt(0)) {
-						int number = (int) problem.getDescription().charAt(3);
-						number+=38;
-						return number;
-					} else {
-						int number = (int) problem.getDescription().charAt(3);
-						number+=28;
-						return number;
-					}
-				}
-			} else {
-				//RC Problems 
-				if (problem.getDescription().charAt(2) == "1".charAt(0)) {
-					//RC1 Problems
-					int number = (int) problem.getDescription().charAt(4);
-					number+=39;
-					return number;
-				} else {
-					//RC2 Problems
-					int number = (int) problem.getDescription().charAt(4);
-					number+=47;
-					return number;
-				}
-			}
-		}
+		int i = 0;
+		if (problem.getDescription() == "C101")
+			return i;
+		i++;
+		if (problem.getDescription() == "C102")
+			return i;
+		i++;
+		if (problem.getDescription() == "C103")
+			return i;
+		i++;
+		if (problem.getDescription() == "C104")
+			return i;
+		i++;
+		if (problem.getDescription() == "C105")
+			return i;
+		i++;
+		if (problem.getDescription() == "C106")
+			return i;
+		i++;
+		if (problem.getDescription() == "C107")
+			return i;
+		i++;
+		if (problem.getDescription() == "C108")
+			return i;
+		i++;
+		if (problem.getDescription() == "C109")
+			return i;
+		i++;
+		if (problem.getDescription() == "C201")
+			return i;
+		i++;
+		if (problem.getDescription() == "C202")
+			return i;
+		i++;
+		if (problem.getDescription() == "C203")
+			return i;
+		i++;
+		if (problem.getDescription() == "C204")
+			return i;
+		i++;
+		if (problem.getDescription() == "C205")
+			return i;
+		i++;
+		if (problem.getDescription() == "C206")
+			return i;
+		i++;
+		if (problem.getDescription() == "C207")
+			return i;
+		i++;
+		if (problem.getDescription() == "C208")
+			return i;
+		i++;
+		if (problem.getDescription() == "R101")
+			return i;
+		i++;
+		if (problem.getDescription() == "R102")
+			return i;
+		i++;
+		if (problem.getDescription() == "R103")
+			return i;
+		i++;
+		if (problem.getDescription() == "R104")
+			return i;
+		i++;
+		if (problem.getDescription() == "R105")
+			return i;
+		i++;
+		if (problem.getDescription() == "R106")
+			return i;
+		i++;
+		if (problem.getDescription() == "R107")
+			return i;
+		i++;
+		if (problem.getDescription() == "R108")
+			return i;
+		i++;
+		if (problem.getDescription() == "R109")
+			return i;
+		i++;
+		if (problem.getDescription() == "R110")
+			return i;
+		i++;
+		if (problem.getDescription() == "R111")
+			return i;
+		i++;
+		if (problem.getDescription() == "R112")
+			return i;
+		i++;
+		if (problem.getDescription() == "R201")
+			return i;
+		i++;
+		if (problem.getDescription() == "R202")
+			return i;
+		i++;
+		if (problem.getDescription() == "R203")
+			return i;
+		i++;
+		if (problem.getDescription() == "R204")
+			return i;
+		i++;
+		if (problem.getDescription() == "R205")
+			return i;
+		i++;
+		if (problem.getDescription() == "R206")
+			return i;
+		i++;
+		if (problem.getDescription() == "R207")
+			return i;
+		i++;
+		if (problem.getDescription() == "R208")
+			return i;
+		i++;
+		if (problem.getDescription() == "R209")
+			return i;
+		i++;
+		if (problem.getDescription() == "R210")
+			return i;
+		i++;
+		if (problem.getDescription() == "R211")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC101")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC102")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC103")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC104")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC105")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC106")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC107")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC108")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC201")
+			return i;
+		i++;		
+		if (problem.getDescription() == "RC202")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC203")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC204")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC205")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC206")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC207")
+			return i;
+		i++;
+		if (problem.getDescription() == "RC208")
+			return i;
+		i++;	
+		
+//		if (problem.getDescription().charAt(0) == "C".charAt(0)) {
+//			if (problem.getDescription().charAt(1) == "1".charAt(0)) {
+//				//C1 Problems
+//				int number = (int) problem.getDescription().charAt(3);
+//				number--;
+//				return number;
+//			} else {
+//				//C2 Problems
+//				int number = (int) problem.getDescription().charAt(3);
+//				number+=8;
+//				return number;
+//			}				
+//		}
+//		if (problem.getDescription().charAt(0) == "R".charAt(0)) {
+//			if (problem.getDescription().charAt(1) != "C".charAt(0)) {
+//				//R - Problems
+//				if (problem.getDescription().charAt(1) == "1".charAt(0)) {
+////					//R1 Problems
+//					if (problem.getDescription().charAt(2) == "1".charAt(0)) {
+//						//110-112
+//						int number = (int) problem.getDescription().charAt(3);
+//						number+=26;
+//						return number;
+//					} else {
+//						int number = (int) problem.getDescription().charAt(3);
+//						number+=16;
+//						return number;
+//					}
+//				} else {
+////					//R2 Problems
+//					if (problem.getDescription().charAt(2) == "1".charAt(0)) {
+//						int number = (int) problem.getDescription().charAt(3);
+//						number+=38;
+//						return number;
+//					} else {
+//						int number = (int) problem.getDescription().charAt(3);
+//						number+=28;
+//						return number;
+//					}
+//				}
+//			} else {
+//				//RC Problems 
+//				if (problem.getDescription().charAt(2) == "1".charAt(0)) {
+//					//RC1 Problems
+//					int number = (int) problem.getDescription().charAt(4);
+//					number+=39;
+//					return number;
+//				} else {
+//					//RC2 Problems
+//					int number = (int) problem.getDescription().charAt(4);
+//					number+=47;
+//					return number;
+//				}
+//			}
+//		}
 		throw new RuntimeException("Problem nicht gefunden. sollte nicht passieren.");
 	}
 
