@@ -16,6 +16,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 
 public class AdaptiveMemory {
@@ -119,18 +120,27 @@ public class AdaptiveMemory {
 
 	
 	public SolutionGot constructSolutionFromTours() throws IOException {
-		initialiseCurrentNewSolution();
-		initialiseUnservedCustomers();		
-		initialiseToursThatContainOnlyUnservedCustomers();
-		while (!(setOfSelectedToursCoversAllCustomers() ||
-				thereIsNoAdmissibleTourLeftInAdaptiveMemory())) {			
-			pickTourWithProbability();
-			updateUnservedCustomers();			
-			removeAllToursThatContainAlreadyServedCustomers();		
+		currentNewSolution = null;
+		int iteration = 0;
+		while (isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution()) {
+			if (iteration < Parameters.getMaximalNumberOfSolutionConstructionTriesInAM()) {
+				iteration++;
+				initialiseCurrentNewSolution();
+				initialiseUnservedCustomers();		
+				initialiseToursThatContainOnlyUnservedCustomers();
+				while (!(setOfSelectedToursCoversAllCustomers() ||
+						thereIsNoAdmissibleTourLeftInAdaptiveMemory())) {			
+					pickTourWithProbability();
+					updateUnservedCustomers();			
+					removeAllToursThatContainAlreadyServedCustomers();	
+				}
+				insertRemainingUnservedCustomersInSolutionWithGreedy();
+			} else {
+				constructNewSolutionWithI1Solver();
+			}
+			rematchToursAccordingToRecourseCost();
 		}
-		constructSolutionWithCustomersThatRemainUnserved();
-		rematchToursAccordingToRecourseCost();
-		isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution();
+//		isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution();
 		updatePreviouslyConstructedSolutions();
 		return currentNewSolution;
 	}	
@@ -186,10 +196,14 @@ public class AdaptiveMemory {
 			}
 		}
 		
-		private void constructSolutionWithCustomersThatRemainUnserved() {
+		private void insertRemainingUnservedCustomersInSolutionWithGreedy() {
 			GreedyInsertion gi = new GreedyInsertion();
 			//DESIGN_TODO: hier werden alle Kunden eingefügt, anders als im Paper, in dem nur Kunden in die bestehenden Touren eingefügt und keine neuen Touren eröffnet werden.
 			gi.insertCustomers(currentNewSolution, unservedCustomers);
+		}
+
+		private void constructNewSolutionWithI1Solver() {
+			currentNewSolution = new RandomI1Solver().solve(vrpProblem);
 		}
 		
 		protected void rematchToursAccordingToRecourseCost() {
@@ -197,7 +211,10 @@ public class AdaptiveMemory {
 		}
 		
 		//RUNTIME_TODO: entfernen
-		private void isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution() throws IOException {
+		private boolean isConstructedSolutionIsEquivalentToPreviouslyConstructedSolution() throws IOException {
+			if (currentNewSolution == null)
+				return true;
+			
 			boolean equivalent = false;
 			for (SolutionGot solution : previouslyConstrucedSolutions )
 				if (currentNewSolution.equals(solution)) {
@@ -209,6 +226,7 @@ public class AdaptiveMemory {
 				if (Parameters.publishSolutionAtEndOfAMTSSearch()) 
 					IOUtils.write("AM constructed equivalent Solution \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(currentNewSolution));
 			}
+			return equivalent;
 		}
 		
 		private void updatePreviouslyConstructedSolutions() {

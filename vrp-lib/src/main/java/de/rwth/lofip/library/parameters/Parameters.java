@@ -36,6 +36,7 @@ public class Parameters {
 	private static int numberOfIntensificationTries = 10;
 	
 	//AdaptiveMemory
+	private static int maximalNumberOfSolutionConstructionTriesInAM = 20;
 	private static int numberOfDifferentInitialSolutionsInAM = 20;
 	private static int maximalNumberOfCallsToAdaptiveMemory = 0; // 0 -> wird nicht verwendet
 	private static int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
@@ -85,6 +86,7 @@ public class Parameters {
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
 		numberOfDifferentInitialSolutionsInAM = 20;
+		maximalNumberOfSolutionConstructionTriesInAM = 20;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 1000;
@@ -114,6 +116,7 @@ public class Parameters {
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
+		maximalNumberOfSolutionConstructionTriesInAM = 1;
 		numberOfDifferentInitialSolutionsInAM = 1;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
@@ -146,6 +149,7 @@ public class Parameters {
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
 		numberOfDifferentInitialSolutionsInAM = 100;
+		maximalNumberOfSolutionConstructionTriesInAM = 20;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 200;
@@ -385,6 +389,14 @@ public class Parameters {
 
 	public static void setNumberOfIntensificationTries(int numberOfIntensificationTries) {
 		Parameters.numberOfIntensificationTries = numberOfIntensificationTries;
+	}
+
+	public static void setTourMinimization(boolean b) {
+		miminizeTours = b;
+	}
+
+	public static int getMaximalNumberOfSolutionConstructionTriesInAM() {
+		return maximalNumberOfSolutionConstructionTriesInAM;
 	}
 
 	

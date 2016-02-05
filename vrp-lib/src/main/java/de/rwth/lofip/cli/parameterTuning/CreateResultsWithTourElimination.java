@@ -33,7 +33,7 @@ public class CreateResultsWithTourElimination {
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourElimination\\WithShortensShorterTour\\");
+		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourElimination\\WithShortensShorterTour\\WithCorrectImplementationInTEN\\KorrekteWahlZwischenCrossUndTENundCostMinimizationPhase\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
@@ -57,25 +57,25 @@ public class CreateResultsWithTourElimination {
 		}	
 	}
 	
-	@Test
-	public void TestPublishAllSolutionsAtEndOfAMTSSearch() throws IOException {
-		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		//Set Parameters for Scenario
-		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);	
-		Parameters.setNumberOfInitialSolutions(20);
-		Parameters.setNumberOfIntensificationTries(0);
-		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);		
-		Parameters.setRunningTimeInHours(36);
-		
-		//Set Output parameters
-		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourEliminationAlleInstanzen\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
-		
-		problems = ReadAndWriteUtils.readOriginalSolomonProblems();		
-		processProblems();
-	}
+//	@Test
+//	public void TestPublishAllSolutionsAtEndOfAMTSSearch() throws IOException {
+//		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+//		//Set Parameters for Scenario
+//		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);	
+//		Parameters.setNumberOfInitialSolutions(20);
+//		Parameters.setNumberOfIntensificationTries(0);
+//		Parameters.setPercentageOfCapacity(1);
+//		Parameters.setNumberOfToursInGot(1);		
+//		Parameters.setRunningTimeInHours(36);
+//		
+//		//Set Output parameters
+//		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourEliminationAlleInstanzen\\");
+//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+//		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
+//		
+//		problems = ReadAndWriteUtils.readOriginalSolomonProblems();		
+//		processProblems();
+//	}
 
 
 }
