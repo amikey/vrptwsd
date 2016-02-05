@@ -206,7 +206,8 @@ public class AdaptiveMemory {
 				}
 			if (equivalent) {
 				System.out.println("AM constructed equivalent Solution");
-				IOUtils.write("AM constructed equivalent Solution \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(currentNewSolution));
+				if (Parameters.publishSolutionAtEndOfAMTSSearch()) 
+					IOUtils.write("AM constructed equivalent Solution \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(currentNewSolution));
 			}
 		}
 		

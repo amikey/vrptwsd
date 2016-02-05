@@ -139,7 +139,7 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		return false;
 	}
 	
-	public boolean shortensShorterTour() {
+	public boolean shortensShorterRespShortestTour() {
 		if (tour1IsShorterThanTour2()) {
 			if (numberOfCustomersRemovedFromTour1() > numberOfCustomersRemovedFromTour2())
 				return true;
@@ -172,13 +172,12 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 			return positionEndOfSegmentTour2 - positionStartOfSegmentTour2;
 		}
 
-	public int shorterTourResultsInNumberOfCustomers() {
+	public int shorterRespShortestTourResultsInNumberOfCustomers() {
 		if (tour1IsShorterThanTour2())
 			return tour1.getCustomerSize() - numberOfCustomersRemovedFromTour1() + numberOfCustomersRemovedFromTour2();
 		else
 			return tour2.getCustomerSize() - numberOfCustomersRemovedFromTour2() + numberOfCustomersRemovedFromTour1();
-	}
-	
+	}	
 	
 	//Utilities
 	

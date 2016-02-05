@@ -36,11 +36,7 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 					List<Customer> customers = solutionClone.deleteTour(i);		
 					new GreedyInsertion().insertCustomers(solutionClone, customers);
 					TourEliminationNeighborhoodMove move = new TourEliminationNeighborhoodMove((SolutionGot) elementWithTours, solutionClone);
-					if (MathUtils.equals(move.getCost(), 1418.6094172714522, 0.00005))
-						System.out.println("DEBUGGING 1418.6094172714522 ITERATION " + iteration);
 					if (isMoveNewBestMove(move)) {
-						if (iteration == 38)
-							System.out.println("DEBUGGING");
 						if (!isMoveTaboo(move, iteration))
 							setRespAddBestNonTabooMove(move);
 					}

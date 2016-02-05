@@ -1,10 +1,8 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
-import org.apache.commons.io.IOUtils;
-
-import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.TourEliminationNeighborhood;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
@@ -26,9 +24,11 @@ public class TSWithTourElimination extends TabuSearchForElementWithTours {
 				System.out.println("Tour Elimination Neighborhood wird aufgerufen!");
 				AbstractNeighborhoodMove tourEliminationMove = tourEliminationNeighborhood.returnBestMove(iteration);
 				if (isTourEliminationMoveBetterThanCrossNeighborhoodMove(tourEliminationMove)) {
-					bestMove = tourEliminationMove;
-					IOUtils.write("JUHUU; TOUR ELIMINATION NEIGHBORHOOD WAR ERFOLGREICH! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));									
+//					IOUtils.write("JUHUU; TOUR ELIMINATION NEIGHBORHOOD WAR ERFOLGREICH! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));									
 					System.out.println("JUHUU; TOUR ELIMINATION NEIGHBORHOOD WAR ERFOLGREICH!");
+					System.out.println("Kosten best CrossNeighborhood Move: " + bestMove.getCost());
+					System.out.println("Kosten best TourEliminationNeighborhood Move: " + tourEliminationMove.getCost());
+					bestMove = tourEliminationMove;
 				}					
 			} else
 				numberOfIterationsWithoutTourElimination++;
@@ -44,8 +44,8 @@ public class TSWithTourElimination extends TabuSearchForElementWithTours {
 			return false;
 		if (tourEliminationMove.reducesNumberOfVehicles())
 			return true;
-//		if (bestMove.shortensShorterTour())
-//			return false;
+		if (bestMove.shortensShorterRespShortestTour())
+			return false;
 		if (tourEliminationMove.getCost() < bestMove.getCost())
 			return true;
 		return false;
@@ -66,6 +66,8 @@ public class TSWithTourElimination extends TabuSearchForElementWithTours {
 		else
 			solution = (SolutionGot) crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(bestMove);
 		
+		crossNeighborhood.updateNeighborhoodWithSolution(solution);
+		tourEliminationNeighborhood.updateNeighborhoodWithSolution(solution);
 		crossNeighborhood.resetNeighborhood();
 		tourEliminationNeighborhood.resetNeighborhood();	
 	}

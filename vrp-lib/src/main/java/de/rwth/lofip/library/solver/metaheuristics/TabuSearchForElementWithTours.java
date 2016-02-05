@@ -144,7 +144,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 			for (int j = 0; j < got.getTours().size(); j++) {				
 				Tour tour = got.getTour(j);
 				//RUNTIME_TODO: versuche hier weniger Iterationen
-				for (int i = 0; i < 10; i++) { // 10 Verbesserungsversuche pro Tour					
+				for (int i = 0; i < Parameters.getNumberOfIntensificationTries(); i++) { 					
 					//CODE_SMELL_TODO: construct incomplete vrpProblem first and start I1Solver with vrpProblem
 					SolutionGot newSolution = new RandomI1Solver().solve(tour);					
 					new LocalSearchForElementWithTours().improve(newSolution);					

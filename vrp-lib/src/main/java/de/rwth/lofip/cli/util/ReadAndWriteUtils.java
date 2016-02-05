@@ -617,174 +617,173 @@ public class ReadAndWriteUtils {
 	
 	private static int getNumberOfVrpProblemInBestKnownSolutionValues(VrpProblem problem) {
 		int i = 0;
-		if (problem.getDescription() == "C101")
+		if (problem.getDescription().equals("C101"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C102")
+		if (problem.getDescription().equals("C102"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C103")
+		if (problem.getDescription().equals("C103"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C104")
+		if (problem.getDescription().equals("C104"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C105")
+		if (problem.getDescription().equals("C105"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C106")
+		if (problem.getDescription().equals("C106"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C107")
+		if (problem.getDescription().equals("C107"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C108")
+		if (problem.getDescription().equals("C108"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C109")
+		if (problem.getDescription().equals("C109"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C201")
+		if (problem.getDescription().equals("C201"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C202")
+		if (problem.getDescription().equals("C202"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C203")
+		if (problem.getDescription().equals("C203"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C204")
+		if (problem.getDescription().equals("C204"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C205")
+		if (problem.getDescription().equals("C205"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C206")
+		if (problem.getDescription().equals("C206"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C207")
+		if (problem.getDescription().equals("C207"))
 			return i;
 		i++;
-		if (problem.getDescription() == "C208")
+		if (problem.getDescription().equals("C208"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R101")
+		if (problem.getDescription().equals("R101"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R102")
+		if (problem.getDescription().equals("R102"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R103")
+		if (problem.getDescription().equals("R103"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R104")
+		if (problem.getDescription().equals("R104"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R105")
+		if (problem.getDescription().equals("R105"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R106")
+		if (problem.getDescription().equals("R106"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R107")
+		if (problem.getDescription().equals("R107"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R108")
+		if (problem.getDescription().equals("R108"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R109")
+		if (problem.getDescription().equals("R109"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R110")
+		if (problem.getDescription().equals("R110"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R111")
+		if (problem.getDescription().equals("R111"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R112")
+		if (problem.getDescription().equals("R112"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R201")
+		if (problem.getDescription().equals("R201"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R202")
+		if (problem.getDescription().equals("R202"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R203")
+		if (problem.getDescription().equals("R203"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R204")
+		if (problem.getDescription().equals("R204"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R205")
+		if (problem.getDescription().equals("R205"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R206")
+		if (problem.getDescription().equals("R206"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R207")
+		if (problem.getDescription().equals("R207"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R208")
+		if (problem.getDescription().equals("R208"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R209")
+		if (problem.getDescription().equals("R209"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R210")
+		if (problem.getDescription().equals("R210"))
 			return i;
 		i++;
-		if (problem.getDescription() == "R211")
+		if (problem.getDescription().equals("R211"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC101")
+		if (problem.getDescription().equals("RC101"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC102")
+		if (problem.getDescription().equals("RC102"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC103")
+		if (problem.getDescription().equals("RC103"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC104")
+		if (problem.getDescription().equals("RC104"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC105")
+		if (problem.getDescription().equals("RC105"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC106")
+		if (problem.getDescription().equals("RC106"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC107")
+		if (problem.getDescription().equals("RC107"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC108")
+		if (problem.getDescription().equals("RC108"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC201")
-			return i;
-		i++;		
-		if (problem.getDescription() == "RC202")
+		if (problem.getDescription().equals("RC201"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC203")
+		if (problem.getDescription().equals("RC202"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC204")
+		if (problem.getDescription().equals("RC203"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC205")
+		if (problem.getDescription().equals("RC204"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC206")
+		if (problem.getDescription().equals("RC205"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC207")
+		if (problem.getDescription().equals("RC206"))
 			return i;
 		i++;
-		if (problem.getDescription() == "RC208")
+		if (problem.getDescription().equals("RC207"))
 			return i;
-		i++;	
+		i++;
+		if (problem.getDescription().equals("RC208"))
+			return i;
 		
 //		if (problem.getDescription().charAt(0) == "C".charAt(0)) {
 //			if (problem.getDescription().charAt(1) == "1".charAt(0)) {
@@ -841,7 +840,7 @@ public class ReadAndWriteUtils {
 //				}
 //			}
 //		}
-		throw new RuntimeException("Problem nicht gefunden. sollte nicht passieren.");
+		throw new RuntimeException("Problem " + problem.getDescription() + " nicht gefunden. sollte nicht passieren.");
 	}
 
 	private static void setUpBestKnownSolutionValues() {

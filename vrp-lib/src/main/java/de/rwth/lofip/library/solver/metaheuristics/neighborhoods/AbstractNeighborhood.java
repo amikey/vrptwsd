@@ -40,19 +40,19 @@ public abstract class AbstractNeighborhood implements NeighborhoodInterface {
 				if (move.reducesNumberOfVehicles())
 					return true;
 				else { // beide moves reduzieren Fahrzeuganzahl nicht
-					if (bestNonTabooMove.shortensShorterTour()) {
-						if (!move.shortensShorterTour())
+					if (bestNonTabooMove.shortensShorterRespShortestTour()) {
+						if (!move.shortensShorterRespShortestTour())
 							return false;
 						else { // beide moves reduzieren kürzere Tour
-							if (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() < move.shorterTourResultsInNumberOfCustomers())
+							if (bestNonTabooMove.shorterRespShortestTourResultsInNumberOfCustomers() < move.shorterRespShortestTourResultsInNumberOfCustomers())
 								return false;
-							if (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() > move.shorterTourResultsInNumberOfCustomers())
+							if (bestNonTabooMove.shorterRespShortestTourResultsInNumberOfCustomers() > move.shorterRespShortestTourResultsInNumberOfCustomers())
 								return true;
 							// case: (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() == move.shorterTourResultsInNumberOfCustomers())
 							return isMoveInducesLessCostThanBestNonTabooMove(move);
 						}	
 					} else // bestNonTabooMove reduziert kürzere Tour nicht
-						if (move.shortensShorterTour())
+						if (move.shortensShorterRespShortestTour())
 							return true;
 						else 
 							return isMoveInducesLessCostThanBestNonTabooMove(move);
@@ -96,5 +96,9 @@ public abstract class AbstractNeighborhood implements NeighborhoodInterface {
 
 	protected void setBestNonTabooMoveHook() {
 		//nothing to do here; hook is needed for Recourse calculation
+	}
+	
+	public void updateNeighborhoodWithSolution(ElementWithTours solution) {
+		elementWithTours = solution;
 	}
 }

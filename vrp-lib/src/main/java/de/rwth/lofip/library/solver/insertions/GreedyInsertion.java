@@ -32,8 +32,7 @@ public class GreedyInsertion {
 	private static int seed = 0;
 	private static Random random = new Random(seed); 
 
-    public SolutionGot insertCustomers(SolutionGot solution,
-            List<Customer> customers) {
+    public SolutionGot insertCustomers(SolutionGot solution, List<Customer> customers) {
     	    	    
     	Collections.shuffle(customers, random);    	
     	
@@ -151,8 +150,7 @@ public class GreedyInsertion {
                         new Comparator<CustomerWithCost>() {
 
                             @Override
-                            public int compare(CustomerWithCost o1,
-                                    CustomerWithCost o2) {
+                            public int compare(CustomerWithCost o1, CustomerWithCost o2) {
                                 if (MathUtils.lessThan(o1.getCost(),o2.getCost())) {
                                     return -1;
                                 }
@@ -174,13 +172,8 @@ public class GreedyInsertion {
         return solution;
     }
 
-	protected boolean isInsertionPossible(Customer customerToBeInserted,
-			Tour tour, int i) {
+	protected boolean isInsertionPossible(Customer customerToBeInserted, Tour tour, int i) {
 		return TourUtils.isInsertionOfCustomerFeasibleTestWithRef(tour, customerToBeInserted, i);
-	}
-
-	public static void setSeedTo(int i) {
-		seed = i;	
 	}
 
 	public static void resetRandomElementWithSeed(int i) {

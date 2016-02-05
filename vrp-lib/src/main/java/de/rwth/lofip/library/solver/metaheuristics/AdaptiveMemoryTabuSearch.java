@@ -120,7 +120,7 @@ public class AdaptiveMemoryTabuSearch {
 			return false;
 		}
 		
-		private SolutionGot constructInitialSolutionFromAdaptiveMemory() {
+		private SolutionGot constructInitialSolutionFromAdaptiveMemory() throws IOException {
 			callsToAdaptiveMemory++;
 			return adaptiveMemory.constructSolutionFromTours();
 		}

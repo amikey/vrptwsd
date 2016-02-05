@@ -32,6 +32,9 @@ public class Parameters {
 	// - Akzeptanzkriterium für bestMove in CrossNeighborhood
 	// - In Sortieralgorithmus in Adaptive Memory 
 	
+	//Intensification Phase
+	private static int numberOfIntensificationTries = 10;
+	
 	//AdaptiveMemory
 	private static int numberOfDifferentInitialSolutionsInAM = 20;
 	private static int maximalNumberOfCallsToAdaptiveMemory = 0; // 0 -> wird nicht verwendet
@@ -374,6 +377,14 @@ public class Parameters {
 		GreedyInsertion.resetRandomElementWithSeed(1);
 		RandomI1Solver.resetRandomElementWithSeed(1);
 		AdaptiveMemory.resetRandomElementWithSeed(1);
+	}
+
+	public static int getNumberOfIntensificationTries() {
+		return numberOfIntensificationTries;
+	}
+
+	public static void setNumberOfIntensificationTries(int numberOfIntensificationTries) {
+		Parameters.numberOfIntensificationTries = numberOfIntensificationTries;
 	}
 
 	

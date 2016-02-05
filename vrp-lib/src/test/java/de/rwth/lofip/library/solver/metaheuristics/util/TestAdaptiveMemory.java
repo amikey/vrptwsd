@@ -2,6 +2,8 @@ package de.rwth.lofip.library.solver.metaheuristics.util;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
@@ -12,7 +14,7 @@ public class TestAdaptiveMemory {
 	private AdaptiveMemory adaptiveMemory;
 	
 	@Test
-	public void testAddTour() {
+	public void testAddTour() throws IOException {
 		adaptiveMemory = new AdaptiveMemory();
 		
 		SolutionGot solution = SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4();

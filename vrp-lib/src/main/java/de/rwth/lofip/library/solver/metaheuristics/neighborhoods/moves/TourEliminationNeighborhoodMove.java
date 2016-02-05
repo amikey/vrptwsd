@@ -21,13 +21,16 @@ public class TourEliminationNeighborhoodMove extends AbstractNeighborhoodMove {
 	}
 	
 	@Override 
-	public boolean shortensShorterTour() {
-		return false;
+	public boolean shortensShorterRespShortestTour() {
+		if (newSolution.getLengthOfShortestTour() < oldSolution.getLengthOfShortestTour())
+			return true;
+		else
+			return false;
 	}
 	
 	@Override
-	public int shorterTourResultsInNumberOfCustomers() {
-		return Integer.MAX_VALUE;
+	public int shorterRespShortestTourResultsInNumberOfCustomers() {
+		return newSolution.getLengthOfShortestTour();
 	}
 	
 	@Override

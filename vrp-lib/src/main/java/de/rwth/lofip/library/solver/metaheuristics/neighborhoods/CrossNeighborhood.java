@@ -8,6 +8,7 @@ import de.rwth.lofip.exceptions.NoSolutionExistsException;
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.Edge;
 import de.rwth.lofip.library.GroupOfTours;
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
@@ -76,6 +77,8 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 	}
 	
 	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
+		System.out.println("Solution in CrossNeighborhood bei Start von returnBestMove: " + elementWithTours.getTotalDistanceWithCostFactor());
+		
 		resetNeighborhood();
 		//RUNTIME_TODO: entfernen
 		if (Parameters.isTestingMode())
@@ -99,20 +102,14 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 				generateNextCombinationOfSegments();
 				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
 					
-//					FOR DEBUGGING:
-//					if (tour1.getId() == 35 && tour2.getId() == 35 &&
-//							positionStartOfSegmentTour1 == 4 && positionEndOfSegmentTour1 == 5 &&
-//							positionStartOfSegmentTour2 == 3 && positionEndOfSegmentTour2 == 3 &&
-//							iteration == 89)
-//						System.out.println("DEBUGGING!");
-					//IMPORTANT_TODO: Check entfernen, braucht O(n) Zeit
-					
 					//for testing
 					if (Parameters.isTestingMode())
 						assertEquals(isMoveFeasibleCheckNaiv(),isMoveFeasibleCheckWithRef());
+					
 					if (isMoveFeasibleCheckWithRef()) {
 						calculateCostUsingRefs();
 						AbstractNeighborhoodMove move = getNeigborhoodMove();
+						
 						//for testing
 						if (Parameters.isTestingMode())
 							assertEquals(true, move.isMoveValidWrtPositions());
@@ -127,8 +124,6 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 					}
 				}
 			}
-//			if (iteration == 26)
-//				System.out.println("DEBUGGING");
 			setBestNonTabooMoveHook();
 		}
 

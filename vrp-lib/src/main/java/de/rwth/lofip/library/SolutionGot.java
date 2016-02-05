@@ -383,6 +383,15 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	    	        hasEmptyTours = true;
 	    	return hasEmptyTours;
 		}
+
+		public int getLengthOfShortestTour() {
+			//RUNTIME_TODO: diesen Wert zwischenspeichern und nur neu berechnen, wenn nötig
+			int length = Integer.MAX_VALUE;
+			for (Tour t : getTours())
+				if (t.getCustomerSize() < length)
+					length = t.getCustomerSize();
+			return length;
+		}
 }
 
 

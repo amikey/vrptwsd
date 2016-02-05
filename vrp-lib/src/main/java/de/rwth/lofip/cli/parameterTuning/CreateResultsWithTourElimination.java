@@ -24,13 +24,16 @@ public class CreateResultsWithTourElimination {
 	public void TestPublishSolutionsAtEndOfAMTSSearch() throws IOException {
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
-		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);		
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourElimination\\");
+		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourElimination\\WithShortensShorterTour\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
@@ -53,5 +56,26 @@ public class CreateResultsWithTourElimination {
 			solutions.add(solution);			
 		}	
 	}
+	
+	@Test
+	public void TestPublishAllSolutionsAtEndOfAMTSSearch() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		//Set Parameters for Scenario
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);	
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);
+		Parameters.setPercentageOfCapacity(1);
+		Parameters.setNumberOfToursInGot(1);		
+		Parameters.setRunningTimeInHours(36);
+		
+		//Set Output parameters
+		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourEliminationAlleInstanzen\\");
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
+		
+		problems = ReadAndWriteUtils.readOriginalSolomonProblems();		
+		processProblems();
+	}
+
 
 }
