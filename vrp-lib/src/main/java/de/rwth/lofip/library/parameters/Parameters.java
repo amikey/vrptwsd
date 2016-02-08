@@ -41,6 +41,9 @@ public class Parameters {
 	private static int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 	private static int maximalNumberOfToursInAdaptiveMemory = 1000;
 	
+	//PostProcessing: CostMinimization in AM
+	private static int numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
+	
 	//TabuSearch
 	// + parameter dafür wie lange Moves Tabu sind
 	private static int maximalNumberOfIterationsTabuSearch = 0; // 0 -> wird nicht verwendet
@@ -88,6 +91,7 @@ public class Parameters {
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 1000;
+		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		lengthOfTabuList = 1000000;
@@ -118,6 +122,7 @@ public class Parameters {
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
 		maximalNumberOfToursInAdaptiveMemory = 200;
+		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 0;
 		lengthOfTabuList = 1000000;
@@ -149,6 +154,7 @@ public class Parameters {
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 		maximalNumberOfToursInAdaptiveMemory = 200;
+		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		lengthOfTabuList = 1000000;
@@ -385,6 +391,14 @@ public class Parameters {
 
 	public static void setNumberOfIntensificationTries(int numberOfIntensificationTries) {
 		Parameters.numberOfIntensificationTries = numberOfIntensificationTries;
+	}
+
+	public static void setTourMinimization(boolean b) {
+		miminizeTours = b;
+	}
+
+	public static int getNumberOfSolutionsThatIsProcessedWithCostMinimizationPhase() {
+		return numberOfSolutionsThatIsProcessedWithCostMinimizationPhase;
 	}
 
 	

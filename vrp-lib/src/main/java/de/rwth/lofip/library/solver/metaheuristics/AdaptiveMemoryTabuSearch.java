@@ -1,6 +1,10 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
@@ -15,11 +19,13 @@ public class AdaptiveMemoryTabuSearch {
 	
 	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
 	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
+	private int lengthOfList = Parameters.getNumberOfSolutionsThatIsProcessedWithCostMinimizationPhase();
 	
 	private AdaptiveMemory adaptiveMemory = getAM();
 	
 	protected SolutionGot solution = null;
 	protected SolutionGot bestOverallSolution;
+	private ArrayList<SolutionGot> bestSolutions;
 	@SuppressWarnings("unused")
 	private int callsToAdaptiveMemory = 0;
 	private int numberOfAMCallsWithoutImprovement = 0;
@@ -37,6 +43,7 @@ public class AdaptiveMemoryTabuSearch {
 	public SolutionGot solve(VrpProblem vrpProblem) throws IOException {
 		
 		startTime = System.currentTimeMillis();
+		bestSolutions = new ArrayList<SolutionGot>();
 		
 		System.out.println("STARTE INITIALISIERUNG AM");
 		
@@ -67,6 +74,7 @@ public class AdaptiveMemoryTabuSearch {
 			
 			if (isNewSolutionIsNewBestOverallSolution()) {
 				setBestOverallSolutionToNewSolution();
+				addNewSolutionToBestSolutions();
 				numberOfAMCallsWithoutImprovement = 0;
 				numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 			} else
@@ -80,8 +88,8 @@ public class AdaptiveMemoryTabuSearch {
 			throw new RuntimeException("bestOverallSolution ist Null. Fehler!");
 		
 		publishSolution(bestOverallSolution);
+		improveBestSolutionsWithCostMinimizationPhase();
 		publishSolutionAtEndOfAMTSSearch();
-		
 		return bestOverallSolution;
 	}
 
@@ -152,18 +160,61 @@ public class AdaptiveMemoryTabuSearch {
 		private void setBestOverallSolutionToNewSolution() {
 			bestOverallSolution = solution.clone();	
 		}
+		
+		private void addNewSolutionToBestSolutions() {
+			bestSolutions.add(bestOverallSolution);
+		}
+	
+		protected void improveBestSolutionsWithCostMinimizationPhase() throws IOException {
+			System.out.println("Starte Cost MinimizationPhase");
+			findAllToursWithMinimalTourNumber();
+			CutListAtSomePoint();
+			processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution();
+			publishSolution(bestOverallSolution);
+		}
+		
+		private void findAllToursWithMinimalTourNumber() {
+			int minimalTourNumber = bestOverallSolution.getNumberOfTours();
+			Iterator<SolutionGot> iter = bestSolutions.iterator();
+			while (iter.hasNext())
+				if (iter.next().getNumberOfTours() > minimalTourNumber)
+					iter.remove();
+		}
+
+		private void CutListAtSomePoint() {
+			if (bestSolutions.size() >= lengthOfList) {
+				sortListAccordingToCost();
+				bestSolutions.subList(0, lengthOfList);
+			}
+		}
+
+			private void sortListAccordingToCost() {
+				Comparator<SolutionGot> byDeterministicCost = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
+				Collections.sort(bestSolutions, byDeterministicCost);				
+			}
+
+		private void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
+			Parameters.setTourMinimization(false);
+			TabuSearchForElementWithTours ts = getTS();
+			for (SolutionGot sol : bestSolutions) {
+				solution = sol;
+				ts.improve(solution);
+				if (isNewSolutionIsNewBestOverallSolution())
+					setBestOverallSolutionToNewSolution();
+			}
+			Parameters.setTourMinimization(true);
+		}
+
+		private void publishSolutionAtEndOfAMTSSearch() throws IOException {
+			endTime = System.currentTimeMillis();
+			timeNeeded = endTime - startTime;
+			ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(bestOverallSolution, timeNeeded);
+		}
 
 	public static void setNewRandomWithSeeds(int seedAM, int seedGI, int seedI1) {
 		AdaptiveMemory.resetRandomElementWithSeed(seedAM);
 		GreedyInsertion.resetRandomElementWithSeed(seedGI);
 		RandomI1Solver.resetRandomElementWithSeed(seedI1);
 	}
-	
-	private void publishSolutionAtEndOfAMTSSearch() throws IOException {
-		endTime = System.currentTimeMillis();
-		timeNeeded = endTime - startTime;
-		ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(bestOverallSolution, timeNeeded);
-	}
-
 
 }

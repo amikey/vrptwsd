@@ -33,7 +33,7 @@ public class CreateResultsWithTourElimination {
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\TestPublishSolutionAtEndOfAMTSAndTS2AndNewRandom\\TestTourElimination\\WithShortensShorterTour\\");
+		Parameters.setOutputDirectory("\\VerfiziereDassErgebnisseWiederGutSind\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
