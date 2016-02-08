@@ -20,8 +20,7 @@ public class TuneNumberOfNonImprovingIterationsInTS extends RunAdaptiveMemorySea
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ParameterTuning\\TS0\\");
-		Parameters.setPublishSolutionValueProgress(true);
-//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		
 		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
 		processProblems();

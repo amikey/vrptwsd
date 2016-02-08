@@ -19,7 +19,6 @@ public class TabuSearchWithTourEliminationTest {
 		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
 		Parameters.setNumberOfInsertionTries(1);
 		Parameters.setMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood(4);
-		Parameters.setPublishSolutionValueProgress(true);
 		
 		GivenSolutionForR101();
 		ThenTSSWithTourEliminationShouldNotThrowAnyErrors();

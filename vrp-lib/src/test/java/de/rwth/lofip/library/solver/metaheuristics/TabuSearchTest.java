@@ -48,7 +48,6 @@ public class TabuSearchTest {
 	public void testTSOnSomeSolutionForR101() throws IOException {
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		Parameters.setNumberOfNonImprovingIterationsInTS(0);
-		Parameters.setPublishSolutionValueProgress(true);
 		
 		GivenSolutionForR101();
 		ThenTSShouldHaveMoreThanOneIteration();

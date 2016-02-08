@@ -18,7 +18,6 @@ public class CrossNeighborhoodTestMoveFeasibility {
 	public void testMoveFeasibiliteOnSomeSolutionForR101() throws IOException {
 		Parameters.setAllParametersToMinimalTestingValues();
 		Parameters.setTestingMode(true);
-		Parameters.setPublishSolutionValueProgress(true);
 		
 		givenSolutionForR101();
 		thenTSShouldNotThrowAnyFesibilityCheckRuntimeExceptions();
