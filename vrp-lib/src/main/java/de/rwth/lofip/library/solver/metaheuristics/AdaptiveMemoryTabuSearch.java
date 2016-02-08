@@ -80,15 +80,12 @@ public class AdaptiveMemoryTabuSearch {
 			throw new RuntimeException("bestOverallSolution ist Null. Fehler!");
 		
 		publishSolution(bestOverallSolution);
-		
-		improveBestOverallSolutionWithCostMinimizationPhaseHook();
-		
 		publishSolutionAtEndOfAMTSSearch();
 		
 		return bestOverallSolution;
 	}
 
-		protected void publishSolution(SolutionGot solution2) {
+		private void publishSolution(SolutionGot solution2) {
 			System.out.println(iteration + " " + solution2.getAsTupel());
 			System.out.println(solution2.getTotalDistanceWithCostFactor() + "; " + solution2.getNumberOfTours());
 		}
@@ -168,8 +165,5 @@ public class AdaptiveMemoryTabuSearch {
 		ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(bestOverallSolution, timeNeeded);
 	}
 
-	protected void improveBestOverallSolutionWithCostMinimizationPhaseHook() throws IOException {
-		//nothing to do here; hook exists for AMTSWithTourElimination
-	}
 
 }

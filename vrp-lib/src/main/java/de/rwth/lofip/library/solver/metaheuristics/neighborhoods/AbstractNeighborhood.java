@@ -12,24 +12,20 @@ public abstract class AbstractNeighborhood implements NeighborhoodInterface {
 	
 	protected AbstractNeighborhoodMove bestMoveThatMightBeTaboo = null;
 	protected AbstractNeighborhoodMove bestNonTabooMove = null;
-	
-	protected boolean isMoveNewBestMove(AbstractNeighborhoodMove move) {
-		return isSecondMoveBetterThanFirstMove(bestNonTabooMove, move);
-	}
 
-	public static boolean isSecondMoveBetterThanFirstMove(AbstractNeighborhoodMove bestNonTabooMove, AbstractNeighborhoodMove move) {	
+	protected boolean isMoveNewBestMove(AbstractNeighborhoodMove move) {	
 		if (bestNonTabooMove == null) 
 			return true;
 		if (bestNonTabooMove.makesInfeasibleToursFeasible()) {
-			if (move.makesInfeasibleToursFeasible() && secondMoveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCostMoreThanFirstMove(bestNonTabooMove, move))
+			if (move.makesInfeasibleToursFeasible() && moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(move))
 				return true;
 		} else // !bestNonTabooMove.makesInfeasibleToursFeasible()
-			if (move.makesInfeasibleToursFeasible() || secondMoveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCostMoreThanFirstMove(bestNonTabooMove, move))
+			if (move.makesInfeasibleToursFeasible() || moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(move))
 				return true;
 		return false;			
 	}
 	
-	protected static boolean secondMoveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCostMoreThanFirstMove(AbstractNeighborhoodMove bestNonTabooMove, AbstractNeighborhoodMove move) {	
+	protected boolean moveReducesNumberOfVehiclesOrShortensShortestTourOrReducesCost(AbstractNeighborhoodMove move) {	
 		// hier werden moves hierarchisch geordnet:
 		// zuerst werden moves bevorzugt, die die Anzahl der Fahrzeuge reduzieren
 		// dann werden solche Moves bevorzugt, die die Anzahl an Kunden in einer Tour am meisten reduzieren
@@ -39,7 +35,7 @@ public abstract class AbstractNeighborhood implements NeighborhoodInterface {
 				if (!move.reducesNumberOfVehicles())
 					return false;
 				else // beide moves reduzieren Fahrzeuganzahl
-					return isSecondMoveInducesLessCostThanFirstMove(bestNonTabooMove, move);
+					return isMoveInducesLessCostThanBestNonTabooMove(move);
 			} else { // bestNonTabooMove reduziert Fahrzeuganzahl nicht
 				if (move.reducesNumberOfVehicles())
 					return true;
@@ -53,13 +49,13 @@ public abstract class AbstractNeighborhood implements NeighborhoodInterface {
 							if (bestNonTabooMove.shorterRespShortestTourResultsInNumberOfCustomers() > move.shorterRespShortestTourResultsInNumberOfCustomers())
 								return true;
 							// case: (bestNonTabooMove.shorterTourResultsInNumberOfCustomers() == move.shorterTourResultsInNumberOfCustomers())
-							return isSecondMoveInducesLessCostThanFirstMove(bestNonTabooMove, move);
+							return isMoveInducesLessCostThanBestNonTabooMove(move);
 						}	
 					} else // bestNonTabooMove reduziert kürzere Tour nicht
 						if (move.shortensShorterRespShortestTour())
 							return true;
 						else 
-							return isSecondMoveInducesLessCostThanFirstMove(bestNonTabooMove, move);
+							return isMoveInducesLessCostThanBestNonTabooMove(move);
 							
 				}
 			} 
@@ -83,7 +79,7 @@ public abstract class AbstractNeighborhood implements NeighborhoodInterface {
 		}
 	}
 	
-	private static boolean isSecondMoveInducesLessCostThanFirstMove(AbstractNeighborhoodMove bestNonTabooMove, AbstractNeighborhoodMove move) {
+	private boolean isMoveInducesLessCostThanBestNonTabooMove(AbstractNeighborhoodMove move) {
 		if (MathUtils.lessThan(move.getCost(), bestNonTabooMove.getCost()))
 			return true;
 		else // move reduziert Kosten nicht
