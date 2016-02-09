@@ -29,6 +29,7 @@ public class TestRecourseCost {
 	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+		Parameters.setRelativeStandardDeviationTo(0.15);
 //		Parameters.setTestingMode(true);
 		givenSolutionForModifiedC101Problem();
 		thenRecourseCostShouldBeOfCertainValue();
@@ -53,6 +54,7 @@ public class TestRecourseCost {
 	@Test
 	public void testNumberOfAdditionalToursAndNumberOfRouteFailuresInRecourseCost() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+		Parameters.setRelativeStandardDeviationTo(0.15);
 //		Parameters.setTestingMode(true);
 		givenSolutionForModifiedC101Problem();
 		thenNumberOfAdditionalToursShouldBeOfCertainValue();
@@ -77,6 +79,7 @@ public class TestRecourseCost {
 	@Test
 	public void testConstructorOfRecourseActionWithOneGotWrtGetNumberOfCustomersServedByNumberOfDifferentTours() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+		Parameters.setRelativeStandardDeviationTo(0.15);
 //		Parameters.setTestingMode(true);
 		Parameters.setNumberOfToursInGot(2);
 		givenSomeGot();
@@ -119,6 +122,7 @@ public class TestRecourseCost {
 	@Test
 	public void testConstructorOfRecourseActionWithMultipleGotsWrtGetNumberOfCustomersServedByNumberOfDifferentTours() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
+		Parameters.setRelativeStandardDeviationTo(0.15);
 //		Parameters.setTestingMode(true);
 		Parameters.setNumberOfToursInGot(2);
 		givenListOfTwoGots();

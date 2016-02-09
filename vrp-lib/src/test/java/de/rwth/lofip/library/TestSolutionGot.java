@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 
@@ -45,6 +46,8 @@ public class TestSolutionGot {
 	
 	@Test
 	public void testRecourseCostOfSolution(){
+		Parameters.setAllParametersToDefaultValues();
+		Parameters.setRelativeStandardDeviationTo(0.15);
 		givenSolutionWithOneTourWithC1C3C2C4();
 		thenRecourseCostShouldBeOfCertainValue();		
 	}

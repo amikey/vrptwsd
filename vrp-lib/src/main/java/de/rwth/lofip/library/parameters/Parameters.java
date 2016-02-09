@@ -65,7 +65,7 @@ public class Parameters {
 	
 	//Simulation
 	private final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
-	private static double RELATIVE_STANDARD_DEVIATION = 0.15;
+	private static double RELATIVE_STANDARD_DEVIATION = 0.22;
 
 	//Seeds
 	private static int seedI1 = 100;
@@ -99,7 +99,7 @@ public class Parameters {
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
-		RELATIVE_STANDARD_DEVIATION = 0.15;
+		RELATIVE_STANDARD_DEVIATION = 0.22;
 		
 		seedI1 = 3000;
 		seedGI = 3000;
@@ -130,7 +130,7 @@ public class Parameters {
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
-		RELATIVE_STANDARD_DEVIATION = 0.15;
+		RELATIVE_STANDARD_DEVIATION = 0.22;
 		
 		seedI1 = 3000;
 		seedGI = 3000;
@@ -162,7 +162,7 @@ public class Parameters {
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
-		RELATIVE_STANDARD_DEVIATION = 0.15;
+		RELATIVE_STANDARD_DEVIATION = 0.22;
 		
 		seedI1 = 3000;
 		seedGI = 3000;

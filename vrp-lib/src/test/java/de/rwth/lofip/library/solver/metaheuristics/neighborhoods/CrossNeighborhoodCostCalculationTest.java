@@ -47,8 +47,6 @@ public class CrossNeighborhoodCostCalculationTest {
 		
 		TabuSearchForElementWithTours ts = new TabuSearchForElementWithTours();
 		ts.tryToImproveNewBestSolutionWithIntensificationPhase(solution);
-		
-		throw new RuntimeException("Irgendjemanden fragen, wie das mit der imprecision kommt und warum das in LS passiert, aber nicht, wenn ich in diesem UnitTest auf Gleichheit prüfe");
 	}
 	
 	@Test 
