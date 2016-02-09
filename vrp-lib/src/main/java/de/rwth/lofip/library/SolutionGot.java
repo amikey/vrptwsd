@@ -14,8 +14,9 @@ import de.rwth.lofip.library.util.RecourseCost;
 public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable {
 
     private VrpProblem vrpProblem;
-    private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();  
-    //RUNTIME_TODO: Kosten als Variable speichern
+    private List<GroupOfTours> gots = new ArrayList<GroupOfTours>();
+  //RUNTIME_TODO: Kosten als Variable speichern
+    private double distance = 0;
     
     public SolutionGot() {
     	// dieser Konstruktor wird nur für temporäre Solutions verwendet, in denen das VRP nicht benötigt wird. 
@@ -34,7 +35,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 
     public double getTotalDistanceWithCostFactor() {
     	//RUNTIME_TODO: diesen Wert könnte man auch zwischenspeichern
-        double distance = 0;
+        distance = 0;
         for (Tour t : this.getTours()) {
             distance += t.getTotalDistanceWithCostFactor();
         }

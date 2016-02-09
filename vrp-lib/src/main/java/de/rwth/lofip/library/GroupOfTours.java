@@ -27,7 +27,6 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	
 	protected List<Tour> tours = new ArrayList<Tour>();	
 	RecourseCost expectedRecourseCost = null;
-	
 	SolutionGot parentSolution = null;
 	
 	public GroupOfTours(SolutionGot solutionGot) {

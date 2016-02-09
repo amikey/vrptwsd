@@ -77,7 +77,7 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 	}
 	
 	public AbstractNeighborhoodMove returnBestMove(int iteration) throws Exception {
-		System.out.println("Solution in CrossNeighborhood bei Start von returnBestMove: " + elementWithTours.getTotalDistanceWithCostFactor());
+//		System.out.println("Solution in CrossNeighborhood bei Start von returnBestMove: " + elementWithTours.getTotalDistanceWithCostFactor());
 		
 		resetNeighborhood();
 		//RUNTIME_TODO: entfernen

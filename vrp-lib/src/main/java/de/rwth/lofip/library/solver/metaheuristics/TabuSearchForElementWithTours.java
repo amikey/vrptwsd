@@ -26,7 +26,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	private int maximalNumberOfIterations;
 	private int maxNumberIterationsWithoutImprovement;
 	
-	protected int iteration = 1;
+	protected int iteration = 0;
 	protected ElementWithTours solution;
 	protected AbstractNeighborhoodMove bestMove;
 	protected CrossNeighborhoodWithTabooList crossNeighborhood;
@@ -49,11 +49,9 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		startTime = System.currentTimeMillis();
 		
 		solution = solutionStart;
-		
-		publishSolution(solution);
-		
 		bestOverallSolution = solutionStart.clone();
 		
+		publishSolution(solution);
 		publishSolution(bestOverallSolution);
 		
 		crossNeighborhood = getCrossNeighborhood(); 
@@ -63,7 +61,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		while (!isStoppingCriterionMet()) {
 			try {				
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
-
+				
+				System.out.println(iteration + " " + solution.getAsTupel());
+				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours());
+				bestOverallSolution.getTotalDistanceWithCostFactor();
+				
 				findBestNonTabooMove();				
 				updateTabuList();								
 				applyBestNonTabooMove();								
@@ -160,6 +162,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	}
 
 	private void setBestOverallSolutionToNewSolution() {
+		solution.getTotalDistanceWithCostFactor();
 		bestOverallSolution = solution.clone();	
 	}
 
@@ -200,12 +203,11 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
 			}
 	}
-
+	
 	private void generateBlankLineForPublishingSolution() throws IOException {
 		if (Parameters.publishSolutionValueProgress())
 			IOUtils.write("\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionValueProgress());
 	}
-	
 
 	@SuppressWarnings("unused")
 	private void printBestMove() {

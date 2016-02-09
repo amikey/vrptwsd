@@ -13,6 +13,8 @@ import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
+import de.rwth.lofip.library.solver.util.CustomerWithCost;
+import de.rwth.lofip.library.util.PrintUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class AdaptiveMemoryTabuSearch {
@@ -48,13 +50,11 @@ public class AdaptiveMemoryTabuSearch {
 		System.out.println("STARTE INITIALISIERUNG AM");
 		
 		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfTabuSearch(vrpProblem);
-
 		initialiseAdaptiveMemoryWithInitialSolutions(vrpProblem);
-		bestOverallSolution = constructInitialSolutionFromAdaptiveMemory();
 		
 		publishSolution(bestOverallSolution);
 		
-		iteration = 1;		
+		iteration = 0;		
 		while (!isStoppingCriterionMet()) {
 			System.out.println("AM CALL Nr. " + iteration);
 			
@@ -106,20 +106,24 @@ public class AdaptiveMemoryTabuSearch {
 			for (int i = 0; i < numberOfDifferentInitialSolutions; i++) {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
-				SolutionGot newSolution = initialSolver.solve(vrpProblem);
+				solution = initialSolver.solve(vrpProblem);
 				//TODO: Ausgabe entfernen
-				System.out.println(newSolution.getAsTupel());
-				System.out.println(newSolution.getTotalDistanceWithCostFactor());
+				System.out.println(solution.getAsTupel());
+				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours());
 				TabuSearchForElementWithTours tabuSearch = getTS();
-				tabuSearch.improve(newSolution);
-				adaptiveMemory.addTours(newSolution);
+				solution = (SolutionGot) tabuSearch.improve(solution);
+				adaptiveMemory.addTours(solution);
+				if (isNewSolutionIsNewBestOverallSolution()) {
+					setBestOverallSolutionToNewSolution();
+					addNewSolutionToBestSolutions();
+				}
 			}
 		}
 		
 		private boolean isStoppingCriterionMet() {
 			if (Parameters.isRunningTimeReached())
 				return true;
-			if (numberOfAMCallsWithoutImprovement >= maximalNumberOfCallsWithoutImprovementToAdaptiveMemory)
+			if (numberOfAMCallsWithoutImprovement > maximalNumberOfCallsWithoutImprovementToAdaptiveMemory)
 				return true;
 //			if (callsToAdaptiveMemory >= maximalNumberOfCallsToAdaptiveMemory)
 //				return true;
@@ -147,6 +151,8 @@ public class AdaptiveMemoryTabuSearch {
 	
 		protected boolean isNewSolutionIsNewBestOverallSolution() {
 //			assertEquals(false, solution.equals(bestOverallSolution));
+			if (bestOverallSolution == null)
+				return true;
 			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(),bestOverallSolution.getTotalDistanceWithCostFactor())
 				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
 					return true;
@@ -167,38 +173,52 @@ public class AdaptiveMemoryTabuSearch {
 	
 		protected void improveBestSolutionsWithCostMinimizationPhase() throws IOException {
 			System.out.println("Starte Cost MinimizationPhase");
-			findAllToursWithMinimalTourNumber();
+			sortListOfBestSolutionsAccordingToTourNumberAndCost();
 			CutListAtSomePoint();
 			processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution();
 			publishSolution(bestOverallSolution);
 		}
-		
-		private void findAllToursWithMinimalTourNumber() {
-			int minimalTourNumber = bestOverallSolution.getNumberOfTours();
-			Iterator<SolutionGot> iter = bestSolutions.iterator();
-			while (iter.hasNext())
-				if (iter.next().getNumberOfTours() > minimalTourNumber)
-					iter.remove();
+
+			private void sortListOfBestSolutionsAccordingToTourNumberAndCost() {
+	//			Comparator<SolutionGot> byDeterministicCost = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
+	//			Collections.sort(bestSolutions, byDeterministicCost);	
+			Collections.sort(bestSolutions,
+	                new Comparator<SolutionGot>() {
+	                    @Override
+	                    public int compare(SolutionGot o1, SolutionGot o2) {
+	                    	if (o1.getNumberOfTours() < o2.getNumberOfTours())
+	                    		return -1;
+	                    	if (o1.getNumberOfTours() > o2.getNumberOfTours())
+	                    		return 1;
+	                    	if (o1.getNumberOfTours() == o2.getNumberOfTours()) {
+	                    		if (MathUtils.lessThan(o1.getTotalDistanceWithCostFactor(),o2.getTotalDistanceWithCostFactor())) {
+	                                return -1;
+	                            }
+	                    		if (MathUtils.greaterThan(o1.getTotalDistanceWithCostFactor(),o2.getTotalDistanceWithCostFactor())) {
+	                                return 1;
+	                            }
+	                    		return 0;
+	                    	}
+	                    	throw new RuntimeException("Should not happen");
+	                    }
+	                });
+//			PrintUtils.printListOfSolutions(bestSolutions);
 		}
 
 		private void CutListAtSomePoint() {
 			if (bestSolutions.size() >= lengthOfList) {
-				sortListAccordingToCost();
 				bestSolutions.subList(0, lengthOfList);
 			}
 		}
 
-			private void sortListAccordingToCost() {
-				Comparator<SolutionGot> byDeterministicCost = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
-				Collections.sort(bestSolutions, byDeterministicCost);				
-			}
-
 		private void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
 			Parameters.setTourMinimization(false);
-			TabuSearchForElementWithTours ts = getTS();
+			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
-				solution = sol;
-				ts.improve(solution);
+				iteration++;
+				System.out.println("Verbessere Lösung " + iteration + " von " +  bestSolutions.size());
+				TabuSearchForElementWithTours ts = getTS();
+				solution = (SolutionGot) ts.improve(sol);
 				if (isNewSolutionIsNewBestOverallSolution())
 					setBestOverallSolutionToNewSolution();
 			}

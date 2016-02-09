@@ -44,24 +44,4 @@ public class TabuSearchTest {
 		assertEquals(true, SetUpUtils.getSolutionWithOneTourWithCustomersC1C2C3C4().equals(solution));
 	}
 	
-	@Test
-	public void testTSOnSomeSolutionForR101() throws IOException {
-		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfNonImprovingIterationsInTS(0);
-		
-		GivenSolutionForR101();
-		ThenTSShouldHaveMoreThanOneIteration();
-	}
-
-	private void GivenSolutionForR101() throws IOException {
-		solution = SetUpUtils.getSomeSolutionForR101Problem(); 
-		solution.printSolutionCost();
-	}
-
-	private void ThenTSShouldHaveMoreThanOneIteration() throws IOException {
-		TabuSearchForElementWithTours tabuSearch = new TabuSearchForElementWithTours();
-		tabuSearch.improve(solution);
-		assertEquals(true, tabuSearch.getNumberOfIterations() > 1);
-	}
-
 }

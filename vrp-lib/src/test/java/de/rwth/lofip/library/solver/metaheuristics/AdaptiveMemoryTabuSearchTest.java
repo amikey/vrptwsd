@@ -33,7 +33,7 @@ public class AdaptiveMemoryTabuSearchTest {
 		AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
 		solution = adaptiveMemoryTabuSearch.solve(problem);
 		System.out.println(solution.getAsTupel());
-		assertEquals("( ( 8 6 2 ) ) ( ( 5 3 7 11 12 ) ) ( ( 16 9 4 1 ) ) ( ( 13 17 19 10 ) ) ( ( 18 15 14 ) ) ", solution.getAsTupel());		
+		assertEquals("( ( 8 11 9 6 ) ) ( ( 5 3 4 2 1 ) ) ( ( 16 14 12 ) ) ( ( 13 17 10 ) ) ( ( 18 19 15 ) ) ( ( 7 ) ) ", solution.getAsTupel());		
 	}
 	
 	@Test
@@ -86,6 +86,46 @@ public class AdaptiveMemoryTabuSearchTest {
 		solutionC101.printSolutionAsTupel();
 		assertEquals(true,SolutionGotUtils.isSolutionFeasibleWrtDemand(solutionC101));
 		assertEquals(true,SolutionGotUtils.isSolutionFeasibleWrtTW(solutionC101));
+	}
+	
+	@Test 
+	public void testCostOptimiziationPostProcessingPhase() throws IOException {
+		givenRC104Problem();
+		whenSolvingProblemWithoutCostOptimizationPhase();
+		andSolvingProblemWithCostOptimizationPhase();
+		thenSecondSolutionShouldNotBeWorseThanFirstSolution();
+	}
+
+	private void givenRC104Problem() throws IOException {
+		problems = ReadAndWriteUtils.readSolomonProblemRC104AsList();
+	}
+
+	private void whenSolvingProblemWithoutCostOptimizationPhase() throws IOException {
+		System.out.println("Ohne Cost Optimization");
+		Parameters.setAllParametersToMinimalTestingValues();
+		Parameters.resetSeedsAndRandomElements();
+		solutions = new ArrayList<SolutionGot>();		
+		AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch() {
+			@Override
+			protected void improveBestSolutionsWithCostMinimizationPhase() {
+				//do nothing;
+			}
+		};	
+		solutions.add(adaptiveMemoryTabuSearch.solve(problems.get(0)));		
+	}
+
+	private void andSolvingProblemWithCostOptimizationPhase() throws IOException {
+		System.out.println("Mit Cost Optimization");
+		Parameters.setAllParametersToMinimalTestingValues();
+		Parameters.resetSeedsAndRandomElements();
+		solutions2 = new ArrayList<SolutionGot>();		
+		AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
+		solutions2.add(adaptiveMemoryTabuSearch.solve(problems.get(0)));		
+	}
+
+	private void thenSecondSolutionShouldNotBeWorseThanFirstSolution() {
+		assertEquals(true, MathUtils.lessThanOrEqual(solutions2.get(0).getTotalDistanceWithCostFactor(), solutions.get(0).getTotalDistanceWithCostFactor()));
+		assertEquals(true, MathUtils.lessThanOrEqual(solutions2.get(0).getNumberOfTours(), solutions.get(0).getNumberOfTours()));
 	}
 	
 }

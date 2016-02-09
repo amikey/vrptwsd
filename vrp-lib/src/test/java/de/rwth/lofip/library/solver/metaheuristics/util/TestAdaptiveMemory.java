@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.junit.Test;
 
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.SetUpUtils;
 
 public class TestAdaptiveMemory {
@@ -22,5 +23,7 @@ public class TestAdaptiveMemory {
 		
 		SolutionGot newSolution = adaptiveMemory.constructSolutionFromTours();
 		assertEquals(true, solution.equals(newSolution));
+		
+		SolutionGot newSolution2 = adaptiveMemory.constructSolutionFromTours();
 	}
 }
