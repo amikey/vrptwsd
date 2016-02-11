@@ -24,7 +24,7 @@ public class TourMatching {
 		initialiseFields(solution);    
 		calculateRecourseCostsBetweenTours();
 		findCostMinimalMatchingForToursWithGreedy();
-		return newSolution;
+		return returnEitherNewOrOldSolutionDependingOnWhichHasLessCost();		
 	}
 
 	private void initialiseFields(SolutionGot solution) {
@@ -36,10 +36,10 @@ public class TourMatching {
 
 	private void calculateRecourseCostsBetweenTours() {
 		//IMPORTANT_TODO: für anzTouren in Got != 2 implementieren
-		//TODO: this assumes that i want to match exactly two tours
+		//TODO: this assumes that I want to match exactly two tours		
 		for (int i = 0; i < oldSolution.getNumberOfTours(); i++)
 			for (int j = i+1; j < oldSolution.getNumberOfTours(); j++) {
-				//RUNTIME_TODO: hier könnte man gucken, ob es Got schon gibt, so dass Recourse Kosten nicht neu berechnet werden müssen.#
+				//RUNTIME_TODO: hier könnte man gucken, ob es Got schon gibt, so dass Recourse Kosten nicht neu berechnet werden müssen.
 				System.out.println("Berechne Recourse Kosten für Touren " + i + " (Demand: " + oldSolution.getTour(i).getUseOfCapacity() + ") und " + j + " (Demand: " + oldSolution.getTour(j).getUseOfCapacity());
 				GroupOfTours got = new GroupOfTours(oldSolution);
 				got.addTour(oldSolution.getTour(i));
@@ -126,6 +126,14 @@ public class TourMatching {
 			throw new RuntimeException("No Index for tour could be found that is not already assigned to a got");
 		currentGot = new GroupOfTours(oldSolution);
 		currentGot.addTour(oldSolution.getTour(indexOfTour));
+	}
+	
+	private SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() {
+		if (newSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() <= 
+				oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse())	
+			return newSolution;
+		else
+			return oldSolution;
 	}
 	
 	// Test Utilities

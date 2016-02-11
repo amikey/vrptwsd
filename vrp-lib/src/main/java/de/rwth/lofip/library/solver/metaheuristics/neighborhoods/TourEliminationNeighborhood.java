@@ -48,7 +48,7 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 	
 	public ElementWithTours actuallyApplyMove(TourEliminationNeighborhoodMove bestMove) {
 		elementWithTours = bestMove.getNewSolution();
-		elementWithTours.removeEmptyGots();
+		elementWithTours.removeEmptyToursAndGots();
 		return elementWithTours;
 	}
 	

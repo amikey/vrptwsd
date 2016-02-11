@@ -13,14 +13,18 @@ import de.rwth.lofip.library.solver.metaheuristics.recourse.AdaptiveMemoryTabuSe
 
 public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends RunAdaptiveMemorySearchWithSolomonInstances {
 
-	//--- Eigene Modified Solomon Instances - 15% relative standardabweichung
+	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
 	@Test
 	public void AllEigeneModifiedSolomonInstances() throws IOException {			
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfToursInGot(2);
-		Parameters.setRelativeStandardDeviationTo(0.15);
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);
+		Parameters.setPercentageOfCapacity(1);
+		Parameters.setNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\");
@@ -30,14 +34,27 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		processProblems();
 	}
 	
-	//--- Modified Solomon Instances - 15% relative standardabweichung
+	@Test
+	public void R1XXEigeneModifiedSolomonInstances() throws IOException {			
+		//Set Parameters for Algorithm
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setNumberOfToursInGot(2);		
+		
+		//Set Output parameters
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\");
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		
+		problems = ReadAndWriteUtils.readEigeneModifiedSolomonR1XXProblems();
+		processProblems();
+	}
+	
+	//--- Modified Solomon Instances - 22% relative standardabweichung
 	
 	@Test
 	public void AllModifiedSolomonInstances() throws IOException {			
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfToursInGot(2);
-		Parameters.setRelativeStandardDeviationTo(0.15);
+		Parameters.setNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\ModifiedSolomon\\");
@@ -48,14 +65,13 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	}
 	
 	
-	//--- Original Solomon Instances - 15% relative standardabweichung
+	//--- Original Solomon Instances - 22% relative standardabweichung
 	
 	@Test
 	public void AllOriginalSolomonInstances() throws IOException {			
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfToursInGot(2);
-		Parameters.setRelativeStandardDeviationTo(0.15);
+		Parameters.setNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OriginalSolomon\\");
@@ -69,30 +85,18 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	
 	@Override
 	protected void processProblems() throws IOException {
-		for (int i = 1; i <= numberOfExperiments; i++) {
-			if (!Parameters.isRunningTimeReached()) {
-//				increaseParameters();
-				solveProblemsWithAdaptiveMemoryWithRecourseSolver();
-			}
-		}		
+		while(!Parameters.isRunningTimeReached())
+				solveProblemsWithAdaptiveMemoryWithRecourseSolver();		
 	}
 
-	private void solveProblemsWithAdaptiveMemoryWithRecourseSolver() throws IOException {
-		long startTime = System.nanoTime();
+	private void solveProblemsWithAdaptiveMemoryWithRecourseSolver() throws IOException {		
 		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 		for (VrpProblem problem : problems) {
-			System.out.println("SOLVING PROBLEM " + problem.getDescription());
-						
-			AdaptiveMemoryTabuSearch.setSeeds(seedI1, seedGI, seedAM);
+			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearchWithRecourse();
-			adaptiveMemoryTabuSearch.setNumberOfInitialSolutions(numberOfDifferentInitialSolutions);
-			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsToAdaptiveMemory(maximalNumberOfCallsToAdaptiveMemory);
-			adaptiveMemoryTabuSearch.setMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory(maximalNumberOfCallsWithoutImprovementToAdaptiveMemory);
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
 			solutions.add(solution);			
-		}
-		long endTime = System.nanoTime();
-		timeNeeded = (endTime - startTime) / 1000 / 1000 / 1000 / 60;
+		}		
 	}	
 		
 }

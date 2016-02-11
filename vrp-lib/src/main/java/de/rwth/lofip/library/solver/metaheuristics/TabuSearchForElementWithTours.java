@@ -68,7 +68,9 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				
 				findBestNonTabooMove();				
 				updateTabuList();								
-				applyBestNonTabooMove();								
+				applyBestNonTabooMove();	
+				
+				tryToImproveSolutionWithRematchingPhaseHook();
 				
 				publishSolution(solution);
 				
@@ -124,6 +126,10 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		solution = (SolutionGot) crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 	
+	protected void tryToImproveSolutionWithRematchingPhaseHook() {
+		//do nothing
+	}
+	
 	protected boolean isNewSolutionIsNewBestOverallSolution() {
 //		assertEquals(false, solution.equals(bestOverallSolution));
 		double costOldSolution = solution.getTotalDistanceWithCostFactor();
@@ -140,7 +146,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
 		if (solution instanceof GroupOfTours)
 			throw new RuntimeException("tryToImproveNewBestSolutionWithIntensificationPhase ist nicht für Gots implementiert");		
-		//IMPORTANT_TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
+		//CODE_SMELL_TODO: Fallunterscheidung zwischen Solution und GroupOfTours; Cast zu Solution ist ein Hack
 		SolutionGot solutionTemp = (SolutionGot) solution;
 		for (GroupOfTours got : solutionTemp.getGots()) {
 			for (int j = 0; j < got.getTours().size(); j++) {				

@@ -22,7 +22,7 @@ public class Parameters {
 	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
 	
 	//Tour Elimination
-	private static boolean miminizeTours = true;
+	private static boolean isTourMinimizationPhase = true;
 	private static int MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 3;
 	private static int numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 	private static int minimumNumberOfIterationsWithoutTourElimination = 10;
@@ -41,7 +41,7 @@ public class Parameters {
 	private static int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
 	private static int maximalNumberOfToursInAdaptiveMemory = 1000;
 	
-	//PostProcessing: CostMinimization in AM
+	//PostProcessing: CostMinimization in AMTS
 	private static int numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
 	
 	//TabuSearch
@@ -52,10 +52,10 @@ public class Parameters {
 	
 	//Recourse
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+	private static int numberOfIterationsWithoutRematching = 10;
 	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions
 	private static double costFactorForAdditionalTourInRecourse = 2.0;
 	private static boolean recourseActionNumberMinimization;
-	
 	
 	//Plankapazität für deterministische Planung
 	private static double percentageOfCapacity = 1;
@@ -83,7 +83,7 @@ public class Parameters {
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 7;
-		miminizeTours = true;
+		isTourMinimizationPhase = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
@@ -96,6 +96,7 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		lengthOfTabuList = 1000000;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+		numberOfIterationsWithoutRematching = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
@@ -114,7 +115,7 @@ public class Parameters {
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
-		miminizeTours = true;
+		isTourMinimizationPhase = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
 		minimumNumberOfIterationsWithoutTourElimination = 10;
@@ -127,6 +128,7 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 0;
 		lengthOfTabuList = 1000000;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+		numberOfIterationsWithoutRematching = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
@@ -146,10 +148,10 @@ public class Parameters {
 		publishSolutionAtEndOfTabuSearch = false;
 		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = 1;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED = 4;
-		miminizeTours = true;
+		isTourMinimizationPhase = true;
 		MAXIMAL_NUMBER_OF_CUSTOMERS_THAT_TOUR_CAN_CONTAIN_TO_BE_CONSIDERED_FOR_DELETION_IN_TOUR_ELIMINATION_NEIGHBORHOOD = 7;
 		numberOfTimesThatGreedyInsertionIsTriedWithDeletedTour = 1;
-		minimumNumberOfIterationsWithoutTourElimination = 10;
+		minimumNumberOfIterationsWithoutTourElimination = 0;
 		numberOfDifferentInitialSolutionsInAM = 100;
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 50;
@@ -159,6 +161,7 @@ public class Parameters {
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 50;
 		lengthOfTabuList = 1000000;
 		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
+		numberOfIterationsWithoutRematching = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
 		percentageOfCapacity = 1;
@@ -228,7 +231,7 @@ public class Parameters {
 	}
 
 	public static boolean shallTourNumberBeMinimized() {
-		return miminizeTours;
+		return isTourMinimizationPhase;
 	}
 
 	public static boolean isTestingMode() {
@@ -393,15 +396,20 @@ public class Parameters {
 		Parameters.numberOfIntensificationTries = numberOfIntensificationTries;
 	}
 
-	public static void setTourMinimization(boolean b) {
-		miminizeTours = b;
+	public static void setTourMinimizationPhase(boolean b) {
+		isTourMinimizationPhase = b;
+	}
+	
+	public static boolean isTourMinimizationPhase() {
+		return isTourMinimizationPhase; 
 	}
 
 	public static int getNumberOfSolutionsThatIsProcessedWithCostMinimizationPhase() {
 		return numberOfSolutionsThatIsProcessedWithCostMinimizationPhase;
 	}
 
-	
-	
+	public static int getNumberOfIterationsWithoutRematching() {
+		return numberOfIterationsWithoutRematching;
+	}	
 
 }

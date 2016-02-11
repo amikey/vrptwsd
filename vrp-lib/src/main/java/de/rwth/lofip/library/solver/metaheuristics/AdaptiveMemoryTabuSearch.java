@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
+
+import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
@@ -13,7 +14,6 @@ import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
-import de.rwth.lofip.library.solver.util.CustomerWithCost;
 import de.rwth.lofip.library.util.PrintUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
@@ -27,7 +27,7 @@ public class AdaptiveMemoryTabuSearch {
 	
 	protected SolutionGot solution = null;
 	protected SolutionGot bestOverallSolution;
-	private ArrayList<SolutionGot> bestSolutions;
+	protected ArrayList<SolutionGot> bestSolutions;
 	@SuppressWarnings("unused")
 	private int callsToAdaptiveMemory = 0;
 	private int numberOfAMCallsWithoutImprovement = 0;
@@ -163,8 +163,9 @@ public class AdaptiveMemoryTabuSearch {
 			return false;
 		}
 		
-		private void setBestOverallSolutionToNewSolution() {
+		private void setBestOverallSolutionToNewSolution() throws IOException {
 			bestOverallSolution = solution.clone();	
+			IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 		
 		private void addNewSolutionToBestSolutions() {
@@ -179,7 +180,7 @@ public class AdaptiveMemoryTabuSearch {
 			publishSolution(bestOverallSolution);
 		}
 
-			private void sortListOfBestSolutionsAccordingToTourNumberAndCost() {
+			protected void sortListOfBestSolutionsAccordingToTourNumberAndCost() throws IOException {
 	//			Comparator<SolutionGot> byDeterministicCost = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
 	//			Collections.sort(bestSolutions, byDeterministicCost);	
 			Collections.sort(bestSolutions,
@@ -202,27 +203,29 @@ public class AdaptiveMemoryTabuSearch {
 	                    	throw new RuntimeException("Should not happen");
 	                    }
 	                });
-//			PrintUtils.printListOfSolutions(bestSolutions);
+			PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 
-		private void CutListAtSomePoint() {
+		private void CutListAtSomePoint() throws IOException {
 			if (bestSolutions.size() >= lengthOfList) {
 				bestSolutions.subList(0, lengthOfList);
 			}
+			PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 
 		private void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
-			Parameters.setTourMinimization(false);
+			Parameters.setTourMinimizationPhase(false);
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
-				System.out.println("Verbessere Lösung " + iteration + " von " +  bestSolutions.size());
+				IOUtils.write("Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				TabuSearchForElementWithTours ts = getTS();
 				solution = (SolutionGot) ts.improve(sol);
+				IOUtils.write("Verbesserte Lösung: " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				if (isNewSolutionIsNewBestOverallSolution())
 					setBestOverallSolutionToNewSolution();
 			}
-			Parameters.setTourMinimization(true);
+			Parameters.setTourMinimizationPhase(true);
 		}
 
 		private void publishSolutionAtEndOfAMTSSearch() throws IOException {

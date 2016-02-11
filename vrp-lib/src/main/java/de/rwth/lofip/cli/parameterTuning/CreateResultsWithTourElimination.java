@@ -33,7 +33,7 @@ public class CreateResultsWithTourElimination {
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\VerfiziereDassErgebnisseWiederGutSind\\MitCostMinimizationPhase\\MitKorrigierterCostMinimization\\");
+		Parameters.setOutputDirectory("\\VerfiziereDassErgebnisseWiederGutSind\\MitCostMinimizationPhase\\MitAusgabe\\VerbesserteAusgabe\\OhneRandomInCostMinimizationPhase_ErgebnisseSolltenWiederSoSeinWieOhneCostMinimization\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
