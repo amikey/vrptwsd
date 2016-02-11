@@ -11,6 +11,7 @@ import de.rwth.lofip.library.Depot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.Vehicle;
 import de.rwth.lofip.library.VrpProblem;
+import de.rwth.lofip.library.parameters.Parameters;
 
 
 /**
@@ -160,4 +161,8 @@ public class VrpUtils {
 		return vrpProblem;
 	}
 
+	public static void reduceCapacityOfVehiclesInProblems(List<VrpProblem> problems) {
+		for (VrpProblem problem : problems)
+			VrpUtils.decreaseCapacityOfVehiclesToPercentageOf(problem, Parameters.getPercentageOfCapacity());
+	}
 }

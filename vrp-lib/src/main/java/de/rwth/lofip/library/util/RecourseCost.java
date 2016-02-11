@@ -207,8 +207,7 @@ public class RecourseCost {
 	        int numberOfVehiclesThatTheCurrentCustomerIsServedBy = pair.getValue().size();
 	        int numberOfCustomersThatIsServedByThisNumberOfTours = getNumberOfCustomersThatIsServedByTheFollowingNumberOfVehicles(numberOfVehiclesThatTheCurrentCustomerIsServedBy);	      
 	        numberOfCustomersThatIsServedByThisNumberOfTours++;
-	        toursNeededToServeNumberOfCustomers.put(numberOfVehiclesThatTheCurrentCustomerIsServedBy, numberOfCustomersThatIsServedByThisNumberOfTours);
-	      
+	        toursNeededToServeNumberOfCustomers.put(numberOfVehiclesThatTheCurrentCustomerIsServedBy, numberOfCustomersThatIsServedByThisNumberOfTours);	      
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	}
@@ -229,7 +228,6 @@ public class RecourseCost {
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
-			
 			calculateToursNeededToServeNumberOfCustomers(got);
 		}		
 	}
@@ -241,8 +239,7 @@ public class RecourseCost {
 	        int currentlyExaminedNumberOfVehicles = pair.getKey();
 	        int numberOfCustomersSoFarServedByThisNumberOfVehicles = getNumberOfCustomersThatIsServedByTheFollowingNumberOfVehicles(currentlyExaminedNumberOfVehicles);	        
 	        int numberOfCustomersNowServedByThisNumberOfVehicles = numberOfCustomersSoFarServedByThisNumberOfVehicles + pair.getValue();
-	        toursNeededToServeNumberOfCustomers.put(pair.getKey(), numberOfCustomersNowServedByThisNumberOfVehicles);
-	        
+	        toursNeededToServeNumberOfCustomers.put(pair.getKey(), numberOfCustomersNowServedByThisNumberOfVehicles);	        
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
 	}

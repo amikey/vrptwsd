@@ -1,11 +1,12 @@
 package de.rwth.lofip.library.solver.metaheuristics.recourse.actionNumberMinimization;
 
-import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseActions;
+import de.rwth.lofip.library.solver.metaheuristics.recourse.TabuSearchWithRecourse;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
 import de.rwth.lofip.library.util.math.MathUtils;
 
-public class TSwithRecourseActionNumberMinimization extends TabuSearchForElementWithTours {
+public class TSwithRecourseActionNumberMinimization extends TabuSearchWithRecourse {
 		
 	@Override
 	protected CrossNeighborhoodWithTabooList getCrossNeighborhood() {
@@ -22,12 +23,9 @@ public class TSwithRecourseActionNumberMinimization extends TabuSearchForElement
 			return true;
 		return false;	
 	}
-	
+
 	@Override
-	protected void tryToImproveNewBestSolutionWithIntensificationPhase() {
-		// do nothing; intensification phase not applicable for recourse
-		// would have to implement intensification phase that caters for recourse
+	protected TourMatching getTourMatching() {
+		return new TourMatching();
 	}
-
-
 }

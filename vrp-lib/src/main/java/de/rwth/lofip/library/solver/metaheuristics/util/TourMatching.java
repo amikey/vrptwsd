@@ -1,26 +1,31 @@
 package de.rwth.lofip.library.solver.metaheuristics.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
+
+import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.RecourseCost;
 
 public class TourMatching {
 	
-	SolutionGot newSolution;
-	SolutionGot oldSolution;
+	protected SolutionGot newSolution;
+	protected SolutionGot oldSolution;
 	
-	List<RecourseCost> listOfRecourseCosts;
+	protected List<RecourseCost> listOfRecourseCosts;
 	List<Integer> listOfUsedIndizes;
 	
 	GroupOfTours currentGot;
 	
 	//this rematches tours to gots such that recourse cost are minimized (but only with a greedy procedure)
-	public SolutionGot matchToursToGots (SolutionGot solution) {
+	public SolutionGot matchToursToGots (SolutionGot solution) throws IOException {
 		initialiseFields(solution);    
 		calculateRecourseCostsBetweenTours();
 		findCostMinimalMatchingForToursWithGreedy();
@@ -72,7 +77,7 @@ public class TourMatching {
 		maintainSolutionsForGots();
 	}
 
-	private void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
+	protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
 			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getConvexCombinationOfCostAndNumberRecourseActions(),e2.getConvexCombinationOfCostAndNumberRecourseActions());		
 			Collections.sort(listOfRecourseCosts, byCombinationOfCostAndNumberRecourseActions);						
 	}
@@ -128,11 +133,14 @@ public class TourMatching {
 		currentGot.addTour(oldSolution.getTour(indexOfTour));
 	}
 	
-	private SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() {
+	protected SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() throws IOException {
 		if (newSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() <= 
-				oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse())	
+				oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse()) {
+				System.out.println("JUHUU, TourMatching hat bessere Lösung gefunden!");
+				if (Parameters.isPublishSolutionAtEndOfAMTSSearch()) 
+					IOUtils.write("JUHUU, TourMatching hat bessere Lösung gefunden! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(newSolution));
 			return newSolution;
-		else
+		} else
 			return oldSolution;
 	}
 	

@@ -63,7 +63,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
 				
 				System.out.println(iteration + " " + solution.getAsTupel());
-				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours());
+				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours() + "; " + (solution.getTotalDistanceWithCostFactorAndRecourse() - solution.getTotalDistanceWithCostFactor()) + "; " + solution.getTotalDistanceWithCostFactorAndRecourse());
 				bestOverallSolution.getTotalDistanceWithCostFactor();
 				
 				findBestNonTabooMove();				
@@ -126,7 +126,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		solution = (SolutionGot) crossNeighborhood.actuallyApplyMoveAndMaintainNeighborhood(bestMove);
 	}
 	
-	protected void tryToImproveSolutionWithRematchingPhaseHook() {
+	protected void tryToImproveSolutionWithRematchingPhaseHook() throws IOException {
 		//do nothing
 	}
 	

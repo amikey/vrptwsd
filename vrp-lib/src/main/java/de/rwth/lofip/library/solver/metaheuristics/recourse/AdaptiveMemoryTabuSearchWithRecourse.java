@@ -48,11 +48,10 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 		}
 		return false;
 	}
-	
+
 	@Override
 	protected void sortListOfBestSolutionsAccordingToTourNumberAndCost() throws IOException {
-		Collections.sort(bestSolutions,
-                new Comparator<SolutionGot>() {
+		Collections.sort(bestSolutions, new Comparator<SolutionGot>() {
                     @Override
                     public int compare(SolutionGot o1, SolutionGot o2) {
                     	if (o1.getNumberOfTours() < o2.getNumberOfTours())
@@ -60,12 +59,10 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
                     	if (o1.getNumberOfTours() > o2.getNumberOfTours())
                     		return 1;
                     	if (o1.getNumberOfTours() == o2.getNumberOfTours()) {
-                    		if (MathUtils.lessThan(o1.getTotalDistanceWithCostFactorAndRecourse(),o2.getTotalDistanceWithCostFactorAndRecourse())) {
-                                return -1;
-                            }
-                    		if (MathUtils.greaterThan(o1.getTotalDistanceWithCostFactorAndRecourse(),o2.getTotalDistanceWithCostFactorAndRecourse())) {
-                                return 1;
-                            }
+                    		if (MathUtils.lessThan(o1.getTotalDistanceWithCostFactorAndRecourse(),o2.getTotalDistanceWithCostFactorAndRecourse())) 
+                                return -1;                          
+                    		if (MathUtils.greaterThan(o1.getTotalDistanceWithCostFactorAndRecourse(),o2.getTotalDistanceWithCostFactorAndRecourse())) 
+                                return 1;                           
                     		return 0;
                     	}
                     	throw new RuntimeException("Should not happen");

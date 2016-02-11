@@ -370,7 +370,7 @@ public class Parameters {
 		minimumNumberOfIterationsWithoutTourElimination = i;
 	}
 	
-	public static boolean publishSolutionAtEndOfAMTSSearch() {
+	public static boolean isPublishSolutionAtEndOfAMTSSearch() {
 		return isPublishSolutionAtEndOfAMTSSearch;
 	}
 

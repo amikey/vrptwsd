@@ -29,6 +29,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
 		problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 		processProblems();

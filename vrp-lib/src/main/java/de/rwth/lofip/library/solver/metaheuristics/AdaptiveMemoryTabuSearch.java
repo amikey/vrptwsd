@@ -68,13 +68,13 @@ public class AdaptiveMemoryTabuSearch {
 			publishSolution(solution);
 			
 			storeNewToursInAdaptiveMemory(solution);
+			addNewSolutionToBestSolutions();
 			
 			if (isBestOverallSolutionFoundAgain())
 				increaseNumberOfTimesBestOverallSolutionHasBeenFound();
 			
 			if (isNewSolutionIsNewBestOverallSolution()) {
-				setBestOverallSolutionToNewSolution();
-				addNewSolutionToBestSolutions();
+				setBestOverallSolutionToNewSolution();				
 				numberOfAMCallsWithoutImprovement = 0;
 				numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 			} else
@@ -113,9 +113,9 @@ public class AdaptiveMemoryTabuSearch {
 				TabuSearchForElementWithTours tabuSearch = getTS();
 				solution = (SolutionGot) tabuSearch.improve(solution);
 				adaptiveMemory.addTours(solution);
+				addNewSolutionToBestSolutions();
 				if (isNewSolutionIsNewBestOverallSolution()) {
-					setBestOverallSolutionToNewSolution();
-					addNewSolutionToBestSolutions();
+					setBestOverallSolutionToNewSolution();					
 				}
 			}
 		}
@@ -218,7 +218,7 @@ public class AdaptiveMemoryTabuSearch {
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
-				IOUtils.write("Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+				IOUtils.write("Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" + sol.getNumberOfTours() + ", " + sol.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				TabuSearchForElementWithTours ts = getTS();
 				solution = (SolutionGot) ts.improve(sol);
 				IOUtils.write("Verbesserte Lösung: " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));

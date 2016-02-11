@@ -14,16 +14,23 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 //--- Eigene Modified Solomon Instances
 	
 	@Test
-	public void HundredPercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {			
+	public void HundredPercentOfCapacityOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {			
 		//Set Parameters for Scenario
+		//Set Parameters for Algorithm
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setNumberOfToursInGot(1);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\EigeneModifiedSolomon\\");
+		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\RC1CRC2\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
-		problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
+		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
 		reduceCapacityOfVehiclesInProblems();
 		processProblems();
 	}

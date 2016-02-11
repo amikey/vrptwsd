@@ -33,7 +33,7 @@ public class SolutionGotUtils {
 	        //the following line is totally not necessary and just for better readiness 
 	        int currentlyExaminedNumberOfVehicles = pair.getKey();
 	        int numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles = pair.getValue();
-	        s = s + numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles + ";";
+	        s += numberOfCustomersServedByCurrentlyExaminedNumberOfVehicles + ";";
 	    }
 	    return s;
 	}
