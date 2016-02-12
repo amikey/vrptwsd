@@ -240,12 +240,8 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	}
 	
 	protected void processProblems() throws IOException {
-		for (int i = 1; i <= numberOfExperiments; i++) {
-			if (!Parameters.isRunningTimeReached()) {
-//				increaseParameters();
-				solveProblemsWithAdaptiveMemorySolver();
-			}
-		}		
+		while (!Parameters.isRunningTimeReached()) 				
+				solveProblemsWithAdaptiveMemorySolver();					
 	}
 	
 	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {		
@@ -266,7 +262,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		return solutions;
 	}
 	
-	private void postProcessProblemsWithTourMatchingAlgorithm() {
+	private void postProcessProblemsWithTourMatchingAlgorithm() throws IOException {
 		for (int i = 0; i < solutions.size(); i++) {
 			SolutionGot solution = solutions.get(i);
 			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);

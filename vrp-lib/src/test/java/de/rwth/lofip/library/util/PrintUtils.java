@@ -3,6 +3,7 @@ package de.rwth.lofip.library.util;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
@@ -28,9 +29,9 @@ public class PrintUtils {
 		System.out.println(s);	
 	}
 
-	public static void printListOfSolutions(ArrayList<SolutionGot> solutions, FileOutputStream outputStream) throws IOException {
+	public static void printListOfSolutions(List<SolutionGot> bestSolutions, FileOutputStream outputStream) throws IOException {
 		String s = "Beste Lösungen am Ende von AMTS: ";
-		for (SolutionGot solution : solutions) {
+		for (SolutionGot solution : bestSolutions) {
 			s+= "(" +solution.getNumberOfTours() + ": " + String.format("%.3f",solution.getTotalDistanceWithCostFactor()) + ") ";
 		}
 		s += "\n";

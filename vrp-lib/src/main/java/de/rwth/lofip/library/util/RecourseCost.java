@@ -33,12 +33,14 @@ public class RecourseCost {
 	
 	private List<Integer> tourIndizes = new ArrayList<Integer>();
 	
-	public RecourseCost(double overallRecourseCost,
-			double numberOfDifferentRecourseActions2, int additionalNumberOfTours2, int numberOfRouteFailures2) {
-		this.recourseCost = overallRecourseCost;
-		this.numberOfAdditionalTours = additionalNumberOfTours2;
-		this.numberOfRouteFailures = numberOfRouteFailures2;
-		this.numberOfDifferentRecourseActions = numberOfDifferentRecourseActions2;
+	public RecourseCost(List<GroupOfTours> gots) {		
+		for (GroupOfTours got : gots) {
+			recourseCost += got.getExpectedRecourse().getRecourseCost();
+			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
+			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
+			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
+			calculateToursNeededToServeNumberOfCustomers(got);
+		}		
 	}
 	
 	public RecourseCost(GroupOfTours got) {
@@ -210,6 +212,8 @@ public class RecourseCost {
 	        toursNeededToServeNumberOfCustomers.put(numberOfVehiclesThatTheCurrentCustomerIsServedBy, numberOfCustomersThatIsServedByThisNumberOfTours);	      
 	        it.remove(); // avoids a ConcurrentModificationException
 	    }
+//	    if (toursNeededToServeNumberOfCustomers.isEmpty())
+//	    	throw new RuntimeException("toursNeededToServeNumberOfCustomers empty");
 	}
 
 	private int getNumberOfCustomersThatIsServedByTheFollowingNumberOfVehicles(int numberOfVehiclesCustomerIsServedBy) {
@@ -221,19 +225,9 @@ public class RecourseCost {
         }
 		return numberOfCustomersThatIsServedByThisValue;
 	}
-
-	public RecourseCost(List<GroupOfTours> gots) {		
-		for (GroupOfTours got : gots) {
-			recourseCost += got.getExpectedRecourse().getRecourseCost();
-			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
-			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
-			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
-			calculateToursNeededToServeNumberOfCustomers(got);
-		}		
-	}
 	
 	private void calculateToursNeededToServeNumberOfCustomers(GroupOfTours got) {
-		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
+		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getToursNeededToServeNumberOfCustomers().entrySet().iterator();
 	    while (it.hasNext()) {
 	        Entry<Integer, Integer> pair = it.next();
 	        int currentlyExaminedNumberOfVehicles = pair.getKey();
@@ -244,7 +238,9 @@ public class RecourseCost {
 	    }
 	}
 
-	public HashMap<Integer, Integer> getNumberOfCustomersServedByNumberOfDifferentTours() {
+	public HashMap<Integer, Integer> getToursNeededToServeNumberOfCustomers() {
+//		if (toursNeededToServeNumberOfCustomers.isEmpty())
+//			throw new RuntimeException("toursNeededToServeNumberOfCustomers ist leer");
 		return toursNeededToServeNumberOfCustomers;
 	}
 
@@ -281,8 +277,17 @@ public class RecourseCost {
 	// Print Utilities
 	
 	public void print() {
-		System.out.println("Cost: " + recourseCost + "; NumberOfDifferentRecourseActions: " + numberOfDifferentRecourseActions);
-		
+		System.out.println("Cost: " + recourseCost + "; NumberOfDifferentRecourseActions: " + numberOfDifferentRecourseActions);		
+	}
+	
+	//Test Utils
+	
+	public RecourseCost(double overallRecourseCost,
+			double numberOfDifferentRecourseActions2, int additionalNumberOfTours2, int numberOfRouteFailures2) {
+		this.recourseCost = overallRecourseCost;
+		this.numberOfAdditionalTours = additionalNumberOfTours2;
+		this.numberOfRouteFailures = numberOfRouteFailures2;
+		this.numberOfDifferentRecourseActions = numberOfDifferentRecourseActions2;
 	}
 		
 }
