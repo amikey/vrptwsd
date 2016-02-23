@@ -20,7 +20,6 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
-import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class ReadAndWriteUtils {
@@ -315,7 +314,7 @@ public class ReadAndWriteUtils {
 	}
 		
 	public static void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
-		if (Parameters.isPublishSolutionAtEndOfTabuSearch()) 				
+		if (Parameters.publishSolutionAtEndOfTabuSearch()) 				
 			IOUtils.write("" + ";" 
 				+ "Distanz" + ";" 
 				+ "Anzahl Touren" + ";"
@@ -353,33 +352,6 @@ public class ReadAndWriteUtils {
 				+ "NumberOfCustomersThatAreServedByNumberOfVehicles beginning with one and increasing with each column" + "\n" 
 				, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfAMTSSearch());				
 	}	
-	
-	public static void publishSolutionAtEndOfTabuSearch(ElementWithTours bestOverallSolution, long timeNeeded) throws IOException {				
-		if (Parameters.isPublishSolutionAtEndOfTabuSearch())			
-			if (bestOverallSolution instanceof SolutionGot){
-				
-				RecourseCost rc = ((SolutionGot) bestOverallSolution).getExpectedRecourseCost();
-				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
-		
-				IOUtils.write("Lösung am Ende der TS: " + ";" 
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
-					+ bestOverallSolution.getNumberOfTours() + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
-					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
-					+ timeNeeded + ";"
-					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
-					+ bestOverallSolution.getAsTupel() + ";"
-					+ s 
-					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
-			} else {
-				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
-			}
-	}
 	
 	public static void publishSolutionAtEndOfAMTSSearch(SolutionGot bestOverallSolution, long timeNeeded) throws IOException {
 		if (Parameters.isPublishSolutionAtEndOfAMTSSearch())			

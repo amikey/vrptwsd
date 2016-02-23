@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
-import static org.junit.Assert.assertEquals;
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
@@ -29,7 +27,7 @@ public class AdaptiveMemoryTabuSearch {
 	
 	protected SolutionGot solution = null;
 	protected SolutionGot bestOverallSolution;
-	protected List<SolutionGot> bestSolutions;
+	protected ArrayList<SolutionGot> bestSolutions;
 	@SuppressWarnings("unused")
 	private int callsToAdaptiveMemory = 0;
 	private int numberOfAMCallsWithoutImprovement = 0;
@@ -171,7 +169,7 @@ public class AdaptiveMemoryTabuSearch {
 		}
 		
 		private void addNewSolutionToBestSolutions() {
-			bestSolutions.add(solution.clone());
+			bestSolutions.add(bestOverallSolution);
 		}
 	
 		protected void improveBestSolutionsWithCostMinimizationPhase() throws IOException {
@@ -183,7 +181,10 @@ public class AdaptiveMemoryTabuSearch {
 		}
 
 			protected void sortListOfBestSolutionsAccordingToTourNumberAndCost() throws IOException {
-			Collections.sort(bestSolutions, new Comparator<SolutionGot>() {
+	//			Comparator<SolutionGot> byDeterministicCost = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
+	//			Collections.sort(bestSolutions, byDeterministicCost);	
+			Collections.sort(bestSolutions,
+	                new Comparator<SolutionGot>() {
 	                    @Override
 	                    public int compare(SolutionGot o1, SolutionGot o2) {
 	                    	if (o1.getNumberOfTours() < o2.getNumberOfTours())
@@ -206,8 +207,9 @@ public class AdaptiveMemoryTabuSearch {
 		}
 
 		private void CutListAtSomePoint() throws IOException {
-			int last = Math.min(lengthOfList, bestSolutions.size());
-			bestSolutions = bestSolutions.subList(0, last);
+			if (bestSolutions.size() >= lengthOfList) {
+				bestSolutions.subList(0, lengthOfList);
+			}
 			PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 

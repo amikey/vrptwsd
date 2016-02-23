@@ -123,7 +123,7 @@ public class Parameters {
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
 		maximalNumberOfToursInAdaptiveMemory = 200;
-		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 1;
+		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 0;
 		lengthOfTabuList = 1000000;
@@ -226,7 +226,7 @@ public class Parameters {
 		return publishSolutionValueProgress;
 	}
 
-	public static boolean isPublishSolutionAtEndOfTabuSearch() {
+	public static boolean publishSolutionAtEndOfTabuSearch() {
 		return publishSolutionAtEndOfTabuSearch;
 	}
 

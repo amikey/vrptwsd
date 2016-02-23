@@ -98,7 +98,7 @@ public class TestRecourseCost {
 			c.setOriginalDemand(c.getOriginalDemand() * 2);
 		}		
 		
-		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getToursNeededToServeNumberOfCustomers().entrySet().iterator();		
+		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();		
 		Entry<Integer, Integer> pair = it.next();
 		System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 		assertEquals(true, 1 == pair.getKey());
@@ -167,7 +167,7 @@ public class TestRecourseCost {
 //			System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 //		}
 		
-		Iterator<Entry<Integer, Integer>> it = rc.getToursNeededToServeNumberOfCustomers().entrySet().iterator();
+		Iterator<Entry<Integer, Integer>> it = rc.getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
 		Entry<Integer, Integer> pair = it.next();
 		System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 		assertEquals(1, pair.getKey(), 0.00001);
@@ -187,7 +187,7 @@ public class TestRecourseCost {
 	private void printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(GroupOfTours gotTemp) {
 		GotUtils.printCustomerWithDemandAndOriginalDemand(gotTemp);
 		
-		Iterator<Entry<Integer, Integer>> it = gotTemp.getExpectedRecourse().getToursNeededToServeNumberOfCustomers().entrySet().iterator();
+		Iterator<Entry<Integer, Integer>> it = gotTemp.getExpectedRecourse().getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<Integer, Integer> pair = it.next();
 			System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());

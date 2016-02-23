@@ -184,8 +184,30 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	
 	private void publishSolutionAtEndOfTabuSearch() throws IOException {
 		endTime = System.currentTimeMillis();
-		timeNeeded = endTime - startTime;
-		ReadAndWriteUtils.publishSolutionAtEndOfTabuSearch(bestOverallSolution, timeNeeded);
+		timeNeeded = (endTime - startTime);
+		
+		if (Parameters.publishSolutionAtEndOfTabuSearch())			
+			if (bestOverallSolution instanceof SolutionGot){
+				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
+		
+				IOUtils.write("Lösung am Ende der TS: " + ";" 
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
+					+ bestOverallSolution.getNumberOfTours() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
+					+ timeNeeded + ";"
+					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
+					+ bestOverallSolution.getAsTupel() + ";"
+					+ s 
+					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(solution));
+			} else {
+				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
+			}
 	}
 	
 	private void generateBlankLineForPublishingSolution() throws IOException {
