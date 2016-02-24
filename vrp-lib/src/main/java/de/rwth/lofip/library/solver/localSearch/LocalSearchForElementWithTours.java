@@ -20,23 +20,16 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 		this.solution = solutionStart;
 		crossNeighborhood = new CrossNeighborhood(solution);
 		
-		System.out.println("LS Start: " + solution.getAsTupelWithDemand());
-		
 		boolean isImprovement = false;
 		do {
 			try{				
 				findBestMove();	
-				
-//				System.out.print("Best Move: ");
-//				printBestMove();
-				
+								
 				isImprovement = isImprovement();								
 				if (isImprovement) {			
 
 					applyBestMove();	
-					
-					System.out.println("LS: " + solution.getAsTupelWithDemand());
-					
+
 					assertEquals(true, iteration < 300);
 					
 					assertEqualsHook();

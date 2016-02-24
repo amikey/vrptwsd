@@ -820,6 +820,31 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
 
+	public static void publishSolutionAtEndOfTabuSearch(ElementWithTours bestOverallSolution, long timeNeeded) throws IOException {
+		if (Parameters.isPublishSolutionAtEndOfTabuSearch())			
+			if (bestOverallSolution instanceof SolutionGot){
+				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
+		
+				IOUtils.write("Lösung am Ende der TS: " + ";" 
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
+					+ bestOverallSolution.getNumberOfTours() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActions()) + ";"
+					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
+					+ timeNeeded + ";"
+					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
+					+ bestOverallSolution.getAsTupel() + ";"
+					+ s 
+					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+			} else {
+				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
+			}
+	}
+
 	
 
 	

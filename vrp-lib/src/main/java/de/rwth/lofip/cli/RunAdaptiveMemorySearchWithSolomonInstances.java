@@ -50,46 +50,45 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		printProblemsModifiedSolomonInstances();
 	}
 	
-	@Test
-	public void TestAdaptiveMemorySearchOnAllGering400Instances() throws IOException {
-		Parameters.setOutputDirectory("\\ErgebnisseGehring400\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring400Files());	
-		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
-		processProblems();
-		printProblemsModifiedSolomonInstances();
-	}
-	
-	@Test
-	public void TestAdaptiveMemorySearchOnAllGering600Instances() throws IOException {
-		Parameters.setOutputDirectory("\\ErgebnisseGehring600\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring600Files());	
-		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
-		processProblems();
-		printProblemsModifiedSolomonInstances();
-	}
-	
-	@Test
-	public void TestAdaptiveMemorySearchOnAllGering800Instances() throws IOException {
-		Parameters.setOutputDirectory("\\ErgebnisseGehring800\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring800Files());	
-		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
-		processProblems();
-		printProblemsModifiedSolomonInstances();
-	}
-	
-	@Test
-	public void TestAdaptiveMemorySearchOnAllGering1000Instances() throws IOException {
-		Parameters.setOutputDirectory("\\ErgebnisseGehring1000\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring1000Files());	
-		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
-		processProblems();
-		printProblemsModifiedSolomonInstances();
-	}
-		
+//	@Test
+//	public void TestAdaptiveMemorySearchOnAllGering400Instances() throws IOException {
+//		Parameters.setOutputDirectory("\\ErgebnisseGehring400\\");
+//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+//		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring400Files());	
+//		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+//		processProblems();
+//		printProblemsModifiedSolomonInstances();
+//	}
+//	
+//	@Test
+//	public void TestAdaptiveMemorySearchOnAllGering600Instances() throws IOException {
+//		Parameters.setOutputDirectory("\\ErgebnisseGehring600\\");
+//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+//		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring600Files());	
+//		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+//		processProblems();
+//		printProblemsModifiedSolomonInstances();
+//	}
+//	
+//	@Test
+//	public void TestAdaptiveMemorySearchOnAllGering800Instances() throws IOException {
+//		Parameters.setOutputDirectory("\\ErgebnisseGehring800\\");
+//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+//		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring800Files());	
+//		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+//		processProblems();
+//		printProblemsModifiedSolomonInstances();
+//	}
+//	
+//	@Test
+//	public void TestAdaptiveMemorySearchOnAllGering1000Instances() throws IOException {
+//		Parameters.setOutputDirectory("\\ErgebnisseGehring1000\\");
+//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+//		File dir = new File(ReadAndWriteUtils.getInputDirectoryForGehring1000Files());	
+//		problems = ReadAndWriteUtils.createListOfProblemsFromInputDirectory(dir);
+//		processProblems();
+//		printProblemsModifiedSolomonInstances();
+//	}	
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllSolomon200_1000Instances() throws IOException {
@@ -240,12 +239,8 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	}
 	
 	protected void processProblems() throws IOException {
-		for (int i = 1; i <= numberOfExperiments; i++) {
-			if (!Parameters.isRunningTimeReached()) {
-//				increaseParameters();
-				solveProblemsWithAdaptiveMemorySolver();
-			}
-		}		
+		while (!Parameters.isRunningTimeReached())
+			solveProblemsWithAdaptiveMemorySolver();
 	}
 	
 	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {		
@@ -266,7 +261,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		return solutions;
 	}
 	
-	private void postProcessProblemsWithTourMatchingAlgorithm() {
+	private void postProcessProblemsWithTourMatchingAlgorithm() throws IOException {
 		for (int i = 0; i < solutions.size(); i++) {
 			SolutionGot solution = solutions.get(i);
 			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);

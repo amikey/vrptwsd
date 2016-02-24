@@ -123,7 +123,7 @@ public class Parameters {
 		maximalNumberOfCallsToAdaptiveMemory = 0;
 		maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = 0;
 		maximalNumberOfToursInAdaptiveMemory = 200;
-		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 10;
+		numberOfSolutionsThatIsProcessedWithCostMinimizationPhase = 1;
 		maximalNumberOfIterationsTabuSearch = 0;
 		maximalNumberOfIterationsWithoutImprovementTabuSearch = 0;
 		lengthOfTabuList = 1000000;
