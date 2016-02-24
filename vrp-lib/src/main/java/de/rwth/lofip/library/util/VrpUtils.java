@@ -140,7 +140,7 @@ public class VrpUtils {
 		Set<Vehicle> vehicles = new HashSet<Vehicle>(1);
 		vehicles.add(tour.getVehicle());
 		vrpProblem.setVehicles(vehicles);
-		vrpProblem.setOriginalCapacity(tour.getVehicle().getCapacity());
+		vrpProblem.setOriginalCapacity(tour.getParentGot().getParentSolution().getVrpProblem().getOriginalCapacity());
 		return vrpProblem;
 	}
 	

@@ -51,7 +51,7 @@ public class SimulationUtils {
 		}
 		return got;						
 	}
-	
+
 	private static void sortListWrtToCustomerNo(List<Customer> customerList) {
 		Comparator<Customer> customerByNoComparator = (e1,e2) -> Double.compare(e1.getCustomerNo(), e2.getCustomerNo());
 		Collections.sort(customerList, customerByNoComparator);
