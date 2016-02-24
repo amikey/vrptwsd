@@ -26,6 +26,7 @@ public class SimulationUtils {
 	public static GroupOfTours setDemandForCustomersWithDeviation(GroupOfTours got) {
 		double deviation = Parameters.getFluctuationOfDemandInPercentage();
 		Random randomDemandGeneration = new Random(seed);
+		generateSomeRandomness(randomDemandGeneration);
 		
 		List<Customer> customerList = new ArrayList<Customer>();
 		customerList.addAll(got.getCustomers());
@@ -52,6 +53,11 @@ public class SimulationUtils {
 		return got;						
 	}
 
+	private static void generateSomeRandomness(Random randomDemandGeneration) {
+		for (int i = 0; i <= seed; i++)
+			randomDemandGeneration.nextGaussian();
+	}
+	
 	private static void sortListWrtToCustomerNo(List<Customer> customerList) {
 		Comparator<Customer> customerByNoComparator = (e1,e2) -> Double.compare(e1.getCustomerNo(), e2.getCustomerNo());
 		Collections.sort(customerList, customerByNoComparator);

@@ -48,7 +48,7 @@ public class TestRecourseCost {
 		System.out.println(solution.getExpectedRecourseCost().getRecourseCost());
 		//Achtung, dieser Wert kann auch unterschiedlich sein wegen den Zufallszahlen. 
 		//Das heiﬂt nicht unbedingt, dass ein Fehler im Algorithmus vorliegt
-		assertEquals(158.39700804,solution.getExpectedRecourseCost().getRecourseCost(),0.00001);
+		assertEquals(77.12573,solution.getExpectedRecourseCost().getRecourseCost(),0.00001);
 	}
 	
 	@Test
@@ -72,8 +72,7 @@ public class TestRecourseCost {
 		System.out.println(solution.getExpectedRecourseCost().getNumberOfAdditionalTours());
 		System.out.println(solution.getExpectedRecourseCost().getNumberOfAdditionalTours()/100);
 		System.out.println(solution.getExpectedRecourseCost().getNumberOfRouteFailures());
-		assertEquals(149.0,solution.getExpectedRecourseCost().getNumberOfAdditionalTours(),0.00001);
-		assertEquals(149,solution.getExpectedRecourseCost().getNumberOfRouteFailures());
+		assertEquals(solution.getExpectedRecourseCost().getNumberOfRouteFailures(),solution.getExpectedRecourseCost().getNumberOfAdditionalTours(),0.00001);		
 	}
 	
 	@Test
@@ -96,27 +95,30 @@ public class TestRecourseCost {
 		for (Customer c : got.getCustomers()) {
 			c.setDemand(c.getDemand()*2);
 			c.setOriginalDemand(c.getOriginalDemand() * 2);
-		}		
+		}	
+		
+		int totalNumberOfServedCustomers = 0;
 		
 		Iterator<Entry<Integer, Integer>> it = got.getExpectedRecourse().getToursNeededToServeNumberOfCustomers().entrySet().iterator();		
 		Entry<Integer, Integer> pair = it.next();
 		System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 		assertEquals(true, 1 == pair.getKey());
 		assertEquals(true, 5 == pair.getValue());
-//		assertEquals(true, 2 == pair.getKey());
-//		assertEquals(true, 12 == pair.getValue());
+		totalNumberOfServedCustomers += pair.getValue();
 
 		Entry<Integer, Integer> pair2 = it.next();
 		System.out.println("Anzahl Customer, die von " + pair2.getKey() + " Vehicles bedient werden: " + pair2.getValue());
 		assertEquals(true, 2 == pair2.getKey());
-		assertEquals(true, 5 == pair2.getValue());
-//		assertEquals(true, 3 == pair2.getKey());
-//		assertEquals(true, 1 == pair2.getValue());
+		assertEquals(true, 7 == pair2.getValue());
+		totalNumberOfServedCustomers += pair.getValue();
 		
 		Entry<Integer, Integer> pair3 = it.next();
 		System.out.println("Anzahl Customer, die von " + pair3.getKey() + " Vehicles bedient werden: " + pair3.getValue());
 		assertEquals(true, 3 == pair3.getKey());
-		assertEquals(true, 3 == pair3.getValue());
+		assertEquals(true, 1 == pair3.getValue());
+		totalNumberOfServedCustomers += pair.getValue();
+		
+		assertEquals(got.getCustomers().size(), totalNumberOfServedCustomers);
 	}
 
 	@Test
@@ -160,6 +162,7 @@ public class TestRecourseCost {
 //			got.print();
 		
 		RecourseCost rc = new RecourseCost(gots);
+		int totalNumberOfServedCustomers = 0;
 		
 //		Iterator<Entry<Integer, Integer>> it = rc.getNumberOfCustomersServedByNumberOfDifferentTours().entrySet().iterator();
 //		while (it.hasNext()) {
@@ -172,16 +175,21 @@ public class TestRecourseCost {
 		System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 		assertEquals(1, pair.getKey(), 0.00001);
 		assertEquals(8, pair.getValue(), 0.00001);
+		totalNumberOfServedCustomers += pair.getValue(); 
 		
 		Entry<Integer, Integer> pair2 = it.next();
 		System.out.println("Anzahl Customer, die von " + pair2.getKey() + " Vehicles bedient werden: " + pair2.getValue());
 		assertEquals(2, pair2.getKey(), 0.00001);
 		assertEquals(6, pair2.getValue(), 0.00001);
+		totalNumberOfServedCustomers += pair.getValue();
 
 		Entry<Integer, Integer> pair3 = it.next();
 		System.out.println("Anzahl Customer, die von " + pair3.getKey() + " Vehicles bedient werden: " + pair3.getValue());
 		assertEquals(3, pair3.getKey(), 0.00001);
 		assertEquals(3, pair3.getValue(), 0.00001);
+		totalNumberOfServedCustomers += pair.getValue();
+		
+		assertEquals(got.getCustomers().size() + got2.getCustomers().size(), totalNumberOfServedCustomers);
 	}
 
 	private void printGetNumberOfCustomersServedByNumberOfDifferentToursForGot(GroupOfTours gotTemp) {
