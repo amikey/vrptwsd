@@ -29,7 +29,7 @@ public class CreateResultsWithTourElimination {
 		Parameters.setNumberOfInitialSolutions(20);
 		Parameters.setNumberOfIntensificationTries(0);
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);		
+		Parameters.setMaximalNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
@@ -65,7 +65,7 @@ public class CreateResultsWithTourElimination {
 		Parameters.setNumberOfInitialSolutions(20);
 		Parameters.setNumberOfIntensificationTries(0);
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);		
+		Parameters.setMaximalNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(36);
 		
 		//Set Output parameters

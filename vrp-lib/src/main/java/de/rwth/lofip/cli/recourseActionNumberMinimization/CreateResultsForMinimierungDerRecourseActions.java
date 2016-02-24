@@ -35,7 +35,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
 		Parameters.setNumberOfInitialSolutions(20);
 		Parameters.setNumberOfIntensificationTries(0);		
-		Parameters.setNumberOfToursInGot(2);
+		Parameters.setMaximalNumberOfToursInGot(2);
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}

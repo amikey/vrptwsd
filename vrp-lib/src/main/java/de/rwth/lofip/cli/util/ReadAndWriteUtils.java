@@ -101,6 +101,12 @@ public class ReadAndWriteUtils {
 		return readSolomonProblems(getInputDirectoryForSolomon200_1000Files());
 	}
 	
+	public static List<VrpProblem> readEigeneModifiedR1R2SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("r1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems());
+		problems.addAll(readProblemX("r2","rc2", getInputDirectoryForEigeneModifiedSolomonProblems()));
+		return problems;
+	}
+	
 	public static List<VrpProblem> readEigeneModifiedC1R1SolomonProblems() throws IOException {
 		List<VrpProblem> problems = readProblemX("c1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems());
 		problems.addAll(readProblemX("r1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems()));
@@ -314,7 +320,7 @@ public class ReadAndWriteUtils {
 	}
 		
 	public static void createHeaderForPublishingSolutionAtEndOfTabuSearch(VrpProblem vrpProblem) throws IOException {				
-		if (Parameters.publishSolutionAtEndOfTabuSearch()) 				
+		if (Parameters.isPublishSolutionAtEndOfTabuSearch()) 				
 			IOUtils.write("" + ";" 
 				+ "Distanz" + ";" 
 				+ "Anzahl Touren" + ";"
@@ -813,6 +819,8 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
+
+	
 
 	
 

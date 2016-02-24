@@ -20,7 +20,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\HundredPercent\\EigeneModifiedSolomon\\");
@@ -36,7 +36,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\NinetyFivePercent\\EigeneModifiedSolomon\\");
@@ -52,7 +52,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\NinetyPercent\\EigeneModifiedSolomon\\");
@@ -68,7 +68,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\EightyFivePercent\\EigeneModifiedSolomon\\");
@@ -84,7 +84,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungMitRiskPooling\\EightyPercent\\EigeneModifiedSolomon\\");
@@ -102,7 +102,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EigthyPercent\\OriginalSolomon\\");
@@ -118,7 +118,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\OriginalSolomon\\");
@@ -134,7 +134,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\OriginalSolomon\\");
@@ -150,7 +150,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\OriginalSolomon\\");
@@ -166,7 +166,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\OriginalSolomon\\");
@@ -184,7 +184,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EightyPercent\\ModifiedSolomon\\");
@@ -200,7 +200,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\ModifiedSolomon\\");
@@ -216,7 +216,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\ModifiedSolomon\\");
@@ -232,7 +232,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\ModifiedSolomon\\");
@@ -248,7 +248,7 @@ public class CreateResultsForUmplanungMitRiskPooling extends RunAdaptiveMemorySe
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToDefaultValues();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(100);
+			Parameters.setMaximalNumberOfToursInGot(100);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\ModifiedSolomon\\");

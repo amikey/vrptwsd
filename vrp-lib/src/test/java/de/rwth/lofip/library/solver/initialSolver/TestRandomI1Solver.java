@@ -60,7 +60,7 @@ public class TestRandomI1Solver {
 	@Test
 	public void TestThatNumberOfToursInGotsIsCorrectAfterInitialSolver() throws IOException {
 		int numberOfToursInGot = 2;	
-		Parameters.setNumberOfToursInGot(numberOfToursInGot);
+		Parameters.setMaximalNumberOfToursInGot(numberOfToursInGot);
 		problems = ReadAndWriteUtils.readSolomonProblemC202();	
 		solveProblemsWithRandomI1Solver(solutions);				
 		assertEquals(2, solutions.get(0).maximalNumberOfToursInGots());

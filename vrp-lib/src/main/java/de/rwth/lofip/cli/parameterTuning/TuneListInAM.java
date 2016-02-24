@@ -15,7 +15,7 @@ public class TuneListInAM extends RunAdaptiveMemorySearchWithSolomonInstances {
 		Parameters.setAllParametersToDefaultValues();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfToursInAdaptiveMemory(100);
 		
 		//Set Output parameters
@@ -31,7 +31,7 @@ public class TuneListInAM extends RunAdaptiveMemorySearchWithSolomonInstances {
 		Parameters.setAllParametersToDefaultValues();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfToursInAdaptiveMemory(200);
 		
 		//Set Output parameters
@@ -47,7 +47,7 @@ public class TuneListInAM extends RunAdaptiveMemorySearchWithSolomonInstances {
 		Parameters.setAllParametersToDefaultValues();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfToursInAdaptiveMemory(500);
 		
 		//Set Output parameters
@@ -63,7 +63,7 @@ public class TuneListInAM extends RunAdaptiveMemorySearchWithSolomonInstances {
 		Parameters.setAllParametersToDefaultValues();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfToursInAdaptiveMemory(1000);
 		
 		//Set Output parameters

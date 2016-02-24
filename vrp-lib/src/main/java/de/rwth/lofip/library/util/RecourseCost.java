@@ -2,6 +2,7 @@ package de.rwth.lofip.library.util;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,6 +18,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
+import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.library.solver.util.TourUtils;
 
@@ -97,11 +99,6 @@ public class RecourseCost {
 	
 	private void assertThatGotContainsNoEmptyTours(GroupOfTours got) {
 		assertEquals(false, got.isHasEmptyToursThatAreNotForRecourse());
-//		for (Tour t : got.getTours())
-//			if (t.isTourEmpty()) {
-//				got.print();
-//				assertEquals(false, t.isTourEmpty());
-//			}
 	}
 	
 	private void makeSolutionFeasibleAgain(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
@@ -133,19 +130,26 @@ public class RecourseCost {
 
 	private void makeSolutionFeasibleAgainWithCostMinimization(GroupOfTours gotClone) {
 		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
-		//create Solution from gotClone for processing with local search    	    				
+		//create Solution from gotClone for processing with local search    
 		ls.improve(gotClone);
 		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
 		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
-			//got is still demand infeasible -> no feasible solution could be found for demand
-			gotClone.addEmptyTour();
-			ls.improve(gotClone);    					
+			//got is still demand infeasible -> no feasible solution could be found for demand			
+			gotClone.addEmptyTour();			
+			ls.improve(gotClone);			    				
 		}
+		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
+			//got is still demand infeasible -> drei Touren reichen nicht aus, oder LS findet keine Lösung, in der drei Touren ausreichen			
+			gotClone.addEmptyTour();			
+			ls.improve(gotClone);			    				
+		}		
 	}
 
 	private void assertThatSolutionIsFeasible(GroupOfTours gotClone) {
 		//asserts for code validation; es könnte auch der pathologische Fall auftreten, dass vier Touren benötigt werden, um alle Kunden bedienen zu können; das wird unten überprüft
 		//RUNTIME_TODO: remove assert
+		if (gotClone.getNumberOfTours() > Parameters.getMaximalNumberOfToursInGots()+1)
+			System.out.println("Anzahl Touren größer als Parameters.getMaximalNumberOfToursInGots()+1. So sieht das got aus : " + gotClone.getAsTupel());
 		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots()+1);
 		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 	}
@@ -283,6 +287,13 @@ public class RecourseCost {
 	public void print() {
 		System.out.println("Cost: " + recourseCost + "; NumberOfDifferentRecourseActions: " + numberOfDifferentRecourseActions);
 		
+	}
+	
+	// Test Utils
+	
+	public GroupOfTours makeSolutionFeasibleAgainWithCostMinimizationForTesting(GroupOfTours got) throws IOException{
+		makeSolutionFeasibleAgainWithCostMinimization(got);
+		return got;
 	}
 		
 }

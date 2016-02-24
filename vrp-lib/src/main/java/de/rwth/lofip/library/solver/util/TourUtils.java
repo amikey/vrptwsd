@@ -338,7 +338,9 @@ public class TourUtils {
 	}
 
 	public static boolean isTourFeasibleWrtDemandCheckWithRef(Tour tour) {
-		return tour.getDemandOnTour() <= tour.getVehicle().getCapacity();
+		double demand = tour.getDemandOnTour();
+		double capacity = tour.getVehicle().getCapacity();
+		return demand <= capacity;
 	}
 
 }

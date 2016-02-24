@@ -15,7 +15,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(3);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -32,7 +32,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(4);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -49,7 +49,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(5);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -66,7 +66,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(6);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -83,7 +83,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(8);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -100,7 +100,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(9);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -117,7 +117,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(10);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -134,7 +134,7 @@ public class TuneMaximalNumberOfCustomersConsideredInSegment extends RunAdaptive
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(11);
 		Parameters.setRunningTimeInHours(6);
 		

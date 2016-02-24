@@ -15,7 +15,7 @@ public class TuneNumberOfInitialSolutions extends RunAdaptiveMemorySearchWithSol
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfInitialSolutions(1);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -32,7 +32,7 @@ public class TuneNumberOfInitialSolutions extends RunAdaptiveMemorySearchWithSol
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfInitialSolutions(10);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -49,7 +49,7 @@ public class TuneNumberOfInitialSolutions extends RunAdaptiveMemorySearchWithSol
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfInitialSolutions(50);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -66,7 +66,7 @@ public class TuneNumberOfInitialSolutions extends RunAdaptiveMemorySearchWithSol
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfInitialSolutions(100);
 		Parameters.setRunningTimeInHours(6);
 		

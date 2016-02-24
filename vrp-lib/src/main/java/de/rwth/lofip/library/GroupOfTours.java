@@ -1,5 +1,6 @@
 package de.rwth.lofip.library;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -296,6 +297,17 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	//DESIGN_TODO: Oberklasse ElementWithTours für Solution und GroupOfTours löschen und jeweils separat behandeln.
 	public void removeEmptyGots() {
 		//nothing to do here; exists only for Solution
+	}
+
+	@Override
+	public double getTotalDistanceWithCostFactorAndRecourse() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() {
+		return getTotalDistanceWithCostFactor() + getExpectedRecourse().getRecourseCost();
 	}
 
 }

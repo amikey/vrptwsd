@@ -186,12 +186,12 @@ public class Parameters {
 		return MAXIMAL_NUMBER_OF_TOURS_IN_GOTS;
 	}
 
+	public static void setMaximalNumberOfToursInGot(int numberOfToursInGot) {
+		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = numberOfToursInGot;		
+	}
+	
 	public static int getMaximalLengthOfSegmentInMove() {
 		return MAXIMAL_NUMBER_OF_CUSTOMERS_IN_SEGMENT_THAT_CAN_BE_MOVED;
-	}
-
-	public static void setNumberOfToursInGot(int numberOfToursInGot) {
-		MAXIMAL_NUMBER_OF_TOURS_IN_GOTS = numberOfToursInGot;		
 	}
 
 	public static int getNumberOfMovesThatStochasticCostIsCalculatedFor() {
@@ -226,7 +226,7 @@ public class Parameters {
 		return publishSolutionValueProgress;
 	}
 
-	public static boolean publishSolutionAtEndOfTabuSearch() {
+	public static boolean isPublishSolutionAtEndOfTabuSearch() {
 		return publishSolutionAtEndOfTabuSearch;
 	}
 

@@ -81,7 +81,7 @@ public class TestRecourseCost {
 		Parameters.setAllParametersToDefaultValues();
 		Parameters.setRelativeStandardDeviationTo(0.15);
 //		Parameters.setTestingMode(true);
-		Parameters.setNumberOfToursInGot(2);
+		Parameters.setMaximalNumberOfToursInGot(2);
 		givenSomeGot();
 		thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValue();
 	}
@@ -124,7 +124,7 @@ public class TestRecourseCost {
 		Parameters.setAllParametersToDefaultValues();
 		Parameters.setRelativeStandardDeviationTo(0.15);
 //		Parameters.setTestingMode(true);
-		Parameters.setNumberOfToursInGot(2);
+		Parameters.setMaximalNumberOfToursInGot(2);
 		givenListOfTwoGots();
 		thenGetNumberOfCustomersServedByNumberOfDifferentToursShouldBeOfCorrectValueForTwoGots();
 	}

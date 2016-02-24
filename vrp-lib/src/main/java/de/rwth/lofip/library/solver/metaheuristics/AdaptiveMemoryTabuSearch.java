@@ -164,12 +164,13 @@ public class AdaptiveMemoryTabuSearch {
 		}
 		
 		private void setBestOverallSolutionToNewSolution() throws IOException {
-			bestOverallSolution = solution.clone();	
-			IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+			bestOverallSolution = solution.clone();
+			if (Parameters.isPublishSolutionAtEndOfTabuSearch())				
+				IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 		
 		private void addNewSolutionToBestSolutions() {
-			bestSolutions.add(bestOverallSolution);
+			bestSolutions.add(solution.clone());
 		}
 	
 		protected void improveBestSolutionsWithCostMinimizationPhase() throws IOException {
@@ -203,14 +204,16 @@ public class AdaptiveMemoryTabuSearch {
 	                    	throw new RuntimeException("Should not happen");
 	                    }
 	                });
-			PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+			if (Parameters.isPublishSolutionAtEndOfTabuSearch())
+				PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 
 		private void CutListAtSomePoint() throws IOException {
 			if (bestSolutions.size() >= lengthOfList) {
 				bestSolutions.subList(0, lengthOfList);
 			}
-			PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+			if (Parameters.isPublishSolutionAtEndOfTabuSearch())
+				PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 
 		private void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
@@ -218,10 +221,12 @@ public class AdaptiveMemoryTabuSearch {
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
-				IOUtils.write("Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" + sol.getNumberOfTours() + ", " + sol.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+				if (Parameters.isPublishSolutionAtEndOfTabuSearch())
+					IOUtils.write("Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" + sol.getNumberOfTours() + ", " + sol.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				TabuSearchForElementWithTours ts = getTS();
 				solution = (SolutionGot) ts.improve(sol);
-				IOUtils.write("Verbesserte Lösung: " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+				if (Parameters.isPublishSolutionAtEndOfTabuSearch())
+					IOUtils.write("Verbesserte Lösung: " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				if (isNewSolutionIsNewBestOverallSolution())
 					setBestOverallSolutionToNewSolution();
 			}

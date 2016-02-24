@@ -39,7 +39,7 @@ public class TestTourMatching {
 	public void testMatchToursToGots() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
 //		Parameters.setTestingMode(true);
-		Parameters.setNumberOfToursInGot(2);
+		Parameters.setMaximalNumberOfToursInGot(2);
 		
 		givenASolutionWithGots();
 		System.out.println("Solution vor Matching Tours: ");
@@ -60,7 +60,7 @@ public class TestTourMatching {
 		solution = SetUpUtils.getSomeSolutionForRC104Problem();		
 	}
 	
-	private void whenMatchingTours() {
+	private void whenMatchingTours() throws IOException {
 		solution = new TourMatching().matchToursToGots(solution);		
 	}
 

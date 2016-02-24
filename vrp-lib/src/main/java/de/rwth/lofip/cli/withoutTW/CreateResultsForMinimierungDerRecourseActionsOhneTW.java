@@ -20,7 +20,7 @@ public class CreateResultsForMinimierungDerRecourseActionsOhneTW extends CreateR
 		public void AllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Algorithm
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-			Parameters.setNumberOfToursInGot(2);
+			Parameters.setMaximalNumberOfToursInGot(2);
 			Parameters.setRelativeStandardDeviationTo(0.15);
 			Parameters.setRecourseActionNumberMinimization(true);
 			
@@ -39,7 +39,7 @@ public class CreateResultsForMinimierungDerRecourseActionsOhneTW extends CreateR
 		public void AllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Algorithm
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-			Parameters.setNumberOfToursInGot(2);
+			Parameters.setMaximalNumberOfToursInGot(2);
 			Parameters.setRelativeStandardDeviationTo(0.15);
 			Parameters.setRecourseActionNumberMinimization(true);
 			
@@ -59,7 +59,7 @@ public class CreateResultsForMinimierungDerRecourseActionsOhneTW extends CreateR
 		public void AllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Algorithm
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-			Parameters.setNumberOfToursInGot(2);
+			Parameters.setMaximalNumberOfToursInGot(2);
 			Parameters.setRelativeStandardDeviationTo(0.15);
 			Parameters.setRecourseActionNumberMinimization(true);
 			

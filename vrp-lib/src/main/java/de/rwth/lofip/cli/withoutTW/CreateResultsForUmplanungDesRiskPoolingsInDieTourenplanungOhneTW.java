@@ -20,7 +20,7 @@ public class CreateResultsForUmplanungDesRiskPoolingsInDieTourenplanungOhneTW ex
 		public void AllEigeneModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Algorithm
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-			Parameters.setNumberOfToursInGot(2);
+			Parameters.setMaximalNumberOfToursInGot(2);
 			Parameters.setRelativeStandardDeviationTo(0.15);
 			
 			//Set Output parameters
@@ -38,7 +38,7 @@ public class CreateResultsForUmplanungDesRiskPoolingsInDieTourenplanungOhneTW ex
 		public void AllModifiedSolomonInstances() throws IOException {			
 			//Set Parameters for Algorithm
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-			Parameters.setNumberOfToursInGot(2);
+			Parameters.setMaximalNumberOfToursInGot(2);
 			Parameters.setRelativeStandardDeviationTo(0.15);
 			
 			//Set Output parameters
@@ -57,7 +57,7 @@ public class CreateResultsForUmplanungDesRiskPoolingsInDieTourenplanungOhneTW ex
 		public void AllOriginalSolomonInstances() throws IOException {			
 			//Set Parameters for Algorithm
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-			Parameters.setNumberOfToursInGot(2);
+			Parameters.setMaximalNumberOfToursInGot(2);
 			Parameters.setRelativeStandardDeviationTo(0.15);
 			
 			//Set Output parameters

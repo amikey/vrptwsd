@@ -265,19 +265,6 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
         }
         return s;
     }
-	
-    public String getAsTupel() {    
-    	String s = "";
-        for (GroupOfTours got : gots)
-        {
-        	s += "( ";
-	        for (Tour t : got.getTours()) {
-	            s += t.getTourAsTupel();
-	        }
-	        s += ") ";
-        }
-        return s;
-    }
     
 	public void printSolutionAsTupel() {
 		System.out.println(getAsTupel());
@@ -355,15 +342,31 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 	        return s;
 		}
 		
+		 public String getAsTupel() {    
+		    	String s = "";
+		        for (GroupOfTours got : gots)
+		        {
+		        	s += "( ";
+			        for (Tour t : got.getTours()) {
+			            s += t.getTourAsTupel();
+			        }
+			        s += ") ";
+		        }
+		        return s;
+		    }
+		
 		@Override
 		public String getAsTupelWithDemand() {
 			String s = "";
-		    s += "(";
-			for (Tour t : getTours()) {
-				s += t.getTourAsTupelWithDemand();
-			}
-			s += ") ";	     
-		    return s;
+	        for (GroupOfTours got : gots)
+	        {
+	        	s += "( ";
+		        for (Tour t : got.getTours()) {
+		            s += t.getTourAsTupelWithDemand();
+		        }
+		        s += ") ";
+	        }
+	        return s;
 		}
 		
 		public String isExistsTourWithCostFactor2() {

@@ -17,7 +17,7 @@ public class TuneParametersWithNewRandomAndWithoutErrorInAM extends RunAdaptiveM
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);		
+		Parameters.setMaximalNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters
@@ -34,7 +34,7 @@ public class TuneParametersWithNewRandomAndWithoutErrorInAM extends RunAdaptiveM
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);		
+		Parameters.setMaximalNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(6);
 		
 		//Set Output parameters

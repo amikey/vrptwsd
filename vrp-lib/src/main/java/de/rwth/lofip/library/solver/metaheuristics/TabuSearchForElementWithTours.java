@@ -186,7 +186,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		endTime = System.currentTimeMillis();
 		timeNeeded = (endTime - startTime);
 		
-		if (Parameters.publishSolutionAtEndOfTabuSearch())			
+		if (Parameters.isPublishSolutionAtEndOfTabuSearch())			
 			if (bestOverallSolution instanceof SolutionGot){
 				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
 		

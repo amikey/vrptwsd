@@ -24,7 +24,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setNumberOfInitialSolutions(20);
 		Parameters.setNumberOfIntensificationTries(0);
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(2);		
+		Parameters.setMaximalNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\");
@@ -36,10 +36,30 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	}
 	
 	@Test
+	public void R1R2EigeneModifiedSolomonInstances() throws IOException {			
+		//Set Parameters for Algorithm
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);
+		Parameters.setPercentageOfCapacity(1);
+		Parameters.setMaximalNumberOfToursInGot(2);		
+		
+		//Set Output parameters
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\Hack\\R1R2\\");
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
+		
+		problems = ReadAndWriteUtils.readEigeneModifiedR1R2SolomonProblems();
+		processProblems();
+	}
+	
+	@Test
 	public void R1XXEigeneModifiedSolomonInstances() throws IOException {			
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfToursInGot(2);		
+		Parameters.setMaximalNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\");
@@ -55,7 +75,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	public void AllModifiedSolomonInstances() throws IOException {			
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfToursInGot(2);		
+		Parameters.setMaximalNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\ModifiedSolomon\\");
@@ -72,7 +92,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	public void AllOriginalSolomonInstances() throws IOException {			
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setNumberOfToursInGot(2);		
+		Parameters.setMaximalNumberOfToursInGot(2);		
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OriginalSolomon\\");

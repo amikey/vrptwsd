@@ -22,7 +22,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\EigeneModifiedSolomon\\");
@@ -39,7 +39,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\EigeneModifiedSolomon\\");
@@ -56,7 +56,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\EigeneModifiedSolomon\\");
@@ -73,7 +73,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\EigeneModifiedSolomon\\");
@@ -90,7 +90,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyPercent\\EigeneModifiedSolomon\\");
@@ -109,7 +109,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EigthyPercent\\OriginalSolomon\\");
@@ -126,7 +126,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\OriginalSolomon\\");
@@ -143,7 +143,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\OriginalSolomon\\");
@@ -160,7 +160,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\OriginalSolomon\\");
@@ -177,7 +177,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\OriginalSolomon\\");
@@ -196,7 +196,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.8);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyPercent\\ModifiedSolomon\\");
@@ -213,7 +213,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.85);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\EightyFivePercent\\ModifiedSolomon\\");
@@ -230,7 +230,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.9);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyPercent\\ModifiedSolomon\\");
@@ -247,7 +247,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(0.95);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\NinetyFivePercent\\ModifiedSolomon\\");
@@ -264,7 +264,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			//Set Parameters for Scenario
 			Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 			Parameters.setPercentageOfCapacity(1);
-			Parameters.setNumberOfToursInGot(1);
+			Parameters.setMaximalNumberOfToursInGot(1);
 			
 			//Set Output parameters
 			Parameters.setOutputDirectory("\\OhneTW\\ErgebnisseUmplanungOhneRiskPooling\\HundredPercent\\ModifiedSolomon\\");

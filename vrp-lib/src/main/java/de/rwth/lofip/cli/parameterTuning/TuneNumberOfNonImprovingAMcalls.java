@@ -15,7 +15,7 @@ public class TuneNumberOfNonImprovingAMcalls extends RunAdaptiveMemorySearchWith
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingAMCalls(0);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -32,7 +32,7 @@ public class TuneNumberOfNonImprovingAMcalls extends RunAdaptiveMemorySearchWith
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingAMCalls(0);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -49,7 +49,7 @@ public class TuneNumberOfNonImprovingAMcalls extends RunAdaptiveMemorySearchWith
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingAMCalls(0);
 		Parameters.setRunningTimeInHours(6);
 		
@@ -66,7 +66,7 @@ public class TuneNumberOfNonImprovingAMcalls extends RunAdaptiveMemorySearchWith
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingAMCalls(0);
 		Parameters.setRunningTimeInHours(6);
 		

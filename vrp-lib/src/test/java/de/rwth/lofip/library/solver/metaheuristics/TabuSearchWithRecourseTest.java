@@ -22,7 +22,7 @@ public class TabuSearchWithRecourseTest {
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToMinimalTestingValues();
 //		Parameters.setNumberOfNonImprovingIterationsInTS(5);
-		Parameters.setNumberOfToursInGot(2);
+		Parameters.setMaximalNumberOfToursInGot(2);
 		Parameters.setRelativeStandardDeviationTo(0.15);
 		Parameters.setSeeds(3001);
 		

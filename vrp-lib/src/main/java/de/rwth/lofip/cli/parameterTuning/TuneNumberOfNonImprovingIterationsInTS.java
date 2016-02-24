@@ -15,7 +15,7 @@ public class TuneNumberOfNonImprovingIterationsInTS extends RunAdaptiveMemorySea
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingIterationsInTS(0);
 		
 		//Set Output parameters
@@ -31,7 +31,7 @@ public class TuneNumberOfNonImprovingIterationsInTS extends RunAdaptiveMemorySea
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingIterationsInTS(20);
 		
 		//Set Output parameters
@@ -47,7 +47,7 @@ public class TuneNumberOfNonImprovingIterationsInTS extends RunAdaptiveMemorySea
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingIterationsInTS(100);
 		
 		//Set Output parameters
@@ -63,7 +63,7 @@ public class TuneNumberOfNonImprovingIterationsInTS extends RunAdaptiveMemorySea
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		//Set Parameters for Scenario
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setNumberOfToursInGot(1);
+		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfNonImprovingIterationsInTS(200);
 		
 		//Set Output parameters
