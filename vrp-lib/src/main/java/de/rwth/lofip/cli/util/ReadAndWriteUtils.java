@@ -107,6 +107,12 @@ public class ReadAndWriteUtils {
 		return problems;
 	}
 	
+	public static List<VrpProblem> readEigeneModifiedR2SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("r2","rc2", getInputDirectoryForEigeneModifiedSolomonProblems());
+		return problems;
+	}
+
+	
 	public static List<VrpProblem> readEigeneModifiedC1R1SolomonProblems() throws IOException {
 		List<VrpProblem> problems = readProblemX("c1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems());
 		problems.addAll(readProblemX("r1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems()));
@@ -844,9 +850,6 @@ public class ReadAndWriteUtils {
 				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
 			}
 	}
-
-	
-
 	
 
 

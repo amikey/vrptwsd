@@ -150,9 +150,9 @@ public class RecourseCost {
 	private void assertThatSolutionIsFeasible(GroupOfTours gotClone) {
 		//asserts for code validation; es könnte auch der pathologische Fall auftreten, dass vier Touren benötigt werden, um alle Kunden bedienen zu können; das wird unten überprüft
 		//RUNTIME_TODO: remove assert
-		if (gotClone.getNumberOfTours() > Parameters.getMaximalNumberOfToursInGots()+1)
-			System.out.println("Anzahl Touren größer als Parameters.getMaximalNumberOfToursInGots()+1. So sieht das got aus : " + gotClone.getAsTupel());
-		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots()+1);
+//		if (gotClone.getNumberOfTours() > Parameters.getMaximalNumberOfToursInGots()+1)
+//			System.out.println("Anzahl Touren größer als Parameters.getMaximalNumberOfToursInGots()+1. So sieht das got aus : " + gotClone.getAsTupel());
+//		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots()+1);
 		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 	}
 	
