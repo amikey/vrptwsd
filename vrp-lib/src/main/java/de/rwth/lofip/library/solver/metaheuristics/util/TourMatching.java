@@ -140,8 +140,20 @@ public class TourMatching {
 				if (Parameters.isPublishSolutionAtEndOfAMTSSearch()) 
 					IOUtils.write("JUHUU, TourMatching hat bessere Lösung gefunden! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(newSolution));
 			return newSolution;
-		} else
+		} else {
+			System.out.println("Oh nein, TourMatching hat KEINE bessere Lösung gefunden!");
+			System.out.println("DetCost vor Matching: " + oldSolution.getTotalDistanceWithCostFactor());
+			System.out.println("RecourseCost vor Matching: " + oldSolution.getRecourseCost().getRecourseCost());
+			System.out.println("#diff Rec Act vor Matching: " + oldSolution.getRecourseCost().getNumberOfDifferentRecourseActions());
+			System.out.println("Convexkombination: " + oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse());
+//			System.out.println("Convexkombination: " + oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse());
+			
+			System.out.println("DetCost vor Matching: " + newSolution.getTotalDistanceWithCostFactor());
+			System.out.println("RecourseCost nach Matching: " + newSolution.getRecourseCost().getRecourseCost());
+			System.out.println("#diff Rec Act nach Matching: " + newSolution.getRecourseCost().getNumberOfDifferentRecourseActions());
+			System.out.println("Convexkombination: " + newSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse());
 			return oldSolution;
+		}			
 	}
 	
 	// Test Utilities

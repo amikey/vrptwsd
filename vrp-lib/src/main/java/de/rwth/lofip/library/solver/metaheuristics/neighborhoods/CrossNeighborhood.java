@@ -18,8 +18,8 @@ import de.rwth.lofip.library.solver.util.TourUtils;
 
 public class CrossNeighborhood extends AbstractNeighborhood {
 	
-	private Tour tour1;
-	private Tour tour2;
+	protected Tour tour1;
+	protected Tour tour2;
 	
 	private int tourCounter1 = 0;
 	private int tourCounter2 = 0;
@@ -30,10 +30,10 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 
 	//mit den Positionen sind jeweils die Einfügepositionen gemeint. 
 	//D.h. bei einer Tour mit vier Kunden gibt es die Positionen 0,1,2,3,4
-	private int positionStartOfSegmentTour1 = 0;
-	private int positionEndOfSegmentTour1 = 0;
-	private int positionStartOfSegmentTour2 = 0;
-	private int positionEndOfSegmentTour2 = 0;
+	protected int positionStartOfSegmentTour1 = 0;
+	protected int positionEndOfSegmentTour1 = 0;
+	protected int positionStartOfSegmentTour2 = 0;
+	protected int positionEndOfSegmentTour2 = 0;
 	
 	private ResourceExtensionFunction RefSegment1;
 	private ResourceExtensionFunction RefSegment2;

@@ -301,13 +301,12 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 
 	@Override
 	public double getTotalDistanceWithCostFactorAndRecourse() {
-		// TODO Auto-generated method stub
-		return 0;
+		throw new RuntimeException("Sollte nicht benutzt werden. Nicht implementiert.");
 	}
 
 	@Override
 	public double getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() {
-		return getTotalDistanceWithCostFactor() + getExpectedRecourse().getRecourseCost();
+		throw new RuntimeException("Sollte nicht benutzt werden. Nicht implementiert.");
 	}
 
 }

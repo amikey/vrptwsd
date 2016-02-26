@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.junit.Test;
@@ -47,7 +49,13 @@ public class TestTourMatching {
 		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
 		System.out.println("");
 		
-		whenMatchingTours();
+		whenMatchingToursWithConvexcombination();
+		solution.printSolutionAsTupel();
+		System.out.println("\n");
+		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
+		assertEquals(12, solution.getGots().size());
+		
+		whenMatchingToursOnlyWithRecourseCost();
 		solution.printSolutionAsTupel();
 		System.out.println("\n");
 		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
@@ -60,8 +68,28 @@ public class TestTourMatching {
 		solution = SetUpUtils.getSomeSolutionForRC104Problem();		
 	}
 	
-	private void whenMatchingTours() throws IOException {
+	private void whenMatchingToursWithConvexcombination() throws IOException {
 		solution = new TourMatching().matchToursToGots(solution);		
 	}
+	
+	private void whenMatchingToursOnlyWithRecourseCost() throws IOException {
+		TourMatching tm = new TourMatching(){
+				@Override
+				protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
+					Comparator<RecourseCost> byRecourseCost = (e1,e2) -> Double.compare(e1.getRecourseCost(),e2.getRecourseCost());		
+					Collections.sort(listOfRecourseCosts, byRecourseCost);						
+				}
+				@Override
+				protected SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() {
+					if (newSolution.getTotalDistanceWithCostFactorAndRecourse() <= 
+							oldSolution.getTotalDistanceWithCostFactorAndRecourse())	
+						return newSolution;
+					else
+						return oldSolution;
+				}
+			};
+		solution = tm.matchToursToGots(solution);
+	}
+	
 
 }

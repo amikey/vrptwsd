@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.util.RecourseCost;
 
 public interface ElementWithTours {
 
@@ -32,4 +33,6 @@ public interface ElementWithTours {
 	public boolean isHasEmptyToursThatAreNotForRecourse();
 
 	public void removeEmptyGots();
+
+	public RecourseCost getRecourseCost();
 }

@@ -46,8 +46,8 @@ public class TabuSearchWithRecourse extends TabuSearchForElementWithTours {
 		return new TourMatching(){
 						@Override
 						protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
-							Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getRecourseCost(),e2.getRecourseCost());		
-							Collections.sort(listOfRecourseCosts, byCombinationOfCostAndNumberRecourseActions);						
+							Comparator<RecourseCost> byRecourseCost = (e1,e2) -> Double.compare(e1.getRecourseCost(),e2.getRecourseCost());		
+							Collections.sort(listOfRecourseCosts, byRecourseCost);						
 						}
 						@Override
 						protected SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() {

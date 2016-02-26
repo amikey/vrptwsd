@@ -5,6 +5,7 @@ import java.util.Comparator;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.moves.AbstractNeighborhoodMove;
+import de.rwth.lofip.library.util.RecourseCost;
 
 public class CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseActions extends CrossNeighborhoodWithTabooListAndRecourse {
 	
@@ -18,6 +19,16 @@ public class CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseAction
 			Double.compare(e1.getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions(),
 					e2.getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions());		
 		Collections.sort(listOfNonTabooMoves, byDeterministicAndStochasticCostAndNumberOfRecourseActions);
+	}
+	
+	@Override
+	public AbstractNeighborhoodMove getNeigborhoodMove() {
+		AbstractNeighborhoodMove anm = new AbstractNeighborhoodMove(tour1, tour2, 
+				positionStartOfSegmentTour1, positionEndOfSegmentTour1, 
+				positionStartOfSegmentTour2, positionEndOfSegmentTour2,
+				costOfCompleteSolutionThatResultsFromMove, costDifferenceToPreviousSolution);
+		anm.setOldRecourseCostOfOldSolution(elementWithTours.getRecourseCost());
+		return anm;
 	}
 
 }

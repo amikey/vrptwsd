@@ -7,6 +7,7 @@ import java.util.Set;
 
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.interfaces.SolutionElement;
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.util.SimilarityUtils;
 import de.rwth.lofip.library.util.CustomerInTour;
 import de.rwth.lofip.library.util.RecourseCost;
@@ -52,12 +53,16 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     }
     
     public double getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() {
+    	double totalDistanceWithCostFactorAndRecourse = getTotalDistanceWithCostFactorAndRecourse();     	
     	//RUNTIME_TODO: diesen Wert könnte man auch zwischenspeichern
-       	double cost = 0;
-    	for (GroupOfTours got : getGots()) {
-    		cost += got.getTotalDistanceWithCostFactor() + got.getExpectedRecourse().getConvexCombinationOfCostAndNumberRecourseActions();
-    	}
-		return cost;
+    	RecourseCost rc = new RecourseCost(getGots());    	
+    	double totalDistanceWithCostFactorAndConvexcombinationOfRecourse = totalDistanceWithCostFactorAndRecourse + 
+    																		(totalDistanceWithCostFactorAndRecourse * rc.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());
+    	return totalDistanceWithCostFactorAndConvexcombinationOfRecourse;
+    }
+    
+    public RecourseCost getRecourseCost() {
+    	return new RecourseCost(gots);
     }
 
     public int getVehicleCount() {
