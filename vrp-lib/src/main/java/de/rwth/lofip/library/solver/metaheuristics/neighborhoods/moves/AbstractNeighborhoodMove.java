@@ -232,11 +232,11 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 		double detAndStochCostOfNewSolution = costOfCompleteSolutionThatResultsFromMove
 												+ getNewRecourseCostOfCompleteSolution();												
 		double detAndStochCostAndNumberOfRecActOfNewSolution = detAndStochCostOfNewSolution +
-																	detAndStochCostOfNewSolution * (newRecourseCostOfLocalGotsAfterMoveIsApplied.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());
+																	detAndStochCostOfNewSolution * Parameters.getWeightForConvexcombination() * (newRecourseCostOfLocalGotsAfterMoveIsApplied.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());
 		//calculate old Cost
 		double detAndStochCostOfOldSolution = getOldDeterministicCost() + getOldRecourseCostOfOldSolution();
 		double detAndStochCostAndNumberOfRecActOfOldSolution = detAndStochCostOfOldSolution + 
-																	detAndStochCostOfOldSolution * (oldRecourseCostOfLocalGots.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());		
+																	detAndStochCostOfOldSolution * Parameters.getWeightForConvexcombination() * (oldRecourseCostOfLocalGots.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());		
 		//calculate Cost Difference
 		double costDifference = detAndStochCostAndNumberOfRecActOfNewSolution - detAndStochCostAndNumberOfRecActOfOldSolution;
 		return costDifference;

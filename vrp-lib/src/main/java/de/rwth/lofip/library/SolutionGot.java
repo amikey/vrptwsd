@@ -57,7 +57,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     	//RUNTIME_TODO: diesen Wert könnte man auch zwischenspeichern
     	RecourseCost rc = new RecourseCost(getGots());    	
     	double totalDistanceWithCostFactorAndConvexcombinationOfRecourse = totalDistanceWithCostFactorAndRecourse + 
-    																		(totalDistanceWithCostFactorAndRecourse * rc.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());
+    																		(totalDistanceWithCostFactorAndRecourse * (Parameters.getWeightForConvexcombination() * (rc.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns())));
     	return totalDistanceWithCostFactorAndConvexcombinationOfRecourse;
     }
     

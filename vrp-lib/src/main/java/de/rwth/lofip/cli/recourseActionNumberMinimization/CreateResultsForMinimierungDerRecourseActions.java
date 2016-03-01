@@ -11,10 +11,47 @@ import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.solver.metaheuristics.recourse.actionNumberMinimization.AMTSwithRecourseAndRecourseActionNumber;
+import de.rwth.lofip.library.util.VrpUtils;
 
 public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMemorySearchWithSolomonInstances {
 	
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
+	
+	@Test
+	public void MinimierungRecourseActionsOnC1R1EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\C1R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
+		
+		Parameters.setPercentageOfCapacity(0.9);
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
+
+	@Test
+	public void MinimierungRecourseActionsOnC2R2EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\C2R2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
+				
+		Parameters.setPercentageOfCapacity(0.9);
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
+	
+	@Test
+	public void MinimierungRecourseActionsOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\RC1CRC2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
+				
+		Parameters.setPercentageOfCapacity(0.9);
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
 	
 	@Test
 	public void AllEigeneModifiedSolomonInstances() throws IOException {			
@@ -39,7 +76,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}
-	
+		
 	@Override
 	protected void processProblems() throws IOException {
 		while(!Parameters.isRunningTimeReached())

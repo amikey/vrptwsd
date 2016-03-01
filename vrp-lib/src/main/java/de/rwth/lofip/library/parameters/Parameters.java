@@ -53,9 +53,9 @@ public class Parameters {
 	//Recourse
 	private static int NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = 10;
 	private static int numberOfIterationsWithoutRematching = 10;
-	//+ Parameter für die (Konvex)kombination aus Kosten und #unterschiedlicherRecourseActions
 	private static double costFactorForAdditionalTourInRecourse = 2.0;
 	private static boolean recourseActionNumberMinimization;
+	private static double weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions;
 	
 	//Plankapazität für deterministische Planung
 	private static double percentageOfCapacity = 1;
@@ -99,6 +99,7 @@ public class Parameters {
 		numberOfIterationsWithoutRematching = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
+		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = 1;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.22;
 		
@@ -131,6 +132,7 @@ public class Parameters {
 		numberOfIterationsWithoutRematching = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
+		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = 1;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.22;
 		
@@ -164,6 +166,7 @@ public class Parameters {
 		numberOfIterationsWithoutRematching = 10;
 		costFactorForAdditionalTourInRecourse = 2.0;
 		recourseActionNumberMinimization = false;
+		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = 1;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.22;
 		
@@ -410,6 +413,14 @@ public class Parameters {
 
 	public static int getNumberOfIterationsWithoutRematching() {
 		return numberOfIterationsWithoutRematching;
+	}
+
+	public static double getWeightForConvexcombination() {
+		return weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions;
+	}
+
+	public static void setWeightForConvexcombination(double d) {
+		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = d;
 	}	
 
 }

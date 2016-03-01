@@ -49,6 +49,7 @@ public class TestTourMatching {
 		System.out.println("Recourse Cost: " + solution.getExpectedRecourseCost().getRecourseCost());
 		System.out.println("");
 		
+		Parameters.setWeightForConvexcombination(0.5);
 		whenMatchingToursWithConvexcombination();
 		solution.printSolutionAsTupel();
 		System.out.println("\n");
@@ -81,10 +82,10 @@ public class TestTourMatching {
 				}
 				@Override
 				protected SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() {
-					if (newSolution.getTotalDistanceWithCostFactorAndRecourse() <= 
-							oldSolution.getTotalDistanceWithCostFactorAndRecourse())	
+					if (newSolution.getTotalDistanceWithCostFactorAndRecourse() <= oldSolution.getTotalDistanceWithCostFactorAndRecourse()) {
+						System.out.println("JUHUU, TourMatching hat bessere Lösung gefunden!");					
 						return newSolution;
-					else
+					} else
 						return oldSolution;
 				}
 			};

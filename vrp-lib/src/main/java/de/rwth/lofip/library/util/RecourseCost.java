@@ -269,9 +269,13 @@ public class RecourseCost {
 		return tourIndizes;
 	}
 	
-	public double getConvexCombinationOfCostAndNumberRecourseActions() {
-		//DESIGN_TODO: Hier muss ich mir noch genauer überlegen, wie ich die Kombination aus recourseCost und #Aushilfsaktionen machen möchte
-		return recourseCost + (recourseCost / Parameters.getNumberOfDemandScenarioRuns() * numberOfDifferentRecourseActions); 
+	public double getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(double deterministicCostOfCompleteSolution) {
+		double detAndStochCost = deterministicCostOfCompleteSolution + recourseCost;
+		double convexcombination = detAndStochCost + detAndStochCost * Parameters.getWeightForConvexcombination() * (numberOfDifferentRecourseActions / Parameters.getNumberOfDemandScenarioRuns());
+		double convexcombinationWithoutDetCost = convexcombination - deterministicCostOfCompleteSolution;
+		return convexcombinationWithoutDetCost;
+		
+//		return recourseCost + (recourseCost / Parameters.getNumberOfDemandScenarioRuns() * numberOfDifferentRecourseActions); 
 	}
 	
 	// Print Utilities

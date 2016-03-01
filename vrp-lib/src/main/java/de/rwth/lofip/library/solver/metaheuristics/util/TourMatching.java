@@ -78,7 +78,7 @@ public class TourMatching {
 	}
 
 	protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
-			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getConvexCombinationOfCostAndNumberRecourseActions(),e2.getConvexCombinationOfCostAndNumberRecourseActions());		
+			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(oldSolution.getTotalDistanceWithCostFactor()),e2.getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(oldSolution.getTotalDistanceWithCostFactor()));		
 			Collections.sort(listOfRecourseCosts, byCombinationOfCostAndNumberRecourseActions);						
 	}
 	
@@ -134,20 +134,19 @@ public class TourMatching {
 	}
 	
 	protected SolutionGot returnEitherNewOrOldSolutionDependingOnWhichHasLessCost() throws IOException {
-		if (newSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() <= 
-				oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse()) {
-				System.out.println("JUHUU, TourMatching hat bessere Lösung gefunden!");
-				if (Parameters.isPublishSolutionAtEndOfAMTSSearch()) 
-					IOUtils.write("JUHUU, TourMatching hat bessere Lösung gefunden! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(newSolution));
+		if (newSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() <= oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse()) {
+			System.out.println("JUHUU, TourMatching hat bessere Lösung gefunden!");
+			if (Parameters.isPublishSolutionAtEndOfAMTSSearch()) 
+				IOUtils.write("JUHUU, TourMatching hat bessere Lösung gefunden! \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(newSolution));
 			return newSolution;
 		} else {
 			System.out.println("Oh nein, TourMatching hat KEINE bessere Lösung gefunden!");
+			
 			System.out.println("DetCost vor Matching: " + oldSolution.getTotalDistanceWithCostFactor());
 			System.out.println("RecourseCost vor Matching: " + oldSolution.getRecourseCost().getRecourseCost());
 			System.out.println("#diff Rec Act vor Matching: " + oldSolution.getRecourseCost().getNumberOfDifferentRecourseActions());
 			System.out.println("Convexkombination: " + oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse());
-//			System.out.println("Convexkombination: " + oldSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse());
-			
+						
 			System.out.println("DetCost vor Matching: " + newSolution.getTotalDistanceWithCostFactor());
 			System.out.println("RecourseCost nach Matching: " + newSolution.getRecourseCost().getRecourseCost());
 			System.out.println("#diff Rec Act nach Matching: " + newSolution.getRecourseCost().getNumberOfDifferentRecourseActions());
