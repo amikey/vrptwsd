@@ -22,12 +22,12 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	protected int numberOfExperiments = 100;
 	
 	@Test
-	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
+	public void TestAdaptiveMemorySearchOnR2SolomonInstances() throws IOException {			
 //		PrintStream out = new PrintStream(new FileOutputStream(ReadAndWriteUtils.getOutputFile()));
 //		System.setOut(out);
-		Parameters.setOutputDirectory("\\ErgebnisseSolomon100\\");
+		Parameters.setOutputDirectory("\\ErgebnisseSolomon100\\R2\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		problems = ReadAndWriteUtils.readOriginalSolomonProblems();
+		problems = ReadAndWriteUtils.readR2SolomonProblems();
 		processProblems();
 		printProblems();
 	}

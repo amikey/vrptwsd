@@ -58,11 +58,9 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	
 	public SolutionGot getParentSolution() {
 		if (parentSolution == null)
-			throw new RuntimeException("ParentSolution in Got nicht gesetzt. "
-					+ "Vermutlich ist dies ein Problem beim Setup des Unit-Tests");
+			throw new RuntimeException("ParentSolution in Got nicht gesetzt. Vermutlich ist dies ein Problem beim Setup des Unit-Tests");
 		return parentSolution;
 	}
-
 
 	@Override
 	public double getTotalDistanceWithCostFactor() {
@@ -307,6 +305,24 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
 	@Override
 	public double getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse() {
 		throw new RuntimeException("Sollte nicht benutzt werden. Nicht implementiert.");
+	}
+
+	public double getNumberOfParcelsCollectedTheSameDay() {
+		double numberOfParcelsCollctedTheSameDay = 0;
+		for (Tour t : getTours()) {
+			if (!t.isNewTourForRecourseAction())
+				numberOfParcelsCollctedTheSameDay += t.getDemandOnTour();
+		}
+		return numberOfParcelsCollctedTheSameDay;
+	}
+	
+	public double getNumberOfParcelsCollectedNextDay() {
+		double numberOfParcelsCollctedNextDay = 0;
+		for (Tour t : getTours()) {
+			if (t.isNewTourForRecourseAction())
+				numberOfParcelsCollctedNextDay += t.getDemandOnTour();
+		}
+		return numberOfParcelsCollctedNextDay;
 	}
 
 }
