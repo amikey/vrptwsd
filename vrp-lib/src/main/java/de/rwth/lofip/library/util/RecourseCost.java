@@ -26,6 +26,9 @@ public class RecourseCost {
 
 	//Recourse Cost for several Tours is accumulated cost (see constructor)
 	double recourseCost = 0;
+	//Recourse Kosten, die nur Sonderfahrten beinhalten
+	double recourseCostOnlyAdditionalTours = 0;
+	
 	double numberOfAdditionalTours = 0;
 	int numberOfRouteFailures = 0;
 	//numberDifferentRecourseActions for several tours is accumulated number (see constructor)
@@ -43,6 +46,7 @@ public class RecourseCost {
 	public RecourseCost(List<GroupOfTours> gots) {		
 		for (GroupOfTours got : gots) {
 			recourseCost += got.getExpectedRecourse().getRecourseCost();
+			recourseCostOnlyAdditionalTours += got.getExpectedRecourse().getRecourseCostOnlyAdditionalTours();
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
@@ -55,6 +59,7 @@ public class RecourseCost {
 
 	public RecourseCost(GroupOfTours got) {
 		double overallRecourseCost = 0;		
+		double overallRecourseCostOnlyAdditionalTours = 0;
 		int numberOfInfeasibleScenarios = 0;
 		//this is needed to calculate which number of customers is served by which number of vehicles
 		//first entry: customerNo; second entry: set of numbers of tours that customer is served by
@@ -80,13 +85,15 @@ public class RecourseCost {
 				makeSolutionFeasibleAgain(gotClone);
 				//RUNTIME_TODO: entfernen
 				assertThatSolutionIsFeasible(gotClone);
-				overallRecourseCost = calculateRecourseCostOfFeasibleSolution(overallRecourseCost, got, gotClone);
+				overallRecourseCost += calculateRecourseCostOfFeasibleSolution(got, gotClone);
+				overallRecourseCostOnlyAdditionalTours += calculateRecourseCostAdditionalToursOfFeasibleSolution(gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
 				calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(gotClone, customersServedByTours);				
 			} 	
 			calculateNumberOfCollectedParcels(gotClone);
 		}
 		recourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
+		recourseCostOnlyAdditionalTours = overallRecourseCostOnlyAdditionalTours / Parameters.getNumberOfDemandScenarioRuns();
 		calculateAverageNumberOfToursPerDriver(got);
 		calculateNumberOfCustomersServedByNumberOfDifferentTours(customersServedByTours);
 	}
@@ -184,13 +191,19 @@ public class RecourseCost {
 		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 	}
 	
-	private double calculateRecourseCostOfFeasibleSolution(double overallRecourseCost, GroupOfTours got, GroupOfTours gotClone) {
+	private double calculateRecourseCostOfFeasibleSolution(GroupOfTours got, GroupOfTours gotClone) {
 		//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
 		double recourseCostTemp = -got.getTotalDistanceWithCostFactor();
 		double costOfGotClone = gotClone.getTotalDistanceWithCostFactor(); 
 		recourseCostTemp += costOfGotClone;
-		overallRecourseCost += recourseCostTemp;
-		return overallRecourseCost;		
+		return recourseCostTemp;		
+	}
+	
+
+	private double calculateRecourseCostAdditionalToursOfFeasibleSolution(GroupOfTours gotClone) {
+		double recourseCostWithAdditionalTours = gotClone.getTotalDistanceWithCostFactor();
+		recourseCostWithAdditionalTours -= gotClone.getTotalDistanceWithoutCostFactor();
+		return recourseCostWithAdditionalTours;
 	}
 	
 	private void calculateAdditionalNumberOfTours(GroupOfTours gotClone) {
@@ -318,6 +331,10 @@ public class RecourseCost {
 
 	public double getRecourseCost() {
 		return recourseCost;
+	}
+	
+	public double getRecourseCostOnlyAdditionalTours() {
+		return recourseCostOnlyAdditionalTours;
 	}
 	
 	public double getNumberOfAdditionalTours() {

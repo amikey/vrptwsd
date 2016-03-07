@@ -208,6 +208,10 @@ public class Tour implements SolutionElement, Serializable {
         return costFactor * tourDistance;
     }
     
+    public double getTotalDistanceWithoutCostFactor() {
+    	return tourDistance;
+    }
+    
     public int getCustomerSize() {
     	return customers.size();
     } 
