@@ -73,6 +73,16 @@ public class GroupOfTours implements ElementWithTours, SolutionElement, Serializ
         }
         return distance;
     }
+	
+
+	public double getTotalDistanceOfAdditionalToursWithCostFactor() {
+		double distance = 0;
+		for (Tour t : getTours()) {
+			if (t.isNewTourForRecourseAction())
+				distance += t.getTotalDistanceWithCostFactor();
+		}
+		return distance;
+	}
     
 	@Override
     public void removeEmptyToursAndGots() {

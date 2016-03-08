@@ -18,11 +18,24 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
 	@Test
-	public void MinimierungRecourseActionsOnC1R1EigeneModifiedSolomonInstances() throws IOException {
+	public void MinimierungRecourseActionsOnC1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		
-		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\C1R1\\");
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\C1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
+		
+		Parameters.setPercentageOfCapacity(0.9);
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
+	
+	@Test
+	public void MinimierungRecourseActionsOnR1EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
+		problems = problems.subList(9, problems.size());
 		
 		Parameters.setPercentageOfCapacity(0.9);
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
@@ -30,11 +43,24 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	}
 
 	@Test
-	public void MinimierungRecourseActionsOnC2R2EigeneModifiedSolomonInstances() throws IOException {
+	public void MinimierungRecourseActionsOnC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		
-		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\C2R2\\");
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\C2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
+				
+		Parameters.setPercentageOfCapacity(0.9);
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
+	
+	@Test
+	public void MinimierungRecourseActionsOnR2EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\R2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
+		problems = problems.subList(8, problems.size());
 				
 		Parameters.setPercentageOfCapacity(0.9);
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
@@ -45,7 +71,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	public void MinimierungRecourseActionsOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		
-		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\RC1CRC2\\");
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\RC1CRC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
 				
 		Parameters.setPercentageOfCapacity(0.9);

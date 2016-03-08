@@ -207,7 +207,7 @@ public class Tour implements SolutionElement, Serializable {
     public double getTotalDistanceWithCostFactor() {  
         return costFactor * tourDistance;
     }
-    
+        
     public int getCustomerSize() {
     	return customers.size();
     } 
@@ -694,8 +694,6 @@ public class Tour implements SolutionElement, Serializable {
 		return getCostFactor() == 2.0;
 	}
 
-	
-	
 
 
 }

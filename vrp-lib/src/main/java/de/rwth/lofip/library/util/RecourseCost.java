@@ -26,6 +26,8 @@ public class RecourseCost {
 
 	//Recourse Cost for several Tours is accumulated cost (see constructor)
 	double recourseCost = 0;
+	//Recourse Kosten, die nur Sonderfahrten enthalten
+	private double recourseCostOnlyAdditionalTours = 0;
 	double numberOfAdditionalTours = 0;
 	int numberOfRouteFailures = 0;
 	//numberDifferentRecourseActions is always total number
@@ -33,11 +35,12 @@ public class RecourseCost {
 	//first entry: number of vehicles needed to serve these customers //second entry: number of customers that are served by this number of vehicles
 	HashMap<Integer, Integer> toursNeededToServeNumberOfCustomers = new HashMap<Integer, Integer>();
 	//what does this do?
-	private List<Integer> tourIndizes = new ArrayList<Integer>();
+	private List<Integer> tourIndizes = new ArrayList<Integer>();	
 	
 	public RecourseCost(List<GroupOfTours> gots) {		
 		for (GroupOfTours got : gots) {
 			recourseCost += got.getExpectedRecourse().getRecourseCost();
+			recourseCostOnlyAdditionalTours += got.getExpectedRecourse().getRecourseCostOnlyAdditionalTours();
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
@@ -47,6 +50,7 @@ public class RecourseCost {
 		
 	public RecourseCost(GroupOfTours got) {
 		double overallRecourseCost = 0;
+		double overallRecourseCostOnlyAdditionalTours = 0;
 		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
 		int numberOfInfeasibleScenarios = 0;
 		//this is needed to calculate which number of customers is served by which number of vehicles
@@ -72,13 +76,15 @@ public class RecourseCost {
 				assertThatGotContainsNoEmptyTours(gotClone);
 				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);
 				//RUNTIME_TODO: entfernen
-				assertThatSolutionIsFeasible(gotClone);
-				overallRecourseCost = calculateRecourseCostOfFeasibleSolution(overallRecourseCost, got, gotClone);
+				assertThatSolutionIsFeasible(gotClone);				
+				overallRecourseCost += calculateRecourseCostOfFeasibleSolution(got, gotClone);
+				overallRecourseCostOnlyAdditionalTours += calculateRecourseCostAdditionalToursOfFeasibleSolution(gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
 				calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(listOfRecourseActions, gotClone, customersServedByTours);				
 			} 		
 		}
 		recourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();	
+		recourseCostOnlyAdditionalTours = overallRecourseCostOnlyAdditionalTours / Parameters.getNumberOfDemandScenarioRuns();
 		calculateNumberOfCustomersServedByNumberOfDifferentTours(customersServedByTours);
 	}
 
@@ -156,13 +162,16 @@ public class RecourseCost {
 		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
 	}
 	
-	private double calculateRecourseCostOfFeasibleSolution(double overallRecourseCost, GroupOfTours got, GroupOfTours gotClone) {
+	private double calculateRecourseCostOfFeasibleSolution(GroupOfTours got, GroupOfTours gotClone) {
 		//IMPORTANT_TODO: Will ich hier auch zusätzliche Tour mit doppelten Kosten bestrafen? Eigentlich schon, oder?
 		double recourseCostTemp = -got.getTotalDistanceWithCostFactor();
 		double costOfGotClone = gotClone.getTotalDistanceWithCostFactor(); 
 		recourseCostTemp += costOfGotClone;
-		overallRecourseCost += recourseCostTemp;
-		return overallRecourseCost;		
+		return recourseCostTemp;		
+	}
+	
+	private double calculateRecourseCostAdditionalToursOfFeasibleSolution(GroupOfTours gotClone) {
+		return gotClone.getTotalDistanceOfAdditionalToursWithCostFactor();		
 	}
 	
 	private void calculateAdditionalNumberOfTours(GroupOfTours gotClone) {
@@ -246,6 +255,10 @@ public class RecourseCost {
 
 	public double getRecourseCost() {
 		return recourseCost;
+	}
+	
+	public double getRecourseCostOnlyAdditionalTours() {
+		return recourseCostOnlyAdditionalTours;
 	}
 	
 	public double getNumberOfAdditionalTours() {

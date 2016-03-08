@@ -64,7 +64,7 @@ public class Parameters {
 	private static String directory;
 	
 	//Simulation
-	private final static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
+	private static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
 	private static double RELATIVE_STANDARD_DEVIATION = 0.22;
 
 	//Seeds
@@ -421,6 +421,10 @@ public class Parameters {
 
 	public static void setWeightForConvexcombination(double d) {
 		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = d;
+	}
+
+	public static void setNumberOfSimulationRuns(int i) {
+		NUMBER_OF_DEMAND_SCENARIO_RUNS = i;
 	}	
 
 }

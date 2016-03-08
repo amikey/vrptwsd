@@ -201,5 +201,57 @@ public class TestRecourseCost {
 			System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 		}
 	}
+	
+	@Test
+	public void testRecourseCostOnlyAdditionalTours() throws IOException {
+		Parameters.setAllParametersToDefaultValues();
+		Parameters.setRelativeStandardDeviationTo(0.15);
+//		Parameters.setTestingMode(true);
+		Parameters.setMaximalNumberOfToursInGot(2);
+		Parameters.setNumberOfSimulationRuns(1);
+		givenListOfTwoGots();
+		thenRecourseCostOnlyAdditionalToursShouldBeOfCorrectValue();
+	}
+
+	private void thenRecourseCostOnlyAdditionalToursShouldBeOfCorrectValue() throws IOException {
+		for (Customer c : got.getCustomers()) {
+			c.setDemand(c.getDemand()*2);
+			c.setOriginalDemand(c.getOriginalDemand() * 2);
+		}		
+		
+		for (Customer c : got2.getLastTour().getCustomers()) {
+			c.setDemand(c.getDemand()*9);
+			c.setOriginalDemand(c.getOriginalDemand() * 9);
+		}	
+	
+		got.print();
+		RecourseCost rc = new RecourseCost(got);
+		
+		System.out.println(rc.getNumberOfAdditionalTours());
+		System.out.println(rc.getRecourseCost());
+		System.out.println(rc.getRecourseCostOnlyAdditionalTours());
+		
+		SolutionGot solutionCompare = SetUpSolutionFromString.SetUpSolution("( ( 39 88 60 55 68 70 ) ( 69 53 78 73 17 47 98 ) )", ReadAndWriteUtils.readSolomonProblemRC103AsList().get(0));
+		System.out.println(solutionCompare.getTotalDistanceWithCostFactor());
+		
+		SolutionGot solutionCompare2 = SetUpSolutionFromString.SetUpSolution("( ( 39 88 53 60 55 70 ) ( 69 98 78 73 17 47 ) )", ReadAndWriteUtils.readSolomonProblemRC103AsList().get(0));
+		System.out.println(solutionCompare2.getTotalDistanceWithCostFactor());
+		
+		SolutionGot solutionCompareSingleTour = SetUpSolutionFromString.SetUpSolution("( ( 68 ) )", ReadAndWriteUtils.readSolomonProblemRC103AsList().get(0));
+		solutionCompareSingleTour.getTour(0).setCostFactor(2);
+		System.out.println(solutionCompareSingleTour.getTotalDistanceWithCostFactor());
+		
+		double recourseCost = solutionCompare2.getTotalDistanceWithCostFactor() + solutionCompareSingleTour.getTotalDistanceWithCostFactor() - solutionCompare.getTotalDistanceWithCostFactor();
+		System.out.println(recourseCost);
+		
+		double recourseCostWithoutAdditionalTours = solutionCompare2.getTotalDistanceWithCostFactor() - solutionCompare.getTotalDistanceWithCostFactor();
+		System.out.println(recourseCostWithoutAdditionalTours);
+		
+		double recourseCostOnlyAdditionalTours = solutionCompareSingleTour.getTotalDistanceWithCostFactor();
+		System.out.println(recourseCostOnlyAdditionalTours);
+		
+		assertEquals(recourseCost, recourseCostWithoutAdditionalTours + recourseCostOnlyAdditionalTours, 0.0001);
+		assertEquals(40.0, rc.getRecourseCostOnlyAdditionalTours(), 0.0001);
+	}
 
 }

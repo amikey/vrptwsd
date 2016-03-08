@@ -331,6 +331,7 @@ public class ReadAndWriteUtils {
 				+ "Distanz" + ";" 
 				+ "Anzahl Touren" + ";"
 				+ "RecourseCost" +";"
+				+ "RecourseCostOnlyAdditionalTours" +";"
 				+ "Distanz+RecourseCost" + ";"
 				+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
 				+ "Distanz+Convexkombination" + ";"
@@ -350,6 +351,7 @@ public class ReadAndWriteUtils {
 				+ "Distanz" + ";" 
 				+ "Anzahl Touren" + ";"
 				+ "RecourseCost" +";"
+				+ "RecourseCostOnlyAdditionalTours" +";"
 				+ "Distanz+RecourseCost" + ";"
 				+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
 				+ "Distanz+Convexkombination" + ";"
@@ -382,6 +384,7 @@ public class ReadAndWriteUtils {
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours()) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
@@ -403,6 +406,33 @@ public class ReadAndWriteUtils {
 				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
 			}
 	}
+	
+	public static void publishSolutionAtEndOfTabuSearch(ElementWithTours bestOverallSolution, long timeNeeded) throws IOException {
+		if (Parameters.isPublishSolutionAtEndOfTabuSearch())			
+			if (bestOverallSolution instanceof SolutionGot){
+				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
+		
+				IOUtils.write("Lösung am Ende der TS: " + ";" 
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
+					+ bestOverallSolution.getNumberOfTours() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours()) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
+					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
+					+ timeNeeded + ";"
+					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
+					+ bestOverallSolution.getAsTupel() + ";"
+					+ s 
+					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+			} else {
+				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
+			}
+	}
+	
 	
 	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1, long timeNeeded,
 											int initialNumberOfDifferentInitialSolutions, 
@@ -825,32 +855,6 @@ public class ReadAndWriteUtils {
 		bestKnownSolutionVehicleNumbers.add(3);
 		bestKnownSolutionVehicleNumbers.add(3);
 	}
-
-	public static void publishSolutionAtEndOfTabuSearch(ElementWithTours bestOverallSolution, long timeNeeded) throws IOException {
-		if (Parameters.isPublishSolutionAtEndOfTabuSearch())			
-			if (bestOverallSolution instanceof SolutionGot){
-				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
-		
-				IOUtils.write("Lösung am Ende der TS: " + ";" 
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
-					+ bestOverallSolution.getNumberOfTours() + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
-					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
-					+ timeNeeded + ";"
-					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
-					+ bestOverallSolution.getAsTupel() + ";"
-					+ s 
-					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
-			} else {
-				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
-			}
-	}
-	
 
 
 }
