@@ -201,31 +201,5 @@ public class TestRecourseCost {
 			System.out.println("Anzahl Customer, die von " + pair.getKey() + " Vehicles bedient werden: " + pair.getValue());
 		}
 	}
-	
-	@Test
-	public void testPercentageOfParcelsDeliverdTheSameDay() throws IOException {
-		Parameters.setAllParametersToMinimalTestingValues();
-		Parameters.setMaximalNumberOfToursInGot(2);
-		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 20 30 26 23 18 17 ) ( 99 100 95 98 ) ) ( ( 91 88 84 86 90 ) ( 22 24 27 29 21 ) ) ( ( 76 71 70 73 80 ) ( 93 75 ) ) ( ( 51 50 52 47 43 42 48 ) ( 1 97 92 94 3 ) ) ( ( 83 82 85 79 96 ) ( 66 69 68 65 46 41 ) ) ( ( 25 9 11 8 ) ( 5 2 7 4 89 ) ) ( ( 49 55 57 44 45 ) ( 81 78 77 87 ) ) ( ( 15 13 10 ) ( 6 32 36 34 ) ) ( ( 19 16 14 12 ) ( 31 35 37 38 ) ) ( ( 33 39 28 ) ( 67 63 62 ) ) ( ( 54 53 59 40 ) ( 74 72 61 64 ) ) ( ( 56 58 60 ) ) ", ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems().get(0));
-		assertEquals(1.0,solution.getGots().get(0).getExpectedRecourse().getPercentageOfParcelsThatAreCollectedTheSameDay(), 0.0001);
-		System.out.println(solution.getCustomerWithNo(74).getDemand());
-		System.out.println(solution.getGots().get(solution.getGots().size()-1).getNumberOfParcelsCollectedTheSameDay()*100);
-		System.out.println(solution.getGots().get(solution.getGots().size()-1).getExpectedRecourse().getNumberOfParcelsCollectedTheSameDay());
-		System.out.println(solution.getGots().get(solution.getGots().size()-1).getExpectedRecourse().getNumberOfParcelsCollectedNextDay());
-		System.out.println(solution.getGots().get(solution.getGots().size()-1).getExpectedRecourse().getPercentageOfParcelsThatAreCollectedTheSameDay());
-		
-//		System.out.println(solution.getGots().get(solution.getGots().size()-2).getExpectedRecourse().getPercentageOfParcelsThatAreCollectedTheSameDay());
-	}
-	
-	@Test
-	public void testAverageNumberOfToursPerDriver() throws IOException {
-		Parameters.setAllParametersToMinimalTestingValues();
-		Parameters.setMaximalNumberOfToursInGot(2);
-		Parameters.setRecourseActionNumberMinimization(false);
-		
-		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 20 30 26 23 18 17 ) ( 99 100 95 98 ) ) ( ( 91 88 84 86 90 ) ( 22 24 27 29 21 ) ) ( ( 76 71 70 73 80 ) ( 93 75 ) ) ( ( 51 50 52 47 43 42 48 ) ( 1 97 92 94 3 ) ) ( ( 83 82 85 79 96 ) ( 66 69 68 65 46 41 ) ) ( ( 25 9 11 8 ) ( 5 2 7 4 89 ) ) ( ( 49 55 57 44 45 ) ( 81 78 77 87 ) ) ( ( 15 13 10 ) ( 6 32 36 34 ) ) ( ( 19 16 14 12 ) ( 31 35 37 38 ) ) ( ( 33 39 28 ) ( 67 63 62 ) ) ( ( 54 53 59 40 ) ( 74 72 61 64 ) ) ( ( 56 58 60 ) ) ", ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems().get(0));
-		assertEquals(1.833333333, solution.getExpectedRecourseCost().getAverageNumberOfToursPerDriver(), 0.00001);
-
-	}
 
 }

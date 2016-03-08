@@ -28,17 +28,12 @@ public class RecourseCost {
 	double recourseCost = 0;
 	double numberOfAdditionalTours = 0;
 	int numberOfRouteFailures = 0;
-	//numberDifferentRecourseActions for several tours is accumulated number (see constructor)
+	//numberDifferentRecourseActions is always total number
 	double numberOfDifferentRecourseActions = 0;
-	ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
-	double averageNumberOfToursPerDriver;	
 	//first entry: number of vehicles needed to serve these customers //second entry: number of customers that are served by this number of vehicles
 	HashMap<Integer, Integer> toursNeededToServeNumberOfCustomers = new HashMap<Integer, Integer>();
 	//what does this do?
 	private List<Integer> tourIndizes = new ArrayList<Integer>();
-	
-	private double numberOfParcelsCollectedTheSameDay = 0;
-	private double numberOfParcelsCollectedNextDay = 0;
 	
 	public RecourseCost(List<GroupOfTours> gots) {		
 		for (GroupOfTours got : gots) {
@@ -46,15 +41,13 @@ public class RecourseCost {
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
-			numberOfParcelsCollectedTheSameDay += got.getExpectedRecourse().getNumberOfParcelsCollectedTheSameDay();
-			numberOfParcelsCollectedNextDay += got.getExpectedRecourse().getNumberOfParcelsCollectedNextDay();			
 			calculateToursNeededToServeNumberOfCustomers(got);
-		}	
-		calculateAverageNumberOfToursPerDriverInConstructorForSeveralGots(gots);
+		}		
 	}
-
+		
 	public RecourseCost(GroupOfTours got) {
-		double overallRecourseCost = 0;		
+		double overallRecourseCost = 0;
+		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
 		int numberOfInfeasibleScenarios = 0;
 		//this is needed to calculate which number of customers is served by which number of vehicles
 		//first entry: customerNo; second entry: set of numbers of tours that customer is served by
@@ -77,17 +70,15 @@ public class RecourseCost {
 				calculateNumberOfRouteFailures(gotClone);
 				//RUNTIME_TODO: entfernen, braucht O(n) zeit
 				assertThatGotContainsNoEmptyTours(gotClone);
-				makeSolutionFeasibleAgain(gotClone);
+				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);
 				//RUNTIME_TODO: entfernen
 				assertThatSolutionIsFeasible(gotClone);
 				overallRecourseCost = calculateRecourseCostOfFeasibleSolution(overallRecourseCost, got, gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
-				calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(gotClone, customersServedByTours);				
-			} 	
-			calculateNumberOfCollectedParcels(gotClone);
+				calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(listOfRecourseActions, gotClone, customersServedByTours);				
+			} 		
 		}
-		recourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();
-		calculateAverageNumberOfToursPerDriver(got);
+		recourseCost = overallRecourseCost / Parameters.getNumberOfDemandScenarioRuns();	
 		calculateNumberOfCustomersServedByNumberOfDifferentTours(customersServedByTours);
 	}
 
@@ -112,24 +103,21 @@ public class RecourseCost {
 		assertEquals(false, got.isHasEmptyToursThatAreNotForRecourse());
 	}
 	
-	private void makeSolutionFeasibleAgain(GroupOfTours gotClone) {
+	private void makeSolutionFeasibleAgain(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
 		if (Parameters.isRecourseActionNumberMinimization())
-			makeSolutionFeasibleAgainWithRecourseMinimization(gotClone);
+			makeSolutionFeasibleAgainWithRecourseMinimization(gotClone, listOfRecourseActions);
 		else
 			makeSolutionFeasibleAgainWithCostMinimization(gotClone);	
 	}
 		
-	private void makeSolutionFeasibleAgainWithRecourseMinimization(GroupOfTours gotClone) {
-		tryToReuseAlreadySeenRecourseAction(gotClone);
+	private void makeSolutionFeasibleAgainWithRecourseMinimization(GroupOfTours gotClone, ArrayList<GroupOfTours> listOfRecourseActions) {
+		tryToReuseAlreadySeenRecourseAction(gotClone, listOfRecourseActions);
 		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone))
 			//in this case no previous Recourse Actions could be used
-			makeSolutionFeasibleAgainWithCostMinimization(gotClone);		
+			makeSolutionFeasibleAgainWithCostMinimization(gotClone);
 	}
 	
-	private void tryToReuseAlreadySeenRecourseAction(GroupOfTours gotClone) {
-		GroupOfTours gotTempCostMin = gotClone.cloneWithCopyOfTourAndCustomers();
-		makeSolutionFeasibleAgainWithCostMinimization(gotTempCostMin);		
-		
+	private void tryToReuseAlreadySeenRecourseAction(GroupOfTours gotClone,	ArrayList<GroupOfTours> listOfRecourseActions) {
 		Comparator<GroupOfTours> gotByCostComparator = (e1,e2) -> Double.compare(e1.getTotalDistanceWithCostFactor(),e2.getTotalDistanceWithCostFactor());		
 		Collections.sort(listOfRecourseActions, gotByCostComparator);
 		for (GroupOfTours gotTemp : listOfRecourseActions) {
@@ -137,15 +125,8 @@ public class RecourseCost {
 //			if (Parameters.isTestingMode())
 			//RUNTIME_TODO: entfernen
 				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
-			if (ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotTemp))	{
-				gotClone = gotTemp;
-				break;
-			}
-		}
-		if (ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {		
-			System.out.println("Juhuu, TryToReuseAlreadySeenRecourseAction successful");		
-			System.out.println("Used solution: " + gotClone.getAsTupel());
-			System.out.println("Otherwise Solution would have been: " + gotTempCostMin.getAsTupel());
+			gotClone = gotTemp;
+			break;
 		}
 	}
 
@@ -153,7 +134,7 @@ public class RecourseCost {
 		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
 		//create Solution from gotClone for processing with local search    
 		ls.improve(gotClone);
-		assertThatGotCloneHasNoAdditionalTours(gotClone);		
+		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
 		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
 			//got is still demand infeasible -> no feasible solution could be found for demand			
 			gotClone.addEmptyTour();			
@@ -164,15 +145,6 @@ public class RecourseCost {
 			gotClone.addEmptyTour();			
 			ls.improve(gotClone);			    				
 		}		
-	}
-
-	private void assertThatGotCloneHasNoAdditionalTours(GroupOfTours gotClone) {
-		if (gotClone.getNumberOfTours() > Parameters.getMaximalNumberOfToursInGots()) {
-			System.out.println("\n" + gotClone.getAsTupel());
-			System.out.println(gotClone.getNumberOfTours());
-			System.out.println(Parameters.getMaximalNumberOfToursInGots());
-		}
-		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
 	}
 
 	private void assertThatSolutionIsFeasible(GroupOfTours gotClone) {
@@ -198,7 +170,8 @@ public class RecourseCost {
 			numberOfAdditionalTours += (gotClone.getNumberOfTours() - Parameters.getMaximalNumberOfToursInGots());
 	}
 	
-	private void calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(GroupOfTours gotClone, HashMap<Long, HashSet<Integer>> customersServedByTours) {  		
+	private void calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(
+			ArrayList<GroupOfTours> listOfRecourseActions, GroupOfTours gotClone, HashMap<Long, HashSet<Integer>> customersServedByTours) {  		
 		if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
 //			System.out.println("NEW SOLUTION THAT HAS NOT BEEN SEEN: ");
 //			gotClone.print();
@@ -219,24 +192,6 @@ public class RecourseCost {
 			}
 		}    				
 	}
-	
-	private void calculateNumberOfCollectedParcels(GroupOfTours gotClone) {
-		numberOfParcelsCollectedTheSameDay += gotClone.getNumberOfParcelsCollectedTheSameDay();
-		numberOfParcelsCollectedNextDay += gotClone.getNumberOfParcelsCollectedNextDay();
-	}
-	
-	double getNumberOfParcelsCollectedTheSameDay() {
-		return numberOfParcelsCollectedTheSameDay;
-	}
-	
-	double getNumberOfParcelsCollectedNextDay() {
-		return numberOfParcelsCollectedNextDay;
-	}
-	
-	public double getPercentageOfParcelsThatAreCollectedTheSameDay() {
-		double totalNumberOfParcels = numberOfParcelsCollectedTheSameDay + numberOfParcelsCollectedNextDay;
-		return (numberOfParcelsCollectedTheSameDay / totalNumberOfParcels);
-	}
 
 	public boolean isGotAlreadyExistsInRecourseActions(GroupOfTours gotClone, List<GroupOfTours> list) {
 		boolean exists = false;
@@ -248,24 +203,8 @@ public class RecourseCost {
 		}
 		return exists;
 	}
-	
-	private void calculateAverageNumberOfToursPerDriver(GroupOfTours gotOriginal) {
-		//initialise mit Anzahl Touren in Gots
-		double numberOfDifferentTours = gotOriginal.getNumberOfTours();
-		//iteriere durch RecourseActions
-		for (GroupOfTours got : listOfRecourseActions)
-			for (int i = 0; i < gotOriginal.getNumberOfTours(); i++)
-				if (!isTourIsTheSameAsBefore(gotOriginal.getTour(i),got.getTour(i)))
-					numberOfDifferentTours++;
-		//bis hierher wurden alle unterschiedlichen Touren für alle Fahrer aufaddiert
-		averageNumberOfToursPerDriver = numberOfDifferentTours / gotOriginal.getNumberOfTours();
-	}
     
-    private boolean isTourIsTheSameAsBefore(Tour tour, Tour tour2) {
-    	return tour.equals(tour2);
-    }
-
-	private void calculateNumberOfCustomersServedByNumberOfDifferentTours(HashMap<Long, HashSet<Integer>> customersServedByTours) {
+    private void calculateNumberOfCustomersServedByNumberOfDifferentTours(HashMap<Long, HashSet<Integer>> customersServedByTours) {
 		Iterator<Entry<Long, HashSet<Integer>>> it = customersServedByTours.entrySet().iterator();
 	    while (it.hasNext()) {
 	        Entry<Long, HashSet<Integer>> pair = it.next();
@@ -304,17 +243,6 @@ public class RecourseCost {
 	public HashMap<Integer, Integer> getToursNeededToServeNumberOfCustomers() {
 		return toursNeededToServeNumberOfCustomers;
 	}
-	
-	private void calculateAverageNumberOfToursPerDriverInConstructorForSeveralGots(List<GroupOfTours> gots) {
-		averageNumberOfToursPerDriver = 0;
-		for (GroupOfTours got : gots)
-			averageNumberOfToursPerDriver += got.getExpectedRecourse().getAverageNumberOfToursPerDriver();
-		averageNumberOfToursPerDriver = averageNumberOfToursPerDriver / gots.size();		
-	}
-
-	public double getAverageNumberOfToursPerDriver() {
-		return averageNumberOfToursPerDriver;
-	}
 
 	public double getRecourseCost() {
 		return recourseCost;
@@ -323,6 +251,7 @@ public class RecourseCost {
 	public double getNumberOfAdditionalTours() {
 		return numberOfAdditionalTours;
 	}
+
 
 	public int getNumberOfRouteFailures() {
 		return numberOfRouteFailures;
@@ -368,19 +297,6 @@ public class RecourseCost {
 		this.numberOfAdditionalTours = additionalNumberOfTours2;
 		this.numberOfRouteFailures = numberOfRouteFailures2;
 		this.numberOfDifferentRecourseActions = numberOfDifferentRecourseActions2;
-	}
-
-	public String getDifferentRecourseActionsAsString() {
-		String s = "";
-		for (GroupOfTours got : listOfRecourseActions) {
-			s += got.getAsTupel();
-			s += "\n";
-		}
-		return s;			
-	}
-
-	public ArrayList<GroupOfTours> getDifferentRecourseActions() {
-		return listOfRecourseActions;
 	}
 
 		

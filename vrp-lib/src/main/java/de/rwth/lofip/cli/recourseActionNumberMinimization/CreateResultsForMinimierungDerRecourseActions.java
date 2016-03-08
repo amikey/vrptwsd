@@ -21,10 +21,10 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	public void MinimierungRecourseActionsOnC1R1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		
-		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\95ProzentMaxAuslastung\\C1R1\\");
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\C1R1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
 		
-		Parameters.setPercentageOfCapacity(0.95);
+		Parameters.setPercentageOfCapacity(0.9);
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
 	}
@@ -33,10 +33,10 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	public void MinimierungRecourseActionsOnC2R2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		
-		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\95ProzentMaxAuslastung\\C2R2\\");
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\C2R2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
 				
-		Parameters.setPercentageOfCapacity(0.95);
+		Parameters.setPercentageOfCapacity(0.9);
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
 	}
@@ -45,10 +45,10 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	public void MinimierungRecourseActionsOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		
-		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\95ProzentMaxAuslastung\\RC1CRC2\\");
+		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\90ProzentMaxAuslastung\\RC1CRC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
 				
-		Parameters.setPercentageOfCapacity(0.95);
+		Parameters.setPercentageOfCapacity(0.9);
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
 	}

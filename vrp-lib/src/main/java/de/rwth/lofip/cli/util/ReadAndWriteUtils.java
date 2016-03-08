@@ -89,11 +89,6 @@ public class ReadAndWriteUtils {
 		return readSolomonProblems(getInputDirectoryForSolomon100());
 	}
 	
-	public static List<VrpProblem> readR2SolomonProblems() throws IOException {
-		List<VrpProblem> problems = readProblemX("r2","rc2", getInputDirectoryForSolomon100());		
-		return problems;
-	}
-	
 	public static List<VrpProblem> readModifiedSolomonProblems() throws IOException {
 		return readSolomonProblems(getInputDirectoryForModifiedSolomonProblems());
 	}
@@ -342,8 +337,6 @@ public class ReadAndWriteUtils {
 				+ "NumberOfRouteFailures" + ";"
 				+ "NumberOfAdditionalTours" + ";"
 				+ "NumberOfDifferentRecourseActions" + ";"
-				+ "AverageNumberOfToursPerDriver" + ";"
-				+ "PercentageOfParcelsDeliveredTheSameDay" + ";"
 				+ "timeNeeded in ms" + ";"
 				+ "UseOfCapacityInTours" + "; ;"	
 				+ "SolutionAsTupel" + ";" 
@@ -363,8 +356,6 @@ public class ReadAndWriteUtils {
 				+ "NumberOfRouteFailures" + ";"
 				+ "NumberOfAdditionalTours" + ";"
 				+ "NumberOfDifferentRecourseActions" + ";"
-				+ "AverageNumberOfToursPerDriver" + ";"
-				+ "PercentageOfParcelsDeliveredTheSameDay" + ";"
 				+ "timeNeeded in ms" + ";"
 				+ "UseOfCapacityInTours" + "; ;"	
 				+ "BestKnownValue" +";" 
@@ -397,8 +388,6 @@ public class ReadAndWriteUtils {
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getAverageNumberOfToursPerDriver()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getPercentageOfParcelsThatAreCollectedTheSameDay()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
 					
@@ -852,8 +841,6 @@ public class ReadAndWriteUtils {
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getAverageNumberOfToursPerDriver()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getPercentageOfParcelsThatAreCollectedTheSameDay()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
 					+ bestOverallSolution.getAsTupel() + ";"
