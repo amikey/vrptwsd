@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+
 import org.apache.commons.lang3.StringUtils;
 
 import de.rwth.lofip.library.Customer;
@@ -78,6 +81,7 @@ public class VrpUtils {
 					state = ImportFileState.VEHICLE;
 				} else {
 					vrpProblem.setDescription(line);
+					System.out.println("Reading Problem " + line);
 				}
 				break;
 			case VEHICLE:
@@ -116,9 +120,11 @@ public class VrpUtils {
 				String[] split = StringUtils.split(line);
 				Customer customer = new Customer();
 				customer.setCustomerNo(Long.parseLong(split[0]));
+				assertThatNoCustomerWithSameNumberExistsMoreThanOneTime(customer, vrpProblem);
 				customer.setxCoordinate(Double.parseDouble(split[1]));
 				customer.setyCoordinate(Double.parseDouble(split[2]));
 				customer.setDemand(Long.parseLong(split[3]));
+				assertThatDemandIsSmallerThanCapacityOfVehicles(customer, vrpProblem);
 				customer.setOriginalDemand(Long.parseLong(split[3]));
 				customer.setTimeWindowOpen(Long.parseLong(split[4]));
 				customer.setTimeWindowClose(Long.parseLong(split[5]));
@@ -129,7 +135,23 @@ public class VrpUtils {
 		}
 		return vrpProblem;
 	}
+
+	private static void assertThatNoCustomerWithSameNumberExistsMoreThanOneTime(Customer customer, VrpProblem vrpProblem) {
+		boolean existsMoreThanOneTime = false;
+		for (Customer c : vrpProblem.getCustomers()) {
+			if (c.getCustomerNo() == customer.getCustomerNo()) {
+				System.out.println("Customer mit der Nummer " + c.getCustomerNo() + " existiert doppelt");
+				existsMoreThanOneTime = true;
+				break;
+			}			
+		}
+		assertEquals(false, existsMoreThanOneTime);
+	}
 	
+	private static void assertThatDemandIsSmallerThanCapacityOfVehicles(Customer customer, VrpProblem vrpProblem) {
+		assertEquals(true, customer.getDemand() <= vrpProblem.getVehicles().iterator().next().getCapacity());		
+	}
+
 	public static VrpProblem constructVrpProblemFromTour(Tour tour) {
 		VrpProblem vrpProblem = new VrpProblem();
 		vrpProblem.setDescription("Auxiliary vrpProblem for TDP - Intensification Phase");

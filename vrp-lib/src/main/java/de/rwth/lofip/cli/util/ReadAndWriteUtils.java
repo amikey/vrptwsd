@@ -85,6 +85,10 @@ public class ReadAndWriteUtils {
 		return problems;	
 	}
 	
+	public static List<VrpProblem> readPostProblems() throws IOException {
+		return readSolomonProblems(getInputDirectoryForPostProblems());
+	}
+	
 	public static List<VrpProblem> readOriginalSolomonProblems() throws IOException {
 		return readSolomonProblems(getInputDirectoryForSolomon100());
 	}
@@ -129,6 +133,12 @@ public class ReadAndWriteUtils {
 		List<VrpProblem> problems = readProblemX("rc1","X", getInputDirectoryForEigeneModifiedSolomonProblems());
 		problems.addAll(readProblemX("rc2","X", getInputDirectoryForEigeneModifiedSolomonProblems()));
 		return problems;
+	}
+	
+	private static String getInputDirectoryForPostProblems() {
+		String s = System.getenv("USERPROFILE");
+		s += "\\Dropbox\\Uni\\Diss\\Ergebnisse\\^^input\\postProblems\\";	
+		return s;	
 	}
 	
 	private static String getInputDirectoryForEigeneModifiedSolomonProblems() {

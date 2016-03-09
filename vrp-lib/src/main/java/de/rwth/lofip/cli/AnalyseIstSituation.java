@@ -11,6 +11,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class AnalyseIstSituation {
@@ -21,9 +22,23 @@ public class AnalyseIstSituation {
 	@Test
 	public void HundredPercentOfCapacityOnC1R1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
 		
-		Parameters.setOutputDirectory("\\AnalyseIstSituation\\C1R1\\");
+		Parameters.setOutputDirectory("\\AnalyseIstSituation\\MitTourKombination\\C1R1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
+		
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
+	
+	@Test
+	public void HundredPercentOfCapacityOnR1EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
+		
+		Parameters.setOutputDirectory("\\AnalyseIstSituation\\MitTourKombination\\R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
+		problems = problems.subList(9, problems.size());
 		
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
@@ -32,9 +47,23 @@ public class AnalyseIstSituation {
 	@Test
 	public void HundredPercentOfCapacityOnC2R2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
 		
-		Parameters.setOutputDirectory("\\AnalyseIstSituation\\C2R2\\");
+		Parameters.setOutputDirectory("\\AnalyseIstSituation\\MitTourKombination\\C2R2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
+		
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
+	
+	@Test
+	public void HundredPercentOfCapacityOnR2EigeneModifiedSolomonInstances() throws IOException {
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
+		
+		Parameters.setOutputDirectory("\\AnalyseIstSituation\\MitTourKombination\\R2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
+		problems = problems.subList(8, problems.size());
 		
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
@@ -43,8 +72,9 @@ public class AnalyseIstSituation {
 	@Test
 	public void HundredPercentOfCapacityOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
 		
-		Parameters.setOutputDirectory("\\AnalyseIstSituation\\RC1CRC2\\");
+		Parameters.setOutputDirectory("\\AnalyseIstSituation\\MitTourKombination\\RC1CRC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
 		
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
@@ -76,6 +106,15 @@ public class AnalyseIstSituation {
 		for (VrpProblem problem : problems) {
 			AdaptiveMemoryTabuSearch amts = new AdaptiveMemoryTabuSearch();
 			solutions.add(amts.solve(problem));
+		}
+		postProcessProblemsWithTourMatchingAlgorithm();
+	}
+	
+	private void postProcessProblemsWithTourMatchingAlgorithm() throws IOException {
+		for (int i = 0; i < solutions.size(); i++) {
+			SolutionGot solution = solutions.get(i);
+			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);
+			solutions.set(i, solution2);
 		}
 	}
 
