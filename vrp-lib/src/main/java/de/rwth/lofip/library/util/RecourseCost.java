@@ -130,6 +130,11 @@ public class RecourseCost {
 			SimulationUtils.setDemandForCustomersWithDeviation(gotTemp);
 //			if (Parameters.isTestingMode())
 			//RUNTIME_TODO: entfernen
+				if (GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp) == false) {
+					System.out.println("GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp) false.");
+					System.out.println("GotClone: " + gotClone.getAsTupelWithDemand());
+					System.out.println("GotTemp after altering of Demands: " + gotTemp.getAsTupelWithDemand());
+				}
 				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
 			gotClone = gotTemp;
 			break;

@@ -5,8 +5,11 @@ import java.io.IOException;
 import org.junit.Test;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemorySearchWithSolomonInstances{
@@ -15,6 +18,44 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 	
 	@Test
 	public void HundredPercentOfCapacityOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {			
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(1);
+		
+		//Set Output parameters
+//		Parameters.setOutputDirectory("\\TestGetNumberOfCustomersServedByNumberOfDifferentTours\\");
+		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\MitTourenkombination\\RC1CRC2\\");
+		
+		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void HundredPercentOfCapacityOnC1R1EigeneModifiedSolomonInstances() throws IOException {			
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(1);
+		
+		//Set Output parameters
+//		Parameters.setOutputDirectory("\\TestGetNumberOfCustomersServedByNumberOfDifferentTours\\");
+		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\MitTourenkombination\\C1R1\\");
+		
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void HundredPercentOfCapacityOnC2R2EigeneModifiedSolomonInstances() throws IOException {			
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(1);
+		
+		//Set Output parameters
+//		Parameters.setOutputDirectory("\\TestGetNumberOfCustomersServedByNumberOfDifferentTours\\");
+		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\MitTourenkombination\\C2R2\\");
+		
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();		
+		processProblems();
+	}
+	
+	private void setParameters() {
 		//Set Parameters for Scenario
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
@@ -26,17 +67,40 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setNumberOfIntensificationTries(0);
-		
-		//Set Output parameters
-		Parameters.setOutputDirectory("\\TestGetNumberOfCustomersServedByNumberOfDifferentTours\\");
-//		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\RC1CRC2\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
-		
-		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
-		reduceCapacityOfVehiclesInProblems();
-		processProblems();
 	}
+	
+	@Override
+	protected void processProblems() throws IOException {
+		while (!Parameters.isRunningTimeReached())
+			solveProblemsWithAdaptiveMemorySolver();
+	}
+	
+	private void solveProblemsWithAdaptiveMemorySolver() throws IOException {
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
+		for (VrpProblem problem : problems) {
+			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
+			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AdaptiveMemoryTabuSearch();
+			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
+			solutions.add(solution);			
+		}		
+//		postProcessProblemsWithTourMatchingAlgorithm();
+	}	
+	
+	private void postProcessProblemsWithTourMatchingAlgorithm() throws IOException {
+		Parameters.setMaximalNumberOfToursInGot(2);
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
+		for (int i = 0; i < solutions.size(); i++) {
+			SolutionGot solution = solutions.get(i);
+			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);
+			solutions.set(i, solution2);
+			ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(solution2, 0);
+		}
+		Parameters.setMaximalNumberOfToursInGot(1);		
+	}
+	
+	
 //	
 //	@Test
 //	public void HundredPercentOfCapacityOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {			

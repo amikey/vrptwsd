@@ -342,6 +342,7 @@ public class ReadAndWriteUtils {
 				+ "Anzahl Touren" + ";"
 				+ "RecourseCost" +";"
 				+ "RecourseCostOnlyAdditionalTours" +";"
+				+ "GrundkostenMitVerschiedenenTouren" +";"
 				+ "Distanz+RecourseCost" + ";"
 				+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
 				+ "Distanz+Convexkombination" + ";"
@@ -362,6 +363,7 @@ public class ReadAndWriteUtils {
 				+ "Anzahl Touren" + ";"
 				+ "RecourseCost" +";"
 				+ "RecourseCostOnlyAdditionalTours" +";"
+				+ "GrundkostenMitVerschiedenenTouren" +";"
 				+ "Distanz+RecourseCost" + ";"
 				+ "ConvenxkombinationRecourseCost+#RecourseActions" + ";"
 				+ "Distanz+Convexkombination" + ";"
@@ -384,9 +386,13 @@ public class ReadAndWriteUtils {
 				setUpBestKnownSolutionValues();
 				setUpBestKnownSolutionVehicleNumbers();
 				
+				//berechne GrundkostenMitVerschiedenenTouren
+				double basicCostWithDifferentTours = bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()
+														- bestOverallSolution.getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours();
+				
 				//berechne prozentuale abweichung					
-				double deviationObjValue = (bestOverallSolution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) / bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue() * 100;
-				double deviationVehicleNumber = ( (double) bestOverallSolution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue());
+//				double deviationObjValue = (bestOverallSolution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) / bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue() * 100;
+//				double deviationVehicleNumber = ( (double) bestOverallSolution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue());
 				
 				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
 		
@@ -395,6 +401,7 @@ public class ReadAndWriteUtils {
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours()) + ";"
+					+ String.format("%.3f",basicCostWithDifferentTours) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
@@ -404,8 +411,8 @@ public class ReadAndWriteUtils {
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
 					
-					+ String.format("%.3f",bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) + ";"
-					+ bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue() + ";"
+//					+ String.format("%.3f",bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) + ";"
+//					+ bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue() + ";"
 //					+ String.format("%.3f",deviationObjValue) + ";"
 //					+ String.format("%.3f",deviationVehicleNumber) + ";" 
 //					
@@ -422,11 +429,16 @@ public class ReadAndWriteUtils {
 			if (bestOverallSolution instanceof SolutionGot){
 				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
 		
+				//berechne GrundkostenMitVerschiedenenTouren
+				double basicCostWithDifferentTours = bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()
+														- ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours();
+				
 				IOUtils.write("Lösung am Ende der TS: " + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours()) + ";"
+					+ String.format("%.3f",basicCostWithDifferentTours) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"

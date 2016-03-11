@@ -27,6 +27,16 @@ public class TestRecourseCost {
 	List<GroupOfTours> gots = new ArrayList<GroupOfTours>();
 	
 	@Test
+	public void testSimulationInRecourseCost() {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setIsPostScenario(true);
+		Parameters.setRecourseActionNumberMinimization(true);
+		
+		VrpProblem
+		
+	}
+	
+	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {
 		Parameters.setAllParametersToDefaultValues();
 		Parameters.setRelativeStandardDeviationTo(0.15);

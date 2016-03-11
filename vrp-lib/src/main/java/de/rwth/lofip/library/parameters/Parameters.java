@@ -75,6 +75,12 @@ public class Parameters {
 	private static long startingTime;
 	private static long endTime;
 	private static boolean isRunningTimeSet = false;
+
+	//Post Scenario
+	private static boolean isPostScenario = false;
+	//in km per hour
+	private static double averageSpeedOfVehicleInPostScenario = 60;
+	
 	
 	//Getter und Setter	
 	public static void setAllParametersToDefaultValues(){
@@ -102,6 +108,7 @@ public class Parameters {
 		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = 1;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.22;
+		isPostScenario = false;
 		
 		seedI1 = 3000;
 		seedGI = 3000;
@@ -135,6 +142,7 @@ public class Parameters {
 		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = 1;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.22;
+		isPostScenario = false;
 		
 		seedI1 = 3000;
 		seedGI = 3000;
@@ -169,6 +177,7 @@ public class Parameters {
 		weightForConvexcombinationOfDetPlusStochCostAndNumberOfRecActions = 1;
 		percentageOfCapacity = 1;
 		RELATIVE_STANDARD_DEVIATION = 0.22;
+		isPostScenario = false;
 		
 		seedI1 = 3000;
 		seedGI = 3000;
@@ -425,6 +434,20 @@ public class Parameters {
 
 	public static void setNumberOfSimulationRuns(int i) {
 		NUMBER_OF_DEMAND_SCENARIO_RUNS = i;
+	}
+
+	public static boolean isPostScenario() {
+		return isPostScenario;
 	}	
+	
+	public static void setIsPostScenario(boolean b) {
+		isPostScenario = b;
+	}
+
+	public static double getAverageSpeedOfVehicle() {
+		return averageSpeedOfVehicleInPostScenario;
+	}
+	
+	
 
 }

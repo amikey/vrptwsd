@@ -1,5 +1,6 @@
 package de.rwth.lofip.library;
 
+import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.CustomerInTour;
 
 /**
@@ -69,6 +70,23 @@ public class Edge {
 	 * between the two points.
 	 */
 	private void recalculateLength() {
+		if (Parameters.isPostScenario()) {
+			recalculateLengthForPostScenario();
+		} else {
+			recalculateLengthWithEuclideanDistance();
+		}
+	}
+
+	private void recalculateLengthForPostScenario() {
+		double lengthInMeter = recalculateLengthWithEuclideanDistance();
+		double lengthInKilometer = lengthInMeter/1000;
+		double timeInHours = lengthInKilometer / Parameters.getAverageSpeedOfVehicle();
+		double timeInSeconds = timeInHours * 3600;
+		double timeInSecondsIncludingUmwegefaktor = timeInSeconds * (1.414213562);
+		length = timeInSecondsIncludingUmwegefaktor;
+	}
+
+	private double recalculateLengthWithEuclideanDistance() {
 		if (pointOne != null && pointTwo != null) {
 			double xCoordinatePoint1 = pointOne.getxCoordinate();
 			double xCoordinatePoint2 = pointTwo.getxCoordinate();
@@ -81,6 +99,7 @@ public class Edge {
 //			length = Double.MAX_VALUE;
 			length = 0;
 		}
+		return length;
 	}
 
 	public void setLength(double length) {
