@@ -135,9 +135,11 @@ public class RecourseCost {
 					System.out.println("GotClone: " + gotClone.getAsTupelWithDemand());
 					System.out.println("GotTemp after altering of Demands: " + gotTemp.getAsTupelWithDemand());
 				}
-				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));
-			gotClone = gotTemp;
-			break;
+				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));	
+			if (ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotTemp)) {
+				gotClone = gotTemp;
+				break;
+			}
 		}
 	}
 

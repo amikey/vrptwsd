@@ -26,15 +26,15 @@ public class TestRecourseCost {
 	private GroupOfTours got2;
 	List<GroupOfTours> gots = new ArrayList<GroupOfTours>();
 	
-	@Test
-	public void testSimulationInRecourseCost() {
-		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setIsPostScenario(true);
-		Parameters.setRecourseActionNumberMinimization(true);
-		
-		VrpProblem
-		
-	}
+//	@Test
+//	public void testSimulationInRecourseCost() {
+//		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+//		Parameters.setIsPostScenario(true);
+//		Parameters.setRecourseActionNumberMinimization(true);
+//		
+//		VrpProblem
+//		
+//	}
 	
 	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {
