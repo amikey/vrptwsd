@@ -9,6 +9,8 @@ import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 
 public class PrintUtils {
 	
@@ -36,6 +38,14 @@ public class PrintUtils {
 		}
 		s += "\n";
 		IOUtils.write(s, outputStream);
+	}
+	
+	public static void printListOfVehicleCapacities(ElementWithTours ewt) {
+		String s = "Vehicle Capacities: ";
+		for (Tour t : ewt.getTours()) {
+			s += t.getVehicle().getCapacity() + " ";
+		}
+		System.out.println(s);
 	}
 
 }

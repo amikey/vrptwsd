@@ -59,14 +59,14 @@ public class RecourseCost {
 		
 		SimulationUtils.resetSeed();		
 		initialiseCustomersServedByTours(customersServedByTours, got);		
-		
+
 		//run scenarios
-		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {					
-			GroupOfTours gotClone = got.cloneWithCopyOfTourAndCustomers();
+		for (int i = 1; i <= Parameters.getNumberOfDemandScenarioRuns(); i++) {		
+			GroupOfTours gotClone = got.cloneWithCopyOfTourAndCustomers();		
+			SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);	
 			SimulationUtils.generateDemandsForNextScenario();
 			SimulationUtils.setDemandForCustomersWithDeviation(gotClone);
-			    			
-			SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);
+
 			if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {
 				numberOfInfeasibleScenarios++;
 //				System.out.println("Solution is infeasible after altering demands: " + numberOfInfeasibleScenarios);
@@ -130,11 +130,6 @@ public class RecourseCost {
 			SimulationUtils.setDemandForCustomersWithDeviation(gotTemp);
 //			if (Parameters.isTestingMode())
 			//RUNTIME_TODO: entfernen
-				if (GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp) == false) {
-					System.out.println("GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp) false.");
-					System.out.println("GotClone: " + gotClone.getAsTupelWithDemand());
-					System.out.println("GotTemp after altering of Demands: " + gotTemp.getAsTupelWithDemand());
-				}
 				assertEquals(true, GotUtils.isCustomersInGotsHaveTheSameDemands(gotClone, gotTemp));	
 			if (ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotTemp)) {
 				gotClone = gotTemp;

@@ -26,15 +26,23 @@ public class TestRecourseCost {
 	private GroupOfTours got2;
 	List<GroupOfTours> gots = new ArrayList<GroupOfTours>();
 	
-//	@Test
-//	public void testSimulationInRecourseCost() {
-//		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-//		Parameters.setIsPostScenario(true);
-//		Parameters.setRecourseActionNumberMinimization(true);
-//		
-//		VrpProblem
-//		
-//	}
+	@Test
+	public void testSimulationInRecourseCost() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setIsPostScenario(true);
+		Parameters.setRecourseActionNumberMinimization(true);
+		
+		got = SetUpSolutionFromString.SetUpSolution("( ( 77717 691815 673255 ) ( 1176972 709397 960237 ) ) ", ReadAndWriteUtils.readPostProblems().get(0)).getLastGot();
+		got2 = SetUpSolutionFromString.SetUpSolution("( ( 1176972 709397 960237 673255 ) ( 77717 691815 ) ) ", ReadAndWriteUtils.readPostProblems().get(0)).getLastGot();
+		
+		SimulationUtils.setSeed(6);
+		SimulationUtils.setDemandForCustomersWithDeviation(got);
+		System.out.println(got.getAsTupelWithDemand());
+		 
+		SimulationUtils.setDemandForCustomersWithDeviation(got2);
+		System.out.println(got2.getAsTupelWithDemand());
+		
+	}
 	
 	@Test
 	public void testRecourseCostOfModifiedC101Solution() throws IOException {

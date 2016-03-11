@@ -67,5 +67,13 @@ public class SimulationUtils {
 		for (Tour t : gotClone.getTours())
 			t.getVehicle().setCapacity(gotClone.getParentSolution().getVrpProblem().getOriginalCapacity());		
 	}
+
+	public static int getSeed() {
+		return seed;
+	}
+
+	public static void setSeed(int i) {
+		seed = i;
+	}
 	
 }
