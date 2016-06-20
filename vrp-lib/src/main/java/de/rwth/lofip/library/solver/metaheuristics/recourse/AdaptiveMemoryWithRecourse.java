@@ -3,7 +3,7 @@ package de.rwth.lofip.library.solver.metaheuristics.recourse;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.util.AdaptiveMemory;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 
 public class AdaptiveMemoryWithRecourse extends AdaptiveMemory {
 	
@@ -17,7 +17,7 @@ public class AdaptiveMemoryWithRecourse extends AdaptiveMemory {
 	
 	@Override
 	protected void rematchToursAccordingToRecourseCost() {
-		currentNewSolution = new TourMatching().matchToursToGots(currentNewSolution);
+		currentNewSolution = new TourMatchingWithNumberOfRecourseActions().matchToursToGots(currentNewSolution);
 	}
 }
 

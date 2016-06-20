@@ -33,10 +33,6 @@ public class ReadAndWriteUtils {
 	private static List<Double> bestKnownSolutionValues = new LinkedList<Double>();
 	private static List<Integer> bestKnownSolutionVehicleNumbers = new LinkedList<Integer>();	
 	
-	public static List<VrpProblem> readEigeneModifiedSolomonProblems() throws IOException {
-		return readSolomonProblems(getInputDirectoryForEigeneModifiedSolomonProblems());
-	}
-	
 	public static List<VrpProblem> readSolomonProblems(String inputDir) throws IOException {
 		List<VrpProblem> problems = new LinkedList<VrpProblem>();
 		File dir = new File(inputDir);		
@@ -91,6 +87,10 @@ public class ReadAndWriteUtils {
 	
 	public static List<VrpProblem> readOriginalSolomonProblems() throws IOException {
 		return readSolomonProblems(getInputDirectoryForSolomon100());
+	}
+	
+	public static List<VrpProblem> readEigeneModifiedSolomonProblems() throws IOException {
+		return readSolomonProblems(getInputDirectoryForEigeneModifiedSolomonProblems());
 	}
 	
 	public static List<VrpProblem> readModifiedSolomonProblems() throws IOException {

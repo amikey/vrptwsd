@@ -21,7 +21,7 @@ public class TestTourMatching {
 	
 	@Test
 	public void testToursThatAreUsedInRecourseCostAreAlreadyAssignedToGots() {
-		TourMatching tm = new TourMatching();
+		TourMatchingWithNumberOfRecourseActions tm = new TourMatchingWithNumberOfRecourseActions();
 		List<Integer> usedIndizes = new ArrayList<Integer>();
 		usedIndizes.add(1);
 		usedIndizes.add(2);
@@ -70,11 +70,11 @@ public class TestTourMatching {
 	}
 	
 	private void whenMatchingToursWithConvexcombination() throws IOException {
-		solution = new TourMatching().matchToursToGots(solution);		
+		solution = new TourMatchingWithNumberOfRecourseActions().matchToursToGots(solution);		
 	}
 	
 	private void whenMatchingToursOnlyWithRecourseCost() throws IOException {
-		TourMatching tm = new TourMatching(){
+		TourMatchingWithNumberOfRecourseActions tm = new TourMatchingWithNumberOfRecourseActions(){
 				@Override
 				protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
 					Comparator<RecourseCost> byRecourseCost = (e1,e2) -> Double.compare(e1.getRecourseCost(),e2.getRecourseCost());		

@@ -343,7 +343,7 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 		        s += ") ";
 	        }
 	        s += "; total: ( " + vrpProblem.getTotalDemandOfAllCustomers() + ":" + getNumberOfTours()*getLastTour().getVehicle().getCapacity() + 
-	        		") -> " + vrpProblem.getTotalDemandOfAllCustomers()/(getNumberOfTours()*getLastTour().getVehicle().getCapacity());
+	        		") -> ;" + String.format("%.3f", vrpProblem.getTotalDemandOfAllCustomers()/(getNumberOfTours()*getLastTour().getVehicle().getCapacity()));
 	        return s;
 		}
 		

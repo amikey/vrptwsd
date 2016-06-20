@@ -9,7 +9,7 @@ import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooListAndRecourse;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 import de.rwth.lofip.library.util.RecourseCost;
 import de.rwth.lofip.library.util.math.MathUtils;
 
@@ -35,15 +35,15 @@ public class TabuSearchWithRecourse extends TabuSearchForElementWithTours {
 	@Override
 	protected void tryToImproveSolutionWithRematchingPhaseHook() throws IOException {
 		if (isRematchingPhaseTurn()) {
-			TourMatching tm = getTourMatching();
+			TourMatchingWithNumberOfRecourseActions tm = getTourMatching();
 			solution = tm.matchToursToGots((SolutionGot) solution);
 			iterationsWithoutRematching = 0;
 		} else 
 			iterationsWithoutRematching++;
 	}
 	
-	protected TourMatching getTourMatching() {
-		return new TourMatching(){
+	protected TourMatchingWithNumberOfRecourseActions getTourMatching() {
+		return new TourMatchingWithNumberOfRecourseActions(){
 						@Override
 						protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
 							Comparator<RecourseCost> byRecourseCost = (e1,e2) -> Double.compare(e1.getRecourseCost(),e2.getRecourseCost());		

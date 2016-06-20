@@ -12,7 +12,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 
 public class RunAdaptiveMemorySearchWithSolomonInstances {
 
@@ -264,7 +264,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	private void postProcessProblemsWithTourMatchingAlgorithm() throws IOException {
 		for (int i = 0; i < solutions.size(); i++) {
 			SolutionGot solution = solutions.get(i);
-			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);
+			SolutionGot solution2 = new TourMatchingWithNumberOfRecourseActions().matchToursToGots(solution);
 			solutions.set(i, solution2);
 		}
 	}

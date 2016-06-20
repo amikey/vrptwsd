@@ -35,12 +35,38 @@ public class CreateResultsForPostProblems {
 	}
 	
 	@Test
+	public void CreateResultsForIstSituationMitTourkombination() throws IOException {
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
+		Parameters.setPercentageOfCapacity(0.8);
+		Parameters.setIsPostScenario(true);
+		
+		Parameters.setOutputDirectory("\\PostSzenarien\\IstSituation\\MitTourkombination\\");
+		problems = ReadAndWriteUtils.readPostProblems();
+		
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblemsWithDeterministicSolver();
+	}
+	
+	@Test
 	public void HundredPercentOfCapacity() throws IOException {			
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(1);
 		Parameters.setIsPostScenario(true);
 		
 		Parameters.setOutputDirectory("\\PostSzenarien\\100%Auslastung\\");
+		
+		problems = ReadAndWriteUtils.readPostProblems();		
+		processProblemsWithDeterministicSolver();
+	}
+	
+	@Test
+	public void HundredPercentOfCapacityMitTourkombination() throws IOException {			
+		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(2);
+		Parameters.setIsPostScenario(true);
+		
+		Parameters.setOutputDirectory("\\PostSzenarien\\100%Auslastung\\MitTourkombination\\");
 		
 		problems = ReadAndWriteUtils.readPostProblems();		
 		processProblemsWithDeterministicSolver();
@@ -67,7 +93,8 @@ public class CreateResultsForPostProblems {
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\PostSzenarien\\95ProzentAuslastungMinAnzRecourseActions\\");		
 		
-		problems = ReadAndWriteUtils.readPostProblems();		
+		problems = ReadAndWriteUtils.readPostProblems();	
+		problems = problems.subList(problems.size()-2, problems.size());
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblemsWithStochasticAnzRecActMinSolver();
 	}
@@ -80,6 +107,20 @@ public class CreateResultsForPostProblems {
 		
 		//Set Output parameters
 		Parameters.setOutputDirectory("\\PostSzenarien\\90ProzentAuslastungMinAnzRecourseActions\\");		
+		
+		problems = ReadAndWriteUtils.readPostProblems();	
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblemsWithStochasticAnzRecActMinSolver();
+	}
+	
+	@Test
+	public void G_2Equals1() throws IOException {			
+		setParameters();
+		Parameters.setPercentageOfCapacity(0.85);
+		Parameters.setIsPostScenario(true);
+		
+		//Set Output parameters
+		Parameters.setOutputDirectory("\\PostSzenarien\\85ProzentAuslastungMinAnzRecourseActions\\");		
 		
 		problems = ReadAndWriteUtils.readPostProblems();	
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);

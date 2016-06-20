@@ -14,7 +14,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.util.RecourseCost;
 
-public class TourMatching {
+public class TourMatchingWithNumberOfRecourseActions {
 	
 	protected SolutionGot newSolution;
 	protected SolutionGot oldSolution;
@@ -26,6 +26,9 @@ public class TourMatching {
 	
 	//this rematches tours to gots such that recourse cost are minimized (but only with a greedy procedure)
 	public SolutionGot matchToursToGots (SolutionGot solution) throws IOException {
+		if (Parameters.getMaximalNumberOfToursInGots() != 2)
+			throw new RuntimeException("Tourmatching soll durchgeführt werden, obwohl maximale Anzahl an Touren in Got " + Parameters.getMaximalNumberOfToursInGots() + " ist");
+		
 		initialiseFields(solution);    
 		calculateRecourseCostsBetweenTours();
 		findCostMinimalMatchingForToursWithGreedy();

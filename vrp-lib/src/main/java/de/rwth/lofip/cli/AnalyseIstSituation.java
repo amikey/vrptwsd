@@ -11,16 +11,16 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class AnalyseIstSituation {
 	
-	private List<VrpProblem> problems = new ArrayList<VrpProblem>();
+	protected List<VrpProblem> problems = new ArrayList<VrpProblem>();
 	private List<SolutionGot> solutions = new ArrayList<SolutionGot>();
 
 	@Test
-	public void HundredPercentOfCapacityOnC1R1EigeneModifiedSolomonInstances() throws IOException {
+	public void EightyPercentOfCapacityOnC1R1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(2);
 		
@@ -32,7 +32,7 @@ public class AnalyseIstSituation {
 	}
 	
 	@Test
-	public void HundredPercentOfCapacityOnR1EigeneModifiedSolomonInstances() throws IOException {
+	public void EightyPercentOfCapacityOnR1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(2);
 		
@@ -45,7 +45,7 @@ public class AnalyseIstSituation {
 	}
 
 	@Test
-	public void HundredPercentOfCapacityOnC2R2EigeneModifiedSolomonInstances() throws IOException {
+	public void EightyPercentOfCapacityOnC2R2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(2);
 		
@@ -57,7 +57,7 @@ public class AnalyseIstSituation {
 	}
 	
 	@Test
-	public void HundredPercentOfCapacityOnR2EigeneModifiedSolomonInstances() throws IOException {
+	public void EightyPercentOfCapacityOnR2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(2);
 		
@@ -70,7 +70,7 @@ public class AnalyseIstSituation {
 	}
 	
 	@Test
-	public void HundredPercentOfCapacityOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
+	public void EightyPercentOfCapacityOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(2);
 		
@@ -81,7 +81,7 @@ public class AnalyseIstSituation {
 		processProblems();
 	}
 
-	private void setParameters() {
+	protected void setParameters() {
 		//Set Parameters for Scenario
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
@@ -96,7 +96,7 @@ public class AnalyseIstSituation {
 	}
 	
 
-	private void processProblems() throws IOException {
+	protected void processProblems() throws IOException {
 		while (!Parameters.isRunningTimeReached())
 			solveProblemsWithAdaptiveMemorySolver();
 	}
@@ -107,15 +107,6 @@ public class AnalyseIstSituation {
 			AdaptiveMemoryTabuSearch amts = new AdaptiveMemoryTabuSearch();
 			solutions.add(amts.solve(problem));
 		}
-		postProcessProblemsWithTourMatchingAlgorithm();
 	}
 	
-	private void postProcessProblemsWithTourMatchingAlgorithm() throws IOException {
-		for (int i = 0; i < solutions.size(); i++) {
-			SolutionGot solution = solutions.get(i);
-			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);
-			solutions.set(i, solution2);
-		}
-	}
-
 }

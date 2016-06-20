@@ -3,7 +3,7 @@ package de.rwth.lofip.library.solver.metaheuristics.recourse.actionNumberMinimiz
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseActions;
 import de.rwth.lofip.library.solver.metaheuristics.recourse.TabuSearchWithRecourse;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class TSwithRecourseActionNumberMinimization extends TabuSearchWithRecourse {
@@ -25,7 +25,7 @@ public class TSwithRecourseActionNumberMinimization extends TabuSearchWithRecour
 	}
 
 	@Override
-	protected TourMatching getTourMatching() {
-		return new TourMatching();
+	protected TourMatchingWithNumberOfRecourseActions getTourMatching() {
+		return new TourMatchingWithNumberOfRecourseActions();
 	}
 }
