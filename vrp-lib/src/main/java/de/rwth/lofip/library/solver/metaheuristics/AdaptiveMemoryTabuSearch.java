@@ -108,9 +108,6 @@ public class AdaptiveMemoryTabuSearch {
 				System.out.println("Initialising AM " + i);
 				RandomI1Solver initialSolver = new RandomI1Solver();
 				solution = initialSolver.solve(vrpProblem);
-				//TODO: Ausgabe entfernen
-				System.out.println(solution.getAsTupel());
-				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours());
 				TabuSearchForElementWithTours tabuSearch = getTS();
 				solution = (SolutionGot) tabuSearch.improve(solution);
 				adaptiveMemory.addTours(solution);

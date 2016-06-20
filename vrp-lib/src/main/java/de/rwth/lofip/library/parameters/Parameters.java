@@ -447,6 +447,10 @@ public class Parameters {
 	public static double getAverageSpeedOfVehicle() {
 		return averageSpeedOfVehicleInPostScenario;
 	}
+
+	public static void setNumberOfIterationsWithoutRematching(int i) {
+		numberOfIterationsWithoutRematching = i;
+	}
 	
 	
 

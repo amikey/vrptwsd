@@ -36,15 +36,15 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(),bestOverallSolution.getTotalDistanceWithCostFactor())
 					&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
 						return true;
-				} 
+				}
+			if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours()) {				
+				return true;
+			}
 		} else {			
-			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndRecourse(),bestOverallSolution.getTotalDistanceWithCostFactorAndRecourse())
-				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
+			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndRecourse(),bestOverallSolution.getTotalDistanceWithCostFactorAndRecourse())) {
+//				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
 					return true;
 			}
-		}
-		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours()) {				
-			return true;
 		}
 		return false;
 	}

@@ -24,11 +24,11 @@ public class TabuSearchWithRecourse extends TabuSearchForElementWithTours {
 	
 	@Override
 	protected boolean isNewSolutionIsNewBestOverallSolution() {
-		if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndRecourse(), bestOverallSolution.getTotalDistanceWithCostFactorAndRecourse())
-				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
+		if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndRecourse(), bestOverallSolution.getTotalDistanceWithCostFactorAndRecourse()))
+//				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
 			return true;
-		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
-			return true;
+//		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
+//			return true;
 		return false;	
 	}
 	

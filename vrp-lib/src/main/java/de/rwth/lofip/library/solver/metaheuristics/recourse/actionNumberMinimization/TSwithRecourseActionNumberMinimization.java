@@ -16,11 +16,11 @@ public class TSwithRecourseActionNumberMinimization extends TabuSearchWithRecour
 	@Override
 	protected boolean isNewSolutionIsNewBestOverallSolution() {
 		if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse(),
-				bestOverallSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse())
-				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
+				bestOverallSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse()))
+//				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours())
 			return true;
-		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
-			return true;
+//		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours())
+//			return true;
 		return false;	
 	}
 

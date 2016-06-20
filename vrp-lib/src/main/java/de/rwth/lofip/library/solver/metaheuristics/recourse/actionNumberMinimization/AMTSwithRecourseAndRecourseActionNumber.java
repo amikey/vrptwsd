@@ -41,15 +41,14 @@ public class AMTSwithRecourseAndRecourseActionNumber extends AdaptiveMemoryTabuS
 			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactor(),bestOverallSolution.getTotalDistanceWithCostFactor())
 					&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
 						return true;
-				} 
-		} else {			
-			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse(),bestOverallSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse())
-				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
-					return true;
+				}
+			if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours()) {				
+				return true;
 			}
-		}
-		if (solution.getNumberOfTours() < bestOverallSolution.getNumberOfTours()) {				
-			return true;
+		} else {			
+			if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse(),bestOverallSolution.getTotalDistanceWithCostFactorAndConvexcombinationOfRecourse()))
+//				&& solution.getNumberOfTours() <= bestOverallSolution.getNumberOfTours()) {				
+					return true;				
 		}
 		return false;
 	}

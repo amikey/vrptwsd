@@ -40,8 +40,7 @@ public class SetUpSolutionFromString {
 					inGot = false;
 				else
 					throw new RuntimeException("Input String not valid (more ')'s than '('s");
-			} else if (!split[i].equals("0")) {
-				System.out.println(split[i]);
+			} else if (!split[i].equals("0")) {				
 				Customer customer = problem.getCustomerWithCustomerNo(Long.parseLong(split[i]));
 				tour.addCustomer(customer);
 			}		
