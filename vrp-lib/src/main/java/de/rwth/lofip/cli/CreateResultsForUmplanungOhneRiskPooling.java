@@ -9,7 +9,7 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatching;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 import de.rwth.lofip.library.util.VrpUtils;
 
 public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemorySearchWithSolomonInstances{
@@ -38,7 +38,7 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 //		Parameters.setOutputDirectory("\\TestGetNumberOfCustomersServedByNumberOfDifferentTours\\");
 		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\MitTourenkombination\\C1R1\\");
 		
-		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();		
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
 		processProblems();
 	}
 	
@@ -46,12 +46,14 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 	public void HundredPercentOfCapacityOnC2R2EigeneModifiedSolomonInstances() throws IOException {			
 		setParameters();
 		Parameters.setMaximalNumberOfToursInGot(1);
+		Parameters.setPercentageOfCapacity(0.8);
 		
 		//Set Output parameters
-//		Parameters.setOutputDirectory("\\TestGetNumberOfCustomersServedByNumberOfDifferentTours\\");
-		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\MitTourenkombination\\C2R2\\");
+		Parameters.setOutputDirectory("\\TestVehicleCapacityReduction\\");
+//		Parameters.setOutputDirectory("\\100ProzentAuslastungModifizierteInstanzen\\MitTourenkombination\\C2R2\\");
 		
-		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();		
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
+		reduceCapacityOfVehiclesInProblems();
 		processProblems();
 	}
 	
@@ -93,7 +95,7 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
 		for (int i = 0; i < solutions.size(); i++) {
 			SolutionGot solution = solutions.get(i);
-			SolutionGot solution2 = new TourMatching().matchToursToGots(solution);
+			SolutionGot solution2 = new TourMatchingWithNumberOfRecourseActions().matchToursToGots(solution);
 			solutions.set(i, solution2);
 			ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(solution2, 0);
 		}
