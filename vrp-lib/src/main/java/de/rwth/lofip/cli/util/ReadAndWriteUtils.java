@@ -370,6 +370,7 @@ public class ReadAndWriteUtils {
 				+ "NumberOfRouteFailures" + ";"
 				+ "NumberOfAdditionalTours" + ";"
 				+ "NumberOfAdditionalToursPerDay"
+				+ "NumberOfDifferentToursBasicVehicles" + ";"
 				+ "NumberOfDifferentRecourseActions" + ";"
 				+ "timeNeeded in ms" + ";"
 				+ "UseOfCapacityInTours" + "; ;"
@@ -419,6 +420,8 @@ public class ReadAndWriteUtils {
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
 					//numberOfAdditionalToursPerDay
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns()) + ";"
+					//numberOfDifferentToursForBasicVehicles
+					+ String.format("%.3f", ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentTours()) + ";" 
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"

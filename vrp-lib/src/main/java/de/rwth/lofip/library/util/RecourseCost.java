@@ -32,6 +32,9 @@ public class RecourseCost {
 	int numberOfRouteFailures = 0;
 	//numberDifferentRecourseActions is always total number
 	double numberOfDifferentRecourseActions = 0;
+	//numberOfDifferentToursOfBasicVehicles
+	double numberOfDifferentTours; //number of different tours for all basic vehicles
+	
 	//first entry: number of vehicles needed to serve these customers //second entry: number of customers that are served by this number of vehicles
 	HashMap<Integer, Integer> toursNeededToServeNumberOfCustomers = new HashMap<Integer, Integer>();
 	//what does this do?
@@ -44,14 +47,17 @@ public class RecourseCost {
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
+			numberOfDifferentTours += got.getExpectedRecourse().getNumberOfDifferentTours();
 			calculateToursNeededToServeNumberOfCustomers(got);
 		}		
 	}
-		
+
 	public RecourseCost(GroupOfTours got) {
 		double overallRecourseCost = 0;
 		double overallRecourseCostOnlyAdditionalTours = 0;
 		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
+		ArrayList<Tour> listOfDifferentTours = new ArrayList<Tour>(got.getTours());
+		numberOfDifferentTours = listOfDifferentTours.size();
 		int numberOfInfeasibleScenarios = 0;
 		//this is needed to calculate which number of customers is served by which number of vehicles
 		//first entry: customerNo; second entry: set of numbers of tours that customer is served by
@@ -80,6 +86,7 @@ public class RecourseCost {
 				overallRecourseCost += calculateRecourseCostOfFeasibleSolution(got, gotClone);
 				overallRecourseCostOnlyAdditionalTours += calculateRecourseCostAdditionalToursOfFeasibleSolution(gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
+				calculateNumberOfDifferentRecourseTours(listOfDifferentTours, gotClone);
 				calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(listOfRecourseActions, gotClone, customersServedByTours);				
 			} 		
 		}
@@ -181,6 +188,26 @@ public class RecourseCost {
 			numberOfAdditionalTours += (gotClone.getNumberOfTours() - Parameters.getMaximalNumberOfToursInGots());
 	}
 	
+	private void calculateNumberOfDifferentRecourseTours(ArrayList<Tour> listOfDifferentRecourseTours, GroupOfTours gotClone) {
+		for (Tour t : gotClone.getTours()) 
+			if (!t.isNewTourForRecourseAction()) 
+				if (!isTourAlreadyExistsInListOfTours(t, listOfDifferentRecourseTours)) {
+					numberOfDifferentTours++;
+					listOfDifferentRecourseTours.add(t);
+				}
+	}
+	
+	private boolean isTourAlreadyExistsInListOfTours(Tour t, ArrayList<Tour> list) {
+		boolean exists = false;
+		for (Tour tour : list) {
+			if (tour.equals(t)) {
+				exists = true;
+				break;
+			}			
+		}
+		return exists;
+	}
+	
 	private void calculateNumberOfDifferentRecourseActionsAndUpdateCustomersServedByTours(
 			ArrayList<GroupOfTours> listOfRecourseActions, GroupOfTours gotClone, HashMap<Long, HashSet<Integer>> customersServedByTours) {  		
 		if (!isGotAlreadyExistsInRecourseActions(gotClone, listOfRecourseActions)) {
@@ -274,6 +301,10 @@ public class RecourseCost {
 	
 	public double getNumberOfDifferentRecourseActions() {
 		return numberOfDifferentRecourseActions;
+	}
+	
+	public double getNumberOfDifferentTours() {
+		return numberOfDifferentTours;
 	}
 
 	public void addTourIndex(int i) {
