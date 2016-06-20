@@ -666,7 +666,7 @@ public class Tour implements SolutionElement, Serializable {
 	}
 
 	public String getUseOfCapacity() {
-		String s = "(" + getDemandOnTour() + ":" + getVehicle().getCapacity() + ")";
+		String s = "(" + getDemandOnTour() + ":" + getParentGot().getParentSolution().getVrpProblem().getOriginalCapacity() + ")";
 		return s;
 	}
 

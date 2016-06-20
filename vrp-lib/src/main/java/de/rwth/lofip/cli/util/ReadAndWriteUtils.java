@@ -369,9 +369,12 @@ public class ReadAndWriteUtils {
 				+ "Distanz+Convexkombination" + ";"
 				+ "NumberOfRouteFailures" + ";"
 				+ "NumberOfAdditionalTours" + ";"
+				+ "NumberOfAdditionalToursPerDay"
 				+ "NumberOfDifferentRecourseActions" + ";"
 				+ "timeNeeded in ms" + ";"
-				+ "UseOfCapacityInTours" + "; ;"	
+				+ "UseOfCapacityInTours" + "; ;"
+				+ "UseOfCapacityInBasicTours" + "; ;"
+				+ "UseOfCapacityInAllTours" + ";"
 				+ "BestKnownValue" +";" 
 				+ "BestKnownVehicleNumber" + ";"
 				+ "SolutionAsTupel" + ";" 
@@ -390,6 +393,13 @@ public class ReadAndWriteUtils {
 				double basicCostWithDifferentTours = bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()
 														- bestOverallSolution.getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours();
 				
+				//berechne Auslastung aller KFZ
+				double allDemand = bestOverallSolution.getVrpProblem().getTotalDemandOfAllCustomers() * Parameters.getNumberOfDemandScenarioRuns();
+				int alleKFZBasistouren = bestOverallSolution.getNumberOfTours() * Parameters.getNumberOfDemandScenarioRuns();
+				double KFZZusatzfahrten = bestOverallSolution.getExpectedRecourseCost().getNumberOfAdditionalTours();
+				double Fahrzeugkapazitaet = bestOverallSolution.getVrpProblem().getOriginalCapacity();
+				double auslastungAllerKFZ = allDemand / ((alleKFZBasistouren + KFZZusatzfahrten) * Fahrzeugkapazitaet);
+				
 				//berechne prozentuale abweichung					
 //				double deviationObjValue = (bestOverallSolution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) / bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue() * 100;
 //				double deviationVehicleNumber = ( (double) bestOverallSolution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue());
@@ -407,9 +417,12 @@ public class ReadAndWriteUtils {
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					//numberOfAdditionalToursPerDay
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns()) + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
+					+ String.format("%.3f", auslastungAllerKFZ) + ";"
 					
 //					+ String.format("%.3f",bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) + ";"
 //					+ bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue() + ";"
