@@ -21,10 +21,7 @@ public class TestCreateSolutionsFromFile {
 	protected List<SolutionGot> solutions = new ArrayList<SolutionGot>();
 	
 	@Test
-	public void testCreateSolutionsFromFile() throws IOException {
-		
-		throw new RuntimeException("Damit das funktioniert müssen erst noch die Akzeptanzregeln in TS und AMTS bei Nicht-Tourminimierungsphase geändert werden");
-		
+	public void testCreateSolutionsFromFile() throws IOException {			
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		Parameters.setNumberOfIterationsWithoutRematching(30);
 		Parameters.setTourMinimizationPhase(false);
@@ -35,7 +32,7 @@ public class TestCreateSolutionsFromFile {
 		
 		Parameters.setMaximalNumberOfToursInGot(2);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
-		Parameters.setOutputDirectory("\\Blub\\");
+		Parameters.setOutputDirectory("\\SolutionsFromExistingFiles\\R1\\RecourseCost\\2Touren");
 		
 		problems = ReadAndWriteUtils.readEigeneModifiedR1SolomonProblems();
 		for (VrpProblem problem : problems) {		
@@ -53,13 +50,7 @@ public class TestCreateSolutionsFromFile {
 		SolutionGot bestOverallSolution = solutions2.get(0);
 		Parameters.setTourMinimizationPhase(false);
 		for (SolutionGot solution : solutions2) {
-			solution = (SolutionGot) new TabuSearchWithRecourse(){
-					@Override protected boolean isNewSolutionIsNewBestOverallSolution() {
-						if (MathUtils.lessThan(solution.getTotalDistanceWithCostFactorAndRecourse(), bestOverallSolution.getTotalDistanceWithCostFactorAndRecourse()))
-							return true;
-						return false;
-					};
-				}.improve(solution);			
+			solution = (SolutionGot) new TabuSearchWithRecourse().improve(solution);			
 			if (isNewSolutionIsBestOverallSolution(solution, bestOverallSolution))
 				bestOverallSolution = solution.clone();		
 		}

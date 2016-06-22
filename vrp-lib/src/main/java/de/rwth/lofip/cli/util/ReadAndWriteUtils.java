@@ -116,6 +116,15 @@ public class ReadAndWriteUtils {
 		return problems;
 	}
 
+	public static List<VrpProblem> readEigeneModifiedR1SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("r1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems());
+		return problems;
+	}
+	
+	public static List<VrpProblem> readEigeneModifiedC1SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("c1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems());
+		return problems;
+	}
 	
 	public static List<VrpProblem> readEigeneModifiedC1R1SolomonProblems() throws IOException {
 		List<VrpProblem> problems = readProblemX("c1","rc1", getInputDirectoryForEigeneModifiedSolomonProblems());
@@ -129,9 +138,24 @@ public class ReadAndWriteUtils {
 		return problems;
 	}
 	
+	public static List<VrpProblem> readEigeneModifiedC2SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("c2","rc2", getInputDirectoryForEigeneModifiedSolomonProblems());
+		return problems;
+	}
+	
 	public static List<VrpProblem> readEigeneModifiedRC1RC2SolomonProblems() throws IOException {
 		List<VrpProblem> problems = readProblemX("rc1","X", getInputDirectoryForEigeneModifiedSolomonProblems());
 		problems.addAll(readProblemX("rc2","X", getInputDirectoryForEigeneModifiedSolomonProblems()));
+		return problems;
+	}
+	
+	public static List<VrpProblem> readEigeneModifiedRC1SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("rc1","X", getInputDirectoryForEigeneModifiedSolomonProblems());	
+		return problems;
+	}
+	
+	public static List<VrpProblem> readEigeneModifiedRC2SolomonProblems() throws IOException {
+		List<VrpProblem> problems = readProblemX("rc2","X", getInputDirectoryForEigeneModifiedSolomonProblems());	
 		return problems;
 	}
 	
@@ -369,11 +393,10 @@ public class ReadAndWriteUtils {
 				+ "Distanz+Convexkombination" + ";"
 				+ "NumberOfRouteFailures" + ";"
 				+ "NumberOfAdditionalTours" + ";"
-				+ "NumberOfAdditionalToursPerDay"
+				+ "NumberOfAdditionalToursPerDay" + ";"
 				+ "NumberOfDifferentToursBasicVehicles" + ";"
 				+ "NumberOfDifferentRecourseActions" + ";"
-				+ "timeNeeded in ms" + ";"
-				+ "UseOfCapacityInTours" + "; ;"
+				+ "timeNeeded in sec" + ";"				
 				+ "UseOfCapacityInBasicTours" + "; ;"
 				+ "UseOfCapacityInAllTours" + ";"
 				+ "BestKnownValue" +";" 
@@ -400,6 +423,9 @@ public class ReadAndWriteUtils {
 				double KFZZusatzfahrten = bestOverallSolution.getExpectedRecourseCost().getNumberOfAdditionalTours();
 				double Fahrzeugkapazitaet = bestOverallSolution.getVrpProblem().getOriginalCapacity();
 				double auslastungAllerKFZ = allDemand / ((alleKFZBasistouren + KFZZusatzfahrten) * Fahrzeugkapazitaet);
+				
+				//berechne Zeit in Sekunden 
+				timeNeeded = timeNeeded / 1000;
 				
 				//berechne prozentuale abweichung					
 //				double deviationObjValue = (bestOverallSolution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) / bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue() * 100;

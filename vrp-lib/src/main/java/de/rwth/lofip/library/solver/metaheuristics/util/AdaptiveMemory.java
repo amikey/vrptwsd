@@ -117,7 +117,6 @@ public class AdaptiveMemory {
 				allToursInMemory.subList(0, lengthOfList); 	
 		}
 
-	
 	public SolutionGot constructSolutionFromTours() throws IOException {
 		initialiseCurrentNewSolution();
 		initialiseUnservedCustomers();		

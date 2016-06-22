@@ -161,7 +161,7 @@ public class AdaptiveMemoryTabuSearch {
 			return false;
 		}
 		
-		private void setBestOverallSolutionToNewSolution() throws IOException {
+		protected void setBestOverallSolutionToNewSolution() throws IOException {
 			bestOverallSolution = solution.clone();
 			if (Parameters.isPublishSolutionAtEndOfTabuSearch())				
 				IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
@@ -210,7 +210,7 @@ public class AdaptiveMemoryTabuSearch {
 				PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 		}
 
-		private void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
+		protected void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
 			Parameters.setTourMinimizationPhase(false);
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
