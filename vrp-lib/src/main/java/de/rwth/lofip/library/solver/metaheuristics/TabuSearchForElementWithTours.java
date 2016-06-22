@@ -1,17 +1,23 @@
 package de.rwth.lofip.library.solver.metaheuristics;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.exceptions.NoSolutionExistsException;
+import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
+import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.MetaSolverInterfaceGot;
 import de.rwth.lofip.library.solver.metaheuristics.neighborhoods.CrossNeighborhoodWithTabooList;
@@ -24,7 +30,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 
 	@SuppressWarnings("unused")
 	private int maximalNumberOfIterations;
-	private int maxNumberIterationsWithoutImprovement;
+	protected int maxNumberIterationsWithoutImprovement;
 	
 	protected int iteration = 0;
 	protected ElementWithTours solution;
@@ -32,12 +38,12 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	protected CrossNeighborhoodWithTabooList crossNeighborhood;
 	protected TourEliminationNeighborhood tourEliminationNeighborhood;
 	protected ElementWithTours bestOverallSolution;
-	private int iterationsWithoutImprovement = 0;
+	protected int iterationsWithoutImprovement = 0;
 	
 	private long timeNeeded;
 	private long startTime;
 	private long endTime;
-	
+		
 	public TabuSearchForElementWithTours() {
 		maximalNumberOfIterations = Parameters.getMaximalNumberOfIterationsTabuSearch();
 		maxNumberIterationsWithoutImprovement = Parameters.getMaximalNumberOfIterationsWithoutImprovementTabuSearch();
@@ -107,7 +113,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 		return new CrossNeighborhoodWithTabooList(solution);
 	}
 
-	private boolean isStoppingCriterionMet() {
+	protected boolean isStoppingCriterionMet() {
 		if (Parameters.isRunningTimeReached())
 			return true;
 		return iterationsWithoutImprovement > maxNumberIterationsWithoutImprovement;
@@ -210,4 +216,5 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 	public int getNumberOfIterations() {
 		return iteration;
 	}
+
 }
