@@ -18,21 +18,19 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	
 	@Test
 	public void C1R1OhneVorgegebeneAuslastung() throws IOException {
-		setParameters();
-		Parameters.setPercentageOfCapacity(1);
+		setParameters();		
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C1R1\\");
-		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();		
 		processProblems();
 	}
 	
 	@Test
 	public void C1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
-		Parameters.setPercentageOfCapacity(1);
+		Parameters.setAdditionalNumberOfVehicles(2);		
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = problems.subList(4, problems.size());
 		processProblems();
 	}
 	
@@ -42,7 +40,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\R1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedR1SolomonProblems();
-		problems = problems.subList(1, problems.size());
+		problems = problems.subList(4, problems.size());
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
 	}
@@ -70,10 +68,10 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	@Test
 	public void RC1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
-		Parameters.setPercentageOfCapacity(1);
+		Parameters.setAdditionalNumberOfVehicles(3);		
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\RC1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = problems.subList(4, problems.size());
 		processProblems();
 	}
 	
@@ -132,6 +130,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
 		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfNonImprovingAMCalls(30);
 		Parameters.setNumberOfIntensificationTries(0);
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setMaximalNumberOfToursInGot(2);

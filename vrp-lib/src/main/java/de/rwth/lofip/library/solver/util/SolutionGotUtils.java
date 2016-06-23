@@ -57,19 +57,23 @@ public class SolutionGotUtils {
 	
 	public static SolutionGot createSolutionWithVehicleGoalNumber(SolutionGot solution, int vehicleGoalNumber) throws IOException {
 		int iterations = 0;
-		while (!(solution.getVehicleCount() == vehicleGoalNumber)) {
-			int numberOfToursToBeRemoved = 0;
-			while (!(solution.getNumberOfTours() == vehicleGoalNumber)) {
+		int numberOfToursToBeRemoved = 1;		
+		while (!(solution.getNumberOfTours() == vehicleGoalNumber)) {
+			
+			iterations++;
+			System.out.println("createSolutionWithTargetVehicleNumber " + vehicleGoalNumber + "; iteration = " + iterations);
+			if (iterations > 1000)
+				throw new RuntimeException("No Solution with " + vehicleGoalNumber + "found.");
+			
+			if (numberOfToursToBeRemoved < solution.getNumberOfTours())
 				numberOfToursToBeRemoved++;
+			else
+				numberOfToursToBeRemoved = 1;
 //				solution.addTourToLastOrNewGot(new Tour(solution.getVrpProblem().getDepot(), solution.getVrpProblem().getNewVehicle()));				
-				perturb(solution, numberOfToursToBeRemoved);
-				if (solution.getVehicleCount() > vehicleGoalNumber)
-					solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
-				iterations++;
-				if (iterations > 1000)
-					throw new RuntimeException("No Solution with " + vehicleGoalNumber + "found.");
-			}
-		}
+			perturb(solution, numberOfToursToBeRemoved);
+			if (solution.getVehicleCount() > vehicleGoalNumber)
+				solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
+		}		
 		System.out.println("#KFZ nach Perturb:" + solution.getVehicleCount());
 		return solution;
 	}

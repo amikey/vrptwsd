@@ -80,7 +80,8 @@ public class Parameters {
 	private static boolean isPostScenario = false;
 	//in km per hour
 	private static double averageSpeedOfVehicleInPostScenario = 60;
-	
+
+	private static int additionalNumberOfVehicles = 4;
 	
 	//Getter und Setter	
 	public static void setAllParametersToDefaultValues(){
@@ -450,6 +451,14 @@ public class Parameters {
 
 	public static void setNumberOfIterationsWithoutRematching(int i) {
 		numberOfIterationsWithoutRematching = i;
+	}
+
+	public static int getAdditionalNumberOfVehicles() {
+		return additionalNumberOfVehicles;
+	}
+
+	public static void setAdditionalNumberOfVehicles(int i) {
+		additionalNumberOfVehicles = i;
 	}
 	
 	

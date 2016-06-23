@@ -373,7 +373,7 @@ public class ReadAndWriteUtils {
 				+ "NumberOfRouteFailures" + ";"
 				+ "NumberOfAdditionalTours" + ";"
 				+ "NumberOfDifferentRecourseActions" + ";"
-				+ "timeNeeded in ms" + ";"
+				+ "timeNeeded in sec" + ";"
 				+ "UseOfCapacityInTours" + "; ;"	
 				+ "SolutionAsTupel" + ";" 
 				+ "NumberOfCustomersThatAreServedByNumberOfVehicles beginning with one and increasing with each column" + "\n" 
@@ -469,13 +469,31 @@ public class ReadAndWriteUtils {
 	public static void publishSolutionAtEndOfTabuSearch(ElementWithTours bestOverallSolution, long timeNeeded) throws IOException {
 		if (Parameters.isPublishSolutionAtEndOfTabuSearch())			
 			if (bestOverallSolution instanceof SolutionGot){
-				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
-		
+				
+				setUpBestKnownSolutionValues();
+				setUpBestKnownSolutionVehicleNumbers();
+				
 				//berechne GrundkostenMitVerschiedenenTouren
 				double basicCostWithDifferentTours = bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()
 														- ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours();
 				
-				IOUtils.write("Lösung am Ende der TS: " + ";" 
+				//berechne Auslastung aller KFZ
+				double allDemand = ((SolutionGot) bestOverallSolution).getVrpProblem().getTotalDemandOfAllCustomers() * Parameters.getNumberOfDemandScenarioRuns();
+				int alleKFZBasistouren = bestOverallSolution.getNumberOfTours() * Parameters.getNumberOfDemandScenarioRuns();
+				double KFZZusatzfahrten = ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours();
+				double Fahrzeugkapazitaet = ((SolutionGot) bestOverallSolution).getVrpProblem().getOriginalCapacity();
+				double auslastungAllerKFZ = allDemand / ((alleKFZBasistouren + KFZZusatzfahrten) * Fahrzeugkapazitaet);
+				
+				//berechne Zeit in Sekunden 
+				timeNeeded = timeNeeded / 1000;
+				
+				//berechne prozentuale abweichung					
+//				double deviationObjValue = (bestOverallSolution.getTotalDistanceWithCostFactor() - bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) / bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue() * 100;
+//				double deviationVehicleNumber = ( (double) bestOverallSolution.getVehicleCount() - (double) bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue());
+				
+				String s = SolutionGotUtils.createStringForCustomersServedByNumberOfVehicles(bestOverallSolution);					
+		
+				IOUtils.write(((SolutionGot) bestOverallSolution).getVrpProblem().getDescription() + ";" 
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor()) + ";" 
 					+ bestOverallSolution.getNumberOfTours() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
@@ -486,9 +504,20 @@ public class ReadAndWriteUtils {
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
+					//numberOfAdditionalToursPerDay
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns()) + ";"
+					//numberOfDifferentToursForBasicVehicles
+					+ String.format("%.3f", ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentTours()) + ";" 
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
 					+ timeNeeded + ";"
-					+ bestOverallSolution.getUseOfCapacityInTours() + ";"	
+					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
+					+ String.format("%.3f", auslastungAllerKFZ) + ";"
+					
+//					+ String.format("%.3f",bestKnownSolutionValues.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).doubleValue()) + ";"
+//					+ bestKnownSolutionVehicleNumbers.get(getNumberOfVrpProblemInBestKnownSolutionValues(bestOverallSolution.getVrpProblem())).intValue() + ";"
+//					+ String.format("%.3f",deviationObjValue) + ";"
+//					+ String.format("%.3f",deviationVehicleNumber) + ";" 
+//					
 					+ bestOverallSolution.getAsTupel() + ";"
 					+ s 
 					+ "\n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
@@ -496,8 +525,7 @@ public class ReadAndWriteUtils {
 				throw new RuntimeException("bestOverallSolution ist nicht vom Typ SolutionGot");
 			}
 	}
-	
-	
+		
 	public static void printResultsToFile(String nameOfFile, List<SolutionGot> solutions1, long timeNeeded,
 											int initialNumberOfDifferentInitialSolutions, 
 											int initialNumberOfIterationsTabuSearch,

@@ -78,7 +78,7 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 	protected void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
 		Parameters.setTourMinimizationPhase(false);		
 		int minimalVehicleNumber = bestSolutions.get(0).getVehicleCount();
-		for (int targetVehicleNumber = minimalVehicleNumber; targetVehicleNumber <= minimalVehicleNumber+4; targetVehicleNumber++) {
+		for (int targetVehicleNumber = minimalVehicleNumber; targetVehicleNumber <= minimalVehicleNumber+Parameters.getAdditionalNumberOfVehicles(); targetVehicleNumber++) {
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
