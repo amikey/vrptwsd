@@ -38,11 +38,13 @@ public class RandomI1Solver implements SolverInterfaceGot {
 		insertRemainingCustomersIntoTours();
 		if (solution == null) 
 			throw new RuntimeException("solution ist null");
+		if (solution.getNumberOfTours() > problem.getCustomerCount())
+			throw new RuntimeException("solution verwendet mehr Touren als Kunden da sind.");
 		return solution;
 	}
 	
 	protected void initialiseSolverWith(VrpProblem problem) {
-		vrpProblem = problem;
+		vrpProblem = problem;		
 		solution = new SolutionGot(vrpProblem);
 		if (vrpProblem == null)
 			throw new RuntimeException("vrpProblem = null");

@@ -47,7 +47,7 @@ public class RecourseCost {
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
-			numberOfDifferentTours += got.getExpectedRecourse().getNumberOfDifferentTours();
+			numberOfDifferentTours += got.getExpectedRecourse().getNumberOfDifferentToursForBasicVehicles();
 			calculateToursNeededToServeNumberOfCustomers(got);
 		}		
 	}
@@ -303,7 +303,7 @@ public class RecourseCost {
 		return numberOfDifferentRecourseActions;
 	}
 	
-	public double getNumberOfDifferentTours() {
+	public double getNumberOfDifferentToursForBasicVehicles() {
 		return numberOfDifferentTours;
 	}
 

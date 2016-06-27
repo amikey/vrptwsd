@@ -7,10 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
@@ -58,45 +61,88 @@ public class SolutionGotUtils {
 	public static SolutionGot createSolutionWithVehicleGoalNumber(SolutionGot solution, int vehicleGoalNumber) throws IOException {
 		int iterations = 0;
 		int numberOfToursToBeRemoved = 1;		
-		while (!(solution.getNumberOfTours() == vehicleGoalNumber)) {
+		while (!(solution.getNumberOfTours() == vehicleGoalNumber) && iterations < 10) {
 			
 			iterations++;
 			System.out.println("createSolutionWithTargetVehicleNumber " + vehicleGoalNumber + "; iteration = " + iterations);
-			if (iterations > 1000)
-				throw new RuntimeException("No Solution with " + vehicleGoalNumber + "found.");
 			
 			if (numberOfToursToBeRemoved < solution.getNumberOfTours())
 				numberOfToursToBeRemoved++;
 			else
 				numberOfToursToBeRemoved = 1;
-//				solution.addTourToLastOrNewGot(new Tour(solution.getVrpProblem().getDepot(), solution.getVrpProblem().getNewVehicle()));				
+//				solution.addTourToLastOrNewGot(new Tour(solution.getVrpProblem().getDepot(), solution.getVrpProblem().getNewVehicle()));
+			System.out.println("Starting perturb. NumberOf Tours that shall be removed: " + numberOfToursToBeRemoved + "; NumberOfToursInSolution: " + solution.getNumberOfTours());
 			perturb(solution, numberOfToursToBeRemoved);
+			System.out.println("Finished perturb");
+			System.out.println("#KFZ nach Perturb:" + solution.getVehicleCount());
 			if (solution.getVehicleCount() > vehicleGoalNumber)
+				System.out.println("#KFZ nach Perturb:" + solution.getVehicleCount() + "größer als vehicleTargetNumber " + vehicleGoalNumber);
 				solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
-		}		
-		System.out.println("#KFZ nach Perturb:" + solution.getVehicleCount());
+		}	
+		
+		// erstelle Lösung mit stichfahrten und finde mit TS targetVehicleNumber
+		solution = createSolutionWithSingleTours(solution);
+		solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
+	
+		if (solution.getNumberOfTours() != vehicleGoalNumber)
+			throw new RuntimeException("No Solution with " + vehicleGoalNumber + " Vehicles found.");
 		return solution;
 	}
 	
+	public static SolutionGot createSolutionWithSingleTours(SolutionGot solution) {
+		Set<Customer> customers = solution.getVrpProblem().getCustomers();
+		VrpProblem problem = solution.getVrpProblem();
+		solution = new SolutionGot(problem);
+		for (Customer c : customers) {
+			Tour t = new Tour(problem.getDepot(), problem.getNewVehicle());
+			solution.addTourToLastOrNewGot(t);
+			t.addCustomer(c);			
+		}
+		if (solution.getNumberOfTours() != problem.getCustomerCount())
+			throw new RuntimeException("createSolutionWithSingleTours created solution with " + solution.getNumberOfTours() + " although it should create a solution with " + problem.getCustomerCount() + " number of customers");
+		return solution;
+	}
+
 	private static SolutionGot perturb(SolutionGot solution2, int numberOfToursToBeRemoved) {
-		final int[] ints = random.ints(0, solution2.getNumberOfTours()-1).distinct().limit(numberOfToursToBeRemoved).toArray();
+		System.out.println("Starting to generate ints");
+		int[] ints;
+		if (isNumberOfToursInSolutionIsMuchLargerThanNumberOfToursToBeRemoved(solution2, numberOfToursToBeRemoved))
+			ints = random.ints(0, solution2.getNumberOfTours()-1).distinct().limit(numberOfToursToBeRemoved).toArray();
+		else {
+			ints = IntStream.rangeClosed(0, solution2.getNumberOfTours()-1).toArray();
+		}
+		System.out.println("generated ints" + Arrays.toString(ints));
 		Arrays.sort(ints);
+		System.out.println("generated ints" + Arrays.toString(ints));
 		List<Customer> customers = new ArrayList<Customer>();
 		int numberOfToursRemoved = 0;
 		for (int i : ints) {
+			System.out.println("deleting Tour " + i + "; Solution has " + solution2.getNumberOfTours() + " tours.");
 			customers.addAll(solution2.deleteTour(i-numberOfToursRemoved));
+			System.out.println("deleted Tour " + i);
 			numberOfToursRemoved++;
 		}
 		new GreedyInsertion().insertCustomers(solution2, customers);
 		return solution2;
 	}
 	
+	private static boolean isNumberOfToursInSolutionIsMuchLargerThanNumberOfToursToBeRemoved(SolutionGot solution2, int numberOfToursToBeRemoved) {
+		return (solution2.getNumberOfTours() >= 2*numberOfToursToBeRemoved);
+	}
+
 	private static SolutionGot findSolutionWithTargetNumber(SolutionGot solution, int targetVehicleNumber2) throws IOException {
-		boolean flag = Parameters.isTourMinimizationPhase();		
+		System.out.println("starting TS to find Solution with targetVehicleNumber");
+		boolean flag = Parameters.isTourMinimizationPhase();
+		boolean flag2 = Parameters.isPublishSolutionAtEndOfTabuSearch();
+		
+		int vehicleNumberStart = solution.getNumberOfTours();
 		Parameters.setTourMinimizationPhase(true);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
 		TSWithTourElimination ts = new TSWithTargetVehicleNumber(targetVehicleNumber2);
 		solution = (SolutionGot) ts.improve(solution);
+		System.out.println("finished TS to find Solution with targetVehicleNumber " + targetVehicleNumber2 + "; vehicle number in best solution found by TS: " + solution.getNumberOfTours() + ". Startet with " + vehicleNumberStart + " vehicles in starting solution.");
 		Parameters.setTourMinimizationPhase(flag);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(flag2);
 		return solution;	
 	}
 	

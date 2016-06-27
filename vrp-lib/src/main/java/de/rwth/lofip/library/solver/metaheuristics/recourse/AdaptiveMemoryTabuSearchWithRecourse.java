@@ -17,11 +17,8 @@ import de.rwth.lofip.library.util.PrintUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSearch {
-	
-//	@Override
-//	protected AdaptiveMemory getAM() {
-//		return new AdaptiveMemoryWithRecourse();
-//	}
+
+	private boolean thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber;
 
 	protected TabuSearchForElementWithTours getTS() {
 		if (Parameters.isTourMinimizationPhase())
@@ -76,9 +73,14 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 	
 	@Override
 	protected void processSolutionsWithCostMinimzationTSAndStoreBestOverallSolution() throws IOException {
+		boolean tourMinimizationPhaseFlag = Parameters.isTourMinimizationPhase();
 		Parameters.setTourMinimizationPhase(false);		
 		int minimalVehicleNumber = bestSolutions.get(0).getVehicleCount();
-		for (int targetVehicleNumber = minimalVehicleNumber; targetVehicleNumber <= minimalVehicleNumber+Parameters.getAdditionalNumberOfVehicles(); targetVehicleNumber++) {
+		int targetVehicleNumber = minimalVehicleNumber-1;
+		thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = false;
+		while (thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber == false) {
+			thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = true;
+			targetVehicleNumber++;
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
@@ -93,6 +95,14 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 					setBestOverallSolutionToNewSolution();
 			}
 		}
-		Parameters.setTourMinimizationPhase(true);
+		Parameters.setTourMinimizationPhase(tourMinimizationPhaseFlag);
+	}
+	
+	@Override
+	protected void setBestOverallSolutionToNewSolution() throws IOException {
+		bestOverallSolution = solution.clone();
+		thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = false;
+		if (Parameters.isPublishSolutionAtEndOfTabuSearch())				
+			IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 	}
 }

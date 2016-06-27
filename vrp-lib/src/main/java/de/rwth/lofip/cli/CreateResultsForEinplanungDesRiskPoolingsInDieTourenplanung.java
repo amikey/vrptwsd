@@ -30,7 +30,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setAdditionalNumberOfVehicles(2);		
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1SolomonProblems();
-		problems = problems.subList(4, problems.size());
+		problems = problems.subList(3, 4);
 		processProblems();
 	}
 	

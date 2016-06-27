@@ -447,7 +447,7 @@ public class ReadAndWriteUtils {
 					//numberOfAdditionalToursPerDay
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns()) + ";"
 					//numberOfDifferentToursForBasicVehicles
-					+ String.format("%.3f", ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentTours()) + ";" 
+					+ String.format("%.3f", ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentToursForBasicVehicles()) + ";" 
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
@@ -507,7 +507,7 @@ public class ReadAndWriteUtils {
 					//numberOfAdditionalToursPerDay
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns()) + ";"
 					//numberOfDifferentToursForBasicVehicles
-					+ String.format("%.3f", ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentTours()) + ";" 
+					+ String.format("%.3f", ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentToursForBasicVehicles()) + ";" 
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfDifferentRecourseActions()) + ";"
 					+ timeNeeded + ";"
 					+ bestOverallSolution.getUseOfCapacityInTours() + ";"
