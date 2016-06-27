@@ -56,6 +56,26 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	}
 	
 	@Test
+	public void C2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setNumberOfInitialSolutions(10);
+		Parameters.setNumberOfNonImprovingAMCalls(1);
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void R2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setNumberOfInitialSolutions(10);
+		Parameters.setNumberOfNonImprovingAMCalls(1);
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\R2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedR2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
 	public void RC1RC2OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
 		Parameters.setPercentageOfCapacity(1);

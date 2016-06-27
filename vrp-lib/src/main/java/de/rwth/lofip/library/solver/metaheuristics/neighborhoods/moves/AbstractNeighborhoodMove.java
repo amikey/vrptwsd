@@ -6,6 +6,7 @@ import java.util.List;
 
 import de.rwth.lofip.library.GroupOfTours;
 import de.rwth.lofip.library.Tour;
+import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.interfaces.NeighborhoodMoveInterface;
 import de.rwth.lofip.library.solver.util.TourUtils;
@@ -227,16 +228,16 @@ public class AbstractNeighborhoodMove implements NeighborhoodMoveInterface, Seri
 	}
 	
 	//dies hier wird verwendet, um deterministische Kosten, stochastische Kosten und Tourenanzahl auf eine Zahl zu bringen
-	public double getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions() {
+	public double getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions(ElementWithTours elementWithTours) {
 		//calculate new Cost		
 		double detAndStochCostOfNewSolution = costOfCompleteSolutionThatResultsFromMove
 												+ getNewRecourseCostOfCompleteSolution();												
 		double detAndStochCostAndNumberOfRecActOfNewSolution = detAndStochCostOfNewSolution +
-																	detAndStochCostOfNewSolution * Parameters.getWeightForConvexcombination() * (newRecourseCostOfLocalGotsAfterMoveIsApplied.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());
+																	detAndStochCostOfNewSolution * Parameters.getWeightForConvexcombination() * (newRecourseCostOfLocalGotsAfterMoveIsApplied.getNumberOfDifferentToursForBasicVehicles() / elementWithTours.getNumberOfTours());
 		//calculate old Cost
 		double detAndStochCostOfOldSolution = getOldDeterministicCost() + getOldRecourseCostOfOldSolution();
 		double detAndStochCostAndNumberOfRecActOfOldSolution = detAndStochCostOfOldSolution + 
-																	detAndStochCostOfOldSolution * Parameters.getWeightForConvexcombination() * (oldRecourseCostOfLocalGots.getNumberOfDifferentRecourseActions() / Parameters.getNumberOfDemandScenarioRuns());		
+																	detAndStochCostOfOldSolution * Parameters.getWeightForConvexcombination() * (oldRecourseCostOfLocalGots.getNumberOfDifferentToursForBasicVehicles() / elementWithTours.getNumberOfTours());		
 		//calculate Cost Difference
 		double costDifference = detAndStochCostAndNumberOfRecActOfNewSolution - detAndStochCostAndNumberOfRecActOfOldSolution;
 		return costDifference;

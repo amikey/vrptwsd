@@ -20,6 +20,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	@Test
 	public void MinimierungRecourseActionsOnC1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setWeightForConvexcombination(0.1);
 		
 		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\C1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
@@ -32,6 +33,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	@Test
 	public void MinimierungRecourseActionsOnR1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setWeightForConvexcombination(0.1);
 		
 		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\R1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
@@ -45,6 +47,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	@Test
 	public void MinimierungRecourseActionsOnC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setWeightForConvexcombination(0.1);
 		
 		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\C2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
@@ -57,6 +60,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	@Test
 	public void MinimierungRecourseActionsOnR2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setWeightForConvexcombination(0.1);
 		
 		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\R2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
@@ -70,6 +74,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	@Test
 	public void MinimierungRecourseActionsOnRC1RC2EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
+		Parameters.setWeightForConvexcombination(0.1);
 		
 		Parameters.setOutputDirectory("\\AnzahlRecourseActionsInZielfunktion\\85ProzentMaxAuslastung\\NachRevert\\RC1CRC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();

@@ -16,8 +16,8 @@ public class CrossNeighborhoodWithTabooListAndRecourseWithNumberOfRecourseAction
 	@Override
 	protected void sortMovesWrtToStochasticAspect() {
 		Comparator<AbstractNeighborhoodMove> byDeterministicAndStochasticCostAndNumberOfRecourseActions = (e1,e2) -> 
-			Double.compare(e1.getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions(),
-					e2.getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions());		
+			Double.compare(e1.getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions(elementWithTours),
+					e2.getDeterministicAndStochasticCostDifferenceWithNumberOfRecourseActions(elementWithTours));		
 		Collections.sort(listOfNonTabooMoves, byDeterministicAndStochasticCostAndNumberOfRecourseActions);
 	}
 	

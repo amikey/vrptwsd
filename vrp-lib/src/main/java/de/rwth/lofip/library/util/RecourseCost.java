@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import de.rwth.lofip.library.Customer;
 import de.rwth.lofip.library.GroupOfTours;
+import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
@@ -33,7 +34,7 @@ public class RecourseCost {
 	//numberDifferentRecourseActions is always total number
 	double numberOfDifferentRecourseActions = 0;
 	//numberOfDifferentToursOfBasicVehicles
-	double numberOfDifferentTours; //number of different tours for all basic vehicles
+	double numberOfDifferentToursForBasicVehicles; //number of different tours for all basic vehicles
 	
 	//first entry: number of vehicles needed to serve these customers //second entry: number of customers that are served by this number of vehicles
 	HashMap<Integer, Integer> toursNeededToServeNumberOfCustomers = new HashMap<Integer, Integer>();
@@ -47,7 +48,7 @@ public class RecourseCost {
 			numberOfAdditionalTours += got.getExpectedRecourse().getNumberOfAdditionalTours();
 			numberOfRouteFailures += got.getExpectedRecourse().getNumberOfRouteFailures();
 			numberOfDifferentRecourseActions += got.getExpectedRecourse().getNumberOfDifferentRecourseActions();
-			numberOfDifferentTours += got.getExpectedRecourse().getNumberOfDifferentToursForBasicVehicles();
+			numberOfDifferentToursForBasicVehicles += got.getExpectedRecourse().getNumberOfDifferentToursForBasicVehicles();
 			calculateToursNeededToServeNumberOfCustomers(got);
 		}		
 	}
@@ -57,7 +58,7 @@ public class RecourseCost {
 		double overallRecourseCostOnlyAdditionalTours = 0;
 		ArrayList<GroupOfTours> listOfRecourseActions = new ArrayList<GroupOfTours>();
 		ArrayList<Tour> listOfDifferentTours = new ArrayList<Tour>(got.getTours());
-		numberOfDifferentTours = listOfDifferentTours.size();
+		numberOfDifferentToursForBasicVehicles = listOfDifferentTours.size();
 		int numberOfInfeasibleScenarios = 0;
 		//this is needed to calculate which number of customers is served by which number of vehicles
 		//first entry: customerNo; second entry: set of numbers of tours that customer is served by
@@ -192,7 +193,7 @@ public class RecourseCost {
 		for (Tour t : gotClone.getTours()) 
 			if (!t.isNewTourForRecourseAction()) 
 				if (!isTourAlreadyExistsInListOfTours(t, listOfDifferentRecourseTours)) {
-					numberOfDifferentTours++;
+					numberOfDifferentToursForBasicVehicles++;
 					listOfDifferentRecourseTours.add(t);
 				}
 	}
@@ -304,7 +305,7 @@ public class RecourseCost {
 	}
 	
 	public double getNumberOfDifferentToursForBasicVehicles() {
-		return numberOfDifferentTours;
+		return numberOfDifferentToursForBasicVehicles;
 	}
 
 	public void addTourIndex(int i) {
@@ -315,9 +316,10 @@ public class RecourseCost {
 		return tourIndizes;
 	}
 	
-	public double getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(double deterministicCostOfCompleteSolution) {
+	public double getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(SolutionGot solution) {
+		double deterministicCostOfCompleteSolution = solution.getTotalDistanceWithCostFactor();
 		double detAndStochCost = deterministicCostOfCompleteSolution + recourseCost;
-		double convexcombination = detAndStochCost + detAndStochCost * Parameters.getWeightForConvexcombination() * (numberOfDifferentRecourseActions / Parameters.getNumberOfDemandScenarioRuns());
+		double convexcombination = detAndStochCost + detAndStochCost * Parameters.getWeightForConvexcombination() * (numberOfDifferentToursForBasicVehicles / solution.getNumberOfTours());
 		double convexcombinationWithoutDetCost = convexcombination - deterministicCostOfCompleteSolution;
 		return convexcombinationWithoutDetCost;
 		

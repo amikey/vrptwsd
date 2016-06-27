@@ -81,7 +81,7 @@ public class TourMatchingWithNumberOfRecourseActions {
 	}
 
 	protected void sortListOfRecourseCostsAccordingToConvexCombinationOfRecourseCostAndNumberOfRecourseActions() {		
-			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(oldSolution.getTotalDistanceWithCostFactor()),e2.getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(oldSolution.getTotalDistanceWithCostFactor()));		
+			Comparator<RecourseCost> byCombinationOfCostAndNumberRecourseActions = (e1,e2) -> Double.compare(e1.getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(oldSolution),e2.getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(oldSolution));		
 			Collections.sort(listOfRecourseCosts, byCombinationOfCostAndNumberRecourseActions);						
 	}
 	

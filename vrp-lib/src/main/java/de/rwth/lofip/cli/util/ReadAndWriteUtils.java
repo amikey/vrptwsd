@@ -440,8 +440,8 @@ public class ReadAndWriteUtils {
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours()) + ";"
 					+ String.format("%.3f",basicCostWithDifferentTours) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution)) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution)) + ";"
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
 					//numberOfAdditionalToursPerDay
@@ -500,8 +500,8 @@ public class ReadAndWriteUtils {
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCostOnlyAdditionalTours()) + ";"
 					+ String.format("%.3f",basicCostWithDifferentTours) + ";"
 					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getRecourseCost()) + ";"
-					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
-					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart(bestOverallSolution.getTotalDistanceWithCostFactor())) + ";"
+					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart((SolutionGot) bestOverallSolution)) + ";"
+					+ String.format("%.3f",bestOverallSolution.getTotalDistanceWithCostFactor() + ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getConvexCombinationOfCostAndNumberRecourseActionsButOnlyStochasticPart((SolutionGot) bestOverallSolution)) + ";"
 					+ ((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfRouteFailures() + ";"
 					+ String.format("%.3f",((SolutionGot) bestOverallSolution).getExpectedRecourseCost().getNumberOfAdditionalTours()) + ";"
 					//numberOfAdditionalToursPerDay
