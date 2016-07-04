@@ -17,6 +17,97 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
+	private double weight = 0.033;
+
+	@Test
+	public void C1R1OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();		
+		Parameters.setWeightForConvexcombination(weight);
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\C1R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void C1OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);
+		Parameters.setAdditionalNumberOfVehicles(2);		
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\C1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC1SolomonProblems();
+		processProblems();
+	}
+	
+	@Test
+	public void R1OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);		
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedR1SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void C2R2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);		
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\C2R2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void C2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);
+		Parameters.setNumberOfInitialSolutions(10);
+		Parameters.setNumberOfNonImprovingAMCalls(1);
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\C2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void R2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);
+		Parameters.setNumberOfInitialSolutions(10);
+		Parameters.setNumberOfNonImprovingAMCalls(1);
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\R2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedR2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void RC1RC2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);		
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\RC1RC2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();		
+		processProblems();
+	}
+	
+	@Test
+	public void RC1OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);
+		Parameters.setAdditionalNumberOfVehicles(3);		
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\RC1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedRC1SolomonProblems();
+		processProblems();
+	}
+	
+	@Test
+	public void RC2OhneVorgegebeneAuslastung() throws IOException {
+		setParameters();
+		Parameters.setWeightForConvexcombination(weight);		
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\RC2\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedRC2SolomonProblems();		
+		processProblems();
+	}
+	
+	//------------------
+	
 	@Test
 	public void MinimierungRecourseActionsOnC1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();

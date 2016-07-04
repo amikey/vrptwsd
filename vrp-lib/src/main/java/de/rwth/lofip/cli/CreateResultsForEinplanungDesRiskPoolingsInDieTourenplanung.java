@@ -61,7 +61,8 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setNumberOfInitialSolutions(10);
 		Parameters.setNumberOfNonImprovingAMCalls(1);
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C2\\");
-		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();		
+		problems = ReadAndWriteUtils.readEigeneModifiedC2SolomonProblems();
+		problems = problems.subList(0, 1);
 		processProblems();
 	}
 	
@@ -71,7 +72,8 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setNumberOfInitialSolutions(10);
 		Parameters.setNumberOfNonImprovingAMCalls(1);
 		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\R2\\");
-		problems = ReadAndWriteUtils.readEigeneModifiedR2SolomonProblems();		
+		problems = ReadAndWriteUtils.readEigeneModifiedR2SolomonProblems();
+		problems = problems.subList(8, problems.size());
 		processProblems();
 	}
 	
@@ -202,19 +204,6 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		processProblems();
 	}
 	
-	@Test
-	public void R1XXEigeneModifiedSolomonInstances() throws IOException {			
-		//Set Parameters for Algorithm
-		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setMaximalNumberOfToursInGot(2);		
-		
-		//Set Output parameters
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\EigeneModifiedSolomon\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		
-		problems = ReadAndWriteUtils.readEigeneModifiedSolomonR1XXProblems();
-		processProblems();
-	}
 	
 	//--- Modified Solomon Instances - 22% relative standardabweichung
 	

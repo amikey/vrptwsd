@@ -3,6 +3,9 @@ package de.rwth.lofip.library.solver.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -16,6 +19,7 @@ import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.interfaces.ElementWithTours;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.initialSolver.RandomI1Solver;
 import de.rwth.lofip.library.solver.insertions.GreedyInsertion;
 import de.rwth.lofip.library.solver.metaheuristics.TSWithTargetVehicleNumber;
 import de.rwth.lofip.library.solver.metaheuristics.TSWithTourElimination;
@@ -75,31 +79,50 @@ public class SolutionGotUtils {
 			perturb(solution, numberOfToursToBeRemoved);
 			System.out.println("Finished perturb");
 			System.out.println("#KFZ nach Perturb:" + solution.getVehicleCount());
-			if (solution.getVehicleCount() > vehicleGoalNumber)
+			if (solution.getVehicleCount() > vehicleGoalNumber) {
 				System.out.println("#KFZ nach Perturb:" + solution.getVehicleCount() + "größer als vehicleTargetNumber " + vehicleGoalNumber);
 				solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
+			}
 		}	
 		
-		// erstelle Lösung mit stichfahrten und finde mit TS targetVehicleNumber
-		solution = createSolutionWithSingleTours(solution);
-		solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
+		// erstelle Lösung mit stichfahrten und finde mit TS targetVehicleNumber		
+		if (solution.getVehicleCount() != vehicleGoalNumber) {
+			System.out.println("#KFZ " + solution.getVehicleCount() + " ungleich vehicleTargetNumber " + vehicleGoalNumber);
+			solution = createSolutionWithSingleTours(solution, vehicleGoalNumber);
+			solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
+		}			
 	
 		if (solution.getNumberOfTours() != vehicleGoalNumber)
 			throw new RuntimeException("No Solution with " + vehicleGoalNumber + " Vehicles found.");
 		return solution;
 	}
 	
-	public static SolutionGot createSolutionWithSingleTours(SolutionGot solution) {
-		Set<Customer> customers = solution.getVrpProblem().getCustomers();
+	public static SolutionGot createSolutionWithSingleTours(SolutionGot solution, int vehicleGoalNumber) {
+		List<Customer> customers = new ArrayList<Customer>(solution.getVrpProblem().getCustomers());
+		Collections.shuffle(customers);
 		VrpProblem problem = solution.getVrpProblem();
 		solution = new SolutionGot(problem);
-		for (Customer c : customers) {
+		Iterator<Customer> iterator = customers.iterator();
+		for (int i = 0; i < vehicleGoalNumber; i++) {
+			Customer c = iterator.next();
+			iterator.remove();
 			Tour t = new Tour(problem.getDepot(), problem.getNewVehicle());
 			solution.addTourToLastOrNewGot(t);
-			t.addCustomer(c);			
+			t.addCustomer(c);
 		}
-		if (solution.getNumberOfTours() != problem.getCustomerCount())
-			throw new RuntimeException("createSolutionWithSingleTours created solution with " + solution.getNumberOfTours() + " although it should create a solution with " + problem.getCustomerCount() + " number of customers");
+		int customersSize = customers.size();
+		System.out.println("customers size: " + customersSize);
+		int problemCustomerCount = problem.getCustomerCount();
+		System.out.println("problemCustomerCount: " + problemCustomerCount);
+		if (customersSize != problemCustomerCount - vehicleGoalNumber)
+			throw new RuntimeException("Anzahl übrig gebliebener Kunden nicht richtig. Sollte " + (problem.getCustomerCount() - vehicleGoalNumber) + " sein, aber war " + customers.size());
+		
+		//add remaining customers with Greedy
+		GreedyInsertion gi = new GreedyInsertion();
+		//make list from set of customers
+		solution = gi.insertCustomers(solution,  customers);
+		if (solution.getNumberOfTours() < vehicleGoalNumber)
+			throw new RuntimeException("createSolutionWithSingleTours created solution with " + solution.getNumberOfTours() + " although it should create a solution with at least " + vehicleGoalNumber);
 		return solution;
 	}
 
@@ -131,7 +154,7 @@ public class SolutionGotUtils {
 	}
 
 	private static SolutionGot findSolutionWithTargetNumber(SolutionGot solution, int targetVehicleNumber2) throws IOException {
-		System.out.println("starting TS to find Solution with targetVehicleNumber");
+		System.out.println("starting TS to find Solution with targetVehicleNumber" + targetVehicleNumber2);
 		boolean flag = Parameters.isTourMinimizationPhase();
 		boolean flag2 = Parameters.isPublishSolutionAtEndOfTabuSearch();
 		

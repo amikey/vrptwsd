@@ -27,7 +27,6 @@ public class TourEliminationNeighborhood extends AbstractNeighborhood {
 		bestMoveThatMightBeTaboo = null;
 	}
 
-
 	public AbstractNeighborhoodMove returnBestMove(int iteration) {
 		for (int i = 0; i < elementWithTours.getNumberOfTours(); i++) {
 			if (elementWithTours.getTour(i).getCustomerSize() <= Parameters.getMaximalNumberOfCustomersForDeletionInTourEliminationNeighborhood()) {
