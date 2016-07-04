@@ -3,6 +3,7 @@ package de.rwth.lofip.library.solver.metaheuristics.recourse.actionNumberMinimiz
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.Tour;
 import de.rwth.lofip.library.solver.metaheuristics.recourse.AdaptiveMemoryWithRecourse;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 
 public class AdaptiveMemoryWithRecourseAndRecourseActionNumber extends AdaptiveMemoryWithRecourse {
 	
@@ -14,4 +15,9 @@ public class AdaptiveMemoryWithRecourseAndRecourseActionNumber extends AdaptiveM
 		}	
 	}
 
+	@Override
+	protected TourMatchingWithNumberOfRecourseActions getTourMaching() {
+		return new TourMatchingWithNumberOfRecourseActions();
+	}
+	
 }

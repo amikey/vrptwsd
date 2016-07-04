@@ -12,6 +12,8 @@ import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.solver.metaheuristics.TSWithTourElimination;
 import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
+import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWrtRecourseCost;
 import de.rwth.lofip.library.solver.util.SolutionGotUtils;
 import de.rwth.lofip.library.util.PrintUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
@@ -84,25 +86,39 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
-				sol = SolutionGotUtils.createSolutionWithVehicleGoalNumber(solution, targetVehicleNumber);
+				if (targetVehicleNumber > minimalVehicleNumber)
+					//only create new solution if target vehicle number is greater than that minimal vehicle number
+					sol = SolutionGotUtils.createSolutionWithVehicleGoalNumber(solution, targetVehicleNumber);
 				if (Parameters.isPublishSolutionAtEndOfTabuSearch())
 					IOUtils.write("TargetVehicleNumber: " + targetVehicleNumber + "; Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" + sol.getNumberOfTours() + ", " + sol.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				TabuSearchForElementWithTours ts = getTS();
 				solution = (SolutionGot) ts.improve(sol);
 				if (Parameters.isPublishSolutionAtEndOfTabuSearch())
 					IOUtils.write("Verbesserte Lösung: " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
-				if (isNewSolutionIsNewBestOverallSolution())
+				if (isNewSolutionIsNewBestOverallSolution()) {
+					postProcessSolutionWithTourMachting();
+					if (Parameters.isPublishSolutionAtEndOfTabuSearch())
+						IOUtils.write("Lösung mit Tourmatching verbessert: " + "(" +solution.getNumberOfTours() + ", " + solution.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 					setBestOverallSolutionToNewSolution();
+				}
 			}
 		}
 		Parameters.setTourMinimizationPhase(tourMinimizationPhaseFlag);
 	}
 	
+	private void postProcessSolutionWithTourMachting() throws IOException {
+		solution = getTourMatching().matchToursToGots(solution);		
+	}
+
 	@Override
 	protected void setBestOverallSolutionToNewSolution() throws IOException {
 		bestOverallSolution = solution.clone();
 		thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = false;
 		if (Parameters.isPublishSolutionAtEndOfTabuSearch())				
 			IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
+	}
+	
+	protected TourMatchingWithNumberOfRecourseActions getTourMatching() {
+		return new TourMatchingWrtRecourseCost();
 	}
 }
