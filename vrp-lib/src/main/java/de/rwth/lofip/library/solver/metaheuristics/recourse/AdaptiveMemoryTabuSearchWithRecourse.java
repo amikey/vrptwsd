@@ -78,13 +78,17 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 		int minimalVehicleNumber = bestSolutions.get(0).getVehicleCount();
 		int targetVehicleNumber = minimalVehicleNumber-1;
 		thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = false;
-		while (thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber == false) {
+		while (thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber == false 
+				&& targetVehicleNumber <= minimalVehicleNumber + Parameters.getAdditionalNumberOfVehicles()) {
 			thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = true;
 			targetVehicleNumber++;
 			int iteration = 0;
 			for (SolutionGot sol : bestSolutions) {
 				iteration++;
-				sol = SolutionGotUtils.createSolutionWithVehicleGoalNumber(solution, targetVehicleNumber);
+				if (sol.getVehicleCount() != targetVehicleNumber) {
+					//only create new solution if target vehicle number doesn't equal that of actual solution
+					sol = SolutionGotUtils.createSolutionWithVehicleGoalNumber(solution, targetVehicleNumber);
+				}
 				if (Parameters.isPublishSolutionAtEndOfTabuSearch())
 					IOUtils.write("TargetVehicleNumber: " + targetVehicleNumber + "; Verbessere Lösung " + iteration + " von " +  bestSolutions.size() +": " + "(" + sol.getNumberOfTours() + ", " + sol.getTotalDistanceWithCostFactor() + ") \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 				TabuSearchForElementWithTours ts = getTS();
