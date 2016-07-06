@@ -17,24 +17,28 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
-	private double weight = 0.033;
+	private double weight = 0.01;
 
 	@Test
 	public void C1R1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();		
 		Parameters.setWeightForConvexcombination(weight);
-		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\C1R1\\");
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt1\\C1R1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();		
+		problems = problems.subList(4, problems.size());
 		processProblems();
 	}
 	
 	@Test
 	public void C1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
+		Parameters.setNumberOfInitialSolutions(10);
+		Parameters.setNumberOfNonImprovingAMCalls(1);
 		Parameters.setWeightForConvexcombination(weight);
 		Parameters.setAdditionalNumberOfVehicles(2);		
-		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt03\\C1\\");
+		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt01\\C1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1SolomonProblems();
+		problems = problems.subList(4, problems.size());
 		processProblems();
 	}
 	
