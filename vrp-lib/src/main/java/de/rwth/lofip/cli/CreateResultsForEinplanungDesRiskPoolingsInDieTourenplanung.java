@@ -16,15 +16,11 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
-	double capacity = 1.1;	
-	String pfad = "\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\";
-	
 	@Test
 	public void C1R1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();		
-		Parameters.setOutputDirectory(pfad + "C1R1\\");
-		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C1R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();		
 		processProblems();
 	}
 	
@@ -32,9 +28,9 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	public void C1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
 		Parameters.setAdditionalNumberOfVehicles(2);		
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\C1\\");
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = problems.subList(3, 4);
 		processProblems();
 	}
 	
@@ -42,8 +38,9 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	public void R1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\R1\\");
-		problems = ReadAndWriteUtils.readEigeneModifiedR1SolomonProblems();		
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\R1\\");
+		problems = ReadAndWriteUtils.readEigeneModifiedR1SolomonProblems();
+		problems = problems.subList(4, problems.size());
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
 	}
@@ -52,7 +49,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	public void C2R2OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
 		Parameters.setPercentageOfCapacity(1);
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\C2R2\\");
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C2R2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2R2SolomonProblems();
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
@@ -63,9 +60,9 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		setParameters();
 		Parameters.setNumberOfInitialSolutions(10);
 		Parameters.setNumberOfNonImprovingAMCalls(1);
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\C2\\");
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\C2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC2SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = problems.subList(0, 1);
 		processProblems();
 	}
 	
@@ -74,16 +71,17 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		setParameters();
 		Parameters.setNumberOfInitialSolutions(10);
 		Parameters.setNumberOfNonImprovingAMCalls(1);
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\R2\\");
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\R2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedR2SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = problems.subList(8, problems.size());
 		processProblems();
 	}
 	
 	@Test
 	public void RC1RC2OhneVorgegebeneAuslastung() throws IOException {
-		setParameters();		
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\RC1RC2\\");
+		setParameters();
+		Parameters.setPercentageOfCapacity(1);
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\RC1RC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1RC2SolomonProblems();
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
@@ -93,22 +91,21 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	public void RC1OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
 		Parameters.setAdditionalNumberOfVehicles(3);		
-		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhoehteKapazitaet1Punkt1\\RC1\\");
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\RC1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1SolomonProblems();
-		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		problems = problems.subList(4, problems.size());
 		processProblems();
 	}
 	
 	@Test
 	public void RC2OhneVorgegebeneAuslastung() throws IOException {
-		setParameters();		
-		Parameters.setOutputDirectory(pfad + "RC2\\");
+		setParameters();
+		Parameters.setPercentageOfCapacity(1);
+		Parameters.setOutputDirectory("\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\RC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC2SolomonProblems();
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
 		processProblems();
 	}
-	
-	//-------
 	
 	@Test
 	public void C1R1() throws IOException {
@@ -156,9 +153,8 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
 		Parameters.setNumberOfInitialSolutions(20);
 		Parameters.setNumberOfNonImprovingAMCalls(30);
-		Parameters.setNumberOfMovesThatStochasticCostIsCalculatedFor(20);
 		Parameters.setNumberOfIntensificationTries(0);
-		Parameters.setPercentageOfCapacity(capacity);
+		Parameters.setPercentageOfCapacity(1);
 		Parameters.setMaximalNumberOfToursInGot(2);
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
