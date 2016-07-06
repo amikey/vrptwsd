@@ -27,7 +27,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 		Parameters.setWeightForConvexcombination(weight);
 		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt1\\C1R1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedC1R1SolomonProblems();
-		problems = problems.subList(1, problems.size());
+		problems = problems.subList(3, problems.size());
 		processProblems();
 	}
 	
@@ -99,6 +99,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 		Parameters.setAdditionalNumberOfVehicles(3);		
 		Parameters.setOutputDirectory("\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\0Punkt1\\RC1\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC1SolomonProblems();
+		problems = problems.subList(2, problems.size());
 		processProblems();
 	}
 	

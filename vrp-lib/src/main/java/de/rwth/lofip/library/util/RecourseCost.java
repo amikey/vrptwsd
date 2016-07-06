@@ -80,7 +80,7 @@ public class RecourseCost {
 				
 				calculateNumberOfRouteFailures(gotClone);
 				//RUNTIME_TODO: entfernen, braucht O(n) zeit
-				assertThatGotContainsNoEmptyTours(gotClone);
+//				assertThatGotContainsNoEmptyTours(gotClone);
 				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);
 				//RUNTIME_TODO: entfernen
 				assertThatSolutionIsFeasible(gotClone);				

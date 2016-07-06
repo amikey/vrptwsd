@@ -17,8 +17,9 @@ public class AnalyseSchwankungsbreiteMonteCarloSimulation {
 	@Test
 	public void analysiereSchwankungsbreiteMonteCarloSimulation() throws IOException {
 		Parameters.setWeightForConvexcombination(0.1);
+		Parameters.setMaximalNumberOfToursInGot(2);
 		VrpProblem problem = ReadAndWriteUtils.readEigeneModifiedRC1SolomonProblems().get(2);
-		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 1 3 45 5 8 46 4 100 ) ) ( ( 65 52 99 87 59 97 75 58 ) ) ( ( 83 64 51 84 56 66 91 80 ) ) ( ( 82 11 10 13 16 17 90 ) ) ( ( 33 27 30 32 28 26 29 71 96 ) ) ( ( 69 88 53 78 60 55 ) ) ( ( 85 63 89 76 19 25 77 ) ) ( ( 61 42 44 43 40 35 37 72 54 ) ) ( ( 92 95 62 67 50 31 34 93 94 ) ) ( ( 12 14 47 15 9 74 86 57 ) ) ( ( 81 39 36 38 41 68 ) ) ( ( 98 73 79 7 6 2 70 ) ) ( ( 18 48 21 23 49 22 20 24 ) ) ", problem);
+		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 1 3 45 5 8 46 4 100 ) ( 65 52 99 87 59 97 75 58 ) ) ( ( 83 64 51 84 56 66 91 80 ) ( 82 11 10 13 16 17 90 ) ) ( ( 33 27 30 32 28 26 29 71 96 ) ( 69 88 53 78 60 55 ) ) ( ( 85 63 89 76 19 25 77 ) ( 61 42 44 43 40 35 37 72 54 ) ) ( ( 92 95 62 67 50 31 34 93 94 ) ( 12 14 47 15 9 74 86 57 ) ) ( ( 81 39 36 38 41 68 ) ( 98 73 79 7 6 2 70 ) ) ( ( 18 48 21 23 49 22 20 24 ) ) ", problem);
 		
 		String s1 = ""
 		+ "RecourseCost" +";"

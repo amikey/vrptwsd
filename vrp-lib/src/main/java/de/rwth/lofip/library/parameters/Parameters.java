@@ -226,6 +226,10 @@ public class Parameters {
 		return NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR;
 	}
 
+	public static void setNumberOfMovesThatStochasticCostIsCalculatedFor(int d) {
+		NUMBER_OF_MOVES_THAT_RECOURSE_COST_ARE_CALCULATED_FOR = d;
+	}
+	
 	public static int getMaximalNumberOfToursInAdaptiveMemory() {
 		return maximalNumberOfToursInAdaptiveMemory;
 	}
