@@ -10,12 +10,10 @@ import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.solver.metaheuristics.TSWithTourElimination;
 import de.rwth.lofip.library.solver.metaheuristics.TabuSearchForElementWithTours;
-import de.rwth.lofip.library.solver.metaheuristics.recourse.AdaptiveMemoryTabuSearchWithRecourse;
-import de.rwth.lofip.library.solver.metaheuristics.util.TourMatchingWithNumberOfRecourseActions;
 import de.rwth.lofip.library.util.PrintUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
-public class AMTSwithRecourseAndRecourseActionNumber extends AdaptiveMemoryTabuSearchWithRecourse {
+public class AMTSwithRecourseAndRecourseActionNumber extends AdaptiveMemoryTabuSearch {
 	
 //	@Override
 //	protected AdaptiveMemory getAM() {
@@ -75,10 +73,5 @@ public class AMTSwithRecourseAndRecourseActionNumber extends AdaptiveMemoryTabuS
                     }
                 });
 		PrintUtils.printListOfSolutions(bestSolutions, ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
-	}
-	
-	@Override
-	protected TourMatchingWithNumberOfRecourseActions getTourMatching() {
-		return new TourMatchingWithNumberOfRecourseActions();
 	}
 }

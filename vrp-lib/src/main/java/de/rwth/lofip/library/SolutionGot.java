@@ -401,11 +401,6 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
 					length = t.getCustomerSize();
 			return length;
 		}
-
-		public void resetRecourseCost() {
-			for (GroupOfTours got : getGots())
-				got.resetExpectedRecourseCost();
-		}
 }
 
 
