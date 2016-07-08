@@ -189,19 +189,6 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 		problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
 		processProblems();
 	}
-	
-	private void setParameters() {
-		//Set Parameters for Scenario
-		//Set Parameters for Algorithm
-		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
-		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
-		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
-		Parameters.setNumberOfInitialSolutions(20);
-		Parameters.setNumberOfIntensificationTries(0);		
-		Parameters.setMaximalNumberOfToursInGot(2);
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
-		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
-	}
 		
 	@Override
 	protected void processProblems() throws IOException {
