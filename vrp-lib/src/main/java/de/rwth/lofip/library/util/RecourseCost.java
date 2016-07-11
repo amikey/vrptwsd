@@ -83,7 +83,7 @@ public class RecourseCost {
 				assertThatGotContainsNoEmptyTours(gotClone);
 				makeSolutionFeasibleAgain(gotClone, listOfRecourseActions);
 				//RUNTIME_TODO: entfernen
-				assertThatSolutionIsFeasible(gotClone);				
+				assertThatSolutionIsFeasible(gotClone,got,i);				
 				overallRecourseCost += calculateRecourseCostOfFeasibleSolution(got, gotClone);
 				overallRecourseCostOnlyAdditionalTours += calculateRecourseCostAdditionalToursOfFeasibleSolution(gotClone);
 				calculateAdditionalNumberOfTours(gotClone);
@@ -145,31 +145,61 @@ public class RecourseCost {
 			}
 		}
 	}
-
+	
+	public GroupOfTours makeSolutionFeasibleAgainWithCostMinimationPublic(GroupOfTours gotClone) {
+		makeSolutionFeasibleAgainWithCostMinimization(gotClone);
+		return gotClone;
+	}
+	
 	private void makeSolutionFeasibleAgainWithCostMinimization(GroupOfTours gotClone) {
 		LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours(); //DESIGN_TODO: Hier auch Tabu Search testen
 		//create Solution from gotClone for processing with local search    
 		ls.improve(gotClone);
 		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots());
-		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
-			//got is still demand infeasible -> no feasible solution could be found for demand			
-			gotClone.addEmptyTour();			
-			ls.improve(gotClone);			    				
+		int iteration = 0;
+		while (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {
+			gotClone.addEmptyTour();
+			ls.improve(gotClone);
+			
+			iteration++;
+			if(iteration >= 10)
+				throw new RuntimeException("Mehr als 10 zusätzliche Touren nötig, um Got feasible zu machen. Sehr sehr sehr unwahrscheinlich.");
 		}
-		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
-			//got is still demand infeasible -> drei Touren reichen nicht aus, oder LS findet keine Lösung, in der drei Touren ausreichen			
-			gotClone.addEmptyTour();			
-			ls.improve(gotClone);			    				
-		}		
+		
+//		for (int i = 1; i <= Parameters.getMaximalNumberOfToursInGots(); i++) {
+//			for (int j = 1; j <= i; j++) {
+//				gotClone.addEmptyTour();
+//			}
+//			ls.improve(gotClone);
+//			if (ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone))
+//				break;
+//		}
+
+//		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
+//			//got is still demand infeasible -> no feasible solution could be found for demand			
+//			gotClone.addEmptyTour();			
+//			ls.improve(gotClone);		
+//			System.out.println("Got nach improve mit LS: " + gotClone.getAsTupelWithDemand());
+//		}
+//		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) { 
+//			//got is still demand infeasible -> drei Touren reichen nicht aus, oder LS findet keine Lösung, in der drei Touren ausreichen			
+//			gotClone.addEmptyTour();
+//			System.out.println("Got vor improve mit LS: " + gotClone.getAsTupelWithDemand());
+//			ls.improve(gotClone);
+//			System.out.println("Got nach improve mit LS: " + gotClone.getAsTupelWithDemand());
+//		}		
 	}
 
-	private void assertThatSolutionIsFeasible(GroupOfTours gotClone) {
+	private void assertThatSolutionIsFeasible(GroupOfTours gotClone, GroupOfTours got, int i) {
 		//asserts for code validation; es könnte auch der pathologische Fall auftreten, dass vier Touren benötigt werden, um alle Kunden bedienen zu können; das wird unten überprüft
 		//RUNTIME_TODO: remove assert
 //		if (gotClone.getNumberOfTours() > Parameters.getMaximalNumberOfToursInGots()+1)
 //			System.out.println("Anzahl Touren größer als Parameters.getMaximalNumberOfToursInGots()+1. So sieht das got aus : " + gotClone.getAsTupel());
 //		assertEquals(true, gotClone.getNumberOfTours() <= Parameters.getMaximalNumberOfToursInGots()+1);
-		assertEquals(true, ElementWithToursUtils.isElementDemandFeasible(gotClone));
+		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {
+			System.out.println("folgendes Got aus Problem " + got.getParentSolution().getVrpProblem().getDescription() + " ist infeasible in Iteration " + i + " in Simulation: " + got.getAsTupel());
+		}
+		assertEquals(true, ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone));
 	}
 	
 	private double calculateRecourseCostOfFeasibleSolution(GroupOfTours got, GroupOfTours gotClone) {
@@ -345,6 +375,10 @@ public class RecourseCost {
 		this.numberOfAdditionalTours = additionalNumberOfTours2;
 		this.numberOfRouteFailures = numberOfRouteFailures2;
 		this.numberOfDifferentRecourseActions = numberOfDifferentRecourseActions2;
+	}
+
+	public RecourseCost() {
+		// TODO Auto-generated constructor stub
 	}
 
 		

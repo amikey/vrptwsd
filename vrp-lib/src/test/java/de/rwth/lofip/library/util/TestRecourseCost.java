@@ -17,6 +17,8 @@ import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.monteCarloSimulation.SimulationUtils;
 import de.rwth.lofip.library.parameters.Parameters;
+import de.rwth.lofip.library.solver.localSearch.LocalSearchForElementWithTours;
+import de.rwth.lofip.library.solver.util.ElementWithToursUtils;
 import de.rwth.lofip.testing.util.SetUpSolutionFromString;
 
 public class TestRecourseCost {
@@ -25,6 +27,48 @@ public class TestRecourseCost {
 	GroupOfTours got;
 	private GroupOfTours got2;
 	List<GroupOfTours> gots = new ArrayList<GroupOfTours>();
+	
+	@Test
+	public void testLocalSearchInSimulationInRecourseCost() throws IOException {
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setMaximalNumberOfToursInGot(2);
+		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 93 33 81 ) ( 26 18 82 73 80 78 77 90 ) ) ", ReadAndWriteUtils.readEigeneModifiedC2SolomonProblems().get(0));
+		
+		System.out.println("Solution before simulation: " + solution.getAsTupelWithDemand());
+		
+		SimulationUtils.resetSeed();
+		for (int i = 1; i <= 30; i++) {
+			SimulationUtils.generateDemandsForNextScenario();
+		}
+		GroupOfTours gotClone = solution.getGots().get(0).cloneWithCopyOfTourAndCustomers();		
+		SimulationUtils.setCapacityOfVehiclesToOriginalCapacity(gotClone);
+		SimulationUtils.generateDemandsForNextScenario();
+		SimulationUtils.setDemandForCustomersWithDeviation(gotClone);
+
+		if (!ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone)) {
+			
+			//RUNTIME_TODO: entfernen, braucht O(n) zeit
+			assertEquals(false, gotClone.isHasEmptyToursThatAreNotForRecourse());
+			RecourseCost rc = new RecourseCost();
+			GroupOfTours newGot = new GroupOfTours(solution);
+			newGot.addTour(gotClone.getTour(0));
+			newGot.addEmptyTour();			
+			System.out.println("newGot: " + newGot.getAsTupelWithDemand());
+			System.out.println("Capacity Vehicle 1: " + newGot.getTour(0).getVehicle().getCapacity());
+			System.out.println("Capacity Vehicle 2: " + newGot.getTour(1).getVehicle().getCapacity());
+			LocalSearchForElementWithTours ls = new LocalSearchForElementWithTours();
+			newGot = (GroupOfTours) ls.improve(newGot);
+			System.out.println("newGot after LS: " + newGot.getAsTupelWithDemand());
+			newGot.addEmptyTour();
+			newGot = (GroupOfTours) ls.improve(newGot);
+			System.out.println("newGot after LS second time: " + newGot.getAsTupelWithDemand());
+			
+//			gotClone = rc.makeSolutionFeasibleAgainWithCostMinimationPublic(gotClone);
+//			//RUNTIME_TODO: entfernen
+//			System.out.println(gotClone.getAsTupelWithDemand());
+//			assertEquals(true, ElementWithToursUtils.isElementDemandFeasibleCheckWithRef(gotClone));			
+		}
+	}
 	
 	@Test
 	public void testSimulationInRecourseCost() throws IOException {

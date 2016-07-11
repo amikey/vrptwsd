@@ -19,7 +19,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 	public ElementWithTours improve(ElementWithTours solutionStart) {
 		this.solution = solutionStart;
 		crossNeighborhood = new CrossNeighborhood(solution);
-		
+				
 		boolean isImprovement = false;
 		do {
 			try{				
@@ -28,7 +28,7 @@ public class LocalSearchForElementWithTours implements MetaSolverInterfaceGot {
 				isImprovement = isImprovement();								
 				if (isImprovement) {			
 
-					applyBestMove();	
+					applyBestMove();					
 
 					assertEquals(true, iteration < 300);
 					

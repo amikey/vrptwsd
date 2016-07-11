@@ -1,4 +1,4 @@
-package de.rwth.lofip.cli;
+package de.rwth.lofip.cli.util;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,13 +6,10 @@ import java.util.List;
 
 import org.junit.Test;
 
-import de.rwth.lofip.cli.util.CreateSolutionsFromFile;
-import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
 import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.recourse.TabuSearchWithRecourse;
-import de.rwth.lofip.library.util.PrintUtils;
 import de.rwth.lofip.library.util.math.MathUtils;
 
 public class TestCreateSolutionsFromFile {

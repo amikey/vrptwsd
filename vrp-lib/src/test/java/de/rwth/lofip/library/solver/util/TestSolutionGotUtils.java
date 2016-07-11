@@ -16,7 +16,7 @@ public class TestSolutionGotUtils {
 	public void testCreateSolutionWithTargetVehicleNumber() throws IOException {
 		VrpProblem problem = ReadAndWriteUtils.readEigeneModifiedC2SolomonProblems().get(0);
 		SolutionGot solution = new SolutionGot(problem); 
-		solution = SolutionGotUtils.createSolutionWithSingleTours(solution);
+		solution = SolutionGotUtils.createSolutionWithSingleTours(solution,problem.getCustomerCount());
 		assertEquals(true, solution.getNumberOfTours() == problem.getCustomerCount());
 	}
 }

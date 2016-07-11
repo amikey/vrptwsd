@@ -356,6 +356,10 @@ public class ResourceExtensionFunction {
 				return null;
 		else return customersInThisRef.get(customersInThisRef.size()-1);
 	}
+
+	public boolean isEmpty() {
+		return (customersInThisRef.size() == 0);
+	}
 	
 
 

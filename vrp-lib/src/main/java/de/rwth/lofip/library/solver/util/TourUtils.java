@@ -243,6 +243,9 @@ public class TourUtils {
 	}
 	
 	public static boolean isInsertionOfRefPossible(Tour tour, ResourceExtensionFunction ref, int positionStartOfSegment, int positionEndOfSegment) {
+		if (ref.isEmpty()) //insertion of empty segments should always be possible
+			return true;
+		
 		ResourceExtensionFunction ref1;
 		if (positionStartOfSegment == 0)
 			//first position has to be treated separately because depot is not part of the array RefsFromBeginningAtPos; stupid design decision

@@ -100,8 +100,7 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 		private void generateMovesUsingRefs(int iteration) {
 			while (isExistsNextCombinationOfSegments()) {
 				generateNextCombinationOfSegments();
-				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {
-					
+				if (!segmentsToBeSwapedAreNotInNeighborhoodRefPositions()) {															
 					//for testing
 					if (Parameters.isTestingMode())
 						assertEquals(isMoveFeasibleCheckNaiv(),isMoveFeasibleCheckWithRef());
@@ -310,7 +309,7 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 		return false;
 	}
 			
-	public boolean isMoveFeasibleCheckWithRef() {		
+	public boolean isMoveFeasibleCheckWithRef() {			
 		boolean isWasInsertionPossible = true;
 		if (isInnerTourMove()) {			
 			if(!TourUtils.isInsertionOfRefPossibleWrtTWAndDemandInnerTourMove(tour1,positionStartOfSegmentTour1,positionEndOfSegmentTour1,positionStartOfSegmentTour2))
@@ -321,10 +320,12 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 			if (!TourUtils.isInsertionOfRefPossible(tour1,RefSegment2,positionStartOfSegmentTour1,positionEndOfSegmentTour1)) { 
 				isWasInsertionPossible = false;				
 				isCurrentSegmentInTour2ViolatesTWorCapacityConstraint = true;
-			}
+			}		
 			//try inserting segment1 in tour 2
-			else if (!TourUtils.isInsertionOfRefPossible(tour2,RefSegment1,positionStartOfSegmentTour2,positionEndOfSegmentTour2))
-				isWasInsertionPossible = false;
+			//both items need to be feasible in order to apply move. If first wasn't feasible, then second doesn't need to be checked. 		
+			else if (!TourUtils.isInsertionOfRefPossible(tour2,RefSegment1,positionStartOfSegmentTour2,positionEndOfSegmentTour2)) {
+				isWasInsertionPossible = false;				
+			}		
 			//check whether tour 1 is feasible 			
 		}
 		return isWasInsertionPossible;
@@ -508,7 +509,7 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 			throw new RuntimeException("Move that should be applied is not feasible");
 		
 		if (bestMove.isInnerTourMove()) {
-			//inner tour moves allways happen in tour 1
+			//inner tour moves always happen in tour 1
 			Tour tour1 = bestMove.getTour1();
 			if (isInsertedBeforePositionWhereSegmentIsRemoved(bestMove)) {
 				List<Customer> customers = tour1.removeCustomersBetween(bestMove.getStartPositionTour1(),bestMove.getEndPositionTour1());
@@ -541,16 +542,29 @@ public class CrossNeighborhood extends AbstractNeighborhood {
 		AbstractNeighborhoodMove move = this.getNeigborhoodMove();
 		return actuallyApplyMoveAndMaintainNeighborhood(move);		
 	}
+	
+	public String getNeighborhoodStepAsString() {
+		String s = "Move " + tour1.getId() + ": (";		
+		for (int i = positionStartOfSegmentTour1; i < positionEndOfSegmentTour1; i++) {
+			s += tour1.getCustomerAtPosition(i).getCustomer().getCustomerNo() + " ";
+		}
+		s += ")[" + positionStartOfSegmentTour1 + "] " +
+				tour2.getId() + "(";
+		for (int i = positionStartOfSegmentTour2; i < positionEndOfSegmentTour2; i++)
+			s+= tour2.getCustomerAtPosition(i).getCustomer().getCustomerNo() + " ";
+		s+= ")[" + positionStartOfSegmentTour2 + "] ";
+		return s;
+	}
 
 	public void printNeighborhoodStep() {
-		System.out.print("Move " + tour1.getId() + "(");		
+		System.out.print("Move " + tour1.getId() + ": (");		
 		for (int i = positionStartOfSegmentTour1; i < positionEndOfSegmentTour1; i++) {
-			System.out.print(tour1.getCustomerAtPosition(i).getCustomer().getCustomerNo());
+			System.out.print(tour1.getCustomerAtPosition(i).getCustomer().getCustomerNo() + " ");
 		}
 		System.out.print(")[" + positionStartOfSegmentTour1 + "] " +
 				tour2.getId() + "(");
 		for (int i = positionStartOfSegmentTour2; i < positionEndOfSegmentTour2; i++)
-			System.out.print(tour2.getCustomerAtPosition(i).getCustomer().getCustomerNo());
+			System.out.print(tour2.getCustomerAtPosition(i).getCustomer().getCustomerNo() + " ");
 		System.out.print(")[" + positionStartOfSegmentTour2 + "] ");
 		System.out.println();
 		System.out.println("Tour1: "); tour1.print(); System.out.println("Tour2: "); tour2.print(); 
