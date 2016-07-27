@@ -19,6 +19,21 @@ public class AnalyseIstSituation {
 	protected List<VrpProblem> problems = new ArrayList<VrpProblem>();
 	private List<SolutionGot> solutions = new ArrayList<SolutionGot>();
 
+	private int numberOfToursInGots = 2;	
+	private String path = "\\Ab20160720\\RiskPooling2Touren\\80Prozent\\";
+	private double percentageOfCapacity = 0.8;
+	
+	@Test
+	public void EightyPercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {
+		setParameters();		
+		
+		Parameters.setOutputDirectory(path);
+		problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
+		
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}	
+	
 	@Test
 	public void EightyPercentOfCapacityOnC1R1EigeneModifiedSolomonInstances() throws IOException {
 		setParameters();
@@ -89,8 +104,8 @@ public class AnalyseIstSituation {
 		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
 		Parameters.setNumberOfInitialSolutions(20);
 		Parameters.setNumberOfIntensificationTries(0);
-		Parameters.setPercentageOfCapacity(0.8);
-		Parameters.setMaximalNumberOfToursInGot(1);
+		Parameters.setPercentageOfCapacity(percentageOfCapacity);
+		Parameters.setMaximalNumberOfToursInGot(numberOfToursInGots);
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}

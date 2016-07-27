@@ -16,7 +16,7 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
-	double capacity = 1.1;
+	double capacity = 1.0;
 	String ordnerPfad = "\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhöhteKapazität1Punkt1\\";
 	
 	@Test
