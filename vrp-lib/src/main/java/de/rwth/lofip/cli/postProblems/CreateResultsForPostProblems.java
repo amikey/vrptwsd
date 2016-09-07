@@ -19,19 +19,25 @@ public class CreateResultsForPostProblems {
 
 	private List<VrpProblem> problems = new ArrayList<VrpProblem>();
 	private List<SolutionGot> solutions = new ArrayList<SolutionGot>();
+	
+	private String path = "\\Ab20160720\\PostSzenarien\\";
+	private double weight = 0.1;
 
 	@Test
 	public void CreateResultsForIstSituation() throws IOException {
 		setParameters();
-		Parameters.setMaximalNumberOfToursInGot(1);
-		Parameters.setPercentageOfCapacity(0.8);
+		Parameters.setWeightForConvexcombination(weight);
+		Parameters.setMaximalNumberOfToursInGot(3);
+		Parameters.setPercentageOfCapacity(1.0);
 		Parameters.setIsPostScenario(true);
 		
-		Parameters.setOutputDirectory("\\PostSzenarien\\IstSituation\\");
+		Parameters.setOutputDirectory(path + "RecActMin\\0Punkt1\\3Touren\\");
 		problems = ReadAndWriteUtils.readPostProblems();
 		
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
-		processProblemsWithDeterministicSolver();
+		processProblemsWithStochasticAnzRecActMinSolver();
+//		processProblemsWithStochasticSolver();
+//		processProblemsWithDeterministicSolver();
 	}
 	
 	@Test

@@ -16,8 +16,22 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
-	double capacity = 1.0;
-	String ordnerPfad = "\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\ErhöhteKapazität1Punkt1\\";
+	double percentageOfCapacity = 1.0;
+	private int numberOfToursInGots = 3;
+	String ordnerPfad = "\\ErgebnisseEinplanungDesRiskPoolings\\OhneVorgegebeneAuslastung\\3Touren\\";
+	
+	
+	@Test
+	public void AlleOhneVorgegebeneAuslastung() throws IOException {
+		setParameters();	
+		
+		Parameters.setOutputDirectory(ordnerPfad);
+		problems = ReadAndWriteUtils.readEigeneModifiedSolomonProblems();
+		
+		problems = problems.subList(48, problems.size());
+		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
+		processProblems();
+	}
 	
 	@Test
 	public void C1R1OhneVorgegebeneAuslastung() throws IOException {
@@ -242,6 +256,21 @@ public class CreateResultsForEinplanungDesRiskPoolingsInDieTourenplanung extends
 	}
 	
 	//-------------
+	
+	
+	protected void setParameters() {
+		//Set Parameters for Scenario
+		//Set Parameters for Algorithm
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(7);
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);
+		Parameters.setPercentageOfCapacity(percentageOfCapacity);
+		Parameters.setMaximalNumberOfToursInGot(numberOfToursInGots);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
+	}
 	
 	@Override
 	protected void processProblems() throws IOException {

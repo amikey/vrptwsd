@@ -19,12 +19,12 @@ public class AnalyseIstSituation {
 	protected List<VrpProblem> problems = new ArrayList<VrpProblem>();
 	private List<SolutionGot> solutions = new ArrayList<SolutionGot>();
 
-	private int numberOfToursInGots = 2;	
-	private String path = "\\Ab20160720\\RiskPooling2Touren\\80Prozent\\";
-	private double percentageOfCapacity = 0.8;
+	private int numberOfToursInGots = 3;	
+	private String path = "\\Ab20160720\\RiskPooling3Touren\\100Prozent\\";
+	private double percentageOfCapacity = 1.0;
 	
 	@Test
-	public void EightyPercentOfCapacityOnAllEigeneModifiedSolomonInstances() throws IOException {
+	public void AllEigeneModifiedSolomonInstances() throws IOException {
 		setParameters();		
 		
 		Parameters.setOutputDirectory(path);

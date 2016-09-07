@@ -61,6 +61,13 @@ public class SolutionGot implements ElementWithTours, SolutionElement, Cloneable
     	return totalDistanceWithCostFactorAndConvexcombinationOfRecourse;
     }
     
+    public double getTotalDistanceWithRecourseWithRecActNumAndAddTours() {
+    	double totalDistanceWithCostFactorAndRecourse = getTotalDistanceWithCostFactorAndRecourse();
+    	RecourseCost rc = new RecourseCost(getGots());
+    	double totalDistanceWithRecourseWithRecActNumAndAddTours() = totalDistanceWithCostFactorAndRecourse + 
+				(totalDistanceWithCostFactorAndRecourse * (Parameters.getWeightForConvexcombination() * ((rc.getNumberOfDifferentToursForBasicVehicles() / this.getNumberOfTours())) + (rc.getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns())));
+    }
+    
     public RecourseCost getRecourseCost() {
     	return new RecourseCost(gots);
     }

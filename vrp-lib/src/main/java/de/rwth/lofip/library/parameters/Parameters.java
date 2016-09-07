@@ -64,7 +64,7 @@ public class Parameters {
 	private static String directory;
 	
 	//Simulation
-	private static int NUMBER_OF_DEMAND_SCENARIO_RUNS = 100;
+	private static int numberOfDemandScenarioRuns = 100;
 	private static double RELATIVE_STANDARD_DEVIATION = 0.22;
 
 	//Seeds
@@ -188,8 +188,13 @@ public class Parameters {
 	}
 	
 	public static int getNumberOfDemandScenarioRuns() {	
-		return NUMBER_OF_DEMAND_SCENARIO_RUNS;
+		return numberOfDemandScenarioRuns;
 	}
+	
+	public static void setNumberOfDemandScenarioRuns(int i) {
+		numberOfDemandScenarioRuns = i;
+	}
+
 
 	public static double getFluctuationOfDemandInPercentage() { 
 		return RELATIVE_STANDARD_DEVIATION;
@@ -434,7 +439,7 @@ public class Parameters {
 	}
 
 	public static void setNumberOfSimulationRuns(int i) {
-		NUMBER_OF_DEMAND_SCENARIO_RUNS = i;
+		numberOfDemandScenarioRuns = i;
 	}
 
 	public static boolean isPostScenario() {
@@ -476,6 +481,7 @@ public class Parameters {
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}
+
 	
 	
 

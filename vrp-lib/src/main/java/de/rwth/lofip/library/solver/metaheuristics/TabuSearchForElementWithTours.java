@@ -69,7 +69,7 @@ public class TabuSearchForElementWithTours implements MetaSolverInterfaceGot {
 				System.out.println("Iteration TS: " + iteration);// + "; Solution: " + solution.getAsTupel() + "\n");
 				
 				System.out.println(iteration + " " + solution.getAsTupel());
-				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours() + "; " + (solution.getTotalDistanceWithCostFactorAndRecourse() - solution.getTotalDistanceWithCostFactor()) + "; " + solution.getTotalDistanceWithCostFactorAndRecourse());
+				System.out.println(solution.getTotalDistanceWithCostFactor() + "; " + solution.getNumberOfTours() + "; " + (solution.getTotalDistanceWithCostFactorAndRecourse() - solution.getTotalDistanceWithCostFactor()));
 				bestOverallSolution.getTotalDistanceWithCostFactor();
 				
 				findBestNonTabooMove();				

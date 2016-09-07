@@ -16,10 +16,13 @@ public class AnalyseSchwankungsbreiteMonteCarloSimulation {
 	
 	@Test
 	public void analysiereSchwankungsbreiteMonteCarloSimulation() throws IOException {
+		Parameters.setAlParametersToValuesForAuswertung();
 		Parameters.setWeightForConvexcombination(0.1);
 		Parameters.setMaximalNumberOfToursInGot(2);
-		VrpProblem problem = ReadAndWriteUtils.readEigeneModifiedRC1SolomonProblems().get(2);
-		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 1 3 45 5 8 46 4 100 ) ( 65 52 99 87 59 97 75 58 ) ) ( ( 83 64 51 84 56 66 91 80 ) ( 82 11 10 13 16 17 90 ) ) ( ( 33 27 30 32 28 26 29 71 96 ) ( 69 88 53 78 60 55 ) ) ( ( 85 63 89 76 19 25 77 ) ( 61 42 44 43 40 35 37 72 54 ) ) ( ( 92 95 62 67 50 31 34 93 94 ) ( 12 14 47 15 9 74 86 57 ) ) ( ( 81 39 36 38 41 68 ) ( 98 73 79 7 6 2 70 ) ) ( ( 18 48 21 23 49 22 20 24 ) ) ", problem);
+		VrpProblem problem = ReadAndWriteUtils.readEigeneModifiedR1SolomonProblems().get(1);
+		
+		SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 92 98 16 86 17 ) ( 5 83 61 84 96 ) ) ( ( 23 67 55 25 ) ( 69 30 51 20 32 70 ) ) ( ( 27 31 88 7 10 ) ( 36 47 19 8 46 60 89 ) ) ( ( 2 73 22 74 58 ) ( 12 76 79 50 ) ) ( ( 65 71 9 35 77 ) ( 64 49 48 ) ) ( ( 63 62 11 90 66 1 ) ( 45 82 18 6 13 ) ) ( ( 33 81 3 54 24 80 ) ( 39 75 41 56 4 ) ) ( ( 28 29 78 34 68 ) ( 72 21 40 53 26 ) ) ( ( 59 95 94 ) ( 52 99 85 37 ) ) ( ( 42 15 87 57 97 93 ) ( 14 44 38 43 91 100 ) )", problem);
+//		RC101: SolutionGot solution = SetUpSolutionFromString.SetUpSolution("( ( 23 21 19 18 48 24 ) ( 95 62 67 71 94 96 54 68 ) ) ( ( 5 45 2 7 8 3 1 ) ( 65 52 99 57 86 74 25 ) ) ( ( 98 73 79 6 46 4 100 ) ( 82 11 9 10 55 ) ) ( ( 83 64 51 85 84 56 91 80 ) ( 92 33 30 28 26 34 32 93 ) ) ( ( 63 76 49 22 20 66 ) ( 14 47 12 15 16 17 13 ) ) ( ( 72 39 36 35 37 70 ) ( 61 81 90 ) ) ( ( 42 44 40 38 41 43 ) ( 59 75 87 97 58 77 ) ) ( ( 69 88 53 78 60 ) ( 27 29 31 50 89 ) )", problem);
 		
 		String s1 = ""
 		+ "RecourseCost" +";"
@@ -32,10 +35,14 @@ public class AnalyseSchwankungsbreiteMonteCarloSimulation {
 		+ "NumberOfAdditionalTours" + ";"
 		+ "NumberOfAdditionalToursPerDay" + ";"
 		+ "NumberOfDifferentToursBasicVehicles" + ";"
-		+ "NumberOfDifferentRecourseActions";
+		+ "NumberOfDifferentToursPerBasicVehicle";
 		System.out.println(s1);		
 		
-		for (int i = 1; i <= 100; i++) {
+		Parameters.setNumberOfDemandScenarioRuns(70);
+		
+		long startTime = System.currentTimeMillis();
+		
+		for (int i = 1; i <= 100000; i+=5000) {
 			SimulationUtils.setSeed(i);
 			
 			solution.resetRecourseCost();
@@ -65,11 +72,18 @@ public class AnalyseSchwankungsbreiteMonteCarloSimulation {
 			+ String.format("%.3f",rc.getNumberOfAdditionalTours() / Parameters.getNumberOfDemandScenarioRuns()) + ";"
 			//numberOfDifferentToursForBasicVehicles
 			+ String.format("%.3f", rc.getNumberOfDifferentToursForBasicVehicles()) + ";" 
-			+ String.format("%.3f",rc.getNumberOfDifferentRecourseActions());
+			+ String.format("%.3f",rc.getNumberOfDifferentToursForBasicVehicles()/solution.getNumberOfTours());
 			
 			System.out.println(s);
 			
 		}
+		
+		long endTime = System.currentTimeMillis();
+		long timeNeededMS = endTime - startTime;
+		int numberOfSimulationRuns = 20;
+		long timeNeededSeconds = timeNeededMS/1000/20;
+		
+		System.out.println("Time needed in seconds per Simulation Run: " + timeNeededSeconds);
 		
 	}
 

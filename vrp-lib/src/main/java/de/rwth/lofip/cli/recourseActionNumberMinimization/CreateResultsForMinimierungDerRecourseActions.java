@@ -18,8 +18,8 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	//--- Eigene Modified Solomon Instances - 22% relative standardabweichung
 	
 	private int numberOfToursInGots = 3;
-	private double weight = 0.033;
-	String path = "\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\3TourenProGot\\0Punkt03\\";
+	private double weight = 0.066;
+	String path = "\\MinimierungRecourseActions\\OhneVorgegebeneAuslastung\\3TourenProGot\\0Punkt6\\";
 
 	@Test
 	public void AlleOhneVorgegebeneAuslastung() throws IOException {
@@ -117,6 +117,7 @@ public class CreateResultsForMinimierungDerRecourseActions extends RunAdaptiveMe
 	@Test
 	public void RC2OhneVorgegebeneAuslastung() throws IOException {
 		setParameters();
+		Parameters.setMaximalNumberOfToursInGot(numberOfToursInGots);
 		Parameters.setWeightForConvexcombination(weight);		
 		Parameters.setOutputDirectory(path + "RC2\\");
 		problems = ReadAndWriteUtils.readEigeneModifiedRC2SolomonProblems();		

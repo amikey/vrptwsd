@@ -35,4 +35,6 @@ public interface ElementWithTours {
 	public void removeEmptyGots();
 
 	public RecourseCost getRecourseCost();
+
+	public double getTotalDistanceWithRecourseWithRecActNumAndAddTours();
 }

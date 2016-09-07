@@ -274,7 +274,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	}
 
 	protected void setParameters() {
-		Parameters.setAlParametersToValuesForAuswertung();
+		Parameters.setAlParametersToValuesForAuswertung();		
 	}
 
 	// not used any more
