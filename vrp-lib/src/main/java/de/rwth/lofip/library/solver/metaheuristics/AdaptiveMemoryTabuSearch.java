@@ -36,7 +36,7 @@ public class AdaptiveMemoryTabuSearch {
 	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 	private long endTime;
 	private long timeNeeded;
-	private long startTime;
+	protected long startTime;
 	private int iteration;
 	
 	protected AdaptiveMemory getAM() {
@@ -227,7 +227,7 @@ public class AdaptiveMemoryTabuSearch {
 			Parameters.setTourMinimizationPhase(true);
 		}
 
-		private void publishSolutionAtEndOfAMTSSearch() throws IOException {
+		protected void publishSolutionAtEndOfAMTSSearch() throws IOException {
 			endTime = System.currentTimeMillis();
 			timeNeeded = endTime - startTime;
 			ReadAndWriteUtils.publishSolutionAtEndOfAMTSSearch(bestOverallSolution, timeNeeded);

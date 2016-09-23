@@ -88,7 +88,7 @@ public class SolutionGotUtils {
 		// erstelle Lösung mit stichfahrten und finde mit TS targetVehicleNumber		
 		if (solution.getVehicleCount() != vehicleGoalNumber) {
 			System.out.println("#KFZ " + solution.getVehicleCount() + " ungleich vehicleTargetNumber " + vehicleGoalNumber);
-			solution = createSolutionWithSingleTours(solution, vehicleGoalNumber);
+			solution = createSolutionWithSingleTours(solution.getVrpProblem(), vehicleGoalNumber);
 			solution = findSolutionWithTargetNumber(solution, vehicleGoalNumber);
 		}			
 	
@@ -97,11 +97,10 @@ public class SolutionGotUtils {
 		return solution;
 	}
 	
-	public static SolutionGot createSolutionWithSingleTours(SolutionGot solution, int vehicleGoalNumber) {
-		List<Customer> customers = new ArrayList<Customer>(solution.getVrpProblem().getCustomers());
+	public static SolutionGot createSolutionWithSingleTours(VrpProblem problem, int vehicleGoalNumber) {
+		List<Customer> customers = new ArrayList<Customer>(problem.getCustomers());
 		Collections.shuffle(customers);
-		VrpProblem problem = solution.getVrpProblem();
-		solution = new SolutionGot(problem);
+		SolutionGot	solution = new SolutionGot(problem);
 		Iterator<Customer> iterator = customers.iterator();
 		for (int i = 0; i < vehicleGoalNumber; i++) {
 			Customer c = iterator.next();
@@ -153,7 +152,7 @@ public class SolutionGotUtils {
 		return (solution2.getNumberOfTours() >= 2*numberOfToursToBeRemoved);
 	}
 
-	private static SolutionGot findSolutionWithTargetNumber(SolutionGot solution, int targetVehicleNumber2) throws IOException {
+	public static SolutionGot findSolutionWithTargetNumber(SolutionGot solution, int targetVehicleNumber2) throws IOException {
 		System.out.println("starting TS to find Solution with targetVehicleNumber" + targetVehicleNumber2);
 		boolean flag = Parameters.isTourMinimizationPhase();
 		boolean flag2 = Parameters.isPublishSolutionAtEndOfTabuSearch();
@@ -168,6 +167,32 @@ public class SolutionGotUtils {
 		Parameters.setPublishSolutionAtEndOfTabuSearch(flag2);
 		return solution;	
 	}
+	
+	public static SolutionGot findSolutionWithLowerOrEqualThanTargetNumber(SolutionGot solution, int targetVehicleNumber2) throws IOException {
+		System.out.println("starting TS to find Solution with targetVehicleNumber" + targetVehicleNumber2);
+		boolean flag = Parameters.isTourMinimizationPhase();
+		boolean flag2 = Parameters.isPublishSolutionAtEndOfTabuSearch();
+		
+		int vehicleNumberStart = solution.getNumberOfTours();
+		Parameters.setTourMinimizationPhase(true);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(false);
+		TSWithTourElimination ts = new TSWithTargetVehicleNumber(targetVehicleNumber2){
+			@Override
+			protected boolean isStoppingCriterionMet() {
+				if (solution.getNumberOfTours() <= targetVehicleNumber)
+					return true;
+				if (Parameters.isRunningTimeReached())
+					return true;
+				return iterationsWithoutImprovement > maxNumberIterationsWithoutImprovement;
+			}
+		};
+		solution = (SolutionGot) ts.improve(solution);
+		System.out.println("finished TS to find Solution with targetVehicleNumber " + targetVehicleNumber2 + "; vehicle number in best solution found by TS: " + solution.getNumberOfTours() + ". Startet with " + vehicleNumberStart + " vehicles in starting solution.");
+		Parameters.setTourMinimizationPhase(flag);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(flag2);
+		return solution;	
+	}
+
 	
 	
 }

@@ -1,13 +1,16 @@
 package de.rwth.lofip.library.solver.metaheuristics.recourse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 
 import de.rwth.lofip.cli.util.ReadAndWriteUtils;
 import de.rwth.lofip.library.SolutionGot;
+import de.rwth.lofip.library.VrpProblem;
 import de.rwth.lofip.library.parameters.Parameters;
 import de.rwth.lofip.library.solver.metaheuristics.AdaptiveMemoryTabuSearch;
 import de.rwth.lofip.library.solver.metaheuristics.TSWithTourElimination;
@@ -19,6 +22,7 @@ import de.rwth.lofip.library.util.math.MathUtils;
 public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSearch {
 
 	private boolean thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber;
+	protected boolean thereHasBeenImprovementInLastDecreasedVehicleNumber = true;
 
 	protected TabuSearchForElementWithTours getTS() {
 		if (Parameters.isTourMinimizationPhase())
@@ -106,7 +110,10 @@ public class AdaptiveMemoryTabuSearchWithRecourse extends AdaptiveMemoryTabuSear
 	protected void setBestOverallSolutionToNewSolution() throws IOException {
 		bestOverallSolution = solution.clone();
 		thereHasBeenNoImprovementInTheLastIncreasedVehicleNumber = false;
+		thereHasBeenImprovementInLastDecreasedVehicleNumber = true;
 		if (Parameters.isPublishSolutionAtEndOfTabuSearch())				
 			IOUtils.write("Dies ist die neue beste Lösung in AM \n", ReadAndWriteUtils.getOutputStreamForPublishingSolutionAtEndOfTabuSearch(bestOverallSolution));
 	}
+	
+	
 }

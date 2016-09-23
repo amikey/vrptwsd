@@ -21,7 +21,7 @@ public class CreateResultsForPostProblems {
 	private List<SolutionGot> solutions = new ArrayList<SolutionGot>();
 	
 	private String path = "\\Ab20160720\\PostSzenarien\\";
-	private double weight = 0.1;
+	private double weight = 0.007;
 
 	@Test
 	public void CreateResultsForIstSituation() throws IOException {
@@ -31,11 +31,13 @@ public class CreateResultsForPostProblems {
 		Parameters.setPercentageOfCapacity(1.0);
 		Parameters.setIsPostScenario(true);
 		
-		Parameters.setOutputDirectory(path + "RecActMin\\0Punkt1\\3Touren\\");
+		Parameters.setOutputDirectory(path + "RecActMin\\0Punkt007\\3Touren\\");
 		problems = ReadAndWriteUtils.readPostProblems();
+//		problems = problems.subList(3, problems.size());
 		
 		VrpUtils.reduceCapacityOfVehiclesInProblems(problems);
-		processProblemsWithStochasticAnzRecActMinSolver();
+		solveProblemsWithAdaptiveMemoryWithRecourseActMinSolverNewAlgo();
+//		processProblemsWithStochasticAnzRecActMinSolver();
 //		processProblemsWithStochasticSolver();
 //		processProblemsWithDeterministicSolver();
 	}
@@ -188,6 +190,16 @@ public class CreateResultsForPostProblems {
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
 			AdaptiveMemoryTabuSearch adaptiveMemoryTabuSearch = new AMTSwithRecourseAndRecourseActionNumber();
 			SolutionGot solution = adaptiveMemoryTabuSearch.solve(problem);
+			solutions.add(solution);			
+		}		
+	}	
+	
+	private void solveProblemsWithAdaptiveMemoryWithRecourseActMinSolverNewAlgo() throws IOException {		
+		ReadAndWriteUtils.createHeaderForPublishingSolutionAtEndOfAMTSSearch();
+		for (VrpProblem problem : problems) {
+			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
+			AMTSwithRecourseAndRecourseActionNumber adaptiveMemoryTabuSearch = new AMTSwithRecourseAndRecourseActionNumber();
+			SolutionGot solution = adaptiveMemoryTabuSearch.solveWithNewAlgo(problem);
 			solutions.add(solution);			
 		}		
 	}	

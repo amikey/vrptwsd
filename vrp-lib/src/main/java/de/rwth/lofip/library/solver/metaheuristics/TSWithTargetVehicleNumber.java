@@ -4,7 +4,7 @@ import de.rwth.lofip.library.parameters.Parameters;
 
 public class TSWithTargetVehicleNumber extends TSWithTourElimination {
 	
-	private int targetVehicleNumber;
+	protected int targetVehicleNumber;
 	
 	public TSWithTargetVehicleNumber(int tvn) {
 		super();

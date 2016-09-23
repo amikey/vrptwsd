@@ -25,11 +25,27 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 	public void TestAdaptiveMemorySearchOnAllSolomonInstances() throws IOException {			
 //		PrintStream out = new PrintStream(new FileOutputStream(ReadAndWriteUtils.getOutputFile()));
 //		System.setOut(out);
-		Parameters.setOutputDirectory("\\ErgebnisseSolomon100\\");
-		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		
+		setParametersNew();
+		Parameters.setOutputDirectory("\\Ab20160720\\ErgebnisseOriginalSolomon\\");
 		problems = ReadAndWriteUtils.readOriginalSolomonProblems();
-		processProblems();
-		printProblems();
+		
+		solveProblemsWithAdaptiveMemorySolver();
+//		processProblems();
+//		printProblems();
+	}
+	
+	private void setParametersNew() {
+		//Set Parameters for Scenario
+		//Set Parameters for Algorithm
+		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(4);
+		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setNumberOfIntensificationTries(0);		
+		Parameters.setMaximalNumberOfToursInGot(1);
+		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}
 	
 	@Test

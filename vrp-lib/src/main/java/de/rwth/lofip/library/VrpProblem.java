@@ -247,5 +247,9 @@ public class VrpProblem implements Cloneable {
 	public void setOriginalCapacity(double vehicleCapacity) {
 		originalCapacity = vehicleCapacity;
 	}
+
+	public int getNumberOfVehiclesWith80PercentWorkload() {
+		return (int) Math.ceil((double) getTotalDemandOfAllCustomers() / (originalCapacity * 0.8));
+	}
     
 }

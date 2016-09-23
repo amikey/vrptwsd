@@ -57,7 +57,7 @@ public class CreateResultsForUmplanungOhneRiskPooling extends RunAdaptiveMemoryS
 		processProblems();
 	}
 	
-	private void setParameters() {
+	protected void setParameters() {
 		//Set Parameters for Scenario
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();

@@ -36,7 +36,7 @@ public class SimulationUtils {
 			long customerDemand = c.getOriginalDemand();					
 			double sd = deviation * customerDemand;
 			int demand;        	
-		    double val = randomDemandGeneration.nextGaussian() * sd + customerDemand;
+		    double val = (randomDemandGeneration.nextGaussian() * sd) + customerDemand;
 		    demand = (int) Math.round(val);
 		    if (demand > got.getFirstTour().getVehicle().getCapacity())
 			    demand = (int) got.getFirstTour().getVehicle().getCapacity();
@@ -46,6 +46,7 @@ public class SimulationUtils {
 		}
 		
 		//baue touren in got neu auf, damit Refs auch richtig sind.
+		// warum ist das denn noch mal nötig???
 		for (Tour tour : got.getTours()) {			
 			List<Customer> customers = tour.removeCustomersBetween(0, tour.getCustomerSize());
 			tour.insertCustomersAtPosition(customers, 0);			
