@@ -21,7 +21,7 @@ import de.rwth.lofip.library.util.math.MathUtils;
 public class AdaptiveMemoryTabuSearch {
 	
 	private int numberOfDifferentInitialSolutions = Parameters.getNumberOfDifferentInitialSolutionsInAM();
-	private int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
+	protected int maximalNumberOfCallsWithoutImprovementToAdaptiveMemory = Parameters.getMaximalNumberOfCallsWithoutImprovementToAdaptiveMemory();
 	private int lengthOfList = Parameters.getNumberOfSolutionsThatIsProcessedWithCostMinimizationPhase();
 	
 	private AdaptiveMemory adaptiveMemory = getAM();
@@ -31,7 +31,7 @@ public class AdaptiveMemoryTabuSearch {
 	protected List<SolutionGot> bestSolutions;
 	@SuppressWarnings("unused")
 	private int callsToAdaptiveMemory = 0;
-	private int numberOfAMCallsWithoutImprovement = 0;
+	protected int numberOfAMCallsWithoutImprovement = 0;
 	@SuppressWarnings("unused")
 	private int numberOfTimesSameBestOverallSolutionHasBeenFound = 0;
 	private long endTime;
@@ -118,7 +118,7 @@ public class AdaptiveMemoryTabuSearch {
 			}
 		}
 		
-		private boolean isStoppingCriterionMet() {
+		protected boolean isStoppingCriterionMet() {
 			if (Parameters.isRunningTimeReached())
 				return true;
 			if (numberOfAMCallsWithoutImprovement > maximalNumberOfCallsWithoutImprovementToAdaptiveMemory)

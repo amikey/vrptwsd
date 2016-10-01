@@ -31,13 +31,15 @@ public class CreateResultsWithTourElimination {
 		Parameters.setPercentageOfCapacity(1);
 		Parameters.setMaximalNumberOfToursInGot(1);		
 		Parameters.setRunningTimeInHours(6);
+		Parameters.setNumberOfNonImprovingAMCalls(50);
+		Parameters.setNumberOfNonImprovingIterationsInTS(50);
 		
 		//Set Output parameters
-		Parameters.setOutputDirectory("\\VerfiziereDassErgebnisseWiederGutSind\\MitCostMinimizationPhase\\MitAusgabe\\VerbesserteAusgabe\\OhneRandomInCostMinimizationPhase_ErgebnisseSolltenWiederSoSeinWieOhneCostMinimization\\");
+		Parameters.setOutputDirectory("\\Ab20160720\\ErgebnisseOriginalSolomon\\TourMinimazationPhaseStopptWennMinimaleTouranzahlGefundenWurde\\");
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 		
-		problems = ReadAndWriteUtils.readSolomonProblemR1XX();		
+		problems = ReadAndWriteUtils.readOriginalSolomonProblems();		
 		processProblems();
 	}
 

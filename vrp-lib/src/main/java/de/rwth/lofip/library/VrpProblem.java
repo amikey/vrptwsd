@@ -18,6 +18,7 @@ public class VrpProblem implements Cloneable {
 	private Set<Vehicle> vehicles;
 	private long maxTime = 0l; //closing time window of depot
 	private double originalCapacity;
+	int minimalNumberOfVehicles = 0;
 
 	public VrpProblem() {
 		customers = new HashSet<Customer>();
@@ -124,7 +125,9 @@ public class VrpProblem implements Cloneable {
 	}
 
 	public int getMinimalNumberOfVehiclesWrtDemand() {
-		return (int) Math.ceil((double) getTotalDemandOfAllCustomers() / vehicles.iterator().next().getCapacity());		
+		if (minimalNumberOfVehicles == 0)
+			minimalNumberOfVehicles = (int) Math.ceil((double) getTotalDemandOfAllCustomers() / vehicles.iterator().next().getCapacity());
+		return minimalNumberOfVehicles;
 	}
 
 	public void setVehicleCapacity(double capacity) {

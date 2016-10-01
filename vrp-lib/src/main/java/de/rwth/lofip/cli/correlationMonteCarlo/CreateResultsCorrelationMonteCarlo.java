@@ -27,10 +27,10 @@ public class CreateResultsCorrelationMonteCarlo {
 		Parameters.setSeeds(700);
 		Parameters.setWeightForConvexcombination(weight);
 		Parameters.setMaximalNumberOfToursInGot(2);
-		Parameters.setNumberOfCorrelatedCustomerGroups(10);
+		Parameters.setNumberOfCorrelatedCustomerGroups(5);
 		Parameters.setIsPostScenario(true);
 		
-		Parameters.setOutputDirectory(path + "10Gruppen\\ZweiteRechnung\\");
+		Parameters.setOutputDirectory(path + "5Gruppen\\ZweiteRechnung\\");
 		problems = ReadAndWriteUtils.readPostProblems();
 		
 		solveProblemsWithAdaptiveMemoryWithRecourseActMinSolverNewAlgo();
