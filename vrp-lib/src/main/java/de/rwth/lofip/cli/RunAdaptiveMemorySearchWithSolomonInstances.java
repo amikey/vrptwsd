@@ -27,7 +27,7 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 //		System.setOut(out);
 		
 		setParametersNew();
-		Parameters.setOutputDirectory("\\Ab20160720\\ErgebnisseOriginalSolomon\\");
+		Parameters.setOutputDirectory("\\Ab20160720\\ErgebnisseOriginalSolomon\\geringereEinstellungen\\");
 		problems = ReadAndWriteUtils.readOriginalSolomonProblems();
 		
 		solveProblemsWithAdaptiveMemorySolver();
@@ -40,13 +40,27 @@ public class RunAdaptiveMemorySearchWithSolomonInstances {
 		//Set Parameters for Algorithm
 		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
 		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
-		Parameters.setMaximalNumberOfCustomersConsideredInSegment(4);
-		Parameters.setNumberOfInitialSolutions(20);
+		Parameters.setMaximalNumberOfCustomersConsideredInSegment(3);
+		Parameters.setNumberOfInitialSolutions(10);
 		Parameters.setNumberOfIntensificationTries(0);		
 		Parameters.setMaximalNumberOfToursInGot(1);
+		Parameters.setNumberOfNonImprovingAMCalls(30);
+		Parameters.setNumberOfNonImprovingIterationsInTS(30);
 		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}
+	
+//	private void setParametersNew() {
+//		//Einstellungen für : \\Ab20160720\\ErgebnisseOriginalSolomon
+//		Parameters.setAllParametersToNewBestValuesAfterParameterTesting();
+//		Parameters.setMinimumNumberOfIterationsWithoutTourElemination(0);
+//		Parameters.setMaximalNumberOfCustomersConsideredInSegment(4);
+//		Parameters.setNumberOfInitialSolutions(20);
+//		Parameters.setNumberOfIntensificationTries(0);		
+//		Parameters.setMaximalNumberOfToursInGot(1);
+//		Parameters.setPublishSolutionAtEndOfTabuSearch(true);
+//		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
+//	}
 	
 	@Test
 	public void TestAdaptiveMemorySearchOnAllModifiedSolomonInstances() throws IOException {

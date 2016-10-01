@@ -20,7 +20,7 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 	
 	//--- Eigene Modified Solomon Instances
 	
-		private double weight = 0.03;
+		private double weight = 0.015;
 		private double twFactor;
 
 		@Test
@@ -32,14 +32,14 @@ public class CreateResultsForUmplanungOhneRiskPoolingOhneTW extends CreateResult
 			Parameters.setMaximalNumberOfToursInGot(2);
 			
 			//Set Output parameters
-			Parameters.setOutputDirectory("\\Ab20160720\\TWAnalyse\\PostProblems\\XGleichh2\\integriertH2Gleich0Punkt03_2Touren\\");
+			Parameters.setOutputDirectory("\\Ab20160720\\TWAnalyse\\PostProblems\\XGleic0Punkt5\\integriertH2Gleich0Punkt015_2Touren\\");
 			
 			problems = ReadAndWriteUtils.readPostProblems();
 			Parameters.setIsPostScenario(true);
 			
 //			reduceCapacityOfVehiclesInProblems();
 			
-			twFactor = 2;
+			twFactor = 0.5;
 			setTimeWindowsWithFactor();
 //			deleteTimeWindows();
 			

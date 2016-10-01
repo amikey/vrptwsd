@@ -66,6 +66,8 @@ public class Parameters {
 	//Simulation
 	private static int numberOfDemandScenarioRuns = 100;
 	private static double RELATIVE_STANDARD_DEVIATION = 0.22;
+	private static int numberOfCustomersInCorrelatedGroup = 1;
+	private static int numberOfCorrelatedCustomerGroups;
 
 	//Seeds
 	private static int seedI1 = 100;
@@ -82,7 +84,8 @@ public class Parameters {
 	private static double averageSpeedOfVehicleInPostScenario = 60;
 
 	private static int additionalNumberOfVehicles = 4;
-	
+
+
 	//Getter und Setter	
 	public static void setAllParametersToDefaultValues(){
 		testing = false;
@@ -482,7 +485,21 @@ public class Parameters {
 		Parameters.setPublishSolutionAtEndOfAMTSSearch(true);
 	}
 
-	
+	public static int getNumberOfCustomersInCorrelatedGroup() {
+		return numberOfCustomersInCorrelatedGroup;
+	}
+
+	public static void setNumberOfCustomersInCorrelatedGroup(int numberOfCustomersInCorrelatedGroup2) {
+		numberOfCustomersInCorrelatedGroup = numberOfCustomersInCorrelatedGroup2;
+	}
+
+	public static void setNumberOfCorrelatedCustomerGroups(int i) {
+		numberOfCorrelatedCustomerGroups = i;
+	}
+
+	public static int getNumberOfCorrelatedCustomerGroups() {
+		return numberOfCorrelatedCustomerGroups;
+	}
 	
 
 }

@@ -14,6 +14,9 @@ import de.rwth.lofip.library.parameters.Parameters;
 public class SimulationUtils {
 	
 	private static int seed = 1;
+	//specifies the deviation of all Customers that are in one Group
+	static double deviationInGroup;
+	static int numberOfCustomersInGroup;
 
 	public static void resetSeed() {
 		seed = 1;
@@ -31,12 +34,18 @@ public class SimulationUtils {
 		List<Customer> customerList = new ArrayList<Customer>();
 		customerList.addAll(got.getCustomers());
 		sortListWrtToCustomerNo(customerList);
+		//this counts the number of customers that will be in one group
+		//gets reset to 0 when Parameter.getNumberOfCustomersInGroupForCorrelation() is reached
+		numberOfCustomersInGroup = 0;
 		
 		for (Customer c : customerList) {
+			increaseNumberOfCustomersInGroup();
+			generateDeviationForGroup(numberOfCustomersInGroup, randomDemandGeneration);
+			
 			long customerDemand = c.getOriginalDemand();					
 			double sd = deviation * customerDemand;
 			int demand;        	
-		    double val = (randomDemandGeneration.nextGaussian() * sd) + customerDemand;
+		    double val = (deviationInGroup * sd) + customerDemand;
 		    demand = (int) Math.round(val);
 		    if (demand > got.getFirstTour().getVehicle().getCapacity())
 			    demand = (int) got.getFirstTour().getVehicle().getCapacity();
@@ -62,6 +71,19 @@ public class SimulationUtils {
 	private static void sortListWrtToCustomerNo(List<Customer> customerList) {
 		Comparator<Customer> customerByNoComparator = (e1,e2) -> Double.compare(e1.getCustomerNo(), e2.getCustomerNo());
 		Collections.sort(customerList, customerByNoComparator);
+	}
+	
+	private static void increaseNumberOfCustomersInGroup() {
+		numberOfCustomersInGroup++;
+		if (numberOfCustomersInGroup > Parameters.getNumberOfCustomersInCorrelatedGroup())
+			numberOfCustomersInGroup = 1;
+	}
+	
+	private static void generateDeviationForGroup(int numberOfCustomersInGroup, Random randomDemandGeneration) {
+		if (numberOfCustomersInGroup == 1)
+			//generateNewDeviation
+			deviationInGroup = (randomDemandGeneration.nextGaussian());
+		//else do nothing
 	}
 	
 	public static void setCapacityOfVehiclesToOriginalCapacity(GroupOfTours gotClone) {
