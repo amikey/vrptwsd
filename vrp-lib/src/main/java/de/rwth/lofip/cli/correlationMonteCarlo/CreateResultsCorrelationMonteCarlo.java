@@ -27,10 +27,10 @@ public class CreateResultsCorrelationMonteCarlo {
 		Parameters.setSeeds(700);
 		Parameters.setWeightForConvexcombination(weight);
 		Parameters.setMaximalNumberOfToursInGot(2);
-		Parameters.setNumberOfCorrelatedCustomerGroups(5);
+		Parameters.setNumberOfCorrelatedCustomerGroups(1);
 		Parameters.setIsPostScenario(true);
 		
-		Parameters.setOutputDirectory(path + "5Gruppen\\ZweiteRechnung\\");
+		Parameters.setOutputDirectory(path + "1Gruppe\\ZweiteRechnung\\");
 		problems = ReadAndWriteUtils.readPostProblems();
 		
 		solveProblemsWithAdaptiveMemoryWithRecourseActMinSolverNewAlgo();
@@ -55,6 +55,7 @@ public class CreateResultsCorrelationMonteCarlo {
 			int customerCount = problem.getCustomerCount();
 			int numberOfCorrelatedCustomerGroups = Parameters.getNumberOfCorrelatedCustomerGroups();
 			int numberOfCustomersInCorrelatedGroup = (int) Math.ceil((double) customerCount / (double) numberOfCorrelatedCustomerGroups);
+			Parameters.setNumberOfCustomersInCorrelatedGroup(numberOfCustomersInCorrelatedGroup);
 			
 			System.out.println("SOLVING PROBLEM " + problem.getDescription());						
 			AMTSwithRecourseAndRecourseActionNumber adaptiveMemoryTabuSearch = new AMTSwithRecourseAndRecourseActionNumber();
